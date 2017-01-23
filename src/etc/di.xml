@@ -8,6 +8,12 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="categoryFilterList" type="Emico\Tweakwise\Model\Catalog\Layer\FilterList\EnabledSwitch"/>
-    <preference for="searchFilterList" type="Emico\Tweakwise\Model\Catalog\Layer\FilterList\EnabledSwitch"/>
+    <type name="Magento\Catalog\Model\Layer\FilterList">
+        <plugin name="emico-tweakwise" type="Emico\Tweakwise\Model\Catalog\Layer\FilterList\Plugin"/>
+    </type>
+    <type name="Emico\Tweakwise\Model\Catalog\Layer\FilterList\Plugin">
+        <arguments>
+            <argument name="tweakwiseFilterList" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\FilterList\Tweakwise\Proxy</argument>
+        </arguments>
+    </type>
 </config>

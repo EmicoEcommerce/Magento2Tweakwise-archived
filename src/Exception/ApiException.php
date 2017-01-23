@@ -6,19 +6,11 @@
  * @license   Proprietary and confidential, Unauthorized copying of this file, via any medium is strictly prohibited
  */
 
-namespace Emico\Tweakwise\Model\Catalog\Layer\FilterList;
+namespace Emico\Tweakwise\Exception;
 
-use Magento\Catalog\Model\Layer;
-use Magento\Catalog\Model\Layer\Filter\AbstractFilter;
+use RuntimeException;
 
-class Tweakwise
+class ApiException extends RuntimeException implements TweakwiseException
 {
-    /**
-     * @param Layer $layer
-     * @return AbstractFilter[]
-     */
-    public function getFilters(Layer $layer)
-    {
-        return [];
-    }
+
 }
