@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Tweakwise & Emico (https://www.tweakwise.com/ & https://www.emico.nl/) - All Rights Reserved
+ *
+ * @copyright Copyright (c) 2017-2017 Tweakwise.com B.V. (https://www.tweakwise.com)
+ * @license   Proprietary and confidential, Unauthorized copying of this file, via any medium is strictly prohibited
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <tweakwise>
+            <general>
+                <authentication_key/>
+                <server_url>http://navigator-bus.tweakwise.com/</server_url>
+                <log>0</log>
+                <log_developer>1</log_developer>
+            </general>
+            <layered>
+                <enabled>0</enabled>
+                <hide_single_option>1</hide_single_option>
+            </layered>
+            <autocomplete>
+                <enabled>0</enabled>
+                <show_products>1</show_products>
+                <show_categories>1</show_categories>
+                <in_current_category>0</in_current_category>
+                <max_results>50</max_results>
+            </autocomplete>
+            <search>
+                <enabled>0</enabled>
+                <template/>
+            </search>
+        </tweakwise>
+    </default>
+</config>
