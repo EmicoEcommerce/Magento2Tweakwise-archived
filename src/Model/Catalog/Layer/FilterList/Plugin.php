@@ -9,22 +9,22 @@
 namespace Emico\Tweakwise\Model\Catalog\Layer\FilterList;
 
 use Closure;
+use Emico\Tweakwise\Model\Config;
 use Emico\Tweakwise\Exception\TweakwiseException;
+use Emico\TweakwiseExport\Model\Logger;
 use Magento\Catalog\Model\Layer;
 use Magento\Catalog\Model\Layer\Filter\AbstractFilter;
 use Magento\Catalog\Model\Layer\FilterList;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Psr\Log\LoggerInterface;
 
 class Plugin
 {
     /**
-     * @var ScopeConfigInterface
+     * @var Config
      */
     protected $config;
 
     /**
-     * @var LoggerInterface
+     * @var Logger
      */
     protected $log;
 
@@ -34,21 +34,16 @@ class Plugin
     protected $tweakwiseFilterList;
 
     /**
-     * @var bool
-     */
-    protected $tweakwiseExceptionThrown = false;
-
-    /**
      * Proxy constructor.
      *
-     * @param ScopeConfigInterface $config
-     * @param LoggerInterface $logger
+     * @param Config $config
+     * @param Logger $log
      * @param Tweakwise $tweakwiseFilterList
      */
-    public function __construct(ScopeConfigInterface $config, LoggerInterface $logger, Tweakwise $tweakwiseFilterList)
+    public function __construct(Config $config, Logger $log, Tweakwise $tweakwiseFilterList)
     {
         $this->config = $config;
-        $this->log = $logger;
+        $this->log = $log;
         $this->tweakwiseFilterList = $tweakwiseFilterList;
     }
 
@@ -57,10 +52,7 @@ class Plugin
      */
     public function isEnabled()
     {
-        if ($this->tweakwiseExceptionThrown) {
-            return false;
-        }
-        return (bool) $this->config->getValue('tweakwise/layered/enabled');
+        return (bool) $this->config->isEnabled();
     }
 
     /**
@@ -71,7 +63,7 @@ class Plugin
      */
     public function aroundGetFilters(FilterList $subject, Closure $proceed, Layer $layer)
     {
-        if (!$this->isEnabled()) {
+        if (!$this->config->isEnabled()) {
             return $proceed($layer);
         }
 
@@ -79,7 +71,7 @@ class Plugin
             return $this->tweakwiseFilterList->getFilters($layer);
         } catch (TweakwiseException $e) {
             $this->log->critical($e);
-            $this->tweakwiseExceptionThrown = true;
+            $this->config->setTweakwiseExceptionThrown();
 
             return $proceed($layer);
         }
