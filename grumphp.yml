@@ -2,7 +2,4 @@ parameters:
     git_dir: .
     bin_dir: vendor/bin
     tasks:
-        shell:
-            scripts:
-                - "./vendor/bin/docheader check ./src/"
 

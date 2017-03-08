@@ -8,7 +8,10 @@
 
 namespace Emico\Tweakwise\Model\Client;
 
-class Response
+use Emico\Tweakwise\Model\Client\Type\Type;
+use Emico\TweakwiseExport\Model\Helper;
+
+class Response extends Type
 {
     /**
      * @var Request
@@ -16,19 +19,21 @@ class Response
     protected $request;
 
     /**
-     * @var array
+     * @var Helper
      */
-    protected $data;
+    protected $helper;
 
     /**
      * Response constructor.
      *
+     * @param Helper $helper
      * @param Request $request
      * @param array $data
      */
-    public function __construct(Request $request, array $data)
+    public function __construct(Helper $helper, Request $request, array $data = null)
     {
+        parent::__construct($data);
         $this->request = $request;
-        $this->data = $data;
+        $this->helper = $helper;
     }
 }

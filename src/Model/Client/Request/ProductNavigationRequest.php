@@ -9,14 +9,23 @@
 namespace Emico\Tweakwise\Model\Client\Request;
 
 use Emico\Tweakwise\Model\Client\Request;
+use Emico\Tweakwise\Model\Client\Response\ProductNavigationResponse;
 use Magento\Catalog\Model\Category;
 
-class ProductNavigation extends Request
+class ProductNavigationRequest extends Request
 {
     /**
      * {@inheritDoc}
      */
     protected $path = 'navigation';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getResponseType()
+    {
+        return ProductNavigationResponse::class;
+    }
 
     /**
      * @param Category $category

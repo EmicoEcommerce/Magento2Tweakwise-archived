@@ -11,7 +11,7 @@ namespace Emico\Tweakwise\Model\Catalog\Product;
 use Emico\Tweakwise\Model\Client;
 use Emico\Tweakwise\Model\Client\Request;
 use Emico\Tweakwise\Model\Client\RequestFactory;
-use Emico\Tweakwise\Model\Client\Response;
+use Emico\Tweakwise\Model\Client\Response\ProductNavigationResponse;
 use Emico\TweakwiseExport\Model\Helper;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Indexer\Product\Flat\State;
@@ -39,7 +39,7 @@ use Psr\Log\LoggerInterface;
 class Collection extends ProductCollection
 {
     /**
-     * @var Request\ProductNavigation
+     * @var Request\ProductNavigationRequest
      */
     protected $request;
 
@@ -59,7 +59,7 @@ class Collection extends ProductCollection
     protected $client;
 
     /**
-     * @var Response
+     * @var ProductNavigationResponse
      */
     protected $response;
 
@@ -121,7 +121,7 @@ class Collection extends ProductCollection
     }
 
     /**
-     * @return Request\ProductNavigation
+     * @return Request\ProductNavigationRequest
      */
     protected function getRequest()
     {
@@ -132,7 +132,7 @@ class Collection extends ProductCollection
     }
 
     /**
-     * @return Response
+     * @return ProductNavigationResponse
      */
     protected function getResponse()
     {
@@ -154,13 +154,45 @@ class Collection extends ProductCollection
     }
 
     /**
+     * @return $this
+     */
+    protected function applyEntityIdFilter()
+    {
+        $response = $this->getResponse();
+        $productIds = $response->getProductIds();
+        if (count($productIds) == 0) {
+            // Result should be none make sure we dont load any products
+            $this->addFieldToFilter('entity_id', ['null' => true]);
+        } else {
+            $this->addFieldToFilter('entity_id', ['in' => $productIds]);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    protected function applyCollectionSizeValues()
+    {
+        $response = $this->getResponse();
+        $properties = $response->getProperties();
+
+        $this->_pageSize = $properties->getPageSize();
+        $this->_curPage = $properties->getCurrentPage();
+        $this->_totalRecords = $properties->getNumberOfItems();
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function _beforeLoad()
     {
         parent::_beforeLoad();
-        $response = $this->getResponse();
 
+        $this->applyEntityIdFilter();
+        $this->applyCollectionSizeValues();
         return $this;
     }
 }

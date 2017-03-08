@@ -6,12 +6,15 @@
  * @license   Proprietary and confidential, Unauthorized copying of this file, via any medium is strictly prohibited
  */
 
-namespace Emico\Tweakwise\Model\Client\Request;
+namespace Emico\Tweakwise\Model\Client\Type;
 
-class ProductSearch extends ProductNavigation
+class RedirectType extends Type
 {
     /**
-     * {@inheritDoc}
+     * @return string
      */
-    protected $path = 'navigation-search';
+    public function getUrl()
+    {
+        return (string) $this->getDataValue('url');
+    }
 }

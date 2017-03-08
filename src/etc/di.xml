@@ -20,14 +20,14 @@
     </type>
 
     <!-- Tweakwise virtual request factory types -->
-    <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\ProductNavigation" type="Emico\Tweakwise\Model\Client\RequestFactory">
+    <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\ProductNavigationRequest" type="Emico\Tweakwise\Model\Client\RequestFactory">
         <arguments>
-            <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\ProductNavigation</argument>
+            <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\ProductSearch" type="Emico\Tweakwise\Model\Client\RequestFactory">
+    <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\ProductSearchRequest" type="Emico\Tweakwise\Model\Client\RequestFactory">
         <arguments>
-            <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\ProductSearch</argument>
+            <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\ProductSearchRequest</argument>
         </arguments>
     </virtualType>
 
@@ -36,14 +36,14 @@
         <arguments>
             <argument name="collectionFactory" xsi:type="object">Emico\Tweakwise\Model\Catalog\Product\CollectionFactory</argument>
             <argument name="originalProvider" xsi:type="object">Magento\CatalogSearch\Model\Layer\Category\ItemCollectionProvider</argument>
-            <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\ProductNavigation</argument>
+            <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\ProductNavigationRequest</argument>
         </arguments>
     </virtualType>
     <virtualType name="Emico\Tweakwise\Model\Catalog\Layer\ItemCollectionProvider\Search" type="Emico\Tweakwise\Model\Catalog\Layer\ItemCollectionProvider">
         <arguments>
             <argument name="collectionFactory" xsi:type="object">Emico\Tweakwise\Model\Catalog\Product\CollectionFactory</argument>
             <argument name="originalProvider" xsi:type="object">Magento\CatalogSearch\Model\Layer\Search\ItemCollectionProvider</argument>
-            <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\ProductSearch</argument>
+            <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\ProductSearchRequest</argument>
         </arguments>
     </virtualType>
 

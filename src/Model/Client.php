@@ -93,6 +93,7 @@ class Client
         try {
             $xmlElement = simplexml_load_string($response->getBody());
             if ($xmlElement === false) {
+                $errors = libxml_get_errors();
                 throw new ApiException(sprintf('Invalid response received by Tweakwise server, xml load fails. %s', join(PHP_EOL, $errors)));
             }
         } finally {
@@ -110,18 +111,24 @@ class Client
     protected function xmlToArray(SimpleXMLElement $element)
     {
         $result = [];
-
         foreach ($element->attributes() as $attribute => $value) {
             $result['@' . $attribute] = (string) $value;
         }
 
         /** @var SimpleXMLElement $node */
         foreach ((array) $element as $index => $node) {
-            if (is_object($node)) {
-                $result[$index] = $this->xmlToArray($node);
+            if ($node instanceof SimpleXMLElement) {
+                $value = $this->xmlToArray($node);
+            } elseif (is_array($node)) {
+                $value = [];
+                foreach ($node as $element) {
+                    $value[] = $this->xmlToArray($element);
+                }
             } else {
-                $result[$index] = (string) $node;
+                $value = (string) $node;
             }
+
+            $result[$index] = $value;
         }
 
         return $result;
