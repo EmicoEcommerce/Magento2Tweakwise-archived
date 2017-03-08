@@ -8,12 +8,54 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- Frontend plugins -->
     <type name="Magento\Catalog\Model\Layer\FilterList">
-        <plugin name="emico-tweakwise" type="Emico\Tweakwise\Model\Catalog\Layer\FilterList\Plugin"/>
+        <plugin name="emico-tweakwise" type="Emico\Tweakwise\Model\Catalog\Layer\FilterList\Plugin" />
     </type>
     <type name="Emico\Tweakwise\Model\Catalog\Layer\FilterList\Plugin">
         <arguments>
             <argument name="tweakwiseFilterList" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\FilterList\Tweakwise\Proxy</argument>
         </arguments>
     </type>
+
+    <!-- Tweakwise virtual request factory types -->
+    <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\ProductNavigation" type="Emico\Tweakwise\Model\Client\RequestFactory">
+        <arguments>
+            <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\ProductNavigation</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\ProductSearch" type="Emico\Tweakwise\Model\Client\RequestFactory">
+        <arguments>
+            <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\ProductSearch</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Tweakwise virtual collection provider types used in overrides of magento collection providers -->
+    <virtualType name="Emico\Tweakwise\Model\Catalog\Layer\ItemCollectionProvider\Category" type="Emico\Tweakwise\Model\Catalog\Layer\ItemCollectionProvider">
+        <arguments>
+            <argument name="collectionFactory" xsi:type="object">Emico\Tweakwise\Model\Catalog\Product\CollectionFactory</argument>
+            <argument name="originalProvider" xsi:type="object">Magento\CatalogSearch\Model\Layer\Category\ItemCollectionProvider</argument>
+            <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\ProductNavigation</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Emico\Tweakwise\Model\Catalog\Layer\ItemCollectionProvider\Search" type="Emico\Tweakwise\Model\Catalog\Layer\ItemCollectionProvider">
+        <arguments>
+            <argument name="collectionFactory" xsi:type="object">Emico\Tweakwise\Model\Catalog\Product\CollectionFactory</argument>
+            <argument name="originalProvider" xsi:type="object">Magento\CatalogSearch\Model\Layer\Search\ItemCollectionProvider</argument>
+            <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\ProductSearch</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Override virtual types of magento to inject our product collection -->
+    <virtualType name="Magento\CatalogSearch\Model\Layer\Search\Context">
+        <arguments>
+            <argument name="collectionProvider" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\ItemCollectionProvider\Search</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magento\CatalogSearch\Model\Layer\Category\Context">
+        <arguments>
+            <argument name="collectionProvider" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\ItemCollectionProvider\Category</argument>
+        </arguments>
+    </virtualType>
 </config>

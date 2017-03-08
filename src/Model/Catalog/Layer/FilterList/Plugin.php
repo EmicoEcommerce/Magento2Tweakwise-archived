@@ -48,14 +48,6 @@ class Plugin
     }
 
     /**
-     * @return bool
-     */
-    public function isEnabled()
-    {
-        return (bool) $this->config->isEnabled();
-    }
-
-    /**
      * @param FilterList $subject
      * @param Closure $proceed
      * @param Layer $layer
@@ -63,7 +55,7 @@ class Plugin
      */
     public function aroundGetFilters(FilterList $subject, Closure $proceed, Layer $layer)
     {
-        if (!$this->config->isEnabled()) {
+        if (!$this->config->isLayeredEnabled()) {
             return $proceed($layer);
         }
 

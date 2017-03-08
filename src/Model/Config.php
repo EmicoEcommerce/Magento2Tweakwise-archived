@@ -9,6 +9,7 @@
 namespace Emico\Tweakwise\Model;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\Store;
 
 class Config
 {
@@ -43,13 +44,60 @@ class Config
     }
 
     /**
+     * @param Store|null $store
      * @return bool
      */
-    public function isEnabled()
+    public function isLayeredEnabled(Store $store = null)
     {
         if ($this->tweakwiseExceptionThrown) {
             return false;
         }
-        return (bool) $this->config->getValue('tweakwise/layered/enabled');
+
+        if ($store) {
+            return $store->getConfig('tweakwise/layered/enabled');
+        }
+
+        return (bool) $this->getStoreConfig($store, 'tweakwise/layered/enabled');
+    }
+
+    /**
+     * @param Store|null $store
+     * @return string
+     */
+    public function getGeneralServerUrl(Store $store = null)
+    {
+        return (string) $this->getStoreConfig($store, 'tweakwise/general/server_url');
+    }
+
+    /**
+     * @param Store|null $store
+     * @return string
+     */
+    public function getGeneralAuthenticationKey(Store $store = null)
+    {
+        return (string) $this->getStoreConfig($store, 'tweakwise/general/authentication_key');
+    }
+
+    /**
+     * @param Store|null $store
+     * @return float
+     */
+    public function getTimeout(Store $store = null)
+    {
+        return (float) $this->getStoreConfig($store, 'tweakwise/general/timeout');
+    }
+
+    /**
+     * @param Store|null $store
+     * @param string $path
+     * @return mixed|null|string
+     */
+    protected function getStoreConfig(Store $store = null, $path)
+    {
+        if ($store) {
+            return $store->getConfig($path);
+        }
+
+        return $this->config->getValue($path);
     }
 }
