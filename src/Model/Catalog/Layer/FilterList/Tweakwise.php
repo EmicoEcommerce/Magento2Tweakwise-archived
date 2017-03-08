@@ -8,11 +8,27 @@
 
 namespace Emico\Tweakwise\Model\Catalog\Layer\FilterList;
 
+use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext;
 use Magento\Catalog\Model\Layer;
 use Magento\Catalog\Model\Layer\Filter\AbstractFilter;
 
 class Tweakwise
 {
+    /**
+     * @var NavigationContext
+     */
+    protected $navigationContext;
+
+    /**
+     * Tweakwise constructor.
+     *
+     * @param NavigationContext $navigationContext
+     */
+    public function __construct(NavigationContext $navigationContext)
+    {
+        $this->navigationContext = $navigationContext;
+    }
+
     /**
      * @param Layer $layer
      * @return AbstractFilter[]

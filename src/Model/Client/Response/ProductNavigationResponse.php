@@ -110,7 +110,7 @@ class ProductNavigationResponse extends Response
     {
         $ids = [];
         foreach ($this->getItems() as $item) {
-            $ids[] = $this->helper->getStoreId($item->getItemno());
+            $ids[] = $this->helper->getStoreId($item->getId());
         }
         return $ids;
     }

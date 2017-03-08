@@ -32,8 +32,8 @@ class Response extends Type
      */
     public function __construct(Helper $helper, Request $request, array $data = null)
     {
-        parent::__construct($data);
         $this->request = $request;
         $this->helper = $helper;
+        parent::__construct($data);
     }
 }

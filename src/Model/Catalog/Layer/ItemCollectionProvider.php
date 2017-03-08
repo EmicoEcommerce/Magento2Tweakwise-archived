@@ -9,8 +9,8 @@
 namespace Emico\Tweakwise\Model\Catalog\Layer;
 
 use Emico\Tweakwise\Exception\TweakwiseException;
+use Emico\Tweakwise\Model\Catalog\Product\Collection;
 use Emico\Tweakwise\Model\Catalog\Product\CollectionFactory;
-use Emico\Tweakwise\Model\Client\RequestFactory;
 use Emico\Tweakwise\Model\Config;
 use Emico\TweakwiseExport\Model\Logger;
 use Magento\Catalog\Model\Category;
@@ -40,9 +40,9 @@ class ItemCollectionProvider implements ItemCollectionProviderInterface
     protected $originalProvider;
 
     /**
-     * @var RequestFactory
+     * @var NavigationContext
      */
-    protected $requestFactory;
+    protected $navigationContext;
 
     /**
      * Proxy constructor.
@@ -51,15 +51,15 @@ class ItemCollectionProvider implements ItemCollectionProviderInterface
      * @param Logger $log
      * @param ItemCollectionProviderInterface $originalProvider
      * @param CollectionFactory $collectionFactory
-     * @param RequestFactory $requestFactory
+     * @param NavigationContext $navigationContext
      */
-    public function __construct(Config $config, Logger $log, ItemCollectionProviderInterface $originalProvider, CollectionFactory $collectionFactory, RequestFactory $requestFactory)
+    public function __construct(Config $config, Logger $log, ItemCollectionProviderInterface $originalProvider, CollectionFactory $collectionFactory, NavigationContext $navigationContext)
     {
         $this->config = $config;
         $this->log = $log;
         $this->collectionFactory = $collectionFactory;
         $this->originalProvider = $originalProvider;
-        $this->requestFactory = $requestFactory;
+        $this->navigationContext = $navigationContext;
     }
 
     /**
@@ -72,7 +72,8 @@ class ItemCollectionProvider implements ItemCollectionProviderInterface
         }
 
         try {
-            $collection = $this->collectionFactory->create(['requestFactory' => $this->requestFactory]);
+            /** @var Collection $collection */
+            $collection = $this->collectionFactory->create(['navigationContext' => $this->navigationContext]);
             $collection->addCategoryFilter($category);
             return $collection;
         } catch (TweakwiseException $e) {

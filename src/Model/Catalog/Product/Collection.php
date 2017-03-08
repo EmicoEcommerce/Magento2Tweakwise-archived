@@ -8,6 +8,7 @@
 
 namespace Emico\Tweakwise\Model\Catalog\Product;
 
+use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext;
 use Emico\Tweakwise\Model\Client;
 use Emico\Tweakwise\Model\Client\Request;
 use Emico\Tweakwise\Model\Client\RequestFactory;
@@ -35,33 +36,14 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\Validator\UniversalFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
+use Zend_Db_Select;
 
 class Collection extends ProductCollection
 {
     /**
-     * @var Request\ProductNavigationRequest
+     * @var NavigationContext
      */
-    protected $request;
-
-    /**
-     * @var RequestFactory
-     */
-    protected $requestFactory;
-
-    /**
-     * @var Helper
-     */
-    protected $helper;
-
-    /**
-     * @var Client
-     */
-    protected $client;
-
-    /**
-     * @var ProductNavigationResponse
-     */
-    protected $response;
+    protected $navigationContext;
 
     /**
      * {@inheritdoc}
@@ -86,9 +68,7 @@ class Collection extends ProductCollection
         Session $customerSession,
         DateTime $dateTime,
         GroupManagementInterface $groupManagement,
-        RequestFactory $requestFactory,
-        Helper $helper,
-        Client $client,
+        NavigationContext $navigationContext,
         AdapterInterface $connection = null
     )
     {
@@ -115,32 +95,7 @@ class Collection extends ProductCollection
             $connection
         );
 
-        $this->requestFactory = $requestFactory;
-        $this->helper = $helper;
-        $this->client = $client;
-    }
-
-    /**
-     * @return Request\ProductNavigationRequest
-     */
-    protected function getRequest()
-    {
-        if (!$this->request) {
-            $this->request = $this->requestFactory->create();
-        }
-        return $this->request;
-    }
-
-    /**
-     * @return ProductNavigationResponse
-     */
-    protected function getResponse()
-    {
-        if (!$this->response) {
-            $this->response = $this->client->request($this->getRequest());
-        }
-
-        return $this->response;
+        $this->navigationContext = $navigationContext;
     }
 
     /**
@@ -149,7 +104,7 @@ class Collection extends ProductCollection
      */
     public function addCategoryFilter(Category $category)
     {
-        $this->getRequest()->addCategoryFilter($category);
+        $this->navigationContext->getRequest()->addCategoryFilter($category);
         return $this;
     }
 
@@ -158,7 +113,7 @@ class Collection extends ProductCollection
      */
     protected function applyEntityIdFilter()
     {
-        $response = $this->getResponse();
+        $response = $this->navigationContext->getResponse();
         $productIds = $response->getProductIds();
         if (count($productIds) == 0) {
             // Result should be none make sure we dont load any products
@@ -175,12 +130,22 @@ class Collection extends ProductCollection
      */
     protected function applyCollectionSizeValues()
     {
-        $response = $this->getResponse();
+        $response = $this->navigationContext->getResponse();
         $properties = $response->getProperties();
 
         $this->_pageSize = $properties->getPageSize();
         $this->_curPage = $properties->getCurrentPage();
         $this->_totalRecords = $properties->getNumberOfItems();
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    protected function clearFilters()
+    {
+        $select = $this->getSelect();
+        $select->setPart(Zend_Db_Select::WHERE, []);
         return $this;
     }
 
@@ -191,6 +156,7 @@ class Collection extends ProductCollection
     {
         parent::_beforeLoad();
 
+        $this->clearFilters();
         $this->applyEntityIdFilter();
         $this->applyCollectionSizeValues();
         return $this;
