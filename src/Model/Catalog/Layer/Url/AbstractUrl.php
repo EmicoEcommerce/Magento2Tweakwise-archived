@@ -17,6 +17,7 @@ use Emico\TweakwiseExport\Model\Helper as ExportHelper;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\CategoryRepository;
 use Magento\Framework\UrlInterface as MagentoUrl;
+use Magento\Store\Model\StoreManager;
 use Zend\Http\Request as HttpRequest;
 
 abstract class AbstractUrl implements UrlInterface
@@ -111,7 +112,21 @@ abstract class AbstractUrl implements UrlInterface
      */
     public function applyFilters(HttpRequest $request, ProductNavigationRequest $navigationRequest)
     {
+        $categories = $this->getCategoryFilters($request);
+        foreach ($categories as $categoryId) {
+            $navigationRequest->addCategoryFilter($categoryId);
+        }
 
+        $attributeFilters = $this->getAttributeFilters($request);
+        foreach ($attributeFilters as $attribute => $values) {
+            if (!is_array($values)) {
+                $values = [$values];
+            }
+
+            foreach ($values as $value) {
+                $navigationRequest->addAttributeFilter($attribute, $value);
+            }
+        }
     }
 
     /**
@@ -238,4 +253,25 @@ abstract class AbstractUrl implements UrlInterface
      * @return string
      */
     protected abstract function getAttributeCleanUrl(HttpRequest $request, Filter $filter);
+
+    /**
+     * Fetch a list of category ID's to filter
+     * @param HttpRequest $request
+     * @return int[]
+     */
+    protected abstract function getCategoryFilters(HttpRequest $request);
+
+    /**
+     * Fetches all filters that should be applied on Tweakwise Request. In the format
+     *
+     * [
+     *     // Single select attributes
+     *     'attribute' => 'value',
+     *     // Multi select attributes
+     *     'attribute' => ['value1', 'value2'],
+     * ]
+     * @param HttpRequest $request
+     * @return array
+     */
+    protected abstract function getAttributeFilters(HttpRequest $request);
 }

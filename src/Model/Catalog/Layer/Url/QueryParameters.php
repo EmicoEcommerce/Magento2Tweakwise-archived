@@ -227,4 +227,26 @@ class QueryParameters extends AbstractUrl
         $query = [$urlKey => $filter->getResetValue()];
         return $this->getCurrentQueryUrl($query);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getCategoryFilters(HttpRequest $request)
+    {
+        $categories = $request->getQuery('categorie');
+        $categories = explode(self::CATEGORY_TREE_SEPARATOR, $categories);
+        $categories = array_map('intval', $categories);
+        $categories = array_filter($categories);
+        $categories = array_unique($categories);
+
+        return $categories;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAttributeFilters(HttpRequest $request)
+    {
+        return [];
+    }
 }

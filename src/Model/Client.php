@@ -79,10 +79,14 @@ class Client
     {
         $client = $this->createClient($request->getPath(), $request->getParameters());
 
+        $start = microtime(true);
         try {
             $response = $client->send();
         } catch (HttpException $e) {
             throw new ApiException($e->getMessage(), $e->getCode(), $e);
+        } finally {
+            $time = microtime(true) - $start;
+            $this->log->debug(sprintf('[Request][%.5f] %s', $time, (string) $client->getUri()));
         }
 
         if ($response->getStatusCode() != 200) {

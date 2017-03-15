@@ -9,6 +9,7 @@
 namespace Emico\Tweakwise\Model\Client;
 
 use Emico\TweakwiseExport\Model\Helper;
+use Magento\Store\Model\StoreManager;
 
 class Request
 {
@@ -23,13 +24,20 @@ class Request
     protected $parameters = [];
 
     /**
+     * @var StoreManager
+     */
+    protected $storeManager;
+
+    /**
      * Request constructor.
      *
      * @param Helper $helper
+     * @param StoreManager $storeManager
      */
-    public function __construct(Helper $helper)
+    public function __construct(Helper $helper, StoreManager $storeManager)
     {
         $this->helper = $helper;
+        $this->storeManager = $storeManager;
     }
 
     /**

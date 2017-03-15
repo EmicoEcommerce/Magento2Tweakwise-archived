@@ -28,12 +28,32 @@ class ProductNavigationRequest extends Request
     }
 
     /**
-     * @param Category $category
+     * @param Category|int $category
      * @return $this
      */
-    public function addCategoryFilter(Category $category)
+    public function addCategoryFilter($category)
     {
-        $this->addParameter('tn_cid', $this->helper->getTweakwiseId($category->getStoreId(), $category->getId()), '-');
+        if ($category instanceof Category) {
+            $categoryId = $category->getId();
+            $storeId = $category->getStoreId();
+        } else {
+            $categoryId = (int) $category;
+            $storeId = $this->storeManager->getStore()->getId();
+        }
+
+        $tweakwiseId = $this->helper->getTweakwiseId($storeId, $categoryId);
+        $this->addParameter('tn_cid', $tweakwiseId, '-');
+        return $this;
+    }
+
+    /**
+     * @param string $attribute
+     * @param string $value
+     * @return $this
+     */
+    public function addAttributeFilter($attribute, $value)
+    {
+        $this->addParameter('tn_fk_' . $attribute, $value);
         return $this;
     }
 }
