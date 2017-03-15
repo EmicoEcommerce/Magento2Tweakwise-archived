@@ -13,14 +13,12 @@ use Emico\Tweakwise\Model\Client\Type\Type;
 /**
  * @method int getFacetId();
  * @method boolean getIsVisible();
- * @method string getUrlKey();
  * @method string getTitle();
  * @method boolean getIsCollapsible();
  * @method boolean getIsCollapsed();
  * @method int getNumberOfShownAttributes();
  * @method string getExpandText();
  * @method string getCollapseText();
- * @method boolean getIsMultipleSelect();
  * @method int getMultiSelectLogic();
  * @method string getSelectionType();
  * @method int getNumberOfColumns();
@@ -33,5 +31,25 @@ use Emico\Tweakwise\Model\Client\Type\Type;
  */
 class SettingsType extends Type
 {
+    /**
+     * Source type from attributes
+     */
+    const SOURCE_CATEGORY = 'CATEGORY';
+    const SOURCE_FEED = 'FEED';
 
+    /**
+     * @return string
+     */
+    public function getUrlKey()
+    {
+        return (string) $this->getDataValue('urlkey');
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsMultipleSelect()
+    {
+        return $this->getDataValue('ismultiselect') == 'true';
+    }
 }

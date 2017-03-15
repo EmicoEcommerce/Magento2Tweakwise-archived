@@ -48,6 +48,13 @@
         </arguments>
     </virtualType>
 
+    <type name="Emico\Tweakwise\Model\Catalog\Layer\Url">
+        <arguments>
+            <argument name="request" xsi:type="object">Magento\Framework\App\Request\Http</argument>
+            <argument name="implementation" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\Url\QueryParameters</argument>
+        </arguments>
+    </type>
+
     <!-- Tweakwise virtual collection provider types used in overrides of magento collection providers -->
     <virtualType name="Emico\Tweakwise\Model\Catalog\Layer\ItemCollectionProvider\Category" type="Emico\Tweakwise\Model\Catalog\Layer\ItemCollectionProvider">
         <arguments>

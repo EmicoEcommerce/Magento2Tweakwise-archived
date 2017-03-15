@@ -8,7 +8,6 @@
 
 namespace Emico\Tweakwise\Model\Catalog\Layer;
 
-use Emico\Tweakwise\Exception\InvalidArgumentException;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Client\Type\AttributeType;
 use Emico\Tweakwise\Model\Client\Type\FacetType;
@@ -144,28 +143,12 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param array|AttributeType $item
+     * @param AttributeType $item
      * @return $this
      */
-    public function addItem($item)
+    public function addItem(AttributeType $item)
     {
-        // Create from tw type
-        if ($item instanceof AttributeType) {
-            $this->items[] = $this->createItem($item->getTitle(), $item->getTitle(), $item->getNumberOfResults());
-            return $this;
-        }
-
-        // Create from array
-        if (!is_array($item)) {
-            throw new InvalidArgumentException(sprintf('$item must be of type %s or array', AttributeType::class));
-        }
-
-        if (!isset($item['label']) || !isset($item['count'])) {
-            throw new InvalidArgumentException('$item of type array must contain keys: "label" and "count"');
-        }
-        $value = isset($item['value']) ? $item['value'] : $item['label'];
-        $this->items[] = $this->createItem($item['label'], $value, $item['count']);
-
+        $this->items[] = $this->createItem($item);
         return $this;
     }
 
@@ -263,18 +246,12 @@ class Filter implements FilterInterface
     }
 
     /**
-     * @param string $label
-     * @param string $value
-     * @param int $count
+     * @param AttributeType $item
      * @return Item
      */
-    protected function createItem($label, $value, $count)
+    protected function createItem(AttributeType $item)
     {
-        return $this->itemFactory->create()
-            ->setFilter($this)
-            ->setLabel($label)
-            ->setValue($value)
-            ->setCount($count);
+        return $this->itemFactory->create(['filter' => $this, 'attributeType' => $item]);
     }
 
     /**
@@ -294,5 +271,13 @@ class Filter implements FilterInterface
     public function hasAttributeModel()
     {
         return false;
+    }
+
+    /**
+     * @return FacetType
+     */
+    public function getFacet()
+    {
+        return $this->facet;
     }
 }

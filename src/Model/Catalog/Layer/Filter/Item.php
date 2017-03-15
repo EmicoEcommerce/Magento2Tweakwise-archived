@@ -9,6 +9,8 @@
 namespace Emico\Tweakwise\Model\Catalog\Layer\Filter;
 
 use Emico\Tweakwise\Model\Catalog\Layer\Filter;
+use Emico\Tweakwise\Model\Catalog\Layer\Url;
+use Emico\Tweakwise\Model\Client\Type\AttributeType;
 use Magento\Catalog\Model\Layer\Filter\Item as BaseItem;
 
 class Item
@@ -19,19 +21,28 @@ class Item
     protected $filter;
 
     /**
-     * @var string
+     * @var AttributeType
      */
-    protected $label;
+    protected $attributeType;
 
     /**
-     * @var string
+     * @var Url
      */
-    protected $value;
+    protected $url;
 
     /**
-     * @var int
+     * Item constructor.
+     *
+     * @param Filter $filter
+     * @param AttributeType $attributeType
+     * @param Url $url
      */
-    protected $count;
+    public function __construct(Filter $filter, AttributeType $attributeType, Url $url)
+    {
+        $this->filter = $filter;
+        $this->attributeType = $attributeType;
+        $this->url = $url;
+    }
 
     /**
      * @return Filter
@@ -42,49 +53,11 @@ class Item
     }
 
     /**
-     * @param Filter $filter
-     * @return $this
-     */
-    public function setFilter(Filter $filter)
-    {
-        $this->filter = $filter;
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getLabel()
     {
-        return $this->label;
-    }
-
-    /**
-     * @param string $label
-     * @return $this
-     */
-    public function setLabel($label)
-    {
-        $this->label = (string) $label;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    /**
-     * @param string $value
-     * @return $this
-     */
-    public function setValue($value)
-    {
-        $this->value = (string) $value;
-        return $this;
+        return (string) $this->attributeType->getTitle();
     }
 
     /**
@@ -92,17 +65,15 @@ class Item
      */
     public function getCount()
     {
-        return $this->count;
+        return (int) $this->attributeType->getNumberOfResults();
     }
 
     /**
-     * @param int $count
-     * @return $this
+     * @return bool
      */
-    public function setCount($count)
+    public function isSelected()
     {
-        $this->count = (int) $count;
-        return $this;
+        return (bool) $this->attributeType->getIsSelected();
     }
 
     /**
@@ -110,6 +81,18 @@ class Item
      */
     public function getUrl()
     {
-        return '#';
+        if ($this->isSelected()) {
+            return $this->url->getRemoveFilter($this);
+        } else {
+            return $this->url->getSelectFilter($this);
+        }
+    }
+
+    /**
+     * @return AttributeType
+     */
+    public function getAttribute()
+    {
+        return $this->attributeType;
     }
 }
