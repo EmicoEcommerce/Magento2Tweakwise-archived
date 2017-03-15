@@ -12,6 +12,11 @@ use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Zend\Http\Request as HttpRequest;
 
+/**
+ * Interface UrlInterface implementation should handle both category url's and
+ *
+ *
+ */
 interface UrlInterface
 {
     /**
@@ -36,8 +41,8 @@ interface UrlInterface
      * Fetch clear all items from url
      *
      * @param HttpRequest $request
-     * @param Filter $facet
+     * @param Filter $filter
      * @return string
      */
-    public function getClearUrl(HttpRequest $request, Filter $facet);
+    public function getClearUrl(HttpRequest $request, Filter $filter);
 }

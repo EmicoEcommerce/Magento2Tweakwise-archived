@@ -20,7 +20,6 @@ use Emico\Tweakwise\Model\Client\Type\Type;
  * @method string getExpandText();
  * @method string getCollapseText();
  * @method int getMultiSelectLogic();
- * @method string getSelectionType();
  * @method int getNumberOfColumns();
  * @method boolean getIsNumberOfResultVisible();
  * @method boolean getIsInfoVisible();
@@ -37,6 +36,9 @@ class SettingsType extends Type
     const SOURCE_CATEGORY = 'CATEGORY';
     const SOURCE_FEED = 'FEED';
 
+    const SELECTION_TYPE_TREE = 'tree';
+    const SELECTION_TYPE_LINK = 'link';
+
     /**
      * @return string
      */
@@ -51,5 +53,13 @@ class SettingsType extends Type
     public function getIsMultipleSelect()
     {
         return $this->getDataValue('ismultiselect') == 'true';
+    }
+
+    /**
+     * @return string
+     */
+    public function getSelectionType()
+    {
+        return (string) $this->getDataValue('selectiontype');
     }
 }

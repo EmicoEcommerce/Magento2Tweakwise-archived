@@ -19,6 +19,7 @@
             </general>
             <layered>
                 <enabled>0</enabled>
+                <category_links>1</category_links>
                 <hide_single_option>1</hide_single_option>
             </layered>
             <autocomplete>

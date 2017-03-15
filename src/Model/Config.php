@@ -45,23 +45,6 @@ class Config
 
     /**
      * @param Store|null $store
-     * @return bool
-     */
-    public function isLayeredEnabled(Store $store = null)
-    {
-        if ($this->tweakwiseExceptionThrown) {
-            return false;
-        }
-
-        if ($store) {
-            return $store->getConfig('tweakwise/layered/enabled');
-        }
-
-        return (bool) $this->getStoreConfig($store, 'tweakwise/layered/enabled');
-    }
-
-    /**
-     * @param Store|null $store
      * @return string
      */
     public function getGeneralServerUrl(Store $store = null)
@@ -85,6 +68,41 @@ class Config
     public function getTimeout(Store $store = null)
     {
         return (float) $this->getStoreConfig($store, 'tweakwise/general/timeout');
+    }
+
+    /**
+     * @param Store|null $store
+     * @return bool
+     */
+    public function isLayeredEnabled(Store $store = null)
+    {
+        if ($this->tweakwiseExceptionThrown) {
+            return false;
+        }
+
+        if ($store) {
+            return $store->getConfig('tweakwise/layered/enabled');
+        }
+
+        return (bool) $this->getStoreConfig($store, 'tweakwise/layered/enabled');
+    }
+
+    /**
+     * @param Store|null $store
+     * @return bool
+     */
+    public function getCategoryAsLink(Store $store = null)
+    {
+        return (bool) $this->getStoreConfig($store, 'tweakwise/layered/category_links');
+    }
+
+    /**
+     * @param Store|null $store
+     * @return bool
+     */
+    public function getHideSingleOptions(Store $store = null)
+    {
+        return (bool) $this->getStoreConfig($store, 'tweakwise/layered/hide_single_option');
     }
 
     /**
