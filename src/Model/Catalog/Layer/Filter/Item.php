@@ -105,6 +105,9 @@ class Item
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getUrl()
     {
         return '#';
