@@ -146,7 +146,23 @@ class Collection extends ProductCollection
     {
         $select = $this->getSelect();
         $select->setPart(Zend_Db_Select::WHERE, []);
+        $this->_pageSize = null;
+        $this->_curPage = null;
         return $this;
+    }
+
+    protected function fixProductOrder()
+    {
+        $response = $this->navigationContext->getResponse();
+        $productIds = $response->getProductIds();
+
+        $result = [];
+        foreach ($productIds as $productId) {
+            if (isset($this->_items[$productId])) {
+                $result[$productId] = $this->_items[$productId];
+            }
+        }
+        $this->_items = $result;
     }
 
     /**
@@ -158,7 +174,20 @@ class Collection extends ProductCollection
 
         $this->clearFilters();
         $this->applyEntityIdFilter();
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function _afterLoad()
+    {
+        parent::_afterLoad();
+
         $this->applyCollectionSizeValues();
+        $this->fixProductOrder();
+
         return $this;
     }
 }
