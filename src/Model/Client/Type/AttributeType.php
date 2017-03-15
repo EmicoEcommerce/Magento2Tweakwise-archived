@@ -47,7 +47,7 @@ class AttributeType extends Type
      */
     public function getIsSelected()
     {
-        return (bool) $this->getDataValue('isselected');
+        return $this->getDataValue('isselected') == 'true';
     }
 
     /**

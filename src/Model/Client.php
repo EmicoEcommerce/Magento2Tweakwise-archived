@@ -91,7 +91,7 @@ class Client
 
         $xmlPreviousErrors = libxml_use_internal_errors(true);
         try {
-            $xmlElement = simplexml_load_string($response->getBody());
+            $xmlElement = simplexml_load_string($response->getBody(), SimpleXMLElement::class, LIBXML_NOCDATA);
             if ($xmlElement === false) {
                 $errors = libxml_get_errors();
                 throw new ApiException(sprintf('Invalid response received by Tweakwise server, xml load fails. %s', join(PHP_EOL, $errors)));
