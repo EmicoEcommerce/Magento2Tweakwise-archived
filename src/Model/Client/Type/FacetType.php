@@ -22,11 +22,11 @@ class FacetType extends Type
      */
     public function setFacetSettings($settings)
     {
-        if ($settings instanceof SettingsType) {
+        if (!$settings instanceof SettingsType) {
             $settings = new SettingsType($settings);
         }
 
-        $this->data['settings'] = $settings;
+        $this->data['facet_settings'] = $settings;
         return $this;
     }
 

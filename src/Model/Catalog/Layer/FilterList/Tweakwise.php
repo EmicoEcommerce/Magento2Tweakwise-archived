@@ -9,8 +9,9 @@
 namespace Emico\Tweakwise\Model\Catalog\Layer\FilterList;
 
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext;
+use Emico\Tweakwise\Model\Catalog\Layer\FilterFactory;
 use Magento\Catalog\Model\Layer;
-use Magento\Catalog\Model\Layer\Filter\AbstractFilter;
+use Magento\Catalog\Model\Layer\Filter\FilterInterface;
 
 class Tweakwise
 {
@@ -20,21 +21,54 @@ class Tweakwise
     protected $navigationContext;
 
     /**
+     * @var FilterInterface[]
+     */
+    protected $filters;
+
+    /**
+     * @var FilterFactory
+     */
+    protected $filterFactory;
+
+    /**
      * Tweakwise constructor.
      *
      * @param NavigationContext $navigationContext
+     * @param FilterFactory $filterFactory
      */
-    public function __construct(NavigationContext $navigationContext)
+    public function __construct(NavigationContext $navigationContext, FilterFactory $filterFactory)
     {
         $this->navigationContext = $navigationContext;
+        $this->filterFactory = $filterFactory;
     }
 
     /**
      * @param Layer $layer
-     * @return AbstractFilter[]
+     * @return FilterInterface[]
      */
     public function getFilters(Layer $layer)
     {
-        return [];
+        if (!$this->filters) {
+            $this->initFilters($layer);
+        }
+
+        return $this->filters;
+    }
+
+    /**
+     * @param Layer $layer
+     * @return $this
+     */
+    protected function initFilters(Layer $layer)
+    {
+        $facets = $this->navigationContext->getResponse()
+            ->getFacets();
+
+        $this->filters = [];
+        foreach ($facets as $facet) {
+            $this->filters[] = $this->filterFactory->create(['facet' => $facet, 'layer' => $layer]);
+        }
+
+        return $this;
     }
 }
