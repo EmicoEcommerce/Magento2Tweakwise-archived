@@ -151,6 +151,9 @@ class Collection extends ProductCollection
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     protected function fixProductOrder()
     {
         $response = $this->navigationContext->getResponse();
@@ -163,6 +166,7 @@ class Collection extends ProductCollection
             }
         }
         $this->_items = $result;
+        return $this;
     }
 
     /**
