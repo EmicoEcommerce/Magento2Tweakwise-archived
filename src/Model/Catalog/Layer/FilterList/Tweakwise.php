@@ -61,6 +61,9 @@ class Tweakwise
      */
     protected function initFilters(Layer $layer)
     {
+        $request = $this->navigationContext->getRequest();
+        $request->addCategoryFilter($layer->getCurrentCategory());
+
         $facets = $this->navigationContext->getResponse()
             ->getFacets();
 

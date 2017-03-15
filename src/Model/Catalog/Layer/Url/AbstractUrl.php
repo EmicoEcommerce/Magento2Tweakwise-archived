@@ -10,6 +10,7 @@ namespace Emico\Tweakwise\Model\Catalog\Layer\Url;
 
 use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
+use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
 use Emico\Tweakwise\Model\Config;
 use Emico\TweakwiseExport\Model\Helper as ExportHelper;
@@ -103,6 +104,14 @@ abstract class AbstractUrl implements UrlInterface
         } else {
             return $this->getAttributeCleanUrl($request, $filter);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilters(HttpRequest $request, ProductNavigationRequest $navigationRequest)
+    {
+
     }
 
     /**

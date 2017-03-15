@@ -10,6 +10,7 @@ namespace Emico\Tweakwise\Model\Catalog\Layer;
 
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface;
+use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
 use Zend\Http\Request as HttpRequest;
 
 /**
@@ -63,5 +64,13 @@ class Url
     public function getClearUrl(Filter $facet)
     {
         return $this->implementation->getClearUrl($this->request, $facet);
+    }
+
+    /**
+     * @param ProductNavigationRequest $navigationRequest
+     */
+    public function applyFilters(ProductNavigationRequest $navigationRequest)
+    {
+        $this->implementation->applyFilters($this->request, $navigationRequest);
     }
 }

@@ -40,15 +40,22 @@ class NavigationContext
     protected $response;
 
     /**
+     * @var Url
+     */
+    protected $url;
+
+    /**
      * NavigationContext constructor.
      *
      * @param RequestFactory $requestFactory
      * @param Client $client
+     * @param Url $url
      */
-    public function __construct(RequestFactory $requestFactory, Client $client)
+    public function __construct(RequestFactory $requestFactory, Client $client, Url $url)
     {
         $this->requestFactory = $requestFactory;
         $this->client = $client;
+        $this->url = $url;
     }
 
     /**
@@ -68,9 +75,20 @@ class NavigationContext
     public function getResponse()
     {
         if (!$this->response) {
-            $this->response = $this->client->request($this->getRequest());
+            $request = $this->getRequest();
+            $this->initializeRequest($request);
+
+            $this->response = $this->client->request($request);
         }
 
         return $this->response;
+    }
+
+    /**
+     * @param ProductNavigationRequest $request
+     */
+    protected function initializeRequest(ProductNavigationRequest $request)
+    {
+        $this->url->applyFilters($request);
     }
 }

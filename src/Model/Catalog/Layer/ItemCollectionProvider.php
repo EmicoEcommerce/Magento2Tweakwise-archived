@@ -72,10 +72,7 @@ class ItemCollectionProvider implements ItemCollectionProviderInterface
         }
 
         try {
-            /** @var Collection $collection */
-            $collection = $this->collectionFactory->create(['navigationContext' => $this->navigationContext]);
-            $collection->addCategoryFilter($category);
-            return $collection;
+            return $this->collectionFactory->create(['navigationContext' => $this->navigationContext]);
         } catch (TweakwiseException $e) {
             $this->log->critical($e);
             $this->config->setTweakwiseExceptionThrown();

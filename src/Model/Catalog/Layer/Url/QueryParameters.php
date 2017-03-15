@@ -16,6 +16,11 @@ use Zend\Http\Request as HttpRequest;
 class QueryParameters extends AbstractUrl
 {
     /**
+     * Separator used in category tree urls
+     */
+    const CATEGORY_TREE_SEPARATOR = '-';
+
+    /**
      * @param array $query
      * @return string
      */
@@ -67,7 +72,25 @@ class QueryParameters extends AbstractUrl
      */
     protected function getCategoryTreeSelectUrl(HttpRequest $request, Item $item, Category $category)
     {
-        return '#';
+        $filter = $item->getFilter();
+        $facet = $filter->getFacet();
+        $settings = $facet->getFacetSettings();
+        $urlKey = $settings->getUrlKey();
+
+        $requestData = $request->getQuery($urlKey);
+        if (!$requestData) {
+            $requestData = [];
+        } else {
+            $requestData = explode(self::CATEGORY_TREE_SEPARATOR, $requestData);
+        }
+
+        $categoryId = $category->getId();
+        if (!in_array($categoryId, $requestData)) {
+            $requestData[] = $categoryId;
+        }
+
+        $query = [$urlKey => join(self::CATEGORY_TREE_SEPARATOR, $requestData)];
+        return $this->getCurrentQueryUrl($query);
     }
 
     /**
@@ -75,7 +98,32 @@ class QueryParameters extends AbstractUrl
      */
     protected function getCategoryTreeRemoveUrl(HttpRequest $request, Item $item, Category $category)
     {
-        return '#';
+        $filter = $item->getFilter();
+        $facet = $filter->getFacet();
+        $settings = $facet->getFacetSettings();
+        $urlKey = $settings->getUrlKey();
+
+        $requestData = $request->getQuery($urlKey);
+        if (!$requestData) {
+            $requestData = [];
+        } else {
+            $requestData = explode(self::CATEGORY_TREE_SEPARATOR, $requestData);
+        }
+
+        $categoryId = $category->getId();
+        $index = array_search($categoryId, $requestData);
+        if ($index !== false) {
+            array_splice($requestData, $index);
+        }
+
+        if (count($requestData)) {
+            $value = join(self::CATEGORY_TREE_SEPARATOR, $requestData);
+        } else {
+            $value = $filter->getResetValue();
+        }
+
+        $query = [$urlKey => $value];
+        return $this->getCurrentQueryUrl($query);
     }
 
     /**
