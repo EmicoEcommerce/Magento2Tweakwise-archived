@@ -14,4 +14,14 @@ class ProductSearchRequest extends ProductNavigationRequest
      * {@inheritDoc}
      */
     protected $path = 'navigation-search';
+
+    /**
+     * @param string $query
+     * @return $this
+     */
+    public function setSearch($query)
+    {
+        $this->setParameter('tn_q', $query);
+        return $this;
+    }
 }

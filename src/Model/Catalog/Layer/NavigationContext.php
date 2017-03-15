@@ -86,9 +86,11 @@ class NavigationContext
 
     /**
      * @param ProductNavigationRequest $request
+     * @return $this
      */
     protected function initializeRequest(ProductNavigationRequest $request)
     {
-        $this->url->applyFilters($request);
+        $this->url->apply($request);
+        return $this;
     }
 }

@@ -21,6 +21,25 @@ class QueryParameters extends AbstractUrl
     const CATEGORY_TREE_SEPARATOR = '-';
 
     /**
+     * Extra ignored page parameters
+     */
+    const PARAM_MODE = 'product_list_mode';
+    const PARAM_CATEGORY = 'categorie';
+
+    /**
+     * Parameters to be ignored as attribute filters
+     *
+     * @var string[]
+     */
+    protected $ignoredQueryParameters = [
+        self::PARAM_CATEGORY,
+        self::PARAM_ORDER,
+        self::PARAM_LIMIT,
+        self::PARAM_MODE,
+        self::PARAM_SEARCH,
+    ];
+
+    /**
      * @param array $query
      * @return string
      */
@@ -247,6 +266,14 @@ class QueryParameters extends AbstractUrl
      */
     protected function getAttributeFilters(HttpRequest $request)
     {
-        return [];
+        $result = [];
+        foreach ($request->getQuery() as $attribute => $value) {
+            if (in_array(mb_strtolower($attribute), $this->ignoredQueryParameters)) {
+                continue;
+            }
+
+            $result[$attribute] = $value;
+        }
+        return $result;
     }
 }

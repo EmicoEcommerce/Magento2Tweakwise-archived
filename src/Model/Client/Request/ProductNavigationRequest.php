@@ -15,6 +15,17 @@ use Magento\Catalog\Model\Category;
 class ProductNavigationRequest extends Request
 {
     /**
+     * Maxium number of products returned for one request
+     */
+    const MAX_PRODUCTS = 1000;
+
+    /**
+     * Sort order directions
+     */
+    const SORT_ASC = 'ASC';
+    const SORT_DESC = 'DESC';
+
+    /**
      * {@inheritDoc}
      */
     protected $path = 'navigation';
@@ -54,6 +65,43 @@ class ProductNavigationRequest extends Request
     public function addAttributeFilter($attribute, $value)
     {
         $this->addParameter('tn_fk_' . $attribute, $value);
+        return $this;
+    }
+
+    /**
+     * @param string $sort
+     * @return $this
+     */
+    public function setOrder($sort)
+    {
+        $this->setParameter('tn_sort', $sort);
+        return $this;
+    }
+
+    /**
+     * @param int $page
+     * @return $this
+     */
+    public function setPage($page)
+    {
+        $page = (int) $page;
+        $page = max(1, $page);
+
+        $this->setParameter('tn_p', $page);
+        return $this;
+    }
+
+    /**
+     * @param int $limit
+     * @return $this
+     */
+    public function setLimit($limit)
+    {
+        if ($limit === 'all') {
+            $limit = self::MAX_PRODUCTS;
+        }
+        $limit = min($limit, self::MAX_PRODUCTS);
+        $this->setParameter('tn_ps', $limit);
         return $this;
     }
 }

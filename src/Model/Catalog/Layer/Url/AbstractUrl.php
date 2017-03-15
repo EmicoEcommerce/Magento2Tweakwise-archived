@@ -11,17 +11,25 @@ namespace Emico\Tweakwise\Model\Catalog\Layer\Url;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
+use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
 use Emico\Tweakwise\Model\Config;
 use Emico\TweakwiseExport\Model\Helper as ExportHelper;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\CategoryRepository;
 use Magento\Framework\UrlInterface as MagentoUrl;
-use Magento\Store\Model\StoreManager;
 use Zend\Http\Request as HttpRequest;
 
 abstract class AbstractUrl implements UrlInterface
 {
+    /**
+     * Commonly used query parameters from headers
+     */
+    const PARAM_LIMIT = 'product_list_limit';
+    const PARAM_ORDER = 'product_list_order';
+    const PARAM_PAGE = 'p';
+    const PARAM_SEARCH = 'q';
+
     /**
      * @var MagentoUrl
      */
@@ -110,7 +118,7 @@ abstract class AbstractUrl implements UrlInterface
     /**
      * {@inheritdoc}
      */
-    public function applyFilters(HttpRequest $request, ProductNavigationRequest $navigationRequest)
+    public function apply(HttpRequest $request, ProductNavigationRequest $navigationRequest)
     {
         $categories = $this->getCategoryFilters($request);
         foreach ($categories as $categoryId) {
@@ -127,6 +135,62 @@ abstract class AbstractUrl implements UrlInterface
                 $navigationRequest->addAttributeFilter($attribute, $value);
             }
         }
+
+        $sortOrder = $this->getSortOrder($request);
+        if ($sortOrder) {
+            $navigationRequest->setOrder($sortOrder);
+        }
+
+        $page = $this->getPage($request);
+        if ($page) {
+            $navigationRequest->setPage($page);
+        }
+
+        $limit = $this->getLimit($request);
+        if ($limit) {
+            $navigationRequest->setLimit($limit);
+        }
+
+        $search = $this->getSearch($request);
+        if ($search && $navigationRequest instanceof ProductSearchRequest) {
+            $navigationRequest->setSearch($limit);
+        }
+    }
+
+    /**
+     * @param HttpRequest $request
+     * @return string|null
+     */
+    protected function getSortOrder(HttpRequest $request)
+    {
+        return $request->getQuery(self::PARAM_ORDER);
+    }
+
+    /**
+     * @param HttpRequest $request
+     * @return int|null
+     */
+    protected function getPage(HttpRequest $request)
+    {
+        return $request->getQuery(self::PARAM_PAGE);
+    }
+
+    /**
+     * @param HttpRequest $request
+     * @return int|null
+     */
+    protected function getLimit(HttpRequest $request)
+    {
+        return $request->getQuery(self::PARAM_LIMIT);
+    }
+
+    /**
+     * @param HttpRequest $request
+     * @return string|null
+     */
+    protected function getSearch(HttpRequest $request)
+    {
+        return $request->getQuery(self::PARAM_SEARCH);
     }
 
     /**

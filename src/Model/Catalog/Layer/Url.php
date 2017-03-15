@@ -69,8 +69,8 @@ class Url
     /**
      * @param ProductNavigationRequest $navigationRequest
      */
-    public function applyFilters(ProductNavigationRequest $navigationRequest)
+    public function apply(ProductNavigationRequest $navigationRequest)
     {
-        $this->implementation->applyFilters($this->request, $navigationRequest);
+        $this->implementation->apply($this->request, $navigationRequest);
     }
 }
