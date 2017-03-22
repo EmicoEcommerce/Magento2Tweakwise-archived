@@ -16,7 +16,7 @@ abstract class AbstractRenderer extends Template
     /**
      * {@inheritDoc}
      */
-    protected $_template = 'Emico_Tweakwise::product/layered/renderer.phtml';
+    protected $_template = 'Emico_Tweakwise::product/layered/default.phtml';
 
     /**
      * @var Filter

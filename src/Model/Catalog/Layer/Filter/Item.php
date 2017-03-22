@@ -12,8 +12,14 @@ use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\Url;
 use Emico\Tweakwise\Model\Client\Type\AttributeType;
 use Magento\Catalog\Model\Layer\Filter\Item as BaseItem;
+use Magento\Catalog\Model\Layer\Filter\Item as MagentoItem;
 
-class Item
+/**
+ * Class Item extends Magento\Catalog\Model\Layer\Filter\Item only for the type hint in Magento\Swatches\Block\LayeredNavigation\RenderLayered
+ *
+ * @package Emico\Tweakwise\Model\Catalog\Layer\Filter
+ */
+class Item extends MagentoItem
 {
     /**
      * @var Filter
@@ -74,6 +80,17 @@ class Item
     public function isSelected()
     {
         return (bool) $this->attributeType->getIsSelected();
+    }
+
+    /**
+     * Method is called for swatches and should return the original value instead of the label.
+     * Used for the default swatch renderer
+     *
+     * @return int
+     */
+    public function getValue()
+    {
+        return $this->getFilter()->getOptionIdByLabel($this->getLabel());
     }
 
     /**

@@ -13,12 +13,19 @@ use Emico\Tweakwise\Model\Client\Type\AttributeType;
 use Emico\Tweakwise\Model\Client\Type\FacetType;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\ItemFactory;
 use Magento\Catalog\Model\Layer;
+use Magento\Catalog\Model\Layer\Filter\AbstractFilter;
 use Magento\Catalog\Model\Layer\Filter\FilterInterface;
 use Magento\Eav\Model\Entity\Attribute;
+use Magento\Eav\Model\Entity\Attribute\Option;
 use Magento\Framework\App\RequestInterface;
 use Magento\Store\Model\StoreManager;
 
-class Filter implements FilterInterface
+/**
+ * Class Filter Extends Magento\Catalog\Model\Layer\Filter\AbstractFilter only for the type hint in Magento\Swatches\Block\LayeredNavigation\RenderLayered
+ *
+ * @package Emico\Tweakwise\Model\Catalog\Layer
+ */
+class Filter extends AbstractFilter implements FilterInterface
 {
     /**
      * @var string
@@ -64,6 +71,11 @@ class Filter implements FilterInterface
      * @var StoreManager
      */
     protected $storeManager;
+
+    /**
+     * @var int[]
+     */
+    protected $optionLabelValueMap;
 
     /**
      * Filter constructor.
@@ -281,5 +293,36 @@ class Filter implements FilterInterface
     public function getFacet()
     {
         return $this->facet;
+    }
+
+    /**
+     * @return int[]
+     */
+    protected function getOptionLabelValueMap()
+    {
+        if (!$this->hasAttributeModel()) {
+            return [];
+        }
+
+        if ($this->optionLabelValueMap === null) {
+            $map = [];
+            /** @var Option $option */
+            foreach ($this->getAttributeModel()->getOptions() as $option) {
+                $map[$option->getLabel()] = $option->getValue();
+            }
+
+            $this->optionLabelValueMap = $map;
+        }
+        return $this->optionLabelValueMap;
+    }
+
+    /**
+     * @param string $label
+     * @return int|null
+     */
+    public function getOptionIdByLabel($label)
+    {
+        $map = $this->getOptionLabelValueMap();
+        return isset($map[$label]) ? $map[$label] : null;
     }
 }
