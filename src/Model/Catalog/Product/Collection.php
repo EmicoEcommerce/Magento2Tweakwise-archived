@@ -11,6 +11,7 @@ namespace Emico\Tweakwise\Model\Catalog\Product;
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext;
 use Emico\Tweakwise\Model\Client;
 use Emico\Tweakwise\Model\Client\Request;
+use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
 use Emico\Tweakwise\Model\Client\RequestFactory;
 use Emico\Tweakwise\Model\Client\Response\ProductNavigationResponse;
 use Emico\TweakwiseExport\Model\Helper;
@@ -105,6 +106,20 @@ class Collection extends ProductCollection
     public function addCategoryFilter(Category $category)
     {
         $this->navigationContext->getRequest()->addCategoryFilter($category);
+        return $this;
+    }
+
+    /**
+     * @param string $query
+     * @return $this
+     */
+    public function addSearchFilter($query)
+    {
+        $request = $this->navigationContext->getRequest();
+        if ($request instanceof ProductSearchRequest) {
+            $request->setSearch($query);
+        }
+
         return $this;
     }
 
