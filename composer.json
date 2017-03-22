@@ -13,6 +13,9 @@
     },
     "type": "magento2-module",
     "version": "1.0.0",
+    "scripts": {
+        "docheader": "docheader check ./src"
+    },
     "autoload": {
         "files": [
             "src/registration.php"
