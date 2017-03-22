@@ -66,6 +66,14 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
+                <field id="default_link_renderer" translate="label,comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Use default magento filter renderer</label>
+                    <comment>When filter type is link, checkbox or color (swatches) the default Magento renderer can be used. Filter display settings like: collapsed / collapsible, more / less text, css class and show product count are then ignored.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
             </group>
             <group id="autocomplete" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Autocomplete</label>

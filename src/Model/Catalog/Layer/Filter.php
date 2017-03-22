@@ -270,7 +270,7 @@ class Filter implements FilterInterface
      */
     public function hasAttributeModel()
     {
-        return false;
+        return $this->attributeModel !== null;
     }
 
     /**

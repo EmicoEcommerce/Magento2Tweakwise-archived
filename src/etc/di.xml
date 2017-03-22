@@ -18,11 +18,13 @@
             <argument name="tweakwiseFilterList" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\FilterList\Tweakwise\Proxy</argument>
         </arguments>
     </type>
-
     <type name="Emico\Tweakwise\Model\Catalog\Layer\FilterList\Tweakwise">
         <arguments>
             <argument name="navigationContext" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\Category</argument>
         </arguments>
+    </type>
+    <type name="Magento\LayeredNavigation\Block\Navigation\FilterRenderer">
+        <plugin name="emico-tweakwise" type="Emico\Tweakwise\Model\Navigation\FilterRenderer\Plugin" sortOrder="0" />
     </type>
 
     <!-- Tweakwise virtual request factory types -->
@@ -40,11 +42,13 @@
     <virtualType name="Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\Category" type="Emico\Tweakwise\Model\Catalog\Layer\NavigationContext">
         <arguments>
             <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\ProductNavigationRequest</argument>
+            <argument name="filterableAttributes" xsi:type="object">Magento\Catalog\Model\Layer\Category\FilterableAttributeList</argument>
         </arguments>
     </virtualType>
     <virtualType name="Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\Search" type="Emico\Tweakwise\Model\Catalog\Layer\NavigationContext">
         <arguments>
             <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\ProductSearchRequest</argument>
+            <argument name="filterableAttributes" xsi:type="object">Magento\Catalog\Model\Layer\Search\FilterableAttributeList</argument>
         </arguments>
     </virtualType>
 

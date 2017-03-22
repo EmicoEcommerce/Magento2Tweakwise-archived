@@ -107,6 +107,15 @@ class Config
 
     /**
      * @param Store|null $store
+     * @return bool
+     */
+    public function getUseDefaultLinkRenderer(Store $store = null)
+    {
+        return (bool) $this->getStoreConfig($store, 'tweakwise/layered/default_link_renderer');
+    }
+
+    /**
+     * @param Store|null $store
      * @param string $path
      * @return mixed|null|string
      */

@@ -36,8 +36,14 @@ class SettingsType extends Type
     const SOURCE_CATEGORY = 'CATEGORY';
     const SOURCE_FEED = 'FEED';
 
-    const SELECTION_TYPE_TREE = 'tree';
+    /**
+     * Tweakwise selection types
+     */
     const SELECTION_TYPE_LINK = 'link';
+    const SELECTION_TYPE_SLIDER = 'slider';
+    const SELECTION_TYPE_CHECKBOX = 'checkbox';
+    const SELECTION_TYPE_COLOR = 'color';
+    const SELECTION_TYPE_TREE = 'tree';
 
     /**
      * @return string
