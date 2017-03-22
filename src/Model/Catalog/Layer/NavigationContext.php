@@ -14,6 +14,8 @@ use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
 use Emico\Tweakwise\Model\Client\RequestFactory;
 use Emico\Tweakwise\Model\Client\Response\ProductNavigationResponse;
 use Magento\Catalog\Model\Layer\FilterableAttributeListInterface;
+use Magento\Catalog\Model\ResourceModel\Attribute;
+use Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection;
 
 /**
  * Class to keep navigation context for page request. This ensures a single request for navigation data facet's and products.
@@ -49,6 +51,11 @@ class NavigationContext
      * @var FilterableAttributeListInterface
      */
     protected $filterableAttributes;
+
+    /**
+     * @var Attribute[]
+     */
+    protected $filterAttributeMap;
 
     /**
      * NavigationContext constructor.
@@ -90,6 +97,22 @@ class NavigationContext
         }
 
         return $this->response;
+    }
+
+    /**
+     * @return Attribute[]
+     */
+    public function getFilterAttributeMap()
+    {
+        if ($this->filterAttributeMap === null) {
+            $map = [];
+            /** @var Attribute $attribute */
+            foreach ($this->filterableAttributes->getList() as $attribute) {
+                $map[$attribute->getData('attribute_code')] = $attribute;
+            }
+            $this->filterAttributeMap = $map;
+        }
+        return $this->filterAttributeMap;
     }
 
     /**

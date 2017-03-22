@@ -72,13 +72,15 @@ class Filter implements FilterInterface
      * @param FacetType $facet
      * @param ItemFactory $itemFactory
      * @param StoreManager $storeManager
+     * @param Attribute|null $attribute
      */
-    public function __construct(Layer $layer, FacetType $facet, ItemFactory $itemFactory, StoreManager $storeManager)
+    public function __construct(Layer $layer, FacetType $facet, ItemFactory $itemFactory, StoreManager $storeManager, Attribute $attribute = null)
     {
         $this->layer = $layer;
         $this->facet = $facet;
         $this->itemFactory = $itemFactory;
         $this->storeManager = $storeManager;
+        $this->attributeModel = $attribute;
     }
 
     /**

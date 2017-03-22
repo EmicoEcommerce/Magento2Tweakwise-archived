@@ -67,9 +67,11 @@ class Tweakwise
         $facets = $this->navigationContext->getResponse()
             ->getFacets();
 
-        $filterAttributes = $this->filterAttributes->getList();
+        $filterAttributes = $this->navigationContext->getFilterAttributeMap();
         $this->filters = [];
         foreach ($facets as $facet) {
+            $key = $facet->getFacetSettings()->getUrlKey();
+            $attribute = isset($filterAttributes[$key]) ? $filterAttributes[$key] : null;
 
             $this->filters[] = $this->filterFactory->create(['facet' => $facet, 'layer' => $layer, 'attribute' => $attribute]);
         }
