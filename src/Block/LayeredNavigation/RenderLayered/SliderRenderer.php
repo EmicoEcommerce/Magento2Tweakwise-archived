@@ -8,7 +8,7 @@
 
 namespace Emico\Tweakwise\Block\LayeredNavigation\RenderLayered;
 
-class SliderRenderer
+class SliderRenderer extends AbstractRenderer
 {
 
 }

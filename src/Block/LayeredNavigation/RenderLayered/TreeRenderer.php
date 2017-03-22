@@ -8,7 +8,7 @@
 
 namespace Emico\Tweakwise\Block\LayeredNavigation\RenderLayered;
 
-class TreeRenderer
+class TreeRenderer extends AbstractRenderer
 {
 
 }
