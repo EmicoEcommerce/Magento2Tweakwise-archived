@@ -40,6 +40,13 @@ interface UrlInterface
     public function getRemoveFilter(HttpRequest $request, Item $item);
 
     /**
+     * @param HttpRequest $request
+     * @param Filter $filter
+     * @return string
+     */
+    public function getSlider(HttpRequest $request, Filter $filter);
+
+    /**
      * Fetch clear all items from url
      *
      * @param HttpRequest $request

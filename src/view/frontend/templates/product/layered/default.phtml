@@ -14,7 +14,7 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\AbstractRenderer;
         <li class="item">
             <a href="<?=$block->escapeUrl($item->getUrl())?>">
                 <?=$item->getLabel()?>
-                <?php if ($this->shouldDisplayProductCountOnLayer()): ?>
+                <?php if ($block->shouldDisplayProductCountOnLayer()): ?>
                     <span class="count">
                         <?=$item->getCount()?>
                         <span class="filter-count-label">

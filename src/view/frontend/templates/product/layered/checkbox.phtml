@@ -13,10 +13,10 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\CheckboxRenderer;
     <?php foreach ($block->getItems() as $item): ?>
         <li class="item">
             <a href="<?=$block->escapeUrl($item->getUrl())?>">
-                <input id="inputCheckbox<?=$this->getItemId($item)?>" type="checkbox" <?=($item->isSelected() ? 'checked="checked"' : '')?>>
+                <input id="inputCheckbox<?=$block->getCssItemId($item)?>" type="checkbox" <?=($item->isSelected() ? 'checked="checked"' : '')?>>
 
-                <label for="inputCheckbox<?=$this->getItemId($item)?>"><?=$item->getLabel()?></label>
-                <?php if ($this->shouldDisplayProductCountOnLayer()): ?>
+                <label for="inputCheckbox<?=$block->getCssItemId($item)?>"><?=$item->getLabel()?></label>
+                <?php if ($block->shouldDisplayProductCountOnLayer()): ?>
                     <span class="count">
                         <?=$item->getCount()?>
                         <span class="filter-count-label">

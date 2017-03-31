@@ -276,4 +276,18 @@ class QueryParameters extends AbstractUrl
         }
         return $result;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSlider(HttpRequest $request, Filter $filter)
+    {
+        $facet = $filter->getFacet();
+        $settings = $facet->getFacetSettings();
+
+        $urlKey = $settings->getUrlKey();
+        $query = [$urlKey => '__from__-__to__'];
+
+        return $this->getCurrentQueryUrl($query);
+    }
 }

@@ -75,4 +75,12 @@ class SettingsType extends Type
     {
         return $this->getDataValue('isnrofresultsvisible') == 'true';
     }
+
+    /**
+     * @return bool
+     */
+    public function isPrice()
+    {
+        return $this->getUrlKey() == 'price';
+    }
 }

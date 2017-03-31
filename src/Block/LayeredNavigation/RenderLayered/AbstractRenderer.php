@@ -49,10 +49,18 @@ abstract class AbstractRenderer extends Template
     }
 
     /**
+     * @return string
+     */
+    public function getCssId()
+    {
+        return spl_object_hash($this);
+    }
+
+    /**
      * @param Item $item
      * @return string
      */
-    public function getItemId(Item $item)
+    public function getCssItemId(Item $item)
     {
         return spl_object_hash($item);
     }

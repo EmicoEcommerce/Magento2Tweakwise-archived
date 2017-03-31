@@ -73,4 +73,13 @@ class Url
     {
         $this->implementation->apply($this->request, $navigationRequest);
     }
+
+    /**
+     * @param Filter $facet
+     * @return string
+     */
+    public function getSliderUrl(Filter $facet)
+    {
+        return $this->implementation->getSlider($this->request, $facet);
+    }
 }

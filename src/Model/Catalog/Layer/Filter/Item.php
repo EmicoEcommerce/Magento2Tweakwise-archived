@@ -11,6 +11,7 @@ namespace Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\Url;
 use Emico\Tweakwise\Model\Client\Type\AttributeType;
+use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
 use Magento\Catalog\Model\Layer\Filter\Item as BaseItem;
 use Magento\Catalog\Model\Layer\Filter\Item as MagentoItem;
 
@@ -98,7 +99,10 @@ class Item extends MagentoItem
      */
     public function getUrl()
     {
-        if ($this->isSelected()) {
+        $settings = $this->getFilter()->getFacet()->getFacetSettings();
+        if ($settings->getSelectionType() == SettingsType::SELECTION_TYPE_SLIDER) {
+            return $this->url->getSliderUrl($this->getFilter());
+        } elseif ($this->isSelected()) {
             return $this->url->getRemoveFilter($this);
         } else {
             return $this->url->getSelectFilter($this);
