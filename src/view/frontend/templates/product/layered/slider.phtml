@@ -10,7 +10,7 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
 /** @var $block SliderRenderer */
 ?>
 <ol class="items">
-    <li class="item" id="attribute-slider-<?=$block->getCssId()?>">
+    <li class="item slider-container" id="attribute-slider-<?=$block->getCssId()?>">
         <div class="labels">
             <span class="min-value"><?=$block->renderPrice($block->getMinValue())?></span>
             <span class="max-value"><?=$block->renderPrice($block->getMaxValue())?></span>

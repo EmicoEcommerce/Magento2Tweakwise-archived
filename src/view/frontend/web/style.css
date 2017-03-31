@@ -1,0 +1,4 @@
+.filter-options-content .slider-container .max-value,
+.filter-options-content .slider-container .current-max-value {
+    float: right;
+}
