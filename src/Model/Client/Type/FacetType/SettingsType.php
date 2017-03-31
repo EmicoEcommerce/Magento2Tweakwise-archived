@@ -21,7 +21,6 @@ use Emico\Tweakwise\Model\Client\Type\Type;
  * @method string getCollapseText();
  * @method int getMultiSelectLogic();
  * @method int getNumberOfColumns();
- * @method boolean getIsNumberOfResultVisible();
  * @method boolean getIsInfoVisible();
  * @method string getInfoText();
  * @method int getSource();
@@ -67,5 +66,13 @@ class SettingsType extends Type
     public function getSelectionType()
     {
         return (string) $this->getDataValue('selectiontype');
+    }
+
+    /**
+     * @return string
+     */
+    public function getIsNumberOfResultVisible()
+    {
+        return $this->getDataValue('isnrofresultsvisible') == 'true';
     }
 }

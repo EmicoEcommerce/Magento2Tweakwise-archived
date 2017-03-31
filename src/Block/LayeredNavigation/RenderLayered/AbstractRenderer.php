@@ -9,6 +9,7 @@
 namespace Emico\Tweakwise\Block\LayeredNavigation\RenderLayered;
 
 use Emico\Tweakwise\Model\Catalog\Layer\Filter;
+use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Magento\Framework\View\Element\Template;
 
 abstract class AbstractRenderer extends Template
@@ -29,5 +30,30 @@ abstract class AbstractRenderer extends Template
     public function setFilter(Filter $filter)
     {
         $this->filter = $filter;
+    }
+
+    /**
+     * @return Item[]
+     */
+    public function getItems()
+    {
+        return $this->filter->getItems();
+    }
+
+    /**
+     * @return bool
+     */
+    public function shouldDisplayProductCountOnLayer()
+    {
+        return $this->filter->getFacet()->getFacetSettings()->getIsNumberOfResultVisible();
+    }
+
+    /**
+     * @param Item $item
+     * @return string
+     */
+    public function getItemId(Item $item)
+    {
+        return spl_object_hash($item);
     }
 }

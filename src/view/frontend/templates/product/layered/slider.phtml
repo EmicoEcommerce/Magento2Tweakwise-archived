@@ -16,15 +16,15 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\AbstractRenderer;
                 <?=$item->getLabel()?>
                 <?php if ($this->shouldDisplayProductCountOnLayer()): ?>
                     <span class="count">
-                        <?=$item->getCount()?>
+                            <?=$item->getCount()?>
                         <span class="filter-count-label">
-                            <?php if ($item->getCount() == 1):?>
-                                <?=__('item')?>
-                            <?php else:?>
-                                <?=__('items')?>
-                            <?php endif;?>
+                                <?php if ($item->getCount() == 1):?>
+                                    <?=__('item')?>
+                                <?php else:?>
+                                    <?=__('items')?>
+                                <?php endif;?>
+                            </span>
                         </span>
-                    </span>
                 <?php endif; ?>
             </a>
         </li>

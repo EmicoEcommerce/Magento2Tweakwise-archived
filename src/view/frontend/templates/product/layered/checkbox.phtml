@@ -5,15 +5,17 @@
  * @copyright Copyright (c) 2017-2017 Tweakwise.com B.V. (https://www.tweakwise.com)
  * @license   Proprietary and confidential, Unauthorized copying of this file, via any medium is strictly prohibited
  */
-use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\AbstractRenderer;
+use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\CheckboxRenderer;
 
-/** @var $block AbstractRenderer */
+/** @var $block CheckboxRenderer */
 ?>
 <ol class="items">
     <?php foreach ($block->getItems() as $item): ?>
         <li class="item">
             <a href="<?=$block->escapeUrl($item->getUrl())?>">
-                <?=$item->getLabel()?>
+                <input id="inputCheckbox<?=$this->getItemId($item)?>" type="checkbox" <?=($item->isSelected() ? 'checked="checked"' : '')?>>
+
+                <label for="inputCheckbox<?=$this->getItemId($item)?>"><?=$item->getLabel()?></label>
                 <?php if ($this->shouldDisplayProductCountOnLayer()): ?>
                     <span class="count">
                         <?=$item->getCount()?>

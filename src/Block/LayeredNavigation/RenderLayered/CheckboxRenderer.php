@@ -10,5 +10,8 @@ namespace Emico\Tweakwise\Block\LayeredNavigation\RenderLayered;
 
 class CheckboxRenderer extends AbstractRenderer
 {
-
+    /**
+     * {@inheritDoc}
+     */
+    protected $_template = 'Emico_Tweakwise::product/layered/checkbox.phtml';
 }
