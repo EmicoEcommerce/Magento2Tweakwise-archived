@@ -111,6 +111,7 @@ class Config
      */
     public function getUseDefaultLinkRenderer(Store $store = null)
     {
+        return true;
         return (bool) $this->getStoreConfig($store, 'tweakwise/layered/default_link_renderer');
     }
 

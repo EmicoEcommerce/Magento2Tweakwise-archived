@@ -1,8 +1,8 @@
-.filter-options-content .slider-container .max-value,
-.filter-options-content .slider-container .current-max-value {
+.slider-attribute .max-value,
+.slider-attribute .current-max-value {
     float: right;
 }
 
-.filter-options-content .child-items {
+.tree-attribute .child-items {
     margin-left: 15px;
 }

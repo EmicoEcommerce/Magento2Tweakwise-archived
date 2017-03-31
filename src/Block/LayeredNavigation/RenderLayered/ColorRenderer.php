@@ -8,7 +8,9 @@
 
 namespace Emico\Tweakwise\Block\LayeredNavigation\RenderLayered;
 
-class ColorRenderer extends AbstractRenderer
+use Magento\Swatches\Block\LayeredNavigation\RenderLayered;
+
+class ColorRenderer extends RenderLayered
 {
 
 }

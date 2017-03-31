@@ -9,19 +9,17 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
 
 /** @var $block SliderRenderer */
 ?>
-<ol class="items">
-    <li class="item slider-container" id="attribute-slider-<?=$block->getCssId()?>">
-        <div class="labels">
-            <span class="min-value"><?=$block->renderPrice($block->getMinValue())?></span>
-            <span class="max-value"><?=$block->renderPrice($block->getMaxValue())?></span>
-        </div>
-        <div class="slider"></div>
-        <div class="labels">
-            <span class="current-min-value"><?=$block->renderPrice($block->getCurrentMinValue())?></span>
-            <span class="current-max-value"><?=$block->renderPrice($block->getCurrentMaxValue())?></span>
-        </div>
-    </li>
-</ol>
+<div class="slider-attribute" id="attribute-slider-<?=$block->getCssId()?>">
+    <div class="labels">
+        <span class="min-value"><?=$block->renderPrice($block->getMinValue())?></span>
+        <span class="max-value"><?=$block->renderPrice($block->getMaxValue())?></span>
+    </div>
+    <div class="slider"></div>
+    <div class="labels">
+        <span class="current-min-value"><?=$block->renderPrice($block->getCurrentMinValue())?></span>
+        <span class="current-max-value"><?=$block->renderPrice($block->getCurrentMaxValue())?></span>
+    </div>
+</div>
 
 <script type="text/javascript">
     require(['jquery', 'Magento_Catalog/js/price-utils', 'jquery/ui', 'domReady!'], function($, priceUtils, quote){
