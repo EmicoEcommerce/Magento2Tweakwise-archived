@@ -8,7 +8,26 @@
 
 namespace Emico\Tweakwise\Block\LayeredNavigation\RenderLayered;
 
+use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\TreeRenderer\ItemRenderer;
+use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
+
 class TreeRenderer extends AbstractRenderer
 {
+    /**
+     * {@inheritDoc}
+     */
+    protected $_template = 'Emico_Tweakwise::product/layered/tree.phtml';
 
+    /**
+     * @param Item $item
+     * @return string
+     */
+    public function renderTreeItem(Item $item)
+    {
+        /** @var ItemRenderer $block */
+        $block = $this->getLayout()->createBlock(ItemRenderer::class);
+        $block->setFilter($this->filter);
+        $block->setItem($item);
+        return $block->toHtml();
+    }
 }

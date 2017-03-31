@@ -265,12 +265,20 @@ class Filter extends AbstractFilter implements FilterInterface
     }
 
     /**
-     * @param AttributeType $item
+     * @param AttributeType $attributeType
      * @return Item
      */
-    protected function createItem(AttributeType $item)
+    protected function createItem(AttributeType $attributeType)
     {
-        return $this->itemFactory->create(['filter' => $this, 'attributeType' => $item]);
+        $item = $this->itemFactory->create(['filter' => $this, 'attributeType' => $attributeType]);
+
+        $children = [];
+        foreach ($attributeType->getChildren() as $childAttributeType) {
+            $children[] = $this->itemFactory->create(['filter' => $this, 'attributeType' => $childAttributeType]);
+        }
+        $item->setChildren($children);
+
+        return $item;
     }
 
     /**

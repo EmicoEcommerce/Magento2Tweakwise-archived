@@ -2,3 +2,7 @@
 .filter-options-content .slider-container .current-max-value {
     float: right;
 }
+
+.filter-options-content .child-items {
+    margin-left: 15px;
+}

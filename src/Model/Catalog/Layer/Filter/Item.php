@@ -38,6 +38,11 @@ class Item extends MagentoItem
     protected $url;
 
     /**
+     * @var Item[]
+     */
+    protected $children = [];
+
+    /**
      * Item constructor.
      *
      * @param Filter $filter
@@ -115,5 +120,31 @@ class Item extends MagentoItem
     public function getAttribute()
     {
         return $this->attributeType;
+    }
+
+    /**
+     * @param Item[] $children
+     * @return $this
+     */
+    public function setChildren(array $children)
+    {
+        $this->children = $children;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasChildren()
+    {
+        return count($this->children) > 0;
+    }
+
+    /**
+     * @return Item[]
+     */
+    public function getChildren()
+    {
+        return $this->children;
     }
 }
