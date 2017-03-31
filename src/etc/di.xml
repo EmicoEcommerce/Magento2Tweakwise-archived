@@ -18,13 +18,11 @@
             <argument name="tweakwiseFilterList" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\FilterList\Tweakwise\Proxy</argument>
         </arguments>
     </type>
-    <type name="Emico\Tweakwise\Model\Catalog\Layer\FilterList\Tweakwise">
-        <arguments>
-            <argument name="navigationContext" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\Category</argument>
-        </arguments>
-    </type>
     <type name="Magento\LayeredNavigation\Block\Navigation\FilterRenderer">
         <plugin name="emico-tweakwise" type="Emico\Tweakwise\Model\Navigation\FilterRenderer\Plugin" sortOrder="0" />
+    </type>
+    <type name="Magento\Swatches\Block\LayeredNavigation\RenderLayered">
+        <plugin name="emico-tweakwise" type="Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\Plugin" sortOrder="0" />
     </type>
 
     <!-- Tweakwise virtual request factory types -->

@@ -78,6 +78,11 @@ class Filter extends AbstractFilter implements FilterInterface
     protected $optionLabelValueMap;
 
     /**
+     * @var Item[]
+     */
+    protected $optionLabelItemMap;
+
+    /**
      * Filter constructor.
      *
      * @param Layer $layer
@@ -317,12 +322,59 @@ class Filter extends AbstractFilter implements FilterInterface
     }
 
     /**
+     * @return Item[]
+     */
+    protected function getOptionLabelItemMap()
+    {
+        if (!$this->hasAttributeModel()) {
+            return [];
+        }
+
+        if ($this->optionLabelItemMap === null) {
+            $map = [];
+            /** @var Item $item */
+            foreach ($this->getItems() as $item) {
+                $map[$item->getLabel()] = $item;
+            }
+
+            $this->optionLabelItemMap = $map;
+        }
+        return $this->optionLabelItemMap;
+    }
+
+    /**
      * @param string $label
      * @return int|null
      */
     public function getOptionIdByLabel($label)
     {
         $map = $this->getOptionLabelValueMap();
+        return isset($map[$label]) ? $map[$label] : null;
+    }
+
+    /**
+     * @param int $id
+     * @return string|null
+     */
+    public function getLabelByOptionId($id)
+    {
+        $map = $this->getOptionLabelValueMap();
+        $map = array_flip($map);
+        return isset($map[$id]) ? $map[$id] : null;
+    }
+
+    /**
+     * @param int $optionId
+     * @return Item|null
+     */
+    public function getItemByOptionId($optionId)
+    {
+        $label = $this->getLabelByOptionId($optionId);
+        if (!$label) {
+            return null;
+        }
+
+        $map = $this->getOptionLabelItemMap();
         return isset($map[$label]) ? $map[$label] : null;
     }
 }
