@@ -1,7 +1,6 @@
 ## Installation
 Install package using composer
 ```sh
-composer config repositories.emico composer https://repository.emico.nl/
 composer config minimum-stability dev
 composer require emico/tweakwise-export
 ```

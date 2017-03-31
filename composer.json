@@ -35,8 +35,8 @@
             "url": "https://repo.magento.com/"
         },
         {
-            "type": "composer",
-            "url": "https://repository.emico.nl/"
+            "type": "vcs",
+            "url": "https://github.com/EmicoEcommerce/Magento2TweakwiseExport.git"
         }
     ]
 }
