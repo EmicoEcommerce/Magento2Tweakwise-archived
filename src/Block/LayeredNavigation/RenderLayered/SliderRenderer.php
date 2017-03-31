@@ -31,6 +31,7 @@ class SliderRenderer extends AbstractRenderer
 
     /**
      * SliderRenderer constructor.
+     * @param PriceHelper $priceHelper
      * @param TaxHelper $taxHelper
      * @param Template\Context $context
      * @param array $data
