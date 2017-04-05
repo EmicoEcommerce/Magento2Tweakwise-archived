@@ -4,7 +4,7 @@
     "description": "N/A",
     "require": {
         "php": "~5.6|~7.0",
-        "magento/module-catalog": "101.0.*",
+        "magento/module-catalog-search": "101.0.*",
         "emico/tweakwise-export": "~1.0-dev"
     },
     "require-dev": {
