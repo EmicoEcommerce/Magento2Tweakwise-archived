@@ -9,12 +9,7 @@
 namespace Emico\Tweakwise\Model\Catalog\Product;
 
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext;
-use Emico\Tweakwise\Model\Client;
-use Emico\Tweakwise\Model\Client\Request;
 use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
-use Emico\Tweakwise\Model\Client\RequestFactory;
-use Emico\Tweakwise\Model\Client\Response\ProductNavigationResponse;
-use Emico\TweakwiseExport\Model\Helper;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Indexer\Product\Flat\State;
 use Magento\Catalog\Model\Product\OptionFactory;

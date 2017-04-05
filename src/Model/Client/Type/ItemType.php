@@ -55,7 +55,7 @@ class ItemType extends Type
      */
     public function getTitle()
     {
-        return (string) $this->getDataValue('order');
+        return (string) $this->getDataValue('title');
     }
 
     /**

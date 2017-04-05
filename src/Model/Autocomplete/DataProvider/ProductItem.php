@@ -50,12 +50,15 @@ class ProductItem implements ItemInterface
     public function toArray()
     {
         $product = $this->product;
+        $product->setPriceCalculation(false);
         $productHelper = $this->productHelper;
 
         return [
-            'name' => $product->getName(),
+            'title' => $this->getTitle(),
             'url' => $product->getProductUrl(),
             'image' => $productHelper->getSmallImageUrl($product),
+            'price' => (float) $product->getPrice(),
+            'final_price' => (float) $product->getFinalPrice(),
         ];
     }
 }

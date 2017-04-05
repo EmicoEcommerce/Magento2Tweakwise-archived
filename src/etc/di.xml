@@ -28,16 +28,15 @@
     <type name="Magento\Search\Model\Autocomplete">
         <arguments>
             <argument name="dataProviders" xsi:type="array">
-                <item name="10" xsi:type="object">Emico\Tweakwise\Model\Autocomplete\DataProvider\ProductProvider</item>
+                <item name="10" xsi:type="object">Emico\Tweakwise\Model\Autocomplete\DataProvider</item>
             </argument>
         </arguments>
     </type>
-    <type name="Emico\Tweakwise\Model\Autocomplete\DataProvider\ProductProvider">
+    <type name="Emico\Tweakwise\Model\Autocomplete\DataProvider">
         <arguments>
             <argument name="itemFactory" xsi:type="object">Emico\Tweakwise\Model\Autocomplete\DataProvider\ProductItemFactory</argument>
             <argument name="queryFactory" xsi:type="object">Magento\Search\Model\QueryFactory</argument>
-            <argument name="navigationContext" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\Autocomplete</argument>
-            <argument name="collectionFactory" xsi:type="object">Emico\Tweakwise\Model\Catalog\Product\CollectionFactory</argument>
+            <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\AutocompleteRequest</argument>
         </arguments>
     </type>
 
@@ -50,6 +49,11 @@
     <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\ProductSearchRequest" type="Emico\Tweakwise\Model\Client\RequestFactory">
         <arguments>
             <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\ProductSearchRequest</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\AutocompleteRequest" type="Emico\Tweakwise\Model\Client\RequestFactory">
+        <arguments>
+            <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\AutocompleteRequest</argument>
         </arguments>
     </virtualType>
 
