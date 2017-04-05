@@ -153,7 +153,7 @@ abstract class AbstractUrl implements UrlInterface
 
         $search = $this->getSearch($request);
         if ($search && $navigationRequest instanceof ProductSearchRequest) {
-            $navigationRequest->setSearch($limit);
+            $navigationRequest->setSearch($search);
         }
     }
 

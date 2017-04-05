@@ -25,6 +25,22 @@
         <plugin name="emico-tweakwise" type="Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\Plugin" sortOrder="0" />
     </type>
 
+    <type name="Magento\Search\Model\Autocomplete">
+        <arguments>
+            <argument name="dataProviders" xsi:type="array">
+                <item name="10" xsi:type="object">Emico\Tweakwise\Model\Autocomplete\DataProvider\ProductProvider</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Emico\Tweakwise\Model\Autocomplete\DataProvider\ProductProvider">
+        <arguments>
+            <argument name="itemFactory" xsi:type="object">Emico\Tweakwise\Model\Autocomplete\DataProvider\ProductItemFactory</argument>
+            <argument name="queryFactory" xsi:type="object">Magento\Search\Model\QueryFactory</argument>
+            <argument name="navigationContext" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\Autocomplete</argument>
+            <argument name="collectionFactory" xsi:type="object">Emico\Tweakwise\Model\Catalog\Product\CollectionFactory</argument>
+        </arguments>
+    </type>
+
     <!-- Tweakwise virtual request factory types -->
     <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\ProductNavigationRequest" type="Emico\Tweakwise\Model\Client\RequestFactory">
         <arguments>
@@ -47,6 +63,12 @@
         <arguments>
             <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\ProductSearchRequest</argument>
             <argument name="filterableAttributes" xsi:type="object">Magento\Catalog\Model\Layer\Search\FilterableAttributeList</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\Autocomplete" type="Emico\Tweakwise\Model\Catalog\Layer\NavigationContext">
+        <arguments>
+            <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\ProductSearchRequest</argument>
+            <argument name="filterableAttributes" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\FilterList\EmptyAttributeList</argument>
         </arguments>
     </virtualType>
 
