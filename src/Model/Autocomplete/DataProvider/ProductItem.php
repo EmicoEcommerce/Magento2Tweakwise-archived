@@ -10,6 +10,7 @@ namespace Emico\Tweakwise\Model\Autocomplete\DataProvider;
 
 use Magento\Catalog\Helper\Product as ProductHelper;
 use Magento\Catalog\Model\Product;
+use Magento\Framework\Pricing\Render as PriceRender;
 use Magento\Search\Model\Autocomplete\ItemInterface;
 
 class ProductItem implements ItemInterface
@@ -49,9 +50,10 @@ class ProductItem implements ItemInterface
      */
     public function toArray()
     {
+        $productHelper = $this->productHelper;
+
         $product = $this->product;
         $product->setPriceCalculation(false);
-        $productHelper = $this->productHelper;
 
         return [
             'title' => $this->getTitle(),
@@ -59,6 +61,7 @@ class ProductItem implements ItemInterface
             'image' => $productHelper->getSmallImageUrl($product),
             'price' => (float) $product->getPrice(),
             'final_price' => (float) $product->getFinalPrice(),
+            'type' => 'product'
         ];
     }
 }

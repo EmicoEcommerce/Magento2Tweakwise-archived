@@ -14,6 +14,9 @@ use Emico\Tweakwise\Model\Client;
 use Emico\Tweakwise\Model\Client\Request\AutocompleteRequest;
 use Emico\Tweakwise\Model\Client\RequestFactory;
 use Emico\Tweakwise\Model\Client\Response\AutocompleteResponse;
+use Magento\Catalog\Model\Category;
+use Magento\Catalog\Model\CategoryRepository;
+use Magento\Catalog\Model\Layer\Category\CollectionFilter;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as ProductCollectionFactory;
 use Magento\Search\Model\Autocomplete\DataProviderInterface;
 use Magento\Search\Model\Autocomplete\ItemInterface;
@@ -60,6 +63,16 @@ class DataProvider implements DataProviderInterface
     protected $storeManager;
 
     /**
+     * @var CollectionFilter
+     */
+    protected $collectionFilter;
+
+    /**
+     * @var CategoryRepository
+     */
+    protected $categoryRepository;
+
+    /**
      * DataProvider constructor.
      *
      * @param ProductItemFactory $productItemFactory
@@ -69,6 +82,8 @@ class DataProvider implements DataProviderInterface
      * @param Client $client
      * @param ProductCollectionFactory $productCollectionFactory
      * @param StoreManagerInterface $storeManager
+     * @param CollectionFilter $collectionFilter
+     * @param CategoryRepository $categoryRepository
      */
     public function __construct(
         ProductItemFactory $productItemFactory,
@@ -77,7 +92,9 @@ class DataProvider implements DataProviderInterface
         RequestFactory $requestFactory,
         Client $client,
         ProductCollectionFactory $productCollectionFactory,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        CollectionFilter $collectionFilter,
+        CategoryRepository $categoryRepository
     )
     {
         $this->productItemFactory = $productItemFactory;
@@ -87,6 +104,18 @@ class DataProvider implements DataProviderInterface
         $this->client = $client;
         $this->productCollectionFactory = $productCollectionFactory;
         $this->storeManager = $storeManager;
+        $this->collectionFilter = $collectionFilter;
+        $this->categoryRepository = $categoryRepository;
+    }
+
+    /**
+     * @return Category
+     */
+    protected function getCategory()
+    {
+        $store = $this->storeManager->getStore();
+        $rootCategoryId = $store->getRootCategoryId();
+        return $this->categoryRepository->get($rootCategoryId);
     }
 
     /**
@@ -96,11 +125,8 @@ class DataProvider implements DataProviderInterface
     protected function getProductItems(AutocompleteResponse $response)
     {
         $productCollection = $this->productCollectionFactory->create();
-        $productCollection->addAttributeToFilter('entity_id', ['in' => $response->getProductIds()]);
-        $productCollection->addAttributeToSelect('small_image');
-        $productCollection->addAttributeToSelect('name');
-        $productCollection->addStoreFilter();
-        $productCollection->addPriceData();
+        $productCollection->setStore($this->storeManager->getStore());
+        $this->collectionFilter->filter($productCollection, $this->getCategory());
 
         $result = [];
         foreach ($response->getProductIds() as $productId) {

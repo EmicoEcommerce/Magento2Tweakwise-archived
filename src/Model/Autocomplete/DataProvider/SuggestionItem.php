@@ -43,6 +43,7 @@ class SuggestionItem implements ItemInterface
     {
         return [
             'title' => $this->getTitle(),
+            'type' => 'suggestion',
         ];
     }
 }

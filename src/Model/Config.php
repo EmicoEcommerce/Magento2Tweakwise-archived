@@ -80,10 +80,6 @@ class Config
             return false;
         }
 
-        if ($store) {
-            return $store->getConfig('tweakwise/layered/enabled');
-        }
-
         return (bool) $this->getStoreConfig($store, 'tweakwise/layered/enabled');
     }
 
@@ -120,7 +116,20 @@ class Config
      */
     public function isAutocompleteEnabled(Store $store = null)
     {
+        if ($this->tweakwiseExceptionThrown) {
+            return false;
+        }
+
         return (bool) $this->getStoreConfig($store, 'tweakwise/autocomplete/enabled');
+    }
+
+    /**
+     * @param Store|null $store
+     * @return bool
+     */
+    public function isAutocompleteStayInCategory(Store $store = null)
+    {
+        return (bool) $this->getStoreConfig($store, 'tweakwise/autocomplete/in_current_category');
     }
 
     /**

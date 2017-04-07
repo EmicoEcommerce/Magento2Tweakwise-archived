@@ -5,10 +5,47 @@
  * @copyright Copyright (c) 2017-2017 Tweakwise.com B.V. (https://www.tweakwise.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-?>
-<script type="text/javascript">
-    require(['jquery', 'quickSearch'], function($, widget){
-        widget.prototype.options.template = 'jaapie!';
 
+/** @var $block \Emico\Tweakwise\Block\Autocomplete\FormMini */
+?>
+<script id="autocomplete-item-template" type="text/x-magento-template">
+    <% if (data.type === 'product') { %>
+        <li class="<%- data.row_class %>" id="qs-option-<%- data.index %>" role="option">
+            <% if (data.image) { %>
+                <span class="qs-option-image">
+                    <img src="<%- data.image %>" alt="<%- data.title %>">
+                </span>
+            <% } %>
+            <span class="qs-option-name"><%= data.title %></span>
+
+            <span class="qs-option-price">
+                <% if (Math.abs(data.final_price - data.price) < 0.0001) { %>
+                    <span class="price"><%= autocompleteFormatPrice(data.price) %></span>
+                <% } else { %>
+                    <span class="original-price"><%= autocompleteFormatPrice(data.price) %></span>
+                    <span class="special-price"><%= autocompleteFormatPrice(data.final_price) %></span>
+                <% } %>
+            </span>
+        </li>
+    <% } else { %>
+        <li class="<%- data.row_class %>" id="qs-option-<%- data.index %>" role="option">
+            <span class="qs-option-name"><%= data.title %></span>
+            <span aria-hidden="true" class="amount"><%- data.num_results %></span>
+        </li>
+    <% } %>
+
+</script>
+<script type="text/javascript">
+    require([
+        'jquery',
+        'quickSearch',
+        'Magento_Catalog/js/price-utils'
+    ], function($, widget, priceUtils){
+        var priceFormat = <?=$block->getJsonPriceFormat()?>;
+
+        window['autocompleteFormatPrice'] = function(finalPrice, regularPrice) {
+            return priceUtils.formatPrice(finalPrice, priceFormat);
+        };
+        widget.prototype.options.template = '#autocomplete-item-template';
     });
 </script>

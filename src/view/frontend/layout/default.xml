@@ -17,6 +17,4 @@
             <block class="Emico\Tweakwise\Block\Autocomplete\FormMini" name="tweakwise-autocomplete" template="Emico_Tweakwise::form.mini.phtml"/>
         </referenceBlock>
     </body>
-
-
 </page>
