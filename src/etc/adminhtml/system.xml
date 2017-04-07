@@ -11,7 +11,7 @@
     <system>
         <section id="tweakwise">
             <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Algemeen</label>
+                <label>General</label>
                 <field id="authentication_key" translate="label,comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Authentication key</label>
                     <comment>Provided by Tweakwise (8 alphanumeric characters)</comment>
@@ -88,8 +88,8 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
-                <field id="show_categories" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Show categories</label>
+                <field id="show_suggestions" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Show suggestions</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <depends>
                         <field id="enabled">1</field>
