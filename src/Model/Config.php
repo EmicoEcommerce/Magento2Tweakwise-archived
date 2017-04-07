@@ -111,8 +111,16 @@ class Config
      */
     public function getUseDefaultLinkRenderer(Store $store = null)
     {
-        return true;
         return (bool) $this->getStoreConfig($store, 'tweakwise/layered/default_link_renderer');
+    }
+
+    /**
+     * @param Store|null $store
+     * @return bool
+     */
+    public function isAutocompleteEnabled(Store $store = null)
+    {
+        return (bool) $this->getStoreConfig($store, 'tweakwise/autocomplete/enabled');
     }
 
     /**
