@@ -4,7 +4,7 @@
     "description": "Magento 2 module for Tweakwise integration",
     "require": {
         "php": "~5.6|~7.0",
-        "magento/module-catalog-search": "101.0.*",
+        "magento/module-catalog-search": "100.1.*",
         "emico/tweakwise-export": "~1.0-dev"
     },
     "require-dev": {
