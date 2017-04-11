@@ -10,22 +10,42 @@
 ?>
 <script id="autocomplete-item-template" type="text/x-magento-template">
     <% if (data.type === 'product') { %>
-        <li class="<%- data.row_class %>" id="qs-option-<%- data.index %>" role="option">
+        <li class="<%- data.row_class %> product-item" id="qs-option-<%- data.index %>" role="option">
             <% if (data.image) { %>
-                <span class="qs-option-image">
-                    <img src="<%- data.image %>" alt="<%- data.title %>">
-                </span>
+                <img class="qs-option-image" src="<%- data.image %>" alt="<%- data.title %>">
             <% } %>
-            <span class="qs-option-name"><%= data.title %></span>
 
-            <span class="qs-option-price">
-                <% if (Math.abs(data.final_price - data.price) < 0.0001) { %>
-                    <span class="price"><%= autocompleteFormatPrice(data.price) %></span>
-                <% } else { %>
-                    <span class="original-price"><%= autocompleteFormatPrice(data.price) %></span>
-                    <span class="special-price"><%= autocompleteFormatPrice(data.final_price) %></span>
-                <% } %>
-            </span>
+            <div class="qs-option-info-container">
+                <span class="qs-option-name"><%= data.title %></span>
+
+                <div class="price-box">
+                    <% if (Math.abs(data.final_price - data.price) < 0.0001) { %>
+                        <span class="price-container">
+                            <span class="price-wrapper">
+                                <span class="price"><%= autocompleteFormatPrice(data.price) %></span>
+                            </span>
+                        </span>
+                    <% } else { %>
+                        <span class="special-price">
+                            <span class="price-container">
+                                <span class="price-label"><?=__('Special Price')?></span>
+                                <span class="price-wrapper">
+                                    <span class="price"><%= autocompleteFormatPrice(data.final_price) %></span>
+                                </span>
+                            </span>
+                        </span>
+
+                        <span class="old-price sly-old-price">
+                            <span class="price-container">
+                                <span class="price-label"><?=__('Regular Price')?></span>
+                                <span class="price-wrapper">
+                                    <span class="price"><%= autocompleteFormatPrice(data.price) %></span>
+                                </span>
+                            </span>
+                        </span>
+                    <% } %>
+                </div>
+            </div>
         </li>
     <% } else { %>
         <li class="<%- data.row_class %>" id="qs-option-<%- data.index %>" role="option">

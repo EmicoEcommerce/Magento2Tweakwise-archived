@@ -126,6 +126,7 @@ class DataProvider implements DataProviderInterface
     {
         $productCollection = $this->productCollectionFactory->create();
         $productCollection->setStore($this->storeManager->getStore());
+        $productCollection->addAttributeToFilter('entity_id', ['in' => $response->getProductIds()]);
         $this->collectionFilter->filter($productCollection, $this->getCategory());
 
         $result = [];
@@ -137,6 +138,7 @@ class DataProvider implements DataProviderInterface
 
             $result[] = $this->productItemFactory->create(['product' => $product]);
         }
+
         return $result;
     }
 

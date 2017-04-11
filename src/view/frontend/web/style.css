@@ -6,3 +6,34 @@
 .tree-attribute .child-items {
     margin-left: 15px;
 }
+
+.search-autocomplete ul li.qs-option-product {
+    padding: 5px;
+}
+
+.search-autocomplete ul li.qs-option-product .qs-option-image {
+    float: left;
+    width: 50px;
+    margin-right: 10px;
+}
+
+.search-autocomplete ul li.qs-option-product .qs-option-info-container {
+    float: left;
+    max-width: calc(100% - 70px);
+}
+
+.search-autocomplete .qs-option-name {
+    width: 100%;
+
+}
+
+.search-autocomplete .qs-option-product::after {
+    clear: both;
+    display: table;
+    content: '';
+}
+
+.search-autocomplete ul li.qs-option-product .qs-option-info-container {
+    float: left;
+    max-width: 310px;
+}

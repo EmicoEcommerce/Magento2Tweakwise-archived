@@ -50,17 +50,17 @@ class ProductItem implements ItemInterface
     public function toArray()
     {
         $productHelper = $this->productHelper;
-
         $product = $this->product;
-        $product->setPriceCalculation(false);
+        $price = $product->getPriceInfo();
 
         return [
             'title' => $this->getTitle(),
             'url' => $product->getProductUrl(),
             'image' => $productHelper->getSmallImageUrl($product),
-            'price' => (float) $product->getPrice(),
-            'final_price' => (float) $product->getFinalPrice(),
-            'type' => 'product'
+            'price' => (float) $price->getPrice('regular_price')->getValue(),
+            'final_price' => (float) $price->getPrice('final_price')->getValue(),
+            'type' => 'product',
+            'row_class' => 'qs-option-product',
         ];
     }
 }
