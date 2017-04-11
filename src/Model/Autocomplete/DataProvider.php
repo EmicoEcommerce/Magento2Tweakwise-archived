@@ -14,10 +14,13 @@ use Emico\Tweakwise\Model\Client;
 use Emico\Tweakwise\Model\Client\Request\AutocompleteRequest;
 use Emico\Tweakwise\Model\Client\RequestFactory;
 use Emico\Tweakwise\Model\Client\Response\AutocompleteResponse;
+use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\CategoryRepository;
 use Magento\Catalog\Model\Layer\Category\CollectionFilter;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as ProductCollectionFactory;
+use Magento\Framework\App\Request\Http as HttpRequest;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Search\Model\Autocomplete\DataProviderInterface;
 use Magento\Search\Model\Autocomplete\ItemInterface;
 use Magento\Search\Model\Query;
@@ -73,6 +76,16 @@ class DataProvider implements DataProviderInterface
     protected $categoryRepository;
 
     /**
+     * @var Config
+     */
+    protected $config;
+
+    /**
+     * @var HttpRequest
+     */
+    protected $request;
+
+    /**
      * DataProvider constructor.
      *
      * @param ProductItemFactory $productItemFactory
@@ -84,6 +97,8 @@ class DataProvider implements DataProviderInterface
      * @param StoreManagerInterface $storeManager
      * @param CollectionFilter $collectionFilter
      * @param CategoryRepository $categoryRepository
+     * @param Config $config
+     * @param HttpRequest $request
      */
     public function __construct(
         ProductItemFactory $productItemFactory,
@@ -94,7 +109,9 @@ class DataProvider implements DataProviderInterface
         ProductCollectionFactory $productCollectionFactory,
         StoreManagerInterface $storeManager,
         CollectionFilter $collectionFilter,
-        CategoryRepository $categoryRepository
+        CategoryRepository $categoryRepository,
+        Config $config,
+        HttpRequest $request
     )
     {
         $this->productItemFactory = $productItemFactory;
@@ -106,6 +123,8 @@ class DataProvider implements DataProviderInterface
         $this->storeManager = $storeManager;
         $this->collectionFilter = $collectionFilter;
         $this->categoryRepository = $categoryRepository;
+        $this->config = $config;
+        $this->request = $request;
     }
 
     /**
@@ -113,9 +132,18 @@ class DataProvider implements DataProviderInterface
      */
     protected function getCategory()
     {
+        if ($this->config->isAutocompleteStayInCategory() && $this->request->getParam('cid')) {
+            $categoryId = (int) $this->request->getParam('cid');
+
+            try {
+                return $this->categoryRepository->get($categoryId);
+            } catch (NoSuchEntityException $e) {}
+        }
+
         $store = $this->storeManager->getStore();
-        $rootCategoryId = $store->getRootCategoryId();
-        return $this->categoryRepository->get($rootCategoryId);
+        $categoryId = $store->getRootCategoryId();
+        return $this->categoryRepository->get($categoryId);
+
     }
 
     /**
@@ -163,12 +191,14 @@ class DataProvider implements DataProviderInterface
         /** @var Query $query */
         $query = $this->queryFactory->get();
         $query = $query->getQueryText();
+        $config = $this->config;
 
         /** @var AutocompleteRequest $request */
         $request = $this->requestFactory->create();
-        /** @var Store $store */
-        $store = $this->storeManager->getStore();
-        $request->addCategoryFilter($store->getRootCategoryId());
+        $request->addCategoryFilter($this->getCategory());
+        $request->setGetProducts($config->isAutocompleteProductsEnabled());
+        $request->setGetSuggestions($config->isAutocompleteSuggestionsEnabled());
+        $request->setMaxResult($config->getAutocompleteMaxResults());
         $request->setSearch($query);
 
         /** @var AutocompleteResponse $response */

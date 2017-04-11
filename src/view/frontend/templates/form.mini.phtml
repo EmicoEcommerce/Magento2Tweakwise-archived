@@ -61,11 +61,18 @@
         'quickSearch',
         'Magento_Catalog/js/price-utils'
     ], function($, widget, priceUtils){
-        var priceFormat = <?=$block->getJsonPriceFormat()?>;
 
-        window['autocompleteFormatPrice'] = function(finalPrice, regularPrice) {
-            return priceUtils.formatPrice(finalPrice, priceFormat);
+        var searchElement = $('#search');
+        var initData = searchElement.data('mage-init');
+
+        initData.quickSearch = initData.quickSearch || {};
+        initData.quickSearch.url = '<?=$block->getAjaxUrl(); ?>';
+        initData.quickSearch.template = '#autocomplete-item-template';
+
+        searchElement.attr('data-mage-init', JSON.stringify(initData));
+
+        window['autocompleteFormatPrice'] = function(price) {
+            return priceUtils.formatPrice(price, <?=$block->getJsonPriceFormat()?>);
         };
-        widget.prototype.options.template = '#autocomplete-item-template';
     });
 </script>

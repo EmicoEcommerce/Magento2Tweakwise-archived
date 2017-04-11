@@ -32,8 +32,3 @@
     display: table;
     content: '';
 }
-
-.search-autocomplete ul li.qs-option-product .qs-option-info-container {
-    float: left;
-    max-width: 310px;
-}

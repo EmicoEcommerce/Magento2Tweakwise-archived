@@ -127,6 +127,45 @@ class Config
      * @param Store|null $store
      * @return bool
      */
+    public function isAutocompleteProductsEnabled(Store $store = null)
+    {
+        if ($this->tweakwiseExceptionThrown) {
+            return false;
+        }
+
+        return (bool) $this->getStoreConfig($store, 'tweakwise/autocomplete/show_products');
+    }
+
+    /**
+     * @param Store|null $store
+     * @return bool
+     */
+    public function isAutocompleteSuggestionsEnabled(Store $store = null)
+    {
+        if ($this->tweakwiseExceptionThrown) {
+            return false;
+        }
+
+        return (bool) $this->getStoreConfig($store, 'tweakwise/autocomplete/show_suggestions');
+    }
+
+    /**
+     * @param Store|null $store
+     * @return int
+     */
+    public function getAutocompleteMaxResults(Store $store = null)
+    {
+        if ($this->tweakwiseExceptionThrown) {
+            return false;
+        }
+
+        return (int) $this->getStoreConfig($store, 'tweakwise/autocomplete/max_results');
+    }
+
+    /**
+     * @param Store|null $store
+     * @return bool
+     */
     public function isAutocompleteStayInCategory(Store $store = null)
     {
         return (bool) $this->getStoreConfig($store, 'tweakwise/autocomplete/in_current_category');
