@@ -10,7 +10,6 @@ namespace Emico\Tweakwise\Model\Autocomplete\DataProvider;
 
 use Magento\Catalog\Helper\Product as ProductHelper;
 use Magento\Catalog\Model\Product;
-use Magento\Framework\Pricing\Render as PriceRender;
 use Magento\Search\Model\Autocomplete\ItemInterface;
 
 class ProductItem implements ItemInterface
