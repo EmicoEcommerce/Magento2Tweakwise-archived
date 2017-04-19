@@ -95,7 +95,10 @@ class Client
 
         // PHPStorm indicates: "Variable 'response' might have not been defined" however this is due to the fact it does not recognise the try -> catch -> throw structure.
         if ($response->getStatusCode() != 200) {
-            throw new ApiException('Invalid response received by Tweakwise server, response code is not 200. Request "%s"', $client->getUri()->toString(), $response->getStatusCode());
+            throw new ApiException(
+                sprintf('Invalid response received by Tweakwise server, response code is not 200. Request "%s"', $client->getUri()->toString()),
+                    $response->getStatusCode()
+            );
         }
 
         $xmlPreviousErrors = libxml_use_internal_errors(true);
