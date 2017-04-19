@@ -55,6 +55,8 @@ class Client
     }
 
     /**
+     * Create new http client for specific uri with parameters to be requested.
+     *
      * @param string $path
      * @param array|null $parameters
      * @return HttpClient
@@ -72,6 +74,8 @@ class Client
     }
 
     /**
+     * Method performs request and normalize response from TW. Parsers XML result and throws API exception on TW errors.
+     *
      * @param Request $request
      * @return Response
      */
@@ -89,6 +93,7 @@ class Client
             $this->log->debug(sprintf('[Request][%.5f] %s', $time, (string) $client->getUri()));
         }
 
+        // PHPStorm indicates: "Variable 'response' might have not been defined" however this is due to the fact it does not recognise the try -> catch -> throw structure.
         if ($response->getStatusCode() != 200) {
             throw new ApiException('Invalid response received by Tweakwise server, response code is not 200. Request "%s"', $client->getUri()->toString(), $response->getStatusCode());
         }
@@ -139,6 +144,8 @@ class Client
     }
 
     /**
+     * Public request method to TW api. Used to disable TW on exceptions.
+     *
      * @param Request $request
      * @return Response
      */
