@@ -4,11 +4,12 @@ What is the purpose of this issue? Explain the background context.
 
 Environment
 --
-Magento Version:
-Tweakwise Version:
-Tweakwise Export Version:
-Environment: (production / development)
-Third party modules:
+* PHP Version: (5.6|7.0|7.1)
+* Magento Version:
+* Tweakwise Version:
+* Tweakwise Export Version:
+* Magento Deploy Mode: (production|development)
+* Third party modules:
 
 Steps to reproduce
 --
