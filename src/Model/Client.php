@@ -90,7 +90,7 @@ class Client
         }
 
         if ($response->getStatusCode() != 200) {
-            throw new ApiException('Invalid response received by Tweakwise server, response code is not 200.', $response->getStatusCode());
+            throw new ApiException('Invalid response received by Tweakwise server, response code is not 200. Request "%s"', $client->getUri()->toString(), $response->getStatusCode());
         }
 
         $xmlPreviousErrors = libxml_use_internal_errors(true);
@@ -98,7 +98,7 @@ class Client
             $xmlElement = simplexml_load_string($response->getBody(), SimpleXMLElement::class, LIBXML_NOCDATA);
             if ($xmlElement === false) {
                 $errors = libxml_get_errors();
-                throw new ApiException(sprintf('Invalid response received by Tweakwise server, xml load fails. %s', join(PHP_EOL, $errors)));
+                throw new ApiException(sprintf('Invalid response received by Tweakwise server, xml load fails. Request "%s", XML Errors: %s', $client->getUri()->toString(), join(PHP_EOL, $errors)));
             }
         } finally {
             libxml_use_internal_errors($xmlPreviousErrors);
