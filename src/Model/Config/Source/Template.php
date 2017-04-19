@@ -8,6 +8,7 @@
 
 namespace Emico\Tweakwise\Model\Config\Source;
 
+use Emico\Tweakwise\Exception\ApiException;
 use Emico\Tweakwise\Model\Client;
 use Emico\Tweakwise\Model\Client\RequestFactory;
 use Emico\Tweakwise\Model\Client\Response\Catalog\TemplateResponse;
@@ -71,7 +72,12 @@ class Template implements ArrayInterface
     public function toOptionArray()
     {
         if (!$this->options) {
-            $this->options = $this->buildOptions();
+            try {
+                $options = $this->buildOptions();
+            } catch (ApiException $e) {
+                $options = [];
+            }
+            $this->options = $options;
         }
         return $this->options;
     }
