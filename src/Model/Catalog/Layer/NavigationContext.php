@@ -12,8 +12,10 @@ namespace Emico\Tweakwise\Model\Catalog\Layer;
 use Emico\Tweakwise\Model\Catalog\Layer\FilterList\Tweakwise as TweakwiseFilterList;
 use Emico\Tweakwise\Model\Client;
 use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
+use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
 use Emico\Tweakwise\Model\Client\RequestFactory;
 use Emico\Tweakwise\Model\Client\Response\ProductNavigationResponse;
+use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Model\Layer\FilterableAttributeListInterface;
 use Magento\Catalog\Model\ResourceModel\Attribute;
 
@@ -60,14 +62,16 @@ class NavigationContext
     /**
      * NavigationContext constructor.
      *
+     * @param Config $config
      * @param RequestFactory $requestFactory
      * @param Client $client
      * @param Url $url
      * @param FilterableAttributeListInterface $filterableAttributes
      * @param TweakwiseFilterList $filterList
      */
-    public function __construct(RequestFactory $requestFactory, Client $client, Url $url, FilterableAttributeListInterface $filterableAttributes, TweakwiseFilterList $filterList)
+    public function __construct(Config $config, RequestFactory $requestFactory, Client $client, Url $url, FilterableAttributeListInterface $filterableAttributes, TweakwiseFilterList $filterList)
     {
+        $this->config = $config;
         $this->requestFactory = $requestFactory;
         $this->client = $client;
         $this->url = $url;
@@ -125,6 +129,12 @@ class NavigationContext
     protected function initializeRequest(ProductNavigationRequest $request)
     {
         $this->url->apply($request);
+        if ($request instanceof ProductSearchRequest) {
+            $templateId = $this->config->getSearchTemplateId();
+            if ($templateId) {
+                $request->setTemplateId($templateId);
+            }
+        }
         return $this;
     }
 }

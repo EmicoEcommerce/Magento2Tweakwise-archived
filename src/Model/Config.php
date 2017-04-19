@@ -129,10 +129,6 @@ class Config
      */
     public function isAutocompleteProductsEnabled(Store $store = null)
     {
-        if ($this->tweakwiseExceptionThrown) {
-            return false;
-        }
-
         return (bool) $this->getStoreConfig($store, 'tweakwise/autocomplete/show_products');
     }
 
@@ -142,10 +138,6 @@ class Config
      */
     public function isAutocompleteSuggestionsEnabled(Store $store = null)
     {
-        if ($this->tweakwiseExceptionThrown) {
-            return false;
-        }
-
         return (bool) $this->getStoreConfig($store, 'tweakwise/autocomplete/show_suggestions');
     }
 
@@ -155,10 +147,6 @@ class Config
      */
     public function getAutocompleteMaxResults(Store $store = null)
     {
-        if ($this->tweakwiseExceptionThrown) {
-            return false;
-        }
-
         return (int) $this->getStoreConfig($store, 'tweakwise/autocomplete/max_results');
     }
 
@@ -169,6 +157,15 @@ class Config
     public function isAutocompleteStayInCategory(Store $store = null)
     {
         return (bool) $this->getStoreConfig($store, 'tweakwise/autocomplete/in_current_category');
+    }
+
+    /**
+     * @param Store|null $store
+     * @return int
+     */
+    public function getSearchTemplateId(Store $store = null)
+    {
+        return (int) $this->getStoreConfig($store, 'tweakwise/search/template');
     }
 
     /**
