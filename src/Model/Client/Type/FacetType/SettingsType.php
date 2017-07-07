@@ -12,17 +12,7 @@ use Emico\Tweakwise\Model\Client\Type\Type;
 
 /**
  * @method int getFacetId();
- * @method boolean getIsVisible();
  * @method string getTitle();
- * @method boolean getIsCollapsible();
- * @method boolean getIsCollapsed();
- * @method int getNumberOfShownAttributes();
- * @method string getExpandText();
- * @method string getCollapseText();
- * @method int getMultiSelectLogic();
- * @method int getNumberOfColumns();
- * @method boolean getIsInfoVisible();
- * @method string getInfoText();
  * @method int getSource();
  * @method int getPrefix();
  * @method int getPostfix();
@@ -82,5 +72,85 @@ class SettingsType extends Type
     public function isPrice()
     {
         return $this->getUrlKey() == 'price';
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsCollapsible()
+    {
+        return $this->getDataValue('iscollapsible') == 'true';
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsCollapsed()
+    {
+        return $this->getDataValue('iscollapsed') == 'true';
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsInfoVisible()
+    {
+        return $this->getDataValue('isinfovisible') == 'true';
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberOfColumns()
+    {
+        return (int) $this->getDataValue('nrofcolumns');
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberOfShownAttributes()
+    {
+        return (int) $this->getDataValue('nrofshownattributes');
+    }
+
+    /**
+     * @return int
+     */
+    public function getInfoText()
+    {
+        return (int) $this->getDataValue('infotext') ?? '';
+    }
+
+    /**
+     * @return int
+     */
+    public function getExpandText()
+    {
+        return (int) $this->getDataValue('expandtext');
+    }
+
+    /**
+     * @return string
+     */
+    public function getCollapseText()
+    {
+        return (string) $this->getDataValue('collapsetext');
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsVisible()
+    {
+        return $this->getDataValue('isvisible') == 'true';
+    }
+
+    /**
+     * @return int
+     */
+    public function getMultiSelectLogic()
+    {
+        return (int) $this->getDataValue('multiselectlogic');
     }
 }
