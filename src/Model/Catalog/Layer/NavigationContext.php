@@ -8,7 +8,6 @@
 
 namespace Emico\Tweakwise\Model\Catalog\Layer;
 
-
 use Emico\Tweakwise\Model\Catalog\Layer\FilterList\Tweakwise as TweakwiseFilterList;
 use Emico\Tweakwise\Model\Client;
 use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
@@ -16,7 +15,9 @@ use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
 use Emico\Tweakwise\Model\Client\RequestFactory;
 use Emico\Tweakwise\Model\Client\Response\ProductNavigationResponse;
 use Emico\Tweakwise\Model\Config;
+use Magento\Catalog\Helper\Product\ProductList;
 use Magento\Catalog\Model\Layer\FilterableAttributeListInterface;
+use Magento\Catalog\Model\Product\ProductList\Toolbar as ToolbarModel;
 use Magento\Catalog\Model\ResourceModel\Attribute;
 
 /**
@@ -60,6 +61,21 @@ class NavigationContext
     protected $filterAttributeMap;
 
     /**
+     * @var Config
+     */
+    protected $config;
+
+    /**
+     * @var ProductList
+     */
+    protected $productListHelper;
+
+    /**
+     * @var ToolbarModel
+     */
+    protected $toolbarModel;
+
+    /**
      * NavigationContext constructor.
      *
      * @param Config $config
@@ -68,14 +84,20 @@ class NavigationContext
      * @param Url $url
      * @param FilterableAttributeListInterface $filterableAttributes
      * @param TweakwiseFilterList $filterList
+     * @param ProductList $productListHelper
+     * @param ToolbarModel $toolbarModel
      */
-    public function __construct(Config $config, RequestFactory $requestFactory, Client $client, Url $url, FilterableAttributeListInterface $filterableAttributes, TweakwiseFilterList $filterList)
+    public function __construct(
+        Config $config, RequestFactory $requestFactory, Client $client, Url $url, FilterableAttributeListInterface $filterableAttributes, TweakwiseFilterList $filterList,
+        ProductList $productListHelper, ToolbarModel $toolbarModel)
     {
         $this->config = $config;
         $this->requestFactory = $requestFactory;
         $this->client = $client;
         $this->url = $url;
         $this->filterableAttributes = $filterableAttributes;
+        $this->productListHelper = $productListHelper;
+        $this->toolbarModel = $toolbarModel;
 
         $filterList->setNavigationContext($this);
     }
@@ -123,18 +145,42 @@ class NavigationContext
     }
 
     /**
+     * Retrieve current View mode simplified version of Magento\Catalog\Block\Product\ProductList\Toolbar::getCurrentMode()
+     *
+     * @return string
+     */
+    public function getCurrentViewMode()
+    {
+        $availableModes = $this->productListHelper->getAvailableViewMode();
+        $mode = $this->toolbarModel->getMode();
+
+        if ($mode && isset($availableModes[$mode])) {
+            return $mode;
+        }
+
+        return $this->productListHelper->getDefaultViewMode($availableModes);
+    }
+
+    /**
      * @param ProductNavigationRequest $request
      * @return $this
      */
     protected function initializeRequest(ProductNavigationRequest $request)
     {
-        $this->url->apply($request);
+        // Apply magento config values
+        $request->setLimit($this->productListHelper->getDefaultLimitPerPageValue($this->getCurrentViewMode()));
+
+        // Apply tweakwise config values
         if ($request instanceof ProductSearchRequest) {
             $templateId = $this->config->getSearchTemplateId();
             if ($templateId) {
                 $request->setTemplateId($templateId);
             }
         }
+
+        // Apply url values
+        $this->url->apply($request);
+
         return $this;
     }
 }
