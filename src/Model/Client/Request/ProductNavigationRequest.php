@@ -15,7 +15,7 @@ use Magento\Catalog\Model\Category;
 class ProductNavigationRequest extends Request
 {
     /**
-     * Maxium number of products returned for one request
+     * Maximum number of products returned for one request
      */
     const MAX_PRODUCTS = 1000;
 
