@@ -29,6 +29,11 @@ class Request
     protected $storeManager;
 
     /**
+     * @var Helper
+     */
+    protected $helper;
+
+    /**
      * Request constructor.
      *
      * @param Helper $helper
