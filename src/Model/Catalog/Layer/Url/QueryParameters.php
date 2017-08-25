@@ -48,7 +48,7 @@ class QueryParameters extends AbstractUrl
         $params['_current'] = true;
         $params['_use_rewrite'] = true;
         $params['_query'] = $query;
-        $params['_escape'] = true;
+        $params['_escape'] = false;
         return $this->url->getUrl('*/*/*', $params);
     }
 
