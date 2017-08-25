@@ -8,7 +8,7 @@
 
 namespace Emico\Tweakwise\Model\Catalog\Layer;
 
-use Emico\Tweakwise\Model\Catalog\Layer\FilterList\Tweakwise as TweakwiseFilterList;
+use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
 use Emico\Tweakwise\Model\Client;
 use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
 use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
@@ -83,12 +83,12 @@ class NavigationContext
      * @param Client $client
      * @param Url $url
      * @param FilterableAttributeListInterface $filterableAttributes
-     * @param TweakwiseFilterList $filterList
+     * @param CurrentContext $currentContext
      * @param ProductList $productListHelper
      * @param ToolbarModel $toolbarModel
      */
     public function __construct(
-        Config $config, RequestFactory $requestFactory, Client $client, Url $url, FilterableAttributeListInterface $filterableAttributes, TweakwiseFilterList $filterList,
+        Config $config, RequestFactory $requestFactory, Client $client, Url $url, FilterableAttributeListInterface $filterableAttributes, CurrentContext $currentContext,
         ProductList $productListHelper, ToolbarModel $toolbarModel)
     {
         $this->config = $config;
@@ -99,7 +99,7 @@ class NavigationContext
         $this->productListHelper = $productListHelper;
         $this->toolbarModel = $toolbarModel;
 
-        $filterList->setNavigationContext($this);
+        $currentContext->setContext($this);
     }
 
     /**

@@ -11,16 +11,12 @@ namespace Emico\Tweakwise\Model\Catalog\Layer\FilterList;
 use Emico\Tweakwise\Exception\RuntimeException;
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext;
 use Emico\Tweakwise\Model\Catalog\Layer\FilterFactory;
+use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
 use Magento\Catalog\Model\Layer;
 use Magento\Catalog\Model\Layer\Filter\FilterInterface;
 
 class Tweakwise
 {
-    /**
-     * @var NavigationContext
-     */
-    protected $navigationContext;
-
     /**
      * @var FilterInterface[]
      */
@@ -32,23 +28,20 @@ class Tweakwise
     protected $filterFactory;
 
     /**
+     * @var CurrentContext
+     */
+    protected $context;
+
+    /**
      * Tweakwise constructor.
      *
      * @param FilterFactory $filterFactory
+     * @param CurrentContext $context
      */
-    public function __construct(FilterFactory $filterFactory)
+    public function __construct(FilterFactory $filterFactory, CurrentContext $context)
     {
         $this->filterFactory = $filterFactory;
-    }
-
-    /**
-     * @param NavigationContext $context
-     * @return $this
-     */
-    public function setNavigationContext(NavigationContext $context)
-    {
-        $this->navigationContext = $context;
-        return $this;
+        $this->context = $context;
     }
 
     /**
@@ -70,16 +63,17 @@ class Tweakwise
      */
     protected function initFilters(Layer $layer)
     {
-        if ($this->navigationContext === null) {
+        $navigationContext = $this->context->getContext();
+
+        if ($navigationContext === null) {
             throw new RuntimeException('Navigation context should be set before filters are initialized.');
         }
-        $request = $this->navigationContext->getRequest();
+        $request = $navigationContext->getRequest();
         $request->addCategoryFilter($layer->getCurrentCategory());
 
-        $facets = $this->navigationContext->getResponse()
-            ->getFacets();
+        $facets = $navigationContext->getResponse()->getFacets();
 
-        $filterAttributes = $this->navigationContext->getFilterAttributeMap();
+        $filterAttributes = $navigationContext->getFilterAttributeMap();
         $this->filters = [];
         foreach ($facets as $facet) {
             $key = $facet->getFacetSettings()->getUrlKey();
