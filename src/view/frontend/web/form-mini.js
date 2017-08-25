@@ -27,10 +27,10 @@ require([
             return this._superApply(arguments);
         },
 
-        _onSubmit: function () {
+        _onSubmit: function (e) {
             var url = this.getSelectedProductUrl();
             if (!url) {
-                return this._superApply(arguments);
+                return this._superApply(e);
             }
 
             window.location.href = url;
