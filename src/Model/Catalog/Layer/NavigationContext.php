@@ -129,6 +129,16 @@ class NavigationContext
     }
 
     /**
+     * Can be called if there was a response without triggering the creation of one.
+     *
+     * @return bool
+     */
+    public function hasResponse()
+    {
+        return $this->response != null;
+    }
+
+    /**
      * @return Attribute[]
      */
     public function getFilterAttributeMap()
