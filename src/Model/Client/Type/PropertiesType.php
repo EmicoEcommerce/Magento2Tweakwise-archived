@@ -19,7 +19,7 @@ class PropertiesType extends Type
      */
     public function setSortFields(array $sortFields)
     {
-        $sortFields = $this->normalizeArray($sortFields, 'sort_field');
+        $sortFields = $this->normalizeArray($sortFields, 'sortfield');
 
         $values = [];
         foreach ($sortFields as $value) {

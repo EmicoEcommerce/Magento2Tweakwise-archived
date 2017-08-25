@@ -32,3 +32,7 @@
     display: table;
     content: '';
 }
+
+.toolbar-products .toolbar-sorter .sorter-action {
+    display: none;
+}

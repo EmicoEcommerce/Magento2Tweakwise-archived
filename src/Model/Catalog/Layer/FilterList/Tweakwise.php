@@ -9,7 +9,6 @@
 namespace Emico\Tweakwise\Model\Catalog\Layer\FilterList;
 
 use Emico\Tweakwise\Exception\RuntimeException;
-use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext;
 use Emico\Tweakwise\Model\Catalog\Layer\FilterFactory;
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
 use Magento\Catalog\Model\Layer;
@@ -63,16 +62,13 @@ class Tweakwise
      */
     protected function initFilters(Layer $layer)
     {
-        $navigationContext = $this->context->getContext();
 
-        if ($navigationContext === null) {
-            throw new RuntimeException('Navigation context should be set before filters are initialized.');
-        }
-        $request = $navigationContext->getRequest();
+        $request = $this->context->getRequest();
         $request->addCategoryFilter($layer->getCurrentCategory());
 
-        $facets = $navigationContext->getResponse()->getFacets();
+        $facets = $this->context->getResponse()->getFacets();
 
+        $navigationContext = $this->context->getContext();
         $filterAttributes = $navigationContext->getFilterAttributeMap();
         $this->filters = [];
         foreach ($facets as $facet) {

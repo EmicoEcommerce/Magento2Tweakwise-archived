@@ -11,6 +11,7 @@ namespace Emico\Tweakwise\Block\Catalog\Product\ProductList\Toolbar;
 
 use Closure;
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
+use Emico\Tweakwise\Model\Client\Type\SortFieldType;
 use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Block\Product\ProductList\Toolbar;
 
@@ -49,8 +50,13 @@ class Plugin
             return $proceed();
         }
 
-        // TODO Make implementation
-        $orders = $proceed();
-        return $orders;
+        /** @var SortFieldType[] $sortFields */
+        $sortFields = $this->context->getResponse()->getProperties()->getSortFields();
+
+        $result = [];
+        foreach ($sortFields as $field) {
+            $result[$field->getUrlValue()] = $field->getDisplayTitle();
+        }
+        return $result;
     }
 }

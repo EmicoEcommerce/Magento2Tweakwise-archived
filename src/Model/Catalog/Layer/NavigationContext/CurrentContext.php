@@ -11,6 +11,8 @@ namespace Emico\Tweakwise\Model\Catalog\Layer\NavigationContext;
 
 use Emico\Tweakwise\Exception\RuntimeException;
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext;
+use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
+use Emico\Tweakwise\Model\Client\Response\ProductNavigationResponse;
 
 class CurrentContext
 {
@@ -39,5 +41,21 @@ class CurrentContext
             throw new RuntimeException(sprintf('Navigation context not set, initialize a version of %s first.', NavigationContext::class));
         }
         return $this->context;
+    }
+
+    /**
+     * @return ProductNavigationRequest
+     */
+    public function getRequest()
+    {
+        return $this->getContext()->getRequest();
+    }
+
+    /**
+     * @return ProductNavigationResponse
+     */
+    public function getResponse()
+    {
+        return $this->getContext()->getResponse();
     }
 }
