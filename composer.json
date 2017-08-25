@@ -4,7 +4,7 @@
     "description": "Magento 2 module for Tweakwise integration",
     "require": {
         "php": "~5.6|~7.0",
-        "emico/tweakwise-export": "~1.0-dev"
+        "emico/tweakwise-export": "~1"
     },
     "require-dev": {
         "malukenho/docheader": "~0.1",
