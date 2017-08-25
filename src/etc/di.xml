@@ -19,7 +19,7 @@
         </arguments>
     </type>
     <type name="Magento\LayeredNavigation\Block\Navigation\FilterRenderer">
-        <plugin name="emico-tweakwise" type="Emico\Tweakwise\Model\Navigation\FilterRenderer\Plugin" sortOrder="0" />
+        <plugin name="emico-tweakwise" type="Emico\Tweakwise\Block\Navigation\FilterRenderer\Plugin" sortOrder="0" />
     </type>
     <type name="Magento\Swatches\Block\LayeredNavigation\RenderLayered">
         <plugin name="emico-tweakwise" type="Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\Plugin" sortOrder="0" />

@@ -6,7 +6,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Emico\Tweakwise\Model\Navigation\FilterRenderer;
+namespace Emico\Tweakwise\Block\Navigation\FilterRenderer;
 
 use Closure;
 use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\AbstractRenderer;
