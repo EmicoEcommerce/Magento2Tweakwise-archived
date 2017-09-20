@@ -97,6 +97,9 @@ class CatalogLastPageRedirect implements ObserverInterface
         }
 
         $properties = $this->context->getResponse()->getProperties();
+        if (!$properties->getNrofitems()) {
+            return;
+        }
         $lastPage = $properties->getNumberOfPages();
         $page = $properties->getCurrentPage();
         if ($page <= $lastPage) {
