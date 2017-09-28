@@ -6,7 +6,7 @@
 Install package using composer
 ```sh
 composer config minimum-stability dev
-composer require emico/tweakwise-export
+composer require emico/tweakwise
 ```
 
 Install package using zip file
