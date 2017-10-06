@@ -8,7 +8,6 @@
 
 namespace Emico\Tweakwise\Model\Catalog\Layer\FilterList;
 
-use Emico\Tweakwise\Exception\RuntimeException;
 use Emico\Tweakwise\Model\Catalog\Layer\FilterFactory;
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
 use Magento\Catalog\Model\Layer;
