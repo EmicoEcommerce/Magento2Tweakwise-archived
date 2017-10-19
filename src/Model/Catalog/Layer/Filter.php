@@ -401,4 +401,20 @@ class Filter extends AbstractFilter implements FilterInterface
     {
         return $this->facet->getFacetSettings()->getIsCollapsed();
     }
+
+    /**
+     * @return string
+     */
+    public function getCssClass()
+    {
+        return $this->facet->getFacetSettings()->getCssClass();
+    }
+
+    /**
+     * @return string
+     */
+    public function getTooltip()
+    {
+        return $this->facet->getFacetSettings()->getInfoText();
+    }
 }

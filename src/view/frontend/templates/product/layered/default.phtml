@@ -17,9 +17,15 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\DefaultRenderer;
                     <?php if ($block->showCheckbox()): ?>
                         <input id="inputCheckbox<?=$block->getCssItemId($item)?>" type="checkbox" <?=($item->isSelected() ? 'checked="checked"' : '')?>>
 
-                        <label for="inputCheckbox<?=$block->getCssItemId($item)?>"><?=$item->getLabel()?></label>
+                        <label for="inputCheckbox<?=$block->getCssItemId($item)?>">
+                            <?=$block->getItemPrefix()?>
+                            <?=$item->getLabel()?>
+                            <?=$block->getItemPostfix()?>
+                        </label>
                     <?php else: ?>
+                        <?=$block->getItemPrefix()?>
                         <?=$item->getLabel()?>
+                        <?=$block->getItemPostfix()?>
                     <?php endif; ?>
 
                     <?php if ($block->shouldDisplayProductCountOnLayer()): ?>

@@ -14,8 +14,6 @@ use Emico\Tweakwise\Model\Client\Type\Type;
  * @method int getFacetId();
  * @method string getTitle();
  * @method int getSource();
- * @method int getPrefix();
- * @method int getPostfix();
  */
 class SettingsType extends Type
 {
@@ -119,9 +117,9 @@ class SettingsType extends Type
      */
     public function getInfoText()
     {
-        $infoText = (string) $this->getDataValue('infotext');
-        if ($infoText) {
-            return $infoText;
+        $infoText = $this->getDataValue('infotext');
+        if (!empty($infoText)) {
+            return (string) $infoText;
         }
 
         return null;
@@ -157,5 +155,41 @@ class SettingsType extends Type
     public function getMultiSelectLogic()
     {
         return (int) $this->getDataValue('multiselectlogic');
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getPrefix()
+    {
+        $prefix = $this->getDataValue('prefix');
+        if (!empty($prefix)) {
+            return (string) $prefix;
+        }
+        return null;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getPostfix()
+    {
+        $postfix = $this->getDataValue('postfix');
+        if (!empty($postfix)) {
+            return (string) $postfix;
+        }
+        return null;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCssClass()
+    {
+        $cssClass = $this->getDataValue('cssclass');
+        if (!empty($cssClass)) {
+            return (string) $cssClass;
+        }
+        return null;
     }
 }

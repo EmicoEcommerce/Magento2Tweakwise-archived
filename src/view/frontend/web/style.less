@@ -1,0 +1,115 @@
+.slider-attribute {
+    .max-value,
+    .current-max-value {
+        float: right;
+    }
+}
+
+.tree-attribute .child-items {
+    margin-left: 15px;
+}
+
+
+.search-autocomplete {
+    ul {
+        li.qs-option-product {
+            padding: 5px;
+        }
+
+        li.qs-option-product .qs-option-image {
+            float: left;
+            width: 50px;
+            margin-right: 10px;
+        }
+
+        li.qs-option-product .qs-option-info-container {
+            float: left;
+            max-width: calc(100% - 70px);
+        }
+    }
+
+    .qs-option-name {
+        width: 100%;
+
+    }
+
+    .qs-option-product::after {
+        clear: both;
+        display: table;
+        content: '';
+    }
+}
+
+.toolbar-products .toolbar-sorter .sorter-action {
+    display: none;
+}
+
+.filter-options {
+    .default-hidden {
+        display: none;
+    }
+
+    .more-items,
+    .less-items {
+        cursor: pointer;
+    }
+
+    .filter-options-title {
+        overflow: visible;
+    }
+
+    .filter-options-title-non-collapsible.filter-options-title:after {
+        content: '';
+    }
+
+    .tooltip {
+        float: right;
+        position: relative;
+        cursor: pointer;
+
+        &:before {
+            content: attr(data-tooltip);
+            box-sizing: border-box;
+            display: block;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 3px;
+            position: absolute;
+            left: 50%;
+            bottom: 100%;
+            margin-left: -100px;
+            width: 200px;
+            opacity: 0;
+            transition: 0.25s ease-in-out;
+            text-transform: none;
+        }
+
+        &:after {
+            content: "";
+            display: block;
+            position: absolute;
+            bottom: calc(100% - 12px);
+            left: 50%;
+            margin-left: -6px;
+            height: 0;
+            width: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid rgba(0, 0, 0, 0.7);
+            transition: 0.25s ease-in-out;
+            opacity: 0;
+        }
+
+        &:hover {
+            &:before {
+                opacity: 1;
+                bottom: calc(100% + 24px);
+            }
+
+            &:after {
+                opacity: 1;
+                bottom: calc(100% + 10px);
+            }
+        }
+    }
+}

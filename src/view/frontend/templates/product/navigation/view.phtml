@@ -37,10 +37,17 @@ if (!$block->canShowBlock()) return;
                 <?php foreach ($filters as $filter): ?>
                     <?php if ($filter->isCollapsible()): ?>
                         <?php $filterActive = $filter->isDefaultCollapsed() ? 'false' : '[0]'; ?>
-                        <div class="collapsible-container" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": <?=$filterActive?>}}'>
+                        <div class="collapsible-container <?=$filter->getCssClass()?>" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": <?=$filterActive?>}}'>
                             <?php $filterContentStyle = $filter->isDefaultCollapsed() ? ' style="display: none;"' : ''?>
                             <div data-role="collapsible" class="filter-options-item">
-                                <div data-role="title" class="filter-options-title"><?=__($filter->getName()) ?></div>
+                                <div data-role="title" class="filter-options-title">
+                                    <?=__($filter->getName()) ?>
+
+                                    <?php $tooltip = $filter->getTooltip(); ?>
+                                    <?php if ($tooltip): ?>
+                                        <span class="tooltip" data-tooltip="<?=$block->escapeHtmlAttr($tooltip)?>">I</span>
+                                    <?php endif; ?>
+                                </div>
                                 <div data-role="content" class="filter-options-content"<?=$filterContentStyle?>>
                                     <?=$block->getChildBlock('renderer')->render($filter) ?>
                                 </div>

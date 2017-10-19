@@ -141,4 +141,20 @@ class DefaultRenderer extends Template
     {
         return $this->getFacetSettings()->getSelectionType() === SettingsType::SELECTION_TYPE_CHECKBOX;
     }
+
+    /**
+     * @return string
+     */
+    public function getItemPrefix()
+    {
+        return $this->getFacetSettings()->getPrefix();
+    }
+
+    /**
+     * @return string
+     */
+    public function getItemPostfix()
+    {
+        return $this->getFacetSettings()->getPostfix();
+    }
 }
