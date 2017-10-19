@@ -9,36 +9,52 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\DefaultRenderer;
 
 /** @var $block DefaultRenderer */
 ?>
-<ol class="items">
-    <?php foreach ($block->getItems() as $item): ?>
-        <li class="item<?=$block->itemDefaultHidden($item) ? ' default-hidden' : ''?>">
-            <a href="<?=$block->escapeUrl($item->getUrl())?>">
-                <?php if ($block->showCheckbox()): ?>
-                    <input id="inputCheckbox<?=$block->getCssItemId($item)?>" type="checkbox" <?=($item->isSelected() ? 'checked="checked"' : '')?>>
+<div id="<?=$block->getCssId()?>">
+    <ol class="items">
+        <?php foreach ($block->getItems() as $item): ?>
+            <li class="item<?=$block->itemDefaultHidden($item) ? ' default-hidden' : ''?>">
+                <a href="<?=$block->escapeUrl($item->getUrl())?>">
+                    <?php if ($block->showCheckbox()): ?>
+                        <input id="inputCheckbox<?=$block->getCssItemId($item)?>" type="checkbox" <?=($item->isSelected() ? 'checked="checked"' : '')?>>
 
-                    <label for="inputCheckbox<?=$block->getCssItemId($item)?>"><?=$item->getLabel()?></label>
-                <?php else: ?>
-                    <?=$item->getLabel()?>
-                <?php endif; ?>
+                        <label for="inputCheckbox<?=$block->getCssItemId($item)?>"><?=$item->getLabel()?></label>
+                    <?php else: ?>
+                        <?=$item->getLabel()?>
+                    <?php endif; ?>
 
-                <?php if ($block->shouldDisplayProductCountOnLayer()): ?>
-                    <span class="count">
-                        <?=$item->getCount()?>
-                        <span class="filter-count-label">
-                            <?php if ($item->getCount() == 1):?>
-                                <?=__('item')?>
-                            <?php else:?>
-                                <?=__('items')?>
-                            <?php endif;?>
+                    <?php if ($block->shouldDisplayProductCountOnLayer()): ?>
+                        <span class="count">
+                            <?=$item->getCount()?>
+                            <span class="filter-count-label">
+                                <?php if ($item->getCount() == 1):?>
+                                    <?=__('item')?>
+                                <?php else:?>
+                                    <?=__('items')?>
+                                <?php endif;?>
+                            </span>
                         </span>
-                    </span>
-                <?php endif; ?>
-            </a>
-        </li>
-    <?php endforeach; ?>
-</ol>
+                    <?php endif; ?>
+                </a>
+            </li>
+        <?php endforeach; ?>
+    </ol>
 
-<?php if ($block->hasHiddenItems()): ?>
-    <a class="more-items"><?=__($block->getMoreItemText())?></a>
-    <a class="less-items default-hidden"><?=__($block->getLessItemText())?></a>
-<?php endif; ?>
+    <?php if ($block->hasHiddenItems()): ?>
+        <a class="more-items"><?=__($block->getMoreItemText())?></a>
+        <a class="less-items default-hidden"><?=__($block->getLessItemText())?></a>
+        <script type="text/javascript">
+            require(['jquery'], function($){
+                var container = $('#<?=$this->getCssId()?>');
+                container.on('click', '.more-items', function (){
+                    container.find('.default-hidden').show();
+                    container.find('.more-items').hide();
+                });
+
+                container.on('click', '.less-items', function (){
+                    container.find('.default-hidden').hide();
+                    container.find('.more-items').show();
+                });
+            });
+        </script>
+    <?php endif; ?>
+</div>

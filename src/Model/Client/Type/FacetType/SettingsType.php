@@ -115,19 +115,24 @@ class SettingsType extends Type
     }
 
     /**
-     * @return int
+     * @return string|null
      */
     public function getInfoText()
     {
-        return (int) $this->getDataValue('infotext') ?? '';
+        $infoText = (string) $this->getDataValue('infotext');
+        if ($infoText) {
+            return $infoText;
+        }
+
+        return null;
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getExpandText()
     {
-        return (int) $this->getDataValue('expandtext');
+        return (string) $this->getDataValue('expandtext');
     }
 
     /**
