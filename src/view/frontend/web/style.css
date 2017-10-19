@@ -45,3 +45,7 @@
 .filter-options .less-items {
     cursor: pointer;
 }
+
+.filter-options-title-non-collapsible.filter-options-title:after {
+    content: '';
+}

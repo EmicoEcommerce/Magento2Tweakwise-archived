@@ -6,37 +6,56 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Emico\Tweakwise\Model\Catalog\Layer\Filter;
+
 /** @var $block \Magento\LayeredNavigation\Block\Navigation */
+
+if (!$block->canShowBlock()) return;
 ?>
 
-<?php if ($block->canShowBlock()): ?>
-    <div class="block filter">
-        <div class="block-title filter-title">
-            <strong><?= /* @escapeNotVerified */ __('Shop By') ?></strong>
-        </div>
-
-        <div class="block-content filter-content">
-            <?= $block->getChildHtml('state') ?>
-
-            <?php if ($block->getLayer()->getState()->getFilters()): ?>
-                <div class="block-actions filter-actions">
-                    <a href="<?= /* @escapeNotVerified */ $block->getClearUrl() ?>" class="action clear filter-clear"><span><?= /* @escapeNotVerified */ __('Clear All') ?></span></a>
-                </div>
-            <?php endif; ?>
-            <?php $wrapOptions = false; ?>
-            <?php foreach ($block->getFilters() as $filter): ?>
-        <?php if (!$wrapOptions): ?>
-            <strong role="heading" aria-level="2" class="block-subtitle filter-subtitle"><?= /* @escapeNotVerified */ __('Shopping Options') ?></strong>
-            <dl class="filter-options" id="narrow-by-list">
-                <?php $wrapOptions = true; endif; ?>
-                <?php if ($filter->getItemsCount()): ?>
-                    <dt role="heading" aria-level="3" class="filter-options-title"><?= $block->escapeHtml(__($filter->getName())) ?></dt>
-                    <dd class="filter-options-content"><?= /* @escapeNotVerified */ $block->getChildBlock('renderer')->render($filter) ?></dd>
-                <?php endif; ?>
-                <?php endforeach; ?>
-                <?php if ($wrapOptions): ?>
-            </dl>
-        <?php endif; ?>
-        </div>
+<?php $filters = $block->getFilters(); /** @var $filters Filter[] */ ?>
+<?php $hasFilters = count($filters) > 0; ?>
+<div class="block filter<?=($hasFilters ? ' filter-no-options' : '')?>"
+     id="layered-filter-block"
+     data-mage-init='{"collapsible":{"openedState": "active", "collapsible": true, "active": false, "collateral": { "openedState": "filter-active", "element": "body" } }}'>
+    <?php $filtered = count($block->getLayer()->getState()->getFilters()) ?>
+    <div class="block-title filter-title" data-count="<?=$filtered?>">
+        <strong data-role="title"><?=__('Shop By')?></strong>
     </div>
-<?php endif; ?>
+    <div class="block-content filter-content">
+        <?=$block->getChildHtml('state')?>
+
+        <?php if ($block->getLayer()->getState()->getFilters()): ?>
+            <div class="block-actions filter-actions">
+                <a href="<?=$block->getClearUrl() ?>" class="action clear filter-clear"><span><?=__('Clear All')?></span></a>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($filters): ?>
+            <strong role="heading" aria-level="2" class="block-subtitle filter-subtitle"><?=__('Shopping Options') ?></strong>
+            <div class="filter-options" id="narrow-by-list" data-role="content">
+                <?php foreach ($filters as $filter): ?>
+                    <?php if ($filter->isCollapsible()): ?>
+                        <?php $filterActive = $filter->isDefaultCollapsed() ? 'false' : '[0]'; ?>
+                        <div class="collapsible-container" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": <?=$filterActive?>}}'>
+                            <?php $filterContentStyle = $filter->isDefaultCollapsed() ? ' style="display: none;"' : ''?>
+                            <div data-role="collapsible" class="filter-options-item">
+                                <div data-role="title" class="filter-options-title"><?=__($filter->getName()) ?></div>
+                                <div data-role="content" class="filter-options-content"<?=$filterContentStyle?>>
+                                    <?=$block->getChildBlock('renderer')->render($filter) ?>
+                                </div>
+                            </div>
+                        </div>
+                    <?php else: ?>
+                        <div class="filter-options-item">
+                            <div class="filter-options-title filter-options-title-non-collapsible"><?=__($filter->getName()) ?></div>
+                            <div class="filter-options-content">
+                                <?=$block->getChildBlock('renderer')->render($filter) ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>

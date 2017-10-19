@@ -385,4 +385,20 @@ class Filter extends AbstractFilter implements FilterInterface
         $map = $this->getOptionLabelItemMap();
         return isset($map[$label]) ? $map[$label] : null;
     }
+
+    /**
+     * @return bool
+     */
+    public function isCollapsible()
+    {
+        return $this->facet->getFacetSettings()->getIsCollapsible();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDefaultCollapsed()
+    {
+        return $this->facet->getFacetSettings()->getIsCollapsed();
+    }
 }
