@@ -10,29 +10,24 @@ namespace Emico\Tweakwise\Model\Observer;
 
 use Magento\Framework\Event\Observer;
 
-class CatalogLastPageRedirect extends AbstractProductNavigationRequestObserver
+class CatalogSearchRedirect extends AbstractProductNavigationRequestObserver
 {
     /**
      * {@inheritdoc}
      */
     protected function _execute(Observer $observer)
     {
-        $properties = $this->context->getResponse()->getProperties();
-        if (!$properties->getNumberOfItems()) {
+        $redirects = $this->context->getResponse()->getRedirects();
+        if (!$redirects) {
             return;
         }
 
-        $lastPage = $properties->getNumberOfPages();
-        $page = $properties->getCurrentPage();
-        if ($page <= $lastPage) {
-            return;
-        }
 
-        $url = $this->urlBuilder->getUrl('*/*/*', [
-            '_current' => true,
-            '_use_rewrite' => true,
-            '_query' => ['p' => $lastPage]
-        ]);
+        $redirect = current($redirects);
+        $url = $redirect->getUrl();
+        if (strpos($url, 'http') !== 0) {
+            $url = $this->urlBuilder->getUrl($url);
+        }
 
         $this->getHttpResponse()->setRedirect($url);
     }
