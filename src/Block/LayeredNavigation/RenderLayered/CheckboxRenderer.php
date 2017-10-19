@@ -8,7 +8,7 @@
 
 namespace Emico\Tweakwise\Block\LayeredNavigation\RenderLayered;
 
-class CheckboxRenderer extends AbstractRenderer
+class CheckboxRenderer extends DefaultRenderer
 {
     /**
      * {@inheritDoc}

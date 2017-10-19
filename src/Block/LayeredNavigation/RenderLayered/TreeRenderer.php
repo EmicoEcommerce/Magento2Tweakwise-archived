@@ -11,7 +11,7 @@ namespace Emico\Tweakwise\Block\LayeredNavigation\RenderLayered;
 use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\TreeRenderer\ItemRenderer;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 
-class TreeRenderer extends AbstractRenderer
+class TreeRenderer extends DefaultRenderer
 {
     /**
      * {@inheritDoc}

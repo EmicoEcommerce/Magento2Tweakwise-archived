@@ -9,10 +9,8 @@
 namespace Emico\Tweakwise\Block\Navigation\FilterRenderer;
 
 use Closure;
-use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\AbstractRenderer;
-use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\CheckboxRenderer;
+use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\DefaultRenderer;
 use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\ColorRenderer;
-use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\LinkRenderer;
 use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
 use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\TreeRenderer;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter;
@@ -48,8 +46,6 @@ class Plugin
     protected $blockTypes = [
         SettingsType::SELECTION_TYPE_TREE => TreeRenderer::class,
         SettingsType::SELECTION_TYPE_SLIDER => SliderRenderer::class,
-        SettingsType::SELECTION_TYPE_LINK => LinkRenderer::class,
-        SettingsType::SELECTION_TYPE_CHECKBOX => CheckboxRenderer::class,
         SettingsType::SELECTION_TYPE_COLOR => ColorRenderer::class,
     ];
 
@@ -99,11 +95,11 @@ class Plugin
             return $proceed($filter);
         }
 
-        $blockType = isset($this->blockTypes[$renderType]) ? $this->blockTypes[$renderType] : CheckboxRenderer::class;
+        $blockType = isset($this->blockTypes[$renderType]) ? $this->blockTypes[$renderType] : DefaultRenderer::class;
         $block = $this->layout->createBlock($blockType);
 
-        if (!$block instanceof AbstractRenderer) {
-            $this->log->error(sprintf('Invalid renderer block type %s not instanceof %s', $blockType, AbstractRenderer::class));
+        if (!$block instanceof DefaultRenderer) {
+            $this->log->error(sprintf('Invalid renderer block type %s not instanceof %s', $blockType, DefaultRenderer::class));
             return $proceed($filter);
         }
 

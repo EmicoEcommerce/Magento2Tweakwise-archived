@@ -8,7 +8,7 @@
 
 namespace Emico\Tweakwise\Block\LayeredNavigation\RenderLayered;
 
-class ColorRenderer extends AbstractRenderer
+class ColorRenderer extends DefaultRenderer
 {
 
 }

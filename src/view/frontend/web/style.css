@@ -36,3 +36,12 @@
 .toolbar-products .toolbar-sorter .sorter-action {
     display: none;
 }
+
+.filter-options .default-hidden {
+    display: none;
+}
+
+.filter-options .more-items,
+.filter-options .less-items {
+    cursor: pointer;
+}

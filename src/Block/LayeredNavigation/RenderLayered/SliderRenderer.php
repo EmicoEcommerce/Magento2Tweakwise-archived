@@ -12,7 +12,7 @@ use Magento\Tax\Helper\Data as TaxHelper;
 use Magento\Framework\Pricing\Helper\Data as PriceHelper;
 use Magento\Framework\View\Element\Template;
 
-class SliderRenderer extends AbstractRenderer
+class SliderRenderer extends DefaultRenderer
 {
     /**
      * {@inheritDoc}
