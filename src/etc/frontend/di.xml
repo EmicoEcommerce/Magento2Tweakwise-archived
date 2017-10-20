@@ -49,6 +49,7 @@
         </arguments>
     </type>
 
+    <!-- TW models -->
     <virtualType name="Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\Category" type="Emico\Tweakwise\Model\Catalog\Layer\NavigationContext">
         <arguments>
             <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\ProductNavigationRequest</argument>
@@ -65,22 +66,6 @@
         <arguments>
             <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\ProductSearchRequest</argument>
             <argument name="filterableAttributes" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\FilterList\EmptyAttributeList</argument>
-        </arguments>
-    </virtualType>
-    <virtualType name="Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList\Plugin\Upsell" type="Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList\Plugin">
-        <arguments>
-            <argument name="type" xsi:type="string">upsell</argument>
-            <argument name="config" xsi:type="object">Emico\Tweakwise\Model\Config</argument>
-            <argument name="registry" xsi:type="object">Magento\Framework\Registry</argument>
-            <argument name="context" xsi:type="object">Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context\Product</argument>
-        </arguments>
-    </virtualType>
-    <virtualType name="Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList\Plugin\Related" type="Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList\Plugin">
-        <arguments>
-            <argument name="type" xsi:type="string">crosssell</argument>
-            <argument name="config" xsi:type="object">Emico\Tweakwise\Model\Config</argument>
-            <argument name="registry" xsi:type="object">Magento\Framework\Registry</argument>
-            <argument name="context" xsi:type="object">Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context\Product</argument>
         </arguments>
     </virtualType>
     <virtualType name="Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context\Product" type="Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context">
@@ -102,7 +87,6 @@
         </arguments>
     </virtualType>
 
-    <!-- General TW types -->
     <type name="Emico\Tweakwise\Model\Catalog\Layer\Url">
         <arguments>
             <argument name="request" xsi:type="object">Magento\Framework\App\Request\Http</argument>
@@ -113,6 +97,36 @@
         <arguments>
             <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Catalog\TemplateRequest</argument>
             <argument name="client" xsi:type="object">Emico\Tweakwise\Model\Client</argument>
+        </arguments>
+    </type>
+
+    <!-- TW blocks -->
+    <virtualType name="Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList\Plugin\Upsell" type="Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList\Plugin">
+        <arguments>
+            <argument name="type" xsi:type="string">upsell</argument>
+            <argument name="config" xsi:type="object">Emico\Tweakwise\Model\Config</argument>
+            <argument name="registry" xsi:type="object">Magento\Framework\Registry</argument>
+            <argument name="context" xsi:type="object">Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context\Product</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList\Plugin\Related" type="Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList\Plugin">
+        <arguments>
+            <argument name="type" xsi:type="string">crosssell</argument>
+            <argument name="config" xsi:type="object">Emico\Tweakwise\Model\Config</argument>
+            <argument name="registry" xsi:type="object">Magento\Framework\Registry</argument>
+            <argument name="context" xsi:type="object">Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context\Product</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Emico\Tweakwise\Block\Catalog\Product\ProductList\Featured">
+        <arguments>
+            <argument name="productContext" xsi:type="object">Magento\Catalog\Block\Product\Context</argument>
+            <argument name="postDataHelper" xsi:type="object">Magento\Framework\Data\Helper\PostHelper</argument>
+            <argument name="layerResolver" xsi:type="object">Magento\Catalog\Model\Layer\Resolver</argument>
+            <argument name="categoryRepository" xsi:type="object">Magento\Catalog\Api\CategoryRepositoryInterface</argument>
+            <argument name="urlHelper" xsi:type="object">Magento\Framework\Url\Helper\Data</argument>
+            <argument name="recommendationsContext" xsi:type="object">Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context\Featured</argument>
+            <argument name="config" xsi:type="object">Emico\Tweakwise\Model\Config</argument>
         </arguments>
     </type>
 

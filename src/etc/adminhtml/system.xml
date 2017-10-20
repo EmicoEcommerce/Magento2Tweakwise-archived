@@ -157,7 +157,7 @@
                 </field>
                 <field id="featured_enabled" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Featured products enabled</label>
-                    <comment>Shows featured product on all category pages. Can also be enabled per category or used as widget in CMS.</comment>
+                    <comment>Shows featured product on all category pages. Can also be enabled per category.</comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="featured_template" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
