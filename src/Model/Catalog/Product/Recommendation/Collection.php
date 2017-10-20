@@ -6,15 +6,13 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Emico\Tweakwise\Model\Catalog\Product;
+namespace Emico\Tweakwise\Model\Catalog\Product\Recommendation;
 
-use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext;
-use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
-use Magento\Catalog\Model\Category;
+use Emico\Tweakwise\Model\Catalog\Product\AbstractCollection;
+use Emico\Tweakwise\Model\Client\Response\RecommendationsResponse;
 use Magento\Catalog\Model\Indexer\Product\Flat\State;
 use Magento\Catalog\Model\Product\OptionFactory;
 use Magento\Catalog\Model\ResourceModel\Helper as CatalogResourceHelper;
-use Magento\Catalog\Model\ResourceModel\Product\Collection as ProductCollection;
 use Magento\Catalog\Model\ResourceModel\Url;
 use Magento\Customer\Api\GroupManagementInterface;
 use Magento\Customer\Model\Session;
@@ -32,14 +30,13 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\Validator\UniversalFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
-use Zend_Db_Select;
 
 class Collection extends AbstractCollection
 {
     /**
-     * @var NavigationContext
+     * @var RecommendationsResponse
      */
-    protected $navigationContext;
+    private $response;
 
     /**
      * {@inheritdoc}
@@ -64,7 +61,7 @@ class Collection extends AbstractCollection
         Session $customerSession,
         DateTime $dateTime,
         GroupManagementInterface $groupManagement,
-        NavigationContext $navigationContext,
+        RecommendationsResponse $response,
         AdapterInterface $connection = null
     )
     {
@@ -90,58 +87,7 @@ class Collection extends AbstractCollection
             $groupManagement,
             $connection
         );
-
-        $this->navigationContext = $navigationContext;
-    }
-
-    /**
-     * @param Category $category
-     * @return $this
-     */
-    public function addCategoryFilter(Category $category)
-    {
-        $this->navigationContext->getRequest()->addCategoryFilter($category);
-        return $this;
-    }
-
-    /**
-     * @param string $query
-     * @return $this
-     */
-    public function addSearchFilter($query)
-    {
-        $request = $this->navigationContext->getRequest();
-        if ($request instanceof ProductSearchRequest) {
-            $request->setSearch($query);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    protected function applyCollectionSizeValues()
-    {
-        $response = $this->navigationContext->getResponse();
-        $properties = $response->getProperties();
-
-        $this->_pageSize = $properties->getPageSize();
-        $this->_curPage = $properties->getCurrentPage();
-        $this->_totalRecords = $properties->getNumberOfItems();
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function _afterLoad()
-    {
-        parent::_afterLoad();
-
-        $this->applyCollectionSizeValues();
-
-        return $this;
+        $this->response = $response;
     }
 
     /**
@@ -149,7 +95,6 @@ class Collection extends AbstractCollection
      */
     protected function getProductIds()
     {
-        $response = $this->navigationContext->getResponse();
-        return $response->getProductIds();
+        return $this->response->getProductIds();
     }
 }
