@@ -60,8 +60,8 @@ class TemplateFinder
             return (int) $templateId;
         }
 
-        $parent = $category->getParentCategory();
-        if ($parent) {
+        if ($category->getParentId()) {
+            $parent = $category->getParentCategory();
             return $this->forCategory($parent, $type);
         }
 

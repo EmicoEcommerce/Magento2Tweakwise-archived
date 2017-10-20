@@ -123,6 +123,7 @@
             <argument name="productContext" xsi:type="object">Magento\Catalog\Block\Product\Context</argument>
             <argument name="postDataHelper" xsi:type="object">Magento\Framework\Data\Helper\PostHelper</argument>
             <argument name="layerResolver" xsi:type="object">Magento\Catalog\Model\Layer\Resolver</argument>
+            <argument name="templateFinder" xsi:type="object">Emico\Tweakwise\Model\Config\TemplateFinder</argument>
             <argument name="categoryRepository" xsi:type="object">Magento\Catalog\Api\CategoryRepositoryInterface</argument>
             <argument name="urlHelper" xsi:type="object">Magento\Framework\Url\Helper\Data</argument>
             <argument name="recommendationsContext" xsi:type="object">Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context\Featured</argument>

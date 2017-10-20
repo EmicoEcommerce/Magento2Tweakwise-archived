@@ -12,9 +12,11 @@ use Emico\Tweakwise\Model\Catalog\Product\Recommendation\Collection;
 use Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context as RecommendationsContext;
 use Emico\Tweakwise\Model\Client\Request\Recommendations\FeaturedRequest;
 use Emico\Tweakwise\Model\Config;
+use Emico\Tweakwise\Model\Config\TemplateFinder;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Block\Product\Context as ProductContext;
 use Magento\Catalog\Block\Product\ListProduct;
+use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Layer\Resolver;
 use Magento\Framework\Data\Helper\PostHelper;
 use Magento\Framework\Url\Helper\Data;
@@ -39,23 +41,30 @@ class Featured extends ListProduct
     private $config;
 
     /**
+     * @var TemplateFinder
+     */
+    private $templateFinder;
+
+    /**
      * Featured constructor.
      *
      * @param ProductContext $productContext
      * @param PostHelper $postDataHelper
      * @param Resolver $layerResolver
-     * @param CategoryRepositoryInterface $categoryRepository
-     * @param Data $urlHelper
-     * @param RecommendationsContext $recommendationsContext
-     * @param Config $config
-     * @param array $data
+     * @param TemplateFinder $templateFinder
+     * @internal param CategoryRepositoryInterface $categoryRepository
+     * @internal param Data $urlHelper
+     * @internal param RecommendationsContext $recommendationsContext
+     * @internal param Config $config
+     * @internal param array $data
      */
-    public function __construct(ProductContext $productContext, PostHelper $postDataHelper, Resolver $layerResolver,
+    public function __construct(ProductContext $productContext, PostHelper $postDataHelper, Resolver $layerResolver, TemplateFinder $templateFinder,
         CategoryRepositoryInterface $categoryRepository, Data $urlHelper, RecommendationsContext $recommendationsContext, Config $config, array $data = [])
     {
         parent::__construct($productContext, $postDataHelper, $layerResolver, $categoryRepository, $urlHelper, $data);
         $this->recommendationsContext = $recommendationsContext;
         $this->config = $config;
+        $this->templateFinder = $templateFinder;
     }
 
     /**
@@ -84,7 +93,13 @@ class Featured extends ListProduct
      */
     private function configureRequest(FeaturedRequest $request)
     {
-        $templateId = $this->config->getRecommendationsTemplate(Config::RECOMMENDATION_TYPE_FEATURED);
+        $category = $this->_coreRegistry->registry('current_category');
+        if ($category instanceof Category) {
+            $templateId = $this->templateFinder->forCategory($category, Config::RECOMMENDATION_TYPE_FEATURED);
+        } else {
+            $templateId = $this->config->getRecommendationsTemplate(Config::RECOMMENDATION_TYPE_FEATURED);
+        }
+
         $request->setTemplate($templateId);
     }
 }
