@@ -54,7 +54,16 @@ class TemplateFinder
      */
     public function forCategory(Category $category, $type)
     {
+        $attribute = $this->getAttribute($type);
+        $templateId = $category->getData($attribute);
+        if ($templateId) {
+            return (int) $templateId;
+        }
 
+        $parent = $category->getParentCategory();
+        if ($parent) {
+            return $this->forCategory($parent, $type);
+        }
 
         return $this->config->getRecommendationsTemplate($type);
     }
