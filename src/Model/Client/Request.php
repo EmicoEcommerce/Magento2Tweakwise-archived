@@ -72,6 +72,14 @@ class Request
     }
 
     /**
+     * @return string|null
+     */
+    public function getPathSuffix()
+    {
+        return null;
+    }
+
+    /**
      * @param string $parameter
      * @param string $value
      * @param string $separator

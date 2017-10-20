@@ -81,7 +81,7 @@ class Client
      */
     protected function doRequest(Request $request)
     {
-        $client = $this->createClient($request->getPath(), $request->getParameters());
+        $client = $this->createClient($request->getPath(), $request->getParameters(), $request->getPathSuffix());
 
         $start = microtime(true);
         try {

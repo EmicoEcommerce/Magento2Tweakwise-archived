@@ -8,11 +8,19 @@
 
 namespace Emico\Tweakwise\Model;
 
+use Emico\Tweakwise\Exception\InvalidArgumentException;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\Store;
 
 class Config
 {
+    /**
+     * Recommendation types
+     */
+    const RECOMMENDATION_TYPE_UPSELL = 'upsell';
+    const RECOMMENDATION_TYPE_CROSSSELL = 'crosssell';
+    const RECOMMENDATION_TYPE_FEATURED = 'featured';
+
     /**
      * @var ScopeConfigInterface
      */
@@ -169,57 +177,25 @@ class Config
     }
 
     /**
+     * @param string $type
      * @param Store|null $store
      * @return bool
      */
-    public function isRecommendationsCrosssellEnabled(Store $store = null)
+    public function isRecommendationsEnabled($type, Store $store = null)
     {
-        return (bool) $this->getStoreConfig($store, 'tweakwise/recommendations/crosssell_enabled');
+        $this->validateRecommendationType($type);
+        return (bool) $this->getStoreConfig($store, sprintf('tweakwise/recommendations/%s_enabled', $type));
     }
 
     /**
+     * @param string $type
      * @param Store|null $store
      * @return int
      */
-    public function getRecommendationsCrosssellTemplate(Store $store = null)
+    public function getRecommendationsTemplate($type, Store $store = null)
     {
-        return (int) $this->getStoreConfig($store, 'tweakwise/recommendations/crosssell_template');
-    }
-
-    /**
-     * @param Store|null $store
-     * @return bool
-     */
-    public function isRecommendationsUpsellEnabled(Store $store = null)
-    {
-        return (bool) $this->getStoreConfig($store, 'tweakwise/recommendations/upsell_enabled');
-    }
-
-    /**
-     * @param Store|null $store
-     * @return int
-     */
-    public function getRecommendationsUpsellTemplate(Store $store = null)
-    {
-        return (int) $this->getStoreConfig($store, 'tweakwise/recommendations/upsell_template');
-    }
-
-    /**
-     * @param Store|null $store
-     * @return bool
-     */
-    public function isRecommendationsFeaturedEnabled(Store $store = null)
-    {
-        return (bool) $this->getStoreConfig($store, 'tweakwise/recommendations/featured_enabled');
-    }
-
-    /**
-     * @param Store|null $store
-     * @return int
-     */
-    public function getRecommendationsFeaturedTemplate(Store $store = null)
-    {
-        return (int) $this->getStoreConfig($store, 'tweakwise/recommendations/featured_template');
+        $this->validateRecommendationType($type);
+        return (int) $this->getStoreConfig($store, sprintf('tweakwise/recommendations/%s_template', $type));
     }
 
     /**
@@ -243,5 +219,30 @@ class Config
         }
 
         return $this->config->getValue($path);
+    }
+
+    /**
+     * @param string $type
+     */
+    protected function validateRecommendationType($type)
+    {
+        if ($type === self::RECOMMENDATION_TYPE_UPSELL) {
+            return;
+        }
+
+        if ($type === self::RECOMMENDATION_TYPE_CROSSSELL) {
+            return;
+        }
+
+        if ($type === self::RECOMMENDATION_TYPE_FEATURED) {
+            return;
+        }
+
+        throw new InvalidArgumentException(sprintf(
+            '$type can be only of type string value: %s, %s, %s',
+            self::RECOMMENDATION_TYPE_UPSELL,
+            self::RECOMMENDATION_TYPE_CROSSSELL,
+            self::RECOMMENDATION_TYPE_FEATURED
+        ));
     }
 }
