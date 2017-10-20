@@ -69,7 +69,7 @@
             <argument name="implementation" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\Url\QueryParameters</argument>
         </arguments>
     </type>
-    <type name="Emico\Tweakwise\Model\Config\Source\Template">
+    <type name="Emico\Tweakwise\Model\Config\Source\FilterTemplate">
         <arguments>
             <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Catalog\TemplateRequest</argument>
             <argument name="client" xsi:type="object">Emico\Tweakwise\Model\Client</argument>

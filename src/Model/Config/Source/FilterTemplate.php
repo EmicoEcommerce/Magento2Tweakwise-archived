@@ -14,7 +14,7 @@ use Emico\Tweakwise\Model\Client\RequestFactory;
 use Emico\Tweakwise\Model\Client\Response\Catalog\TemplateResponse;
 use Magento\Framework\Option\ArrayInterface;
 
-class Template implements ArrayInterface
+class FilterTemplate implements ArrayInterface
 {
     /**
      * @var Client

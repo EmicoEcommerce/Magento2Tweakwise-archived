@@ -121,7 +121,7 @@
                 </field>
                 <field id="template" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Tweakwise search template to use in search results.</label>
-                    <source_model>Emico\Tweakwise\Model\Config\Source\Template</source_model>
+                    <source_model>Emico\Tweakwise\Model\Config\Source\FilterTemplate</source_model>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
