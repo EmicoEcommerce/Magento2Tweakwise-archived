@@ -26,7 +26,6 @@
                 </item>
             </argument>
         </field>
-
         <field name="tweakwise_crosssell_template">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">Emico\Tweakwise\Model\Config\Source\RecommendationOption\Product</item>

@@ -53,7 +53,7 @@ class UpgradeData implements UpgradeDataInterface
     private function ensureCrosssellTemplateAttribute(EavSetup $eavSetup)
     {
         foreach ([Category::ENTITY, Product::ENTITY] as $entityType) {
-            $eavSetup->addAttribute($entityType, Config::ATTRIBUTE_PRODUCT_CROSSSELL_TEMPLATE, [
+            $eavSetup->addAttribute($entityType, Config::ATTRIBUTE_CROSSSELL_TEMPLATE, [
                 'type' => 'int',
                 'label' => 'Crosssell template',
                 'input' => 'select',
@@ -69,7 +69,7 @@ class UpgradeData implements UpgradeDataInterface
     private function ensureUpsellTemplateAttribute(EavSetup $eavSetup)
     {
         foreach ([Category::ENTITY, Product::ENTITY] as $entityType) {
-            $eavSetup->addAttribute($entityType, Config::ATTRIBUTE_PRODUCT_UPSELL_TEMPLATE, [
+            $eavSetup->addAttribute($entityType, Config::ATTRIBUTE_UPSELL_TEMPLATE, [
                 'type' => 'int',
                 'label' => 'Upsell template',
                 'input' => 'select',
@@ -84,7 +84,7 @@ class UpgradeData implements UpgradeDataInterface
 
     private function ensureFeaturedTemplateAttribute(EavSetup $eavSetup)
     {
-        $eavSetup->addAttribute(Category::ENTITY, Config::ATTRIBUTE_PRODUCT_UPSELL_TEMPLATE, [
+        $eavSetup->addAttribute(Category::ENTITY, Config::ATTRIBUTE_FEATURED_TEMPLATE, [
             'type' => 'int',
             'label' => 'Featured products template',
             'input' => 'select',
