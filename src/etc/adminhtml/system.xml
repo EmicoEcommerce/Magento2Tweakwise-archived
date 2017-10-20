@@ -120,10 +120,60 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="template" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Tweakwise search template to use in search results.</label>
+                    <label>Tweakwise search template to use in search results</label>
                     <source_model>Emico\Tweakwise\Model\Config\Source\FilterTemplate</source_model>
                     <depends>
                         <field id="enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="recommendations" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Recommendations</label>
+                <field id="crosssell_enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Crosssell enabled</label>
+                    <comment>Shows crosssell product on all product pages. This overrides the default related products. Can also be enabled per category.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="crosssell_template" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default crosssell template</label>
+                    <source_model>Emico\Tweakwise\Model\Config\Source\RecommendationOption\Product</source_model>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="crosssell_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="upsell_enabled" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Upsell enabled</label>
+                    <comment>Shows upsell product on all product pages. This overrides the default upsell products. Can also be enabled per category.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="upsell_template" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default upsell template</label>
+                    <source_model>Emico\Tweakwise\Model\Config\Source\RecommendationOption\Product</source_model>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="upsell_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="featured_enabled" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Featured products enabled</label>
+                    <comment>Shows featured product on all category pages. Can also be enabled per category or used as widget in CMS.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="featured_template" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default featured product template</label>
+                    <source_model>Emico\Tweakwise\Model\Config\Source\RecommendationOption\Featured</source_model>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="featured_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="featured_location" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Featured product location</label>
+                    <source_model>Emico\Tweakwise\Model\Config\Source\FeaturedLocation</source_model>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="featured_enabled">1</field>
                     </depends>
                 </field>
             </group>

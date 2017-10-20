@@ -34,6 +34,15 @@
                 <enabled>0</enabled>
                 <template/>
             </search>
+            <recommendations>
+                <crosssell_enabled>0</crosssell_enabled>
+                <crosssell_template />
+                <upsell_enabled>0</upsell_enabled>
+                <upsell_template />
+                <featured_enabled>0</featured_enabled>
+                <featured_template />
+                <featured_location>before</featured_location>
+            </recommendations>
         </tweakwise>
     </default>
 </config>

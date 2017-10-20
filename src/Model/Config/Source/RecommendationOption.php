@@ -11,10 +11,10 @@ namespace Emico\Tweakwise\Model\Config\Source;
 use Emico\Tweakwise\Exception\ApiException;
 use Emico\Tweakwise\Model\Client;
 use Emico\Tweakwise\Model\Client\RequestFactory;
-use Emico\Tweakwise\Model\Client\Response\Catalog\TemplateResponse;
+use Emico\Tweakwise\Model\Client\Response\Catalog\Recommendation\OptionsResponse;
 use Magento\Framework\Option\ArrayInterface;
 
-class FilterTemplate implements ArrayInterface
+class RecommendationOption implements ArrayInterface
 {
     /**
      * @var Client
@@ -54,13 +54,12 @@ class FilterTemplate implements ArrayInterface
     protected function buildOptions()
     {
         $request = $this->requestFactory->create();
-        /** @var TemplateResponse $response */
+        /** @var OptionsResponse $response */
         $response = $this->client->request($request);
-        $result = [
-            ['value' => null, 'label' => __('* Default template')],
-        ];
-        foreach ($response->getTemplates() as $template) {
-            $result[] = ['value' => $template->getTemplateId(), 'label' => $template->getName()];
+
+        $result = [];
+        foreach ($response->getRecommendations() as $recommendation) {
+            $result[] = ['value' => $recommendation->getId(), 'label' => $recommendation->getName()];
         }
         return $result;
     }

@@ -15,4 +15,17 @@
             <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Catalog\TemplateRequest</argument>
         </arguments>
     </type>
+    
+    <virtualType name="Emico\Tweakwise\Model\Config\Source\RecommendationOption\Product" type="Emico\Tweakwise\Model\Config\Source\RecommendationOption">
+        <arguments>
+            <argument name="client" xsi:type="object">Emico\Tweakwise\Model\Client</argument>
+            <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Catalog\Recommendation\ProductRequest</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Emico\Tweakwise\Model\Config\Source\RecommendationOption\Featured" type="Emico\Tweakwise\Model\Config\Source\RecommendationOption">
+        <arguments>
+            <argument name="client" xsi:type="object">Emico\Tweakwise\Model\Client</argument>
+            <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Catalog\Recommendation\FeaturedRequest</argument>
+        </arguments>
+    </virtualType>
 </config>

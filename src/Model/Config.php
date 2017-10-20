@@ -170,6 +170,69 @@ class Config
 
     /**
      * @param Store|null $store
+     * @return bool
+     */
+    public function isRecommendationsCrosssellEnabled(Store $store = null)
+    {
+        return (bool) $this->getStoreConfig($store, 'tweakwise/recommendations/crosssell_enabled');
+    }
+
+    /**
+     * @param Store|null $store
+     * @return int
+     */
+    public function getRecommendationsCrosssellTemplate(Store $store = null)
+    {
+        return (int) $this->getStoreConfig($store, 'tweakwise/recommendations/crosssell_template');
+    }
+
+    /**
+     * @param Store|null $store
+     * @return bool
+     */
+    public function isRecommendationsUpsellEnabled(Store $store = null)
+    {
+        return (bool) $this->getStoreConfig($store, 'tweakwise/recommendations/upsell_enabled');
+    }
+
+    /**
+     * @param Store|null $store
+     * @return int
+     */
+    public function getRecommendationsUpsellTemplate(Store $store = null)
+    {
+        return (int) $this->getStoreConfig($store, 'tweakwise/recommendations/upsell_template');
+    }
+
+    /**
+     * @param Store|null $store
+     * @return bool
+     */
+    public function isRecommendationsFeaturedEnabled(Store $store = null)
+    {
+        return (bool) $this->getStoreConfig($store, 'tweakwise/recommendations/featured_enabled');
+    }
+
+    /**
+     * @param Store|null $store
+     * @return int
+     */
+    public function getRecommendationsFeaturedTemplate(Store $store = null)
+    {
+        return (int) $this->getStoreConfig($store, 'tweakwise/recommendations/featured_template');
+    }
+
+    /**
+     * @param Store|null $store
+     * @return string
+     */
+    public function getRecommendationsFeaturedLocation(Store $store = null)
+    {
+        return (string) $this->getStoreConfig($store, 'tweakwise/recommendations/featured_location');
+    }
+
+    /**
+     * @param Store|null $store
      * @param string $path
      * @return mixed|null|string
      */
