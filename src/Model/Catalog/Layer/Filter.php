@@ -161,6 +161,11 @@ class Filter extends AbstractFilter implements FilterInterface
         return $this->items;
     }
 
+    public function getVisibleItems()
+    {
+
+    }
+
     /**
      * @param AttributeType $item
      * @return $this

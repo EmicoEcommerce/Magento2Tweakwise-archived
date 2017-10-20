@@ -8,6 +8,7 @@
 
 namespace Emico\Tweakwise\Model\Catalog\Layer\FilterList;
 
+use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\FilterFactory;
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
 use Emico\Tweakwise\Model\Client\Type\FacetType;
@@ -78,29 +79,30 @@ class Tweakwise
         $filterAttributes = $navigationContext->getFilterAttributeMap();
         $this->filters = [];
         foreach ($facets as $facet) {
-            if (!$this->shouldHideFacet($facet)) {
-                continue;
-            }
-
             $key = $facet->getFacetSettings()->getUrlKey();
             $attribute = isset($filterAttributes[$key]) ? $filterAttributes[$key] : null;
 
-            $this->filters[] = $this->filterFactory->create(['facet' => $facet, 'layer' => $layer, 'attribute' => $attribute]);
+            $filter = $this->filterFactory->create(['facet' => $facet, 'layer' => $layer, 'attribute' => $attribute]);
+            if ($this->shouldHideFacet($filter)) {
+                continue;
+            }
+
+            $this->filters[] = $filter;
         }
 
         return $this;
     }
 
     /**
-     * @param FacetType $facet
+     * @param Filter $filter
      * @return bool
      */
-    protected function shouldHideFacet(FacetType $facet)
+    protected function shouldHideFacet(Filter $filter)
     {
         if (!$this->config->getHideSingleOptions()) {
             return false;
         }
 
-        return count($facet->getAttributes()) === 1;
+        return count($filter->getItems()) === 1;
     }
 }
