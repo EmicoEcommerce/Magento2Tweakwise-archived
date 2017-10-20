@@ -1,7 +1,9 @@
 <?php
 /**
- * @author Emico <info@emico.nl>
- * @copyright (c) Emico B.V. 2017
+ * Tweakwise & Emico (https://www.tweakwise.com/ & https://www.emico.nl/) - All Rights Reserved
+ *
+ * @copyright Copyright (c) 2017-2017 Tweakwise.com B.V. (https://www.tweakwise.com)
+ * @license   Proprietary and confidential, Unauthorized copying of this file, via any medium is strictly prohibited
  */
 
 namespace Emico\Tweakwise\Block\Catalog\Product\ProductList;
@@ -10,7 +12,6 @@ use Emico\Tweakwise\Model\Catalog\Product\Recommendation\Collection;
 use Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context as RecommendationsContext;
 use Emico\Tweakwise\Model\Client\Request\Recommendations\FeaturedRequest;
 use Emico\Tweakwise\Model\Config;
-use Emico\Tweakwise\Model\Config\Source\FeaturedLocation;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Block\Product\Context as ProductContext;
 use Magento\Catalog\Block\Product\ListProduct;

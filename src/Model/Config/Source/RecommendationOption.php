@@ -12,9 +12,9 @@ use Emico\Tweakwise\Exception\ApiException;
 use Emico\Tweakwise\Model\Client;
 use Emico\Tweakwise\Model\Client\RequestFactory;
 use Emico\Tweakwise\Model\Client\Response\Catalog\Recommendation\OptionsResponse;
-use Magento\Framework\Option\ArrayInterface;
+use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 
-class RecommendationOption implements ArrayInterface
+class RecommendationOption extends AbstractSource
 {
     /**
      * @var Client
@@ -67,7 +67,7 @@ class RecommendationOption implements ArrayInterface
     /**
      * {@inheritdoc}
      */
-    public function toOptionArray()
+    public function getAllOptions()
     {
         if (!$this->options) {
             try {
