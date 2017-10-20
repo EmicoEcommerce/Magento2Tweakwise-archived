@@ -39,4 +39,14 @@
             <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\Catalog\Recommendation\FeaturedRequest</argument>
         </arguments>
     </virtualType>
+    <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\Recommendations\ProductRequest" type="Emico\Tweakwise\Model\Client\RequestFactory">
+        <arguments>
+            <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\Recommendations\ProductRequest</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\Recommendations\FeaturedRequest" type="Emico\Tweakwise\Model\Client\RequestFactory">
+        <arguments>
+            <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\Recommendations\FeaturedRequest</argument>
+        </arguments>
+    </virtualType>
 </config>

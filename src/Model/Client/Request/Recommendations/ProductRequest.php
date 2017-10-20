@@ -6,7 +6,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Emico\Tweakwise\Model\Client\Request\Recommendation;
+namespace Emico\Tweakwise\Model\Client\Request\Recommendations;
 
 use Emico\Tweakwise\Exception\ApiException;
 use Emico\TweakwiseExport\Model\Helper;
@@ -56,6 +56,6 @@ class ProductRequest extends FeaturedRequest
         if (!$this->product) {
             throw new ApiException('Featured products without product was requested.');
         }
-        return  parent::getPathSuffix() . '/' . $this->helper->getTweakwiseId($this->product->getStoreId(), $this->product->getId());
+        return parent::getPathSuffix() . '/' . $this->helper->getTweakwiseId($this->product->getStoreId(), $this->product->getId());
     }
 }

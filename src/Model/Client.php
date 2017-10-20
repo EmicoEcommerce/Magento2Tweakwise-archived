@@ -59,11 +59,18 @@ class Client
      *
      * @param string $path
      * @param array|null $parameters
+     * @param string $pathSuffix
      * @return HttpClient
      */
-    protected function createClient($path, array $parameters = null)
+    protected function createClient($path, array $parameters = null, $pathSuffix)
     {
-        $url = sprintf('%s/%s/%s', rtrim($this->config->getGeneralServerUrl(), '/'), trim($path, '/'), $this->config->getGeneralAuthenticationKey());
+        $url = sprintf(
+            '%s/%s/%s%s',
+            rtrim($this->config->getGeneralServerUrl(), '/'),
+            trim($path, '/'),
+            $this->config->getGeneralAuthenticationKey(),
+            $pathSuffix
+        );
 
         $client = new HttpClient();
         $client->setOptions(['timeout' => $this->config->getTimeout()]);

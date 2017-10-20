@@ -6,7 +6,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Emico\Tweakwise\Model\Client\Request\Recommendation;
+namespace Emico\Tweakwise\Model\Client\Request\Recommendations;
 
 use Emico\Tweakwise\Exception\ApiException;
 use Emico\Tweakwise\Model\Client\Request;
