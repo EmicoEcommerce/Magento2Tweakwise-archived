@@ -10,6 +10,8 @@ namespace Emico\Tweakwise\Model\Catalog\Layer\FilterList;
 
 use Emico\Tweakwise\Model\Catalog\Layer\FilterFactory;
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
+use Emico\Tweakwise\Model\Client\Type\FacetType;
+use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Model\Layer;
 use Magento\Catalog\Model\Layer\Filter\FilterInterface;
 
@@ -18,17 +20,22 @@ class Tweakwise
     /**
      * @var FilterInterface[]
      */
-    protected $filters;
+    private $filters;
 
     /**
      * @var FilterFactory
      */
-    protected $filterFactory;
+    private $filterFactory;
 
     /**
      * @var CurrentContext
      */
-    protected $context;
+    private $context;
+
+    /**
+     * @var Config
+     */
+    private $config;
 
     /**
      * Tweakwise constructor.
@@ -36,10 +43,11 @@ class Tweakwise
      * @param FilterFactory $filterFactory
      * @param CurrentContext $context
      */
-    public function __construct(FilterFactory $filterFactory, CurrentContext $context)
+    public function __construct(FilterFactory $filterFactory, CurrentContext $context, Config $config)
     {
         $this->filterFactory = $filterFactory;
         $this->context = $context;
+        $this->config = $config;
     }
 
     /**
@@ -61,7 +69,6 @@ class Tweakwise
      */
     protected function initFilters(Layer $layer)
     {
-
         $request = $this->context->getRequest();
         $request->addCategoryFilter($layer->getCurrentCategory());
 
@@ -71,6 +78,10 @@ class Tweakwise
         $filterAttributes = $navigationContext->getFilterAttributeMap();
         $this->filters = [];
         foreach ($facets as $facet) {
+            if (!$this->shouldHideFacet($facet)) {
+                continue;
+            }
+
             $key = $facet->getFacetSettings()->getUrlKey();
             $attribute = isset($filterAttributes[$key]) ? $filterAttributes[$key] : null;
 
@@ -78,5 +89,18 @@ class Tweakwise
         }
 
         return $this;
+    }
+
+    /**
+     * @param FacetType $facet
+     * @return bool
+     */
+    protected function shouldHideFacet(FacetType $facet)
+    {
+        if (!$this->config->getHideSingleOptions()) {
+            return false;
+        }
+
+        return count($facet->getAttributes()) === 1;
     }
 }
