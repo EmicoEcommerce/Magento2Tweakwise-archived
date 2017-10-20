@@ -66,23 +66,6 @@ class Featured extends ListProduct
     }
 
     /**
-     * @return string
-     */
-    protected function _toHtml()
-    {
-        $renderLocation = $this->getRenderLocation();
-        if ($renderLocation === null) {
-            return parent::_toHtml();
-        }
-
-        if ($renderLocation !== $this->config->getRecommendationsFeaturedLocation()) {
-            return '';
-        }
-
-        return parent::_toHtml();
-    }
-
-    /**
      * {@inheritdoc}
      */
     protected function _getProductCollection()
