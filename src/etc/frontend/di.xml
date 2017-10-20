@@ -43,28 +43,6 @@
         </arguments>
     </type>
 
-    <!-- Tweakwise virtual request factory types -->
-    <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\ProductNavigationRequest" type="Emico\Tweakwise\Model\Client\RequestFactory">
-        <arguments>
-            <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest</argument>
-        </arguments>
-    </virtualType>
-    <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\ProductSearchRequest" type="Emico\Tweakwise\Model\Client\RequestFactory">
-        <arguments>
-            <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\ProductSearchRequest</argument>
-        </arguments>
-    </virtualType>
-    <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\AutocompleteRequest" type="Emico\Tweakwise\Model\Client\RequestFactory">
-        <arguments>
-            <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\AutocompleteRequest</argument>
-        </arguments>
-    </virtualType>
-    <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\Catalog\TemplateRequest" type="Emico\Tweakwise\Model\Client\RequestFactory">
-        <arguments>
-            <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\Catalog\TemplateRequest</argument>
-        </arguments>
-    </virtualType>
-
     <virtualType name="Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\Category" type="Emico\Tweakwise\Model\Catalog\Layer\NavigationContext">
         <arguments>
             <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\ProductNavigationRequest</argument>

@@ -49,7 +49,6 @@ class Template implements ArrayInterface
     }
 
     /**
-     *
      * @return array
      */
     protected function buildOptions()
