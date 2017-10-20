@@ -64,7 +64,7 @@ class Plugin
     /**
      * @param AbstractProductList $subject
      * @param Closure $proceed
-     * @return Collection
+     * @return array
      */
     public function aroundGetItemCollection(AbstractProductList $subject, Closure $proceed)
     {
@@ -72,7 +72,7 @@ class Plugin
             return $proceed();
         }
 
-        return $this->getCollection();
+        return $this->getCollection()->getItems();
     }
 
     /**
