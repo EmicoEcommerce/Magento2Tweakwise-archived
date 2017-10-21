@@ -24,9 +24,9 @@ class Config
     /**
      * Attribute names
      */
-    const ATTRIBUTE_CATEGORY_FEATURED_TEMPLATE = 'tweakwise_featured_template';
-    const ATTRIBUTE_PRODUCT_UPSELL_TEMPLATE = 'tweakwise_upsell_template';
-    const ATTRIBUTE_PRODUCT_CROSSSELL_TEMPLATE = 'tweakwise_crosssell_template';
+    const ATTRIBUTE_FEATURED_TEMPLATE = 'tweakwise_featured_template';
+    const ATTRIBUTE_UPSELL_TEMPLATE = 'tweakwise_upsell_template';
+    const ATTRIBUTE_CROSSSELL_TEMPLATE = 'tweakwise_crosssell_template';
 
     /**
      * @var ScopeConfigInterface
