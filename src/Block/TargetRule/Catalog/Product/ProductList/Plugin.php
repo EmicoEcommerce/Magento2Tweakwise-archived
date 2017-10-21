@@ -9,6 +9,7 @@
 namespace Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList;
 
 use Closure;
+use Emico\Tweakwise\Exception\ApiException;
 use Emico\Tweakwise\Exception\InvalidArgumentException;
 use Emico\Tweakwise\Model\Catalog\Product\Recommendation\Collection;
 use Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context;
@@ -81,7 +82,11 @@ class Plugin
             return $proceed();
         }
 
-        return $this->getCollection()->getItems();
+        try {
+            return $this->getCollection()->getItems();
+        } catch (ApiException $e) {
+            return $proceed();
+        }
     }
 
     /**
@@ -95,7 +100,11 @@ class Plugin
             return $proceed();
         }
 
-        return $this->getCollection()->count();
+        try {
+            return $this->getCollection()->count();
+        } catch (ApiException $e) {
+            return $proceed();
+        }
     }
 
     /**

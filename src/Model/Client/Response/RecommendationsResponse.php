@@ -15,11 +15,21 @@ use Emico\Tweakwise\Model\Client\Type\ItemType;
  * Class RecommendationsResponse
  *
  * @package Emico\Tweakwise\Model\Client\Response
- *
- * @method ItemType[] getItems();
  */
 class RecommendationsResponse extends Response
 {
+    /**
+     * @return ItemType[]
+     */
+    public function getItems()
+    {
+        $data = $this->getDataValue('items');
+        if (!$data) {
+            return [];
+        }
+        return $data;
+    }
+
     /**
      * @param ItemType[]|array[] $items
      * @return $this

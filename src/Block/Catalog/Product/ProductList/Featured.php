@@ -8,6 +8,7 @@
 
 namespace Emico\Tweakwise\Block\Catalog\Product\ProductList;
 
+use Emico\Tweakwise\Exception\ApiException;
 use Emico\Tweakwise\Model\Catalog\Product\Recommendation\Collection;
 use Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context as RecommendationsContext;
 use Emico\Tweakwise\Model\Client\Request\Recommendations\FeaturedRequest;
@@ -106,11 +107,32 @@ class Featured extends ListProduct
     /**
      * {@inheritdoc}
      */
+    protected function _beforeToHtml()
+    {
+        try {
+            $this->_getProductCollection();
+        } catch (ApiException $e) {
+            return;
+        }
+
+        return parent::_beforeToHtml();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function _toHtml()
     {
         if (!$this->config->isRecommendationsEnabled(Config::RECOMMENDATION_TYPE_FEATURED)) {
             return '';
         }
+
+        try {
+            $this->_getProductCollection();
+        } catch (ApiException $e) {
+            return '';
+        }
+
         return parent::_toHtml();
     }
 }
