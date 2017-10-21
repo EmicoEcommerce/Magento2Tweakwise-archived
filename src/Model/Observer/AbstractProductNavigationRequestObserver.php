@@ -11,6 +11,7 @@ namespace Emico\Tweakwise\Model\Observer;
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
 use Emico\Tweakwise\Model\Config;
 use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\Action\Context;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\HTTP\PhpEnvironment\Response;
@@ -34,9 +35,9 @@ abstract class AbstractProductNavigationRequestObserver implements ObserverInter
     protected $urlBuilder;
 
     /**
-     * @var Action
+     * @var \Magento\Framework\App\ResponseInterface
      */
-    protected $controller;
+    protected $response;
 
     /**
      * CatalogLastPageRedirect constructor.
@@ -44,14 +45,14 @@ abstract class AbstractProductNavigationRequestObserver implements ObserverInter
      * @param Config $config
      * @param CurrentContext $context
      * @param UrlInterface $urlBuilder
-     * @param Action $action
+     * @param Context $actionContext
      */
-    public function __construct(Config $config, CurrentContext $context, UrlInterface $urlBuilder, Action $action)
+    public function __construct(Config $config, CurrentContext $context, UrlInterface $urlBuilder,  Context $actionContext)
     {
         $this->config = $config;
         $this->context = $context;
         $this->urlBuilder = $urlBuilder;
-        $this->controller = $action;
+        $this->response = $actionContext->getResponse();
     }
 
     /**
@@ -59,7 +60,7 @@ abstract class AbstractProductNavigationRequestObserver implements ObserverInter
      */
     protected function getHttpResponse()
     {
-        $response = $this->controller->getResponse();
+        $response = $this->response;
         if (!$response instanceof Response) {
             return null;
         }
