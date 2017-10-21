@@ -102,4 +102,15 @@ class Featured extends ListProduct
 
         $request->setTemplate($templateId);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function _toHtml()
+    {
+        if (!$this->config->isRecommendationsEnabled(Config::RECOMMENDATION_TYPE_FEATURED)) {
+            return '';
+        }
+        return parent::_toHtml();
+    }
 }
