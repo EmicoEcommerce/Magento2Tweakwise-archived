@@ -9,7 +9,7 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\DefaultRenderer;
 
 /** @var $block DefaultRenderer */
 ?>
-<div id="<?=$block->getCssId()?>">
+<div data-mage-init='{"tweakwiseNavigationFilter": {}}'>
     <ol class="items">
         <?php foreach ($block->getItems() as $item): ?>
             <li class="item<?=$block->itemDefaultHidden($item) ? ' default-hidden' : ''?>">
@@ -48,19 +48,5 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\DefaultRenderer;
     <?php if ($block->hasHiddenItems()): ?>
         <a class="more-items"><?=__($block->getMoreItemText())?></a>
         <a class="less-items default-hidden"><?=__($block->getLessItemText())?></a>
-        <script type="text/javascript">
-            require(['jquery'], function($){
-                var container = $('#<?=$this->getCssId()?>');
-                container.on('click', '.more-items', function (){
-                    container.find('.default-hidden').show();
-                    container.find('.more-items').hide();
-                });
-
-                container.on('click', '.less-items', function (){
-                    container.find('.default-hidden').hide();
-                    container.find('.more-items').show();
-                });
-            });
-        </script>
     <?php endif; ?>
 </div>
