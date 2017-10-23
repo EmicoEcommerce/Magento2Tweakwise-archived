@@ -82,8 +82,16 @@ class Featured extends ListProduct
     protected function _getProductCollection()
     {
         if ($this->_productCollection === null) {
-            $this->configureRequest($this->recommendationsContext->getRequest());
-            $this->_productCollection = $this->recommendationsContext->getCollection();
+            if (!$this->config->isRecommendationsEnabled(Config::RECOMMENDATION_TYPE_FEATURED)) {
+                $this->_productCollection = parent::_getProductCollection()->addFieldToFilter('entity_id', ['null' => true]);
+            } else {
+                try {
+                    $this->configureRequest($this->recommendationsContext->getRequest());
+                    $this->_productCollection = $this->recommendationsContext->getCollection();
+                } catch (ApiException $e) {
+                    $this->_productCollection = parent::_getProductCollection()->addFieldToFilter('entity_id', ['null' => true]);
+                }
+            }
         }
 
         return $this->_productCollection;
@@ -107,21 +115,7 @@ class Featured extends ListProduct
     /**
      * {@inheritdoc}
      */
-    protected function _beforeToHtml()
-    {
-        try {
-            $this->_getProductCollection();
-        } catch (ApiException $e) {
-            return;
-        }
-
-        return parent::_beforeToHtml();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function _toHtml()
+    public function toHtml()
     {
         if (!$this->config->isRecommendationsEnabled(Config::RECOMMENDATION_TYPE_FEATURED)) {
             return '';
@@ -133,6 +127,6 @@ class Featured extends ListProduct
             return '';
         }
 
-        return parent::_toHtml();
+        return parent::toHtml();
     }
 }
