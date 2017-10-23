@@ -40,6 +40,16 @@ define([
             }
 
             window.location.href = url;
+        },
+
+        _onPropertyChange: function () {
+            if (this.searchDelayTimeout) {
+                clearTimeout(this.searchDelayTimeout);
+            }
+
+            this.searchDelayTimeout = setTimeout(function() {
+                quickSearch.prototype._onPropertyChange.apply(this);
+            }.bind(this), 200);
         }
     });
 
