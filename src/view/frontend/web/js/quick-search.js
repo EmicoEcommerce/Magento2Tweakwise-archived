@@ -5,9 +5,9 @@
 
 require([
     'jquery',
-    'quickSearch'
+    'Magento_Search/form-mini'
 ], function($, quickSearch){
-    $.widget('mage.tweakwiseQuickSearch', quickSearch, {
+    $.widget('tweakwise.quickSearch', quickSearch, {
 
         getSelectedProductUrl: function() {
             if (!this.responseList.selected) {
@@ -37,5 +37,5 @@ require([
         }
     });
 
-    return $.mage.tweakwiseQuickSearch;
+    return $.tweakwise.quickSearch;
 });

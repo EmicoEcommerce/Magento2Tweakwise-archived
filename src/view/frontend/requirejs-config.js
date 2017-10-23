@@ -1,7 +1,8 @@
 var config = {
     map: {
         '*': {
-            tweakwiseQuickSearch: 'Emico_Tweakwise/form-mini'
+            quickSearch: 'Emico_Tweakwise/js/quick-search',
+            tweakwiseNavigationFilter: 'Emico_Tweakwise/js/navigation-filter'
         }
     }
 };

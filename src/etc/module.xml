@@ -11,6 +11,7 @@
     <module name="Emico_Tweakwise" setup_version="0.2.0">
         <sequence>
             <module name="Magento_CatalogSearch"/>
+            <module name="Magento_Search"/>
         </sequence>
     </module>
 </config>
