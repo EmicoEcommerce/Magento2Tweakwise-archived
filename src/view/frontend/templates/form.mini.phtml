@@ -8,7 +8,7 @@
 
 /** @var $block \Emico\Tweakwise\Block\Autocomplete\FormMini */
 ?>
-<script id="autocomplete-item-template" type="text/x-magento-template">
+<script id="autocomplete-item-template" type="text/x-magento-template" data-url="<?=$block->getAjaxUrl()?>">
     <% if (data.type === 'product') { %>
         <li class="<%- data.row_class %> product-item" id="qs-option-<%- data.index %>" data-url="<%- data.url %>" role="option">
             <% if (data.image) { %>
@@ -53,22 +53,9 @@
             <span aria-hidden="true" class="amount"><%- data.num_results %></span>
         </li>
     <% } %>
-
 </script>
 <script type="text/javascript">
-    require([
-        'jquery',
-        'Emico_Tweakwise/js/quick-search',
-        'Magento_Catalog/js/price-utils'
-    ], function($, widget, priceUtils){
-        var searchElement = $('#search');
-        var initData = searchElement.data('mage-init');
-
-        initData.quickSearch.url = '<?=$block->getAjaxUrl(); ?>';
-        initData.quickSearch.template = '#autocomplete-item-template';
-
-        searchElement.attr('data-mage-init', JSON.stringify(initData));
-
+    require(['Magento_Catalog/js/price-utils'], function(priceUtils){
         window['autocompleteFormatPrice'] = function(price) {
             return priceUtils.formatPrice(price, <?=$block->getJsonPriceFormat()?>);
         };

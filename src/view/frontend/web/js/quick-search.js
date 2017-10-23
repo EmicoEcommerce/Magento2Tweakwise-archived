@@ -5,7 +5,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require([
+define([
     'jquery',
     'Magento_Search/form-mini'
 ], function($, quickSearch){
@@ -25,6 +25,10 @@ require([
                     event.preventDefault();
                 }
             }.bind(this));
+
+            var templateId = '#autocomplete-item-template';
+            this.options.template = templateId;
+            this.options.url = $(templateId).data('url');
 
             return this._superApply(arguments);
         },
