@@ -63,6 +63,16 @@ class UpgradeData implements UpgradeDataInterface
                 'group' => 'Tweakwise',
                 'source' => 'Emico\Tweakwise\Model\Config\Source\RecommendationOption\Product',
             ]);
+
+            $eavSetup->addAttribute($entityType, Config::ATTRIBUTE_CROSSSELL_GROUP_CODE, [
+                'type' => 'varchar',
+                'label' => 'Crosssell group code',
+                'input' => 'text',
+                'required' => false,
+                'sort_order' => 10,
+                'global' => ScopedAttributeInterface::SCOPE_STORE,
+                'group' => 'Tweakwise',
+            ]);
         }
     }
 
@@ -78,6 +88,16 @@ class UpgradeData implements UpgradeDataInterface
                 'global' => ScopedAttributeInterface::SCOPE_STORE,
                 'group' => 'Tweakwise',
                 'source' => 'Emico\Tweakwise\Model\Config\Source\RecommendationOption\Product',
+            ]);
+
+            $eavSetup->addAttribute($entityType, Config::ATTRIBUTE_UPSELL_GROUP_CODE, [
+                'type' => 'varchar',
+                'label' => 'Upsell group code',
+                'input' => 'text',
+                'required' => false,
+                'sort_order' => 10,
+                'global' => ScopedAttributeInterface::SCOPE_STORE,
+                'group' => 'Tweakwise',
             ]);
         }
     }

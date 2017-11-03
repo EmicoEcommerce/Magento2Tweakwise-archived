@@ -17,6 +17,11 @@ use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 class RecommendationOption extends AbstractSource
 {
     /**
+     * Option to use when expecting a code instead of template id
+     */
+    const OPTION_CODE = -1;
+
+    /**
      * @var Client
      */
     protected $client;
@@ -37,15 +42,22 @@ class RecommendationOption extends AbstractSource
     protected $options;
 
     /**
+     * @var bool
+     */
+    protected $addCodeOption;
+
+    /**
      * Template constructor.
      *
      * @param Client $client
      * @param RequestFactory $requestFactory
+     * @param bool $addCodeOption
      */
-    public function __construct(Client $client, RequestFactory $requestFactory)
+    public function __construct(Client $client, RequestFactory $requestFactory, $addCodeOption = false)
     {
         $this->client = $client;
         $this->requestFactory = $requestFactory;
+        $this->addCodeOption = $addCodeOption;
     }
 
     /**
@@ -58,6 +70,11 @@ class RecommendationOption extends AbstractSource
         $response = $this->client->request($request);
 
         $result = [];
+
+        if ($this->addCodeOption) {
+            $result[] = ['value' => self::OPTION_CODE, 'label' => __('- Group code -')];
+        }
+
         foreach ($response->getRecommendations() as $recommendation) {
             $result[] = ['value' => $recommendation->getId(), 'label' => $recommendation->getName()];
         }

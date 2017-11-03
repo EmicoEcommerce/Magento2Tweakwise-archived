@@ -36,6 +36,16 @@
                 </item>
             </argument>
         </field>
+        <field name="tweakwise_crosssell_group_code">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="label" xsi:type="string" translate="true">Product crosssell group code</item>
+                    <item name="comment" xsi:type="string" translate="true">Only used when template "- Group code -" is selected.</item>
+                    <item name="sortOrder" xsi:type="number">21</item>
+                </item>
+            </argument>
+        </field>
         <field name="tweakwise_upsell_template">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">Emico\Tweakwise\Model\Config\Source\RecommendationOption\Product</item>
@@ -43,6 +53,16 @@
                     <item name="formElement" xsi:type="string">select</item>
                     <item name="label" xsi:type="string" translate="true">Product upsell template</item>
                     <item name="sortOrder" xsi:type="number">30</item>
+                </item>
+            </argument>
+        </field>
+        <field name="tweakwise_upsell_group_code">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="label" xsi:type="string" translate="true">Product upsell group code</item>
+                    <item name="comment" xsi:type="string" translate="true">Only used when template "- Group code -" is selected.</item>
+                    <item name="sortOrder" xsi:type="number">31</item>
                 </item>
             </argument>
         </field>
