@@ -7,6 +7,7 @@
 namespace Emico\Tweakwise\Model\Config;
 
 use Emico\Tweakwise\Model\Config;
+use Emico\Tweakwise\Model\Config\Source\RecommendationOption;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Product;
 
@@ -29,14 +30,20 @@ class TemplateFinder
     /**
      * @param Product $product
      * @param string $type
-     * @return int
+     * @return int|string
      */
     public function forProduct(Product $product, $type)
     {
         $attribute = $this->getAttribute($type);
-        $templateId = $product->getData($attribute);
+        $templateId = (int) $product->getData($attribute);
+
+        if ($templateId === RecommendationOption::OPTION_CODE) {
+            $groupAttribute = $this->getGroupCodeAttribute($type);
+            return (string) $product->getData($groupAttribute);
+        }
+
         if ($templateId) {
-            return (int) $templateId;
+            return $templateId;
         }
 
         $category = $product->getCategory();
@@ -50,14 +57,20 @@ class TemplateFinder
     /**
      * @param Category $category
      * @param string $type
-     * @return int
+     * @return int|string
      */
     public function forCategory(Category $category, $type)
     {
         $attribute = $this->getAttribute($type);
-        $templateId = $category->getData($attribute);
+        $templateId = (int) $category->getData($attribute);
+
+        if ($templateId === RecommendationOption::OPTION_CODE) {
+            $groupAttribute = $this->getGroupCodeAttribute($type);
+            return (string) $category->getData($groupAttribute);
+        }
+
         if ($templateId) {
-            return (int) $templateId;
+            return $templateId;
         }
 
         if ($category->getParentId()) {
@@ -75,5 +88,14 @@ class TemplateFinder
     private function getAttribute($type)
     {
         return sprintf('tweakwise_%s_template', $type);
+    }
+
+    /**
+     * @param string $type
+     * @return string
+     */
+    private function getGroupCodeAttribute($type)
+    {
+        return sprintf('tweakwise_%s_group_code', $type);
     }
 }

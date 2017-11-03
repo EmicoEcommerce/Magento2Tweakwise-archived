@@ -33,7 +33,7 @@ class FeaturedRequest extends Request
     }
 
     /**
-     * @return int
+     * @return int|string
      */
     public function getTemplate()
     {
@@ -41,12 +41,16 @@ class FeaturedRequest extends Request
     }
 
     /**
-     * @param int $templateId
+     * @param int|string $templateId
      * @return $this
      */
     public function setTemplate($templateId)
     {
-        $this->templateId = (int) $templateId;
+        if (!is_string($templateId)) {
+            $templateId = (int) $templateId;
+        }
+
+        $this->templateId = $templateId;
         return $this;
     }
 
@@ -58,6 +62,7 @@ class FeaturedRequest extends Request
         if (!$this->templateId) {
             throw new ApiException('Featured products without template ID was requested.');
         }
+
         return  '/' . $this->templateId;
     }
 }

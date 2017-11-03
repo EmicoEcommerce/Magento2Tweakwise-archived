@@ -19,6 +19,14 @@ use Emico\Tweakwise\Model\Client\Type\ItemType;
 class RecommendationsResponse extends Response
 {
     /**
+     * @param array $recommendation
+     */
+    public function setRecommendation(array $recommendation)
+    {
+        $this->setData($recommendation);
+    }
+
+    /**
      * @return ItemType[]
      */
     public function getItems()

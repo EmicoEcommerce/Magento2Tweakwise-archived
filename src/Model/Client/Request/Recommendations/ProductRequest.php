@@ -16,15 +16,13 @@ use Magento\Store\Model\StoreManager;
 class ProductRequest extends FeaturedRequest
 {
     /**
-     * {@inheritDoc}
-     */
-    protected $path = 'recommendations/product';
-
-    /**
      * @var Product
      */
     protected $product;
 
+    /**
+     * {@inheritDoc}
+     */
     public function __construct(Helper $helper, StoreManager $storeManager)
     {
         parent::__construct($helper, $storeManager);
@@ -48,6 +46,15 @@ class ProductRequest extends FeaturedRequest
         return $this;
     }
 
+    public function getPath()
+    {
+        if (is_int($this->templateId)) {
+            return 'recommendations/product';
+        }
+
+        return 'recommendations/grouped';
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -56,6 +63,12 @@ class ProductRequest extends FeaturedRequest
         if (!$this->product) {
             throw new ApiException('Featured products without product was requested.');
         }
-        return parent::getPathSuffix() . '/' . $this->helper->getTweakwiseId($this->product->getStoreId(), $this->product->getId());
+
+        $productTweakwiseId = $this->helper->getTweakwiseId($this->product->getStoreId(), $this->product->getId());
+        if (is_int($this->templateId)) {
+            return parent::getPathSuffix() . '/' . $productTweakwiseId;
+        }
+
+        return '/' . $productTweakwiseId . parent::getPathSuffix();
     }
 }
