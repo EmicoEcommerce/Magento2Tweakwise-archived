@@ -15,7 +15,6 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\HTTP\PhpEnvironment\Response;
-use Magento\Framework\UrlInterface;
 
 abstract class AbstractProductNavigationRequestObserver implements ObserverInterface
 {
@@ -30,7 +29,7 @@ abstract class AbstractProductNavigationRequestObserver implements ObserverInter
     protected $context;
 
     /**
-     * @var UrlInterface
+     * @var \Magento\Framework\UrlInterface
      */
     protected $urlBuilder;
 
@@ -40,18 +39,16 @@ abstract class AbstractProductNavigationRequestObserver implements ObserverInter
     protected $response;
 
     /**
-     * CatalogLastPageRedirect constructor.
-     *
+     * AbstractProductNavigationRequestObserver constructor.
      * @param Config $config
      * @param CurrentContext $context
-     * @param UrlInterface $urlBuilder
      * @param Context $actionContext
      */
-    public function __construct(Config $config, CurrentContext $context, UrlInterface $urlBuilder,  Context $actionContext)
+    public function __construct(Config $config, CurrentContext $context, Context $actionContext)
     {
         $this->config = $config;
         $this->context = $context;
-        $this->urlBuilder = $urlBuilder;
+        $this->urlBuilder = $actionContext->getUrl();
         $this->response = $actionContext->getResponse();
     }
 
