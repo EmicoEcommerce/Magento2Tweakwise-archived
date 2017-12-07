@@ -9,12 +9,12 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
-        <css src="Emico_Tweakwise::css/style.css"/>
+        <css src="Emico_Tweakwise::css/style.css" />
     </head>
 
     <body>
         <referenceBlock name="top.search">
-            <block class="Emico\Tweakwise\Block\Autocomplete\FormMini" name="tweakwise-autocomplete" template="Emico_Tweakwise::form.mini.phtml"/>
+            <block class="Emico\Tweakwise\Block\Autocomplete\FormMini" ifconfig="tweakwise/autocomplete/enabled" name="tweakwise-autocomplete" template="Emico_Tweakwise::form.mini.phtml"/>
         </referenceBlock>
     </body>
 </page>

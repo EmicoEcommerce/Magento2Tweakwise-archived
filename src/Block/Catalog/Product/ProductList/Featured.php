@@ -117,10 +117,6 @@ class Featured extends ListProduct
      */
     public function toHtml()
     {
-        if (!$this->config->isRecommendationsEnabled(Config::RECOMMENDATION_TYPE_FEATURED)) {
-            return '';
-        }
-
         try {
             $this->_getProductCollection();
         } catch (ApiException $e) {
