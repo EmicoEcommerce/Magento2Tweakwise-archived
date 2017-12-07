@@ -14,8 +14,9 @@ Install package using zip file
 Extract tweakwise-export.zip src folder to app/code/Emico/TweakwiseExport/
 ```
 
-Run installers
+Enable module(s) and run installers
 ```sh
+php bin/magento module:enable Emico_TweakwiseExport Emico_Tweakwise
 php bin/magento setup:upgrade
 php bin/magento setup:static-content:deploy
 ```
