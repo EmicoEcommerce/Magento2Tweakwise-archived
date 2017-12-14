@@ -20,16 +20,12 @@ class RecommendationOption extends AbstractSource
      * Option to use when expecting a code instead of template id
      */
     const OPTION_CODE = -1;
+    const OPTION_EMPTY = null;
 
     /**
      * @var Client
      */
-    protected $client;
-
-    /**
-     * @var
-     */
-    protected $templates;
+    private $client;
 
     /**
      * @var RequestFactory
@@ -39,12 +35,17 @@ class RecommendationOption extends AbstractSource
     /**
      * @var array
      */
-    protected $options;
+    private $options;
 
     /**
      * @var bool
      */
-    protected $addCodeOption;
+    private $addCodeOption;
+
+    /**
+     * @var bool
+     */
+    private $addEmpty;
 
     /**
      * Template constructor.
@@ -52,12 +53,14 @@ class RecommendationOption extends AbstractSource
      * @param Client $client
      * @param RequestFactory $requestFactory
      * @param bool $addCodeOption
+     * @param bool $addEmpty
      */
-    public function __construct(Client $client, RequestFactory $requestFactory, $addCodeOption = false)
+    public function __construct(Client $client, RequestFactory $requestFactory, $addCodeOption = false, $addEmpty = false)
     {
         $this->client = $client;
         $this->requestFactory = $requestFactory;
         $this->addCodeOption = $addCodeOption;
+        $this->addEmpty = $addEmpty;
     }
 
     /**
@@ -70,6 +73,10 @@ class RecommendationOption extends AbstractSource
         $response = $this->client->request($request);
 
         $result = [];
+
+        if ($this->addEmpty) {
+            $result[] = ['value' => self::OPTION_EMPTY, 'label' => ' '];
+        }
 
         if ($this->addCodeOption) {
             $result[] = ['value' => self::OPTION_CODE, 'label' => __('- Group code -')];

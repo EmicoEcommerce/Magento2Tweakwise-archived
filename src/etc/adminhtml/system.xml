@@ -136,7 +136,7 @@
                 </field>
                 <field id="crosssell_template" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Default crosssell template</label>
-                    <source_model>Emico\Tweakwise\Model\Config\Source\RecommendationOption\Product</source_model>
+                    <source_model>Emico\Tweakwise\Model\Config\Source\RecommendationOption\Product\System</source_model>
                     <validate>required-entry</validate>
                     <depends>
                         <field id="crosssell_enabled">1</field>
@@ -149,7 +149,7 @@
                 </field>
                 <field id="upsell_template" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Default upsell template</label>
-                    <source_model>Emico\Tweakwise\Model\Config\Source\RecommendationOption\Product</source_model>
+                    <source_model>Emico\Tweakwise\Model\Config\Source\RecommendationOption\Product\System</source_model>
                     <validate>required-entry</validate>
                     <depends>
                         <field id="upsell_enabled">1</field>
