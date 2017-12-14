@@ -30,57 +30,57 @@ class Filter extends AbstractFilter implements FilterInterface
     /**
      * @var string
      */
-    protected $requestVar;
+    private $requestVar;
 
     /**
      * @var
      */
-    protected $items;
+    private $items;
 
     /**
      * @var Layer
      */
-    protected $layer;
+    private $layer;
 
     /**
      * @var Attribute
      */
-    protected $attributeModel;
+    private $attributeModel;
 
     /**
      * @var int
      */
-    protected $storeId;
+    private $storeId;
 
     /**
      * @var int
      */
-    protected $websiteId;
+    private $websiteId;
 
     /**
      * @var FacetType
      */
-    protected $facet;
+    private $facet;
 
     /**
      * @var ItemFactory
      */
-    protected $itemFactory;
+    private $itemFactory;
 
     /**
      * @var StoreManager
      */
-    protected $storeManager;
+    private $storeManager;
 
     /**
      * @var int[]
      */
-    protected $optionLabelValueMap;
+    private $optionLabelValueMap;
 
     /**
      * @var Item[]
      */
-    protected $optionLabelItemMap;
+    private $optionLabelItemMap;
 
     /**
      * Filter constructor.
@@ -270,34 +270,6 @@ class Filter extends AbstractFilter implements FilterInterface
     }
 
     /**
-     * @param AttributeType $attributeType
-     * @return Item
-     */
-    protected function createItem(AttributeType $attributeType)
-    {
-        $item = $this->itemFactory->create(['filter' => $this, 'attributeType' => $attributeType]);
-
-        $children = [];
-        foreach ($attributeType->getChildren() as $childAttributeType) {
-            $children[] = $this->itemFactory->create(['filter' => $this, 'attributeType' => $childAttributeType]);
-        }
-        $item->setChildren($children);
-
-        return $item;
-    }
-
-    /**
-     * @return $this
-     */
-    protected function initItems()
-    {
-        foreach ($this->facet->getAttributes() as $attribute) {
-            $this->addItem($attribute);
-        }
-        return $this;
-    }
-
-    /**
      * @return bool
      */
     public function hasAttributeModel()
@@ -314,9 +286,37 @@ class Filter extends AbstractFilter implements FilterInterface
     }
 
     /**
+     * @param AttributeType $attributeType
+     * @return Item
+     */
+    private function createItem(AttributeType $attributeType)
+    {
+        $item = $this->itemFactory->create(['filter' => $this, 'attributeType' => $attributeType]);
+
+        $children = [];
+        foreach ($attributeType->getChildren() as $childAttributeType) {
+            $children[] = $this->itemFactory->create(['filter' => $this, 'attributeType' => $childAttributeType]);
+        }
+        $item->setChildren($children);
+
+        return $item;
+    }
+
+    /**
+     * @return $this
+     */
+    private function initItems()
+    {
+        foreach ($this->facet->getAttributes() as $attribute) {
+            $this->addItem($attribute);
+        }
+        return $this;
+    }
+
+    /**
      * @return int[]
      */
-    protected function getOptionLabelValueMap()
+    private function getOptionLabelValueMap()
     {
         if (!$this->hasAttributeModel()) {
             return [];
@@ -337,7 +337,7 @@ class Filter extends AbstractFilter implements FilterInterface
     /**
      * @return Item[]
      */
-    protected function getOptionLabelItemMap()
+    private function getOptionLabelItemMap()
     {
         if (!$this->hasAttributeModel()) {
             return [];
@@ -359,7 +359,7 @@ class Filter extends AbstractFilter implements FilterInterface
      * @param string $label
      * @return int|null
      */
-    public function getOptionIdByLabel($label)
+    private function getOptionIdByLabel($label)
     {
         $map = $this->getOptionLabelValueMap();
         return isset($map[$label]) ? $map[$label] : null;
@@ -369,7 +369,7 @@ class Filter extends AbstractFilter implements FilterInterface
      * @param int $id
      * @return string|null
      */
-    public function getLabelByOptionId($id)
+    private function getLabelByOptionId($id)
     {
         $map = $this->getOptionLabelValueMap();
         $map = array_flip($map);
@@ -380,7 +380,7 @@ class Filter extends AbstractFilter implements FilterInterface
      * @param int $optionId
      * @return Item|null
      */
-    public function getItemByOptionId($optionId)
+    private function getItemByOptionId($optionId)
     {
         $label = $this->getLabelByOptionId($optionId);
         if (!$label) {
@@ -394,7 +394,7 @@ class Filter extends AbstractFilter implements FilterInterface
     /**
      * @return bool
      */
-    public function isCollapsible()
+    private function isCollapsible()
     {
         return $this->facet->getFacetSettings()->getIsCollapsible();
     }
@@ -402,7 +402,7 @@ class Filter extends AbstractFilter implements FilterInterface
     /**
      * @return bool
      */
-    public function isDefaultCollapsed()
+    private function isDefaultCollapsed()
     {
         return $this->facet->getFacetSettings()->getIsCollapsed();
     }
@@ -410,7 +410,7 @@ class Filter extends AbstractFilter implements FilterInterface
     /**
      * @return string
      */
-    public function getCssClass()
+    private function getCssClass()
     {
         return $this->facet->getFacetSettings()->getCssClass();
     }
@@ -418,7 +418,7 @@ class Filter extends AbstractFilter implements FilterInterface
     /**
      * @return string
      */
-    public function getTooltip()
+    private function getTooltip()
     {
         return $this->facet->getFacetSettings()->getInfoText();
     }
