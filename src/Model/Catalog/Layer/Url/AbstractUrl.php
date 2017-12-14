@@ -103,21 +103,6 @@ abstract class AbstractUrl implements UrlInterface
     /**
      * {@inheritdoc}
      */
-    public function getClearUrl(HttpRequest $request, Filter $filter)
-    {
-        $facet = $filter->getFacet();
-        $settings = $facet->getFacetSettings();
-
-        if ($settings->getSource() == SettingsType::SOURCE_CATEGORY) {
-            return '#';
-        } else {
-            return $this->getAttributeCleanUrl($request, $filter);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function apply(HttpRequest $request, ProductNavigationRequest $navigationRequest)
     {
         $categories = $this->getCategoryFilters($request);
@@ -308,15 +293,6 @@ abstract class AbstractUrl implements UrlInterface
      * @return string
      */
     protected abstract function getAttributeRemoveUrl(HttpRequest $request, Item $item);
-
-    /**
-     * Get url when all attribute options are removed
-     *
-     * @param HttpRequest $request
-     * @param Filter $filter
-     * @return string
-     */
-    protected abstract function getAttributeCleanUrl(HttpRequest $request, Filter $filter);
 
     /**
      * Fetch a list of category ID's to filter

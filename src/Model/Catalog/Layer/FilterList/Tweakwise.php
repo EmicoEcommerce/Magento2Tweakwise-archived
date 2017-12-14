@@ -88,6 +88,10 @@ class Tweakwise
             }
 
             $this->filters[] = $filter;
+
+            foreach ($filter->getActiveItems() as $activeFilterItem) {
+                $layer->getState()->addFilter($activeFilterItem);
+            }
         }
 
         return $this;

@@ -40,6 +40,26 @@ class QueryParameters extends AbstractUrl
     ];
 
     /**
+     * {@inheritdoc}
+     */
+    public function getClearUrl(HttpRequest $request, array $activeFilterItems)
+    {
+        $query = [];
+        /** @var Item $item */
+        foreach ($activeFilterItems as $item) {
+            $filter = $item->getFilter();
+            $facet = $filter->getFacet();
+            $settings = $facet->getFacetSettings();
+
+            $urlKey = $settings->getUrlKey();
+
+            $query[$urlKey] = $filter->getCleanValue();
+        }
+
+        return $this->getCurrentQueryUrl($query);
+    }
+
+    /**
      * @param array $query
      * @return string
      */
@@ -230,20 +250,6 @@ class QueryParameters extends AbstractUrl
             $query = [$urlKey => $filter->getCleanValue()];
         }
 
-        return $this->getCurrentQueryUrl($query);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getAttributeCleanUrl(HttpRequest $request, Filter $filter)
-    {
-        $facet = $filter->getFacet();
-        $settings = $facet->getFacetSettings();
-
-        $urlKey = $settings->getUrlKey();
-
-        $query = [$urlKey => $filter->getResetValue()];
         return $this->getCurrentQueryUrl($query);
     }
 

@@ -43,7 +43,8 @@ class Url
     }
 
     /**
-     * {@inheritdoc}
+     * @param Item $item
+     * @return string
      */
     public function getSelectFilter(Item $item)
     {
@@ -51,7 +52,8 @@ class Url
     }
 
     /**
-     * {@inheritdoc}
+     * @param Item $item
+     * @return string
      */
     public function getRemoveFilter(Item $item)
     {
@@ -59,11 +61,12 @@ class Url
     }
 
     /**
-     * {@inheritdoc}
+     * @param Item[] $activeFilterItems
+     * @return string
      */
-    public function getClearUrl(Filter $facet)
+    public function getClearUrl(array $activeFilterItems)
     {
-        return $this->implementation->getClearUrl($this->request, $facet);
+        return $this->implementation->getClearUrl($this->request, $activeFilterItems);
     }
 
     /**

@@ -150,6 +150,7 @@ class Filter extends AbstractFilter implements FilterInterface
     }
 
     /**
+     * @return Item[]
      * {@inheritdoc}
      */
     public function getItems()
@@ -194,6 +195,20 @@ class Filter extends AbstractFilter implements FilterInterface
     public function getLayer()
     {
         return $this->layer;
+    }
+
+    /**
+     * @return Item[]
+     */
+    public function getActiveItems()
+    {
+        $result = [];
+        foreach ($this->getItems() as $item) {
+            if ($item->isActive()) {
+                $result[] = $item;
+            }
+        }
+        return $result;
     }
 
     /**

@@ -12,7 +12,6 @@ use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\Url;
 use Emico\Tweakwise\Model\Client\Type\AttributeType;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
-use Magento\Catalog\Model\Layer\Filter\Item as BaseItem;
 use Magento\Catalog\Model\Layer\Filter\Item as MagentoItem;
 
 /**
@@ -105,13 +104,25 @@ class Item extends MagentoItem
     public function getUrl()
     {
         $settings = $this->getFilter()->getFacet()->getFacetSettings();
-        if ($settings->getSelectionType() == SettingsType::SELECTION_TYPE_SLIDER) {
+        if ($settings->getSelectionType() === SettingsType::SELECTION_TYPE_SLIDER) {
             return $this->url->getSliderUrl($this->getFilter());
-        } elseif ($this->isSelected()) {
-            return $this->url->getRemoveFilter($this);
-        } else {
-            return $this->url->getSelectFilter($this);
         }
+
+        if ($this->isSelected()) {
+            return $this->url->getRemoveFilter($this);
+        }
+
+        return $this->url->getSelectFilter($this);
+    }
+
+    /**
+     * Get url for remove item from filter
+     *
+     * @return string
+     */
+    public function getRemoveUrl()
+    {
+        return $this->url->getRemoveFilter($this);
     }
 
     /**
@@ -146,5 +157,13 @@ class Item extends MagentoItem
     public function getChildren()
     {
         return $this->children;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive()
+    {
+        return $this->getAttribute()->getIsSelected();
     }
 }

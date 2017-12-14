@@ -50,10 +50,10 @@ interface UrlInterface
      * Fetch clear all items from url
      *
      * @param HttpRequest $request
-     * @param Filter $filter
+     * @param Item[] $activeFilterItems
      * @return string
      */
-    public function getClearUrl(HttpRequest $request, Filter $filter);
+    public function getClearUrl(HttpRequest $request, array $activeFilterItems);
 
     /**
      * Apply all attribute filters, category filters, sort order, page limit request parameters to navigation request
