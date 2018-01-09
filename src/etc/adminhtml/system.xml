@@ -137,30 +137,42 @@
                 <field id="crosssell_template" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Default crosssell template</label>
                     <source_model>Emico\Tweakwise\Model\Config\Source\RecommendationOption\Product\System</source_model>
-                    <validate>required-entry</validate>
                     <depends>
                         <field id="crosssell_enabled">1</field>
                     </depends>
                 </field>
-                <field id="upsell_enabled" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="crosssell_group_code" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default upsell group code</label>
+                    <depends>
+                        <field id="crosssell_enabled">1</field>
+                        <field id="crosssell_template">-1</field>
+                    </depends>
+                </field>
+                <field id="upsell_enabled" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Upsell enabled</label>
                     <comment>Shows upsell product on all product pages. This overrides the default upsell products. Can also be enabled per category.</comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="upsell_template" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="upsell_template" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Default upsell template</label>
                     <source_model>Emico\Tweakwise\Model\Config\Source\RecommendationOption\Product\System</source_model>
-                    <validate>required-entry</validate>
                     <depends>
                         <field id="upsell_enabled">1</field>
                     </depends>
                 </field>
-                <field id="featured_enabled" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="upsell_group_code" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default upsell group code</label>
+                    <depends>
+                        <field id="upsell_enabled">1</field>
+                        <field id="upsell_template">-1</field>
+                    </depends>
+                </field>
+                <field id="featured_enabled" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Featured products enabled</label>
                     <comment>Shows featured product on all category pages. Can also be enabled per category.</comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="featured_template" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="featured_template" translate="label" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Default featured product template</label>
                     <source_model>Emico\Tweakwise\Model\Config\Source\RecommendationOption\Featured</source_model>
                     <validate>required-entry</validate>
