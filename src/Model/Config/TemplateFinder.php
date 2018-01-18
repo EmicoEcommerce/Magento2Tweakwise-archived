@@ -51,7 +51,13 @@ class TemplateFinder
             return $this->forCategory($category, $type);
         }
 
-        return $this->config->getRecommendationsTemplate($type);
+        $defaultTemplateId = $this->config->getRecommendationsTemplate($type);
+
+        if ($defaultTemplateId === RecommendationOption::OPTION_CODE) {
+            return $this->config->getRecommendationsGroupCode($type);
+        }
+
+        return $defaultTemplateId;
     }
 
     /**
@@ -78,7 +84,13 @@ class TemplateFinder
             return $this->forCategory($parent, $type);
         }
 
-        return $this->config->getRecommendationsTemplate($type);
+        $defaultTemplateId = $this->config->getRecommendationsTemplate($type);
+
+        if ($defaultTemplateId === RecommendationOption::OPTION_CODE) {
+            return $this->config->getRecommendationsGroupCode($type);
+        }
+
+        return $defaultTemplateId;
     }
 
     /**

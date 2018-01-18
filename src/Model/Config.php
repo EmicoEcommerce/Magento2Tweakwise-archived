@@ -208,6 +208,17 @@ class Config
     }
 
     /**
+     * @param string $type
+     * @param Store|null $store
+     * @return int
+     */
+    public function getRecommendationsGroupCode($type, Store $store = null)
+    {
+        $this->validateRecommendationType($type);
+        return $this->getStoreConfig($store, sprintf('tweakwise/recommendations/%s_group_code', $type));
+    }
+
+    /**
      * @param Store|null $store
      * @return string
      */
