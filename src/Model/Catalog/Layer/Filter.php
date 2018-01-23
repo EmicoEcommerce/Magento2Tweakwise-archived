@@ -374,7 +374,7 @@ class Filter extends AbstractFilter implements FilterInterface
      * @param string $label
      * @return int|null
      */
-    private function getOptionIdByLabel($label)
+    public function getOptionIdByLabel($label)
     {
         $map = $this->getOptionLabelValueMap();
         return isset($map[$label]) ? $map[$label] : null;
@@ -384,7 +384,7 @@ class Filter extends AbstractFilter implements FilterInterface
      * @param int $id
      * @return string|null
      */
-    private function getLabelByOptionId($id)
+    public function getLabelByOptionId($id)
     {
         $map = $this->getOptionLabelValueMap();
         $map = array_flip($map);
@@ -395,7 +395,7 @@ class Filter extends AbstractFilter implements FilterInterface
      * @param int $optionId
      * @return Item|null
      */
-    private function getItemByOptionId($optionId)
+    public function getItemByOptionId($optionId)
     {
         $label = $this->getLabelByOptionId($optionId);
         if (!$label) {
@@ -409,7 +409,7 @@ class Filter extends AbstractFilter implements FilterInterface
     /**
      * @return bool
      */
-    private function isCollapsible()
+    public function isCollapsible()
     {
         return $this->facet->getFacetSettings()->getIsCollapsible();
     }
@@ -417,7 +417,7 @@ class Filter extends AbstractFilter implements FilterInterface
     /**
      * @return bool
      */
-    private function isDefaultCollapsed()
+    public function isDefaultCollapsed()
     {
         return $this->facet->getFacetSettings()->getIsCollapsed();
     }
@@ -425,7 +425,7 @@ class Filter extends AbstractFilter implements FilterInterface
     /**
      * @return string
      */
-    private function getCssClass()
+    public function getCssClass()
     {
         return $this->facet->getFacetSettings()->getCssClass();
     }
@@ -433,7 +433,7 @@ class Filter extends AbstractFilter implements FilterInterface
     /**
      * @return string
      */
-    private function getTooltip()
+    public function getTooltip()
     {
         return $this->facet->getFacetSettings()->getInfoText();
     }
