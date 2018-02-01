@@ -110,4 +110,13 @@ abstract class AbstractCollection extends ProductCollection
 
         return $this;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSize()
+    {
+        $this->load();
+        return parent::getSize();
+    }
 }
