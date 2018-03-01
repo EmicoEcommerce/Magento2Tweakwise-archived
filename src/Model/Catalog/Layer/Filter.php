@@ -12,6 +12,7 @@ use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Client\Type\AttributeType;
 use Emico\Tweakwise\Model\Client\Type\FacetType;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\ItemFactory;
+use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
 use Magento\Catalog\Model\Layer;
 use Magento\Catalog\Model\Layer\Filter\AbstractFilter;
 use Magento\Catalog\Model\Layer\Filter\FilterInterface;
@@ -208,6 +209,12 @@ class Filter extends AbstractFilter implements FilterInterface
                 $result[] = $item;
             }
         }
+
+        $settings = $this->facet->getFacetSettings();
+        if ($settings->getSelectionType() === SettingsType::SELECTION_TYPE_SLIDER) {
+            return $this->combineActiveSliderItems($result);
+        }
+
         return $result;
     }
 
@@ -436,5 +443,21 @@ class Filter extends AbstractFilter implements FilterInterface
     public function getTooltip()
     {
         return $this->facet->getFacetSettings()->getInfoText();
+    }
+
+    /**
+     * @param Item[] $activeItems
+     * @return Item[]
+     */
+    private function combineActiveSliderItems(array $activeItems)
+    {
+        if (count($activeItems) !== 2) {
+            return $activeItems;
+        }
+
+        $firstAttribute = $activeItems[0]->getAttribute();
+        $firstAttribute->setValue('title', $firstAttribute->getTitle() . '-' . $activeItems[1]->getLabel());
+
+        return [$activeItems[0]];
     }
 }
