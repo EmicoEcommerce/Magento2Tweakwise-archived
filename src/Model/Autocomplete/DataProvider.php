@@ -27,6 +27,7 @@ use Magento\Search\Model\Query;
 use Magento\Search\Model\QueryFactory;
 use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Catalog\Model\Product\Visibility;
 
 class DataProvider implements DataProviderInterface
 {
@@ -86,6 +87,11 @@ class DataProvider implements DataProviderInterface
     protected $request;
 
     /**
+     * @var Visibility
+     */
+    protected $productVisibility;
+
+    /**
      * DataProvider constructor.
      *
      * @param ProductItemFactory $productItemFactory
@@ -99,6 +105,7 @@ class DataProvider implements DataProviderInterface
      * @param CategoryRepository $categoryRepository
      * @param Config $config
      * @param HttpRequest $request
+     * @param Visibility $productVisibility
      */
     public function __construct(
         ProductItemFactory $productItemFactory,
@@ -111,7 +118,8 @@ class DataProvider implements DataProviderInterface
         CollectionFilter $collectionFilter,
         CategoryRepository $categoryRepository,
         Config $config,
-        HttpRequest $request
+        HttpRequest $request,
+        Visibility $productVisibility
     )
     {
         $this->productItemFactory = $productItemFactory;
@@ -125,6 +133,7 @@ class DataProvider implements DataProviderInterface
         $this->categoryRepository = $categoryRepository;
         $this->config = $config;
         $this->request = $request;
+        $this->productVisibility = $productVisibility;
     }
 
     /**
@@ -156,6 +165,7 @@ class DataProvider implements DataProviderInterface
         $productCollection->setStore($this->storeManager->getStore());
         $productCollection->addAttributeToFilter('entity_id', ['in' => $response->getProductIds()]);
         $this->collectionFilter->filter($productCollection, $this->getCategory());
+        $productCollection->setVisibility($this->productVisibility->getVisibleInSearchIds());
 
         $result = [];
         foreach ($response->getProductIds() as $productId) {
