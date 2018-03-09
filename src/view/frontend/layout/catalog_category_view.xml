@@ -12,7 +12,7 @@
         <referenceContainer name="content">
             <block class="Emico\Tweakwise\Block\Catalog\Product\ProductList\Featured"
                    name="tweakwise.catalog.product.featured.before"
-                   ifconfig="'tweakwise/recommendations/featured_enabled"
+                   ifconfig="tweakwise/recommendations/featured_enabled"
                    template="Magento_Catalog::product/list/items.phtml">
                 <arguments>
                     <argument name="type" xsi:type="string">new</argument>
