@@ -13,6 +13,7 @@ use Emico\Tweakwise\Model\Client\Type\AttributeType;
 use Emico\Tweakwise\Model\Client\Type\FacetType;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\ItemFactory;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
+use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Model\Layer;
 use Magento\Catalog\Model\Layer\Filter\AbstractFilter;
 use Magento\Catalog\Model\Layer\Filter\FilterInterface;
@@ -84,6 +85,11 @@ class Filter extends AbstractFilter implements FilterInterface
     private $optionLabelItemMap;
 
     /**
+     * @var Config
+     */
+    private $config;
+
+    /**
      * Filter constructor.
      *
      * @param Layer $layer
@@ -92,13 +98,14 @@ class Filter extends AbstractFilter implements FilterInterface
      * @param StoreManager $storeManager
      * @param Attribute|null $attribute
      */
-    public function __construct(Layer $layer, FacetType $facet, ItemFactory $itemFactory, StoreManager $storeManager, Attribute $attribute = null)
+    public function __construct(Layer $layer, FacetType $facet, ItemFactory $itemFactory, StoreManager $storeManager, Config $config, Attribute $attribute = null)
     {
         $this->layer = $layer;
         $this->facet = $facet;
         $this->itemFactory = $itemFactory;
         $this->storeManager = $storeManager;
         $this->attributeModel = $attribute;
+        $this->config = $config;
     }
 
     /**
@@ -161,11 +168,6 @@ class Filter extends AbstractFilter implements FilterInterface
         }
 
         return $this->items;
-    }
-
-    public function getVisibleItems()
-    {
-
     }
 
     /**
@@ -240,7 +242,14 @@ class Filter extends AbstractFilter implements FilterInterface
      */
     public function getName()
     {
-        return $this->facet->getFacetSettings()->getTitle();
+        $title = (string) $this->facet->getFacetSettings()->getTitle();
+
+        // Since default Magento does not escape its facet titles we need to escape
+        if ($this->config->getUseDefaultLinkRenderer()) {
+            $title = htmlentities($title);
+        }
+
+        return $title;
     }
 
     /**
