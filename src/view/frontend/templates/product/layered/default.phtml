@@ -18,19 +18,19 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\DefaultRenderer;
                         <input id="inputCheckbox<?=$block->getCssItemId($item)?>" type="checkbox" <?=($item->isSelected() ? 'checked="checked"' : '')?>>
 
                         <label for="inputCheckbox<?=$block->getCssItemId($item)?>">
-                            <?=$block->escapeHtml($block->getItemPrefix())?>
-                            <?=$block->escapeHtml($item->getLabel())?>
-                            <?=$block->escapeHtml($block->getItemPostfix())?>
+                            <?=htmlentities($block->getItemPrefix())?>
+                            <?=htmlentities($item->getLabel())?>
+                            <?=htmlentities($block->getItemPostfix())?>
                         </label>
                     <?php else: ?>
-                        <?=$block->escapeHtml($block->getItemPrefix())?>
-                        <?=$block->escapeHtml($item->getLabel())?>
-                        <?=$block->escapeHtml($block->getItemPostfix())?>
+                        <?=htmlentities($block->getItemPrefix())?>
+                        <?=htmlentities($item->getLabel())?>
+                        <?=htmlentities($block->getItemPostfix())?>
                     <?php endif; ?>
 
                     <?php if ($block->shouldDisplayProductCountOnLayer()): ?>
                         <span class="count">
-                            <?=$block->escapeHtml($item->getCount())?>
+                            <?=htmlentities($item->getCount())?>
                             <span class="filter-count-label">
                                 <?php if ($item->getCount() == 1):?>
                                     <?=__('item')?>
@@ -46,7 +46,7 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\DefaultRenderer;
     </ol>
 
     <?php if ($block->hasHiddenItems()): ?>
-        <a class="more-items"><?=$block->escapeHtml(__($block->getMoreItemText()))?></a>
-        <a class="less-items default-hidden"><?=$block->escapeHtml(__($block->getLessItemText()))?></a>
+        <a class="more-items"><?=__(htmlentities($block->getMoreItemText()))?></a>
+        <a class="less-items default-hidden"><?=__(htmlentities($block->getLessItemText()))?></a>
     <?php endif; ?>
 </div>

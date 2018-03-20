@@ -12,13 +12,13 @@ $item = $block->getItem();
 ?>
 <li class="item">
     <a href="<?=$block->escapeUrl($item->getUrl())?>">
-        <?=$block->escapeHtml($block->getItemPrefix())?>
-        <?=$block->escapeHtml($item->getLabel())?>
-        <?=$block->escapeHtml($block->getItemPostfix())?>
+        <?=htmlentities($block->getItemPrefix())?>
+        <?=htmlentities($item->getLabel())?>
+        <?=htmlentities($block->getItemPostfix())?>
 
         <?php if ($block->shouldDisplayProductCountOnLayer()): ?>
             <span class="count">
-                <?=$block->escapeHtml($item->getCount())?>
+                <?=htmlentities($item->getCount())?>
                 <span class="filter-count-label">
                     <?php if ($item->getCount() == 1):?>
                         <?=__('item')?>
