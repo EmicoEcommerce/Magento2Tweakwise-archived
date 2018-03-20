@@ -105,10 +105,11 @@
         </arguments>
     </virtualType>
 
+    <preference for="Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface" type="Emico\Tweakwise\Model\Catalog\Layer\Url\QueryParameters" />
     <type name="Emico\Tweakwise\Model\Catalog\Layer\Url">
         <arguments>
             <argument name="request" xsi:type="object">Magento\Framework\App\Request\Http</argument>
-            <argument name="implementation" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\Url\QueryParameters</argument>
+            <argument name="implementation" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface</argument>
         </arguments>
     </type>
     <type name="Emico\Tweakwise\Model\Config\Source\FilterTemplate">
