@@ -48,16 +48,16 @@ class Plugin extends AbstractRecommendationPlugin
      * @param Closure $proceed
      * @return int
      */
-    public function aroundGetItemLimit(Upsell $subject, Closure $proceed)
+    public function aroundGetItemLimit(Upsell $subject, Closure $proceed, $type = '')
     {
         if (!$this->config->isRecommendationsEnabled(Config::RECOMMENDATION_TYPE_UPSELL)) {
-            return $proceed();
+            return $proceed($type);
         }
 
         try {
             return $this->getCollection()->count();
         } catch (ApiException $e) {
-            return $proceed();
+            return $proceed($type);
         }
     }
 }
