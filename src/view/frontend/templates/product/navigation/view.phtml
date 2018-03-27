@@ -41,7 +41,7 @@ if (!$block->canShowBlock()) return;
                             <?php $filterContentStyle = $filter->isDefaultCollapsed() ? ' style="display: none;"' : ''?>
                             <div data-role="collapsible" class="filter-options-item">
                                 <div data-role="title" class="filter-options-title">
-                                    <?=htmlentities(__($filter->getName()))?>
+                                    <?=__($filter->getName())?>
 
                                     <?php $tooltip = $filter->getTooltip(); ?>
                                     <?php if ($tooltip): ?>
@@ -56,7 +56,7 @@ if (!$block->canShowBlock()) return;
                         </div>
                     <?php else: ?>
                         <div class="filter-options-item">
-                            <div class="filter-options-title filter-options-title-non-collapsible"><?=htmlentities(__($filter->getName()))?></div>
+                            <div class="filter-options-title filter-options-title-non-collapsible"><?=__($filter->getName())?></div>
                             <div class="filter-options-content">
                                 <?=$block->getChildBlock('renderer')->render($filter) ?>
                             </div>

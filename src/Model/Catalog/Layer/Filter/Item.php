@@ -12,7 +12,6 @@ use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\Url;
 use Emico\Tweakwise\Model\Client\Type\AttributeType;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
-use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Model\Layer\Filter\Item as MagentoItem;
 
 /**
@@ -43,23 +42,17 @@ class Item extends MagentoItem
     protected $children = [];
 
     /**
-     * @var Config
-     */
-    private $config;
-
-    /**
      * Item constructor.
      *
      * @param Filter $filter
      * @param AttributeType $attributeType
      * @param Url $url
      */
-    public function __construct(Filter $filter, AttributeType $attributeType, Url $url, Config $config)
+    public function __construct(Filter $filter, AttributeType $attributeType, Url $url)
     {
         $this->filter = $filter;
         $this->attributeType = $attributeType;
         $this->url = $url;
-        $this->config = $config;
     }
 
     /**
@@ -76,13 +69,7 @@ class Item extends MagentoItem
     public function getLabel()
     {
         $title = (string) $this->attributeType->getTitle();
-
-        // Since default Magento does not escape its facet titles we need to escape
-        if ($this->config->getUseDefaultLinkRenderer()) {
-            $title = htmlentities($title);
-        }
-
-        return $title;
+        return htmlentities($title);
     }
 
     /**
