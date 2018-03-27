@@ -8,7 +8,6 @@
 
 namespace Emico\Tweakwise\Model\Catalog\Layer\Url;
 
-use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
 use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
@@ -17,7 +16,6 @@ use Emico\Tweakwise\Model\Config;
 use Emico\TweakwiseExport\Model\Helper as ExportHelper;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\CategoryRepository;
-use Magento\Framework\UrlInterface as MagentoUrl;
 use Zend\Http\Request as HttpRequest;
 
 abstract class AbstractUrl implements UrlInterface
@@ -31,7 +29,7 @@ abstract class AbstractUrl implements UrlInterface
     const PARAM_SEARCH = 'q';
 
     /**
-     * @var MagentoUrl
+     * @var UrlModel
      */
     protected $url;
 
@@ -53,12 +51,12 @@ abstract class AbstractUrl implements UrlInterface
     /**
      * Magento constructor.
      *
-     * @param MagentoUrl $url
+     * @param UrlModel $url
      * @param CategoryRepository $categoryRepository
      * @param ExportHelper $exportHelper
      * @param Config $config
      */
-    public function __construct(MagentoUrl $url, CategoryRepository $categoryRepository, ExportHelper $exportHelper, Config $config)
+    public function __construct(UrlModel $url, CategoryRepository $categoryRepository, ExportHelper $exportHelper, Config $config)
     {
         $this->url = $url;
         $this->categoryRepository = $categoryRepository;

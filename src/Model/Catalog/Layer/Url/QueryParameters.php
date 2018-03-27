@@ -292,7 +292,7 @@ class QueryParameters extends AbstractUrl
         $settings = $facet->getFacetSettings();
 
         $urlKey = $settings->getUrlKey();
-        $query = [$urlKey => '__from__-__to__'];
+        $query = [$urlKey => '{{from}}-{{to}}'];
 
         return $this->getCurrentQueryUrl($query);
     }

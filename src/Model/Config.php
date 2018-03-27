@@ -41,6 +41,11 @@ class Config
     protected $tweakwiseExceptionThrown = false;
 
     /**
+     * @var string[]
+     */
+    protected $parsedFilterArguments;
+
+    /**
      * Export constructor.
      *
      * @param ScopeConfigInterface $config
@@ -125,6 +130,41 @@ class Config
     public function getUseDefaultLinkRenderer(Store $store = null)
     {
         return (bool) $this->getStoreConfig($store, 'tweakwise/layered/default_link_renderer');
+    }
+
+    /**
+     * @param Store|null $store
+     * @return string
+     */
+    public function getQueryFilterType(Store $store = null)
+    {
+        return (string) $this->getStoreConfig($store, 'tweakwise/layered/query_filter_type');
+    }
+
+    /**
+     * @param Store|null $store
+     * @return array
+     */
+    public function getQueryFilterArguments(Store $store = null)
+    {
+        if ($this->parsedFilterArguments === null) {
+            $arguments = $this->getStoreConfig($store, 'tweakwise/layered/query_filter_arguments');
+            $arguments = explode("\n", $arguments);
+            $arguments = array_map('trim', $arguments);
+            $arguments = array_filter($arguments);
+            $this->parsedFilterArguments = $arguments;
+        }
+        return $this->parsedFilterArguments;
+    }
+
+
+    /**
+     * @param Store|null $store
+     * @return string
+     */
+    public function getQueryFilterRegex(Store $store = null)
+    {
+        return (string) $this->getStoreConfig($store, 'tweakwise/layered/query_filter_regex');
     }
 
     /**

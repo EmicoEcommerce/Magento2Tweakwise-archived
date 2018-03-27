@@ -45,8 +45,8 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
             },
             change: function(event, ui) {
                 var url = priceUrl;
-                url = url.replace('__from__', ui.values[0]);
-                url = url.replace('__to__', ui.values[1]);
+                url = url.replace('{{from}}', ui.values[0]);
+                url = url.replace('{{to}}', ui.values[1]);
 
                 window.location.href = url;
             }
