@@ -74,6 +74,30 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
+                <field id="query_filter_type" translate="label,comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Filter url query arguments</label>
+                    <comment>Url's rendered by tweakwise for filter contain all the arguments in the request url. These query arguments can be filtered out with this setting.</comment>
+                    <source_model>Emico\Tweakwise\Model\Config\Source\QueryFilterType</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="query_filter_arguments" translate="label,comment" type="textarea" sortOrder="51" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Filter url query arguments</label>
+                    <comment>Specific query arguments to filter out. One argument per line</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                        <field id="query_filter_type">specific</field>
+                    </depends>
+                </field>
+                <field id="query_filter_regex" translate="label,comment" type="text" sortOrder="52" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Filter url query regex</label>
+                    <comment>Arguments matching regex will be filtered</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                        <field id="query_filter_type">regex</field>
+                    </depends>
+                </field>
             </group>
             <group id="autocomplete" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Autocomplete</label>
