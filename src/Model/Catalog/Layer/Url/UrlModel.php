@@ -8,61 +8,129 @@
 
 namespace Emico\Tweakwise\Model\Catalog\Layer\Url;
 
-use Magento\Framework\App\ProductMetadataInterface;
-use Magento\Framework\ObjectManagerInterface;
-use Magento\Framework\Url;
+use Emico\Tweakwise\Model\Config;
+use Emico\Tweakwise\Model\Config\Source\QueryFilterType;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\Route\ConfigInterface;
+use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Framework\Session\Generic;
+use Magento\Framework\Session\SidResolverInterface;
+use Magento\Framework\Url as MagentoUrl;
+use Magento\Framework\Url\HostChecker;
+use Magento\Framework\Url\QueryParamsResolverInterface;
+use Magento\Framework\Url\RouteParamsPreprocessorInterface;
+use Magento\Framework\Url\RouteParamsResolverFactory;
+use Magento\Framework\Url\ScopeResolverInterface;
+use Magento\Framework\Url\SecurityInfoInterface;
 
-class UrlModel
+class UrlModel extends MagentoUrl
 {
     /**
-     * @var ObjectManagerInterface
+     * @var Config
      */
-    private $objectManager;
-
-    /**
-     * @var ProductMetadataInterface
-     */
-    private $productMetadata;
-
-    /**
-     * @var Url
-     */
-    private $implementation;
+    private $config;
 
     /**
      * UrlModel constructor.
      *
-     * @param ObjectManagerInterface $objectManager
-     * @param ProductMetadataInterface $productMetadata
+     * @param ConfigInterface $routeConfig
+     * @param RequestInterface $request
+     * @param SecurityInfoInterface $urlSecurityInfo
+     * @param ScopeResolverInterface $scopeResolver
+     * @param Generic $session
+     * @param SidResolverInterface $sidResolver
+     * @param RouteParamsResolverFactory $routeParamsResolverFactory
+     * @param QueryParamsResolverInterface $queryParamsResolver
+     * @param ScopeConfigInterface $scopeConfig
+     * @param RouteParamsPreprocessorInterface $routeParamsPreprocessor
+     * @param string $scopeType
+     * @param array $data
+     * @param Config $config
+     * @param HostChecker|null $hostChecker
+     * @param Json|null $serializer
      */
-    public function __construct(ObjectManagerInterface $objectManager, ProductMetadataInterface $productMetadata)
+    public function __construct(
+        ConfigInterface $routeConfig,
+        RequestInterface $request,
+        SecurityInfoInterface $urlSecurityInfo,
+        ScopeResolverInterface $scopeResolver,
+        Generic $session,
+        SidResolverInterface $sidResolver,
+        RouteParamsResolverFactory $routeParamsResolverFactory,
+        QueryParamsResolverInterface $queryParamsResolver,
+        ScopeConfigInterface $scopeConfig,
+        RouteParamsPreprocessorInterface $routeParamsPreprocessor,
+        string $scopeType,
+        Config $config,
+        array $data = [],
+        HostChecker $hostChecker = null,
+        Json $serializer = null
+    )
     {
-        $this->objectManager = $objectManager;
-        $this->productMetadata = $productMetadata;
+        parent::__construct(
+            $routeConfig,
+            $request,
+            $urlSecurityInfo,
+            $scopeResolver,
+            $session,
+            $sidResolver,
+            $routeParamsResolverFactory,
+            $queryParamsResolver,
+            $scopeConfig,
+            $routeParamsPreprocessor,
+            $scopeType,
+            $data,
+            $hostChecker,
+            $serializer
+        );
+        $this->config = $config;
     }
 
     /**
-     * @param string|null $routePath
-     * @param array|null $routeParams
+     * Return query string with filtered params
+     *
+     * @param bool $escape
      * @return string
      */
-    public function getUrl($routePath = null, $routeParams = null)
+    protected function _getQuery($escape = false)
     {
-        return $this->getImplementation()->getUrl($routePath, $routeParams);
+        if ($this->config->getQueryFilterType() === QueryFilterType::TYPE_NONE) {
+            return parent::_getQuery($escape);
+        }
+
+        $newParams = [];
+        foreach ($this->_queryParamsResolver->getQueryParams() as $param => $value) {
+            if ($this->shouldFilter($param)) {
+                continue;
+            }
+
+            $newParams[$param] = $value;
+        }
+        $this->_queryParamsResolver->setQueryParams($newParams);
+
+        return parent::_getQuery($escape);
     }
 
     /**
-     * @return Url
+     * @param string $param
+     * @return bool
      */
-    private function getImplementation()
+    private function shouldFilter($param)
     {
-        if (!$this->implementation) {
-            /* @var $version string e.g. "2.1.7" */
-            $version = $this->productMetadata->getVersion();
-            $this->implementation = version_compare($version, '2.2.0') >= 0 ?
-                $this->objectManager->get(UrlModel\V22::class) :
-                $this->objectManager->get(UrlModel\V21::class);
+        $filterType = $this->config->getQueryFilterType();
+        if ($filterType === QueryFilterType::TYPE_NONE) {
+            return false;
         }
-        return $this->implementation;
+
+        if ($filterType === QueryFilterType::TYPE_REGEX) {
+            return (bool) preg_match('/' . $this->config->getQueryFilterRegex() . '/', $param);
+        }
+
+        if ($filterType === QueryFilterType::TYPE_SPECIFIC) {
+            return \in_array($param, $this->config->getQueryFilterArguments(), true);
+        }
+
+        return true;
     }
 }
