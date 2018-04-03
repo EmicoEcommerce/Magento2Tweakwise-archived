@@ -58,6 +58,7 @@ abstract class AbstractUrl implements UrlInterface
      */
     public function __construct(UrlModel $url, CategoryRepository $categoryRepository, ExportHelper $exportHelper, Config $config)
     {
+        $url->setConfig($config);
         $this->url = $url;
         $this->categoryRepository = $categoryRepository;
         $this->exportHelper = $exportHelper;

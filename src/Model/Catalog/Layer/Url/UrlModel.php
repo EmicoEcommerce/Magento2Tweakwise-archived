@@ -10,19 +10,7 @@ namespace Emico\Tweakwise\Model\Catalog\Layer\Url;
 
 use Emico\Tweakwise\Model\Config;
 use Emico\Tweakwise\Model\Config\Source\QueryFilterType;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\RequestInterface;
-use Magento\Framework\App\Route\ConfigInterface;
-use Magento\Framework\Serialize\Serializer\Json;
-use Magento\Framework\Session\Generic;
-use Magento\Framework\Session\SidResolverInterface;
 use Magento\Framework\Url as MagentoUrl;
-use Magento\Framework\Url\HostChecker;
-use Magento\Framework\Url\QueryParamsResolverInterface;
-use Magento\Framework\Url\RouteParamsPreprocessorInterface;
-use Magento\Framework\Url\RouteParamsResolverFactory;
-use Magento\Framework\Url\ScopeResolverInterface;
-use Magento\Framework\Url\SecurityInfoInterface;
 
 class UrlModel extends MagentoUrl
 {
@@ -32,58 +20,13 @@ class UrlModel extends MagentoUrl
     private $config;
 
     /**
-     * UrlModel constructor.
+     * Used config as method injection to prevent overriding the constructor. The constructor changed it's arguments
+     * between 2.1 and 2.2 and so it was not possible any longer to support both versions of Magento in one using constructor injection.
      *
-     * @param ConfigInterface $routeConfig
-     * @param RequestInterface $request
-     * @param SecurityInfoInterface $urlSecurityInfo
-     * @param ScopeResolverInterface $scopeResolver
-     * @param Generic $session
-     * @param SidResolverInterface $sidResolver
-     * @param RouteParamsResolverFactory $routeParamsResolverFactory
-     * @param QueryParamsResolverInterface $queryParamsResolver
-     * @param ScopeConfigInterface $scopeConfig
-     * @param RouteParamsPreprocessorInterface $routeParamsPreprocessor
-     * @param string $scopeType
-     * @param array $data
      * @param Config $config
-     * @param HostChecker|null $hostChecker
-     * @param Json|null $serializer
      */
-    public function __construct(
-        ConfigInterface $routeConfig,
-        RequestInterface $request,
-        SecurityInfoInterface $urlSecurityInfo,
-        ScopeResolverInterface $scopeResolver,
-        Generic $session,
-        SidResolverInterface $sidResolver,
-        RouteParamsResolverFactory $routeParamsResolverFactory,
-        QueryParamsResolverInterface $queryParamsResolver,
-        ScopeConfigInterface $scopeConfig,
-        RouteParamsPreprocessorInterface $routeParamsPreprocessor,
-        string $scopeType,
-        Config $config,
-        array $data = [],
-        HostChecker $hostChecker = null,
-        Json $serializer = null
-    )
+    public function setConfig(Config $config)
     {
-        parent::__construct(
-            $routeConfig,
-            $request,
-            $urlSecurityInfo,
-            $scopeResolver,
-            $session,
-            $sidResolver,
-            $routeParamsResolverFactory,
-            $queryParamsResolver,
-            $scopeConfig,
-            $routeParamsPreprocessor,
-            $scopeType,
-            $data,
-            $hostChecker,
-            $serializer
-        );
         $this->config = $config;
     }
 
