@@ -74,6 +74,14 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
+                <field id="form_filters" translate="label,comment" type="select" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Filter form</label>
+                    <comment>Renders filter links in a form and renders a button with the filters. When this button is clicked all selected filters are applied</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="default_link_renderer">0</field>
+                    </depends>
+                </field>
                 <field id="query_filter_type" translate="label,comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Filter url query arguments</label>
                     <comment>Url's rendered by tweakwise for filter contain all the arguments in the request url. These query arguments can be filtered out with this setting.</comment>

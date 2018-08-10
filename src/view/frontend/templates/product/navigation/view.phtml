@@ -34,6 +34,9 @@ if (!$block->canShowBlock()) return;
         <?php if ($filters): ?>
             <strong role="heading" aria-level="2" class="block-subtitle filter-subtitle"><?=__('Shopping Options') ?></strong>
             <div class="filter-options" id="narrow-by-list" data-role="content">
+                <?php if ($block->getData('form_filters')): ?>
+                    <form id="facet-filter-form" data-mage-init='{"tweakwiseNavigationForm": {"formFilters": "<?=$block->getData('form_filters')?>"}}'>
+                <?php endif;?>
                 <?php foreach ($filters as $filter): ?>
                     <?php if ($filter->isCollapsible()): ?>
                         <?php $filterActive = $filter->isDefaultCollapsed() ? 'false' : '[0]'; ?>
@@ -62,7 +65,15 @@ if (!$block->canShowBlock()) return;
                             </div>
                         </div>
                     <?php endif; ?>
+                    <?php if ($block->getData('form_filters')): ?>
+                        <li class="show-items-link">
+                            <button type="submit" class="btn btn-primary btn-block js-btn-filter"><?=__(sprintf('Show <span>%s</span> items', $this->getLayer()->getProductCount())); ?></button>
+                        </li>
+                    <?php endif;?>
                 <?php endforeach; ?>
+                <?php if ($block->getData('form_filters')): ?>
+                    </form>
+                <?php endif;?>
             </div>
         <?php endif; ?>
     </div>

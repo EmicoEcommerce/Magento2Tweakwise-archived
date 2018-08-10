@@ -11,6 +11,7 @@ namespace Emico\Tweakwise\Block\LayeredNavigation\RenderLayered;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
+use Emico\Tweakwise\Model\Config;
 use Magento\Framework\View\Element\Template;
 
 class DefaultRenderer extends Template
@@ -24,6 +25,24 @@ class DefaultRenderer extends Template
      * @var Filter
      */
     protected $filter;
+
+    /**
+     * @var Config
+     */
+    protected $config;
+
+    /**
+     * Constructor
+     *
+     * @param Template\Context $context
+     * @param Config $config
+     * @param array $data
+     */
+    public function __construct(Template\Context $context, Config $config, array $data = [])
+    {
+        $this->config = $config;
+        parent::__construct($context, $data);
+    }
 
     /**
      * @param Filter $filter
@@ -156,5 +175,21 @@ class DefaultRenderer extends Template
     public function getItemPostfix()
     {
         return $this->getFacetSettings()->getPostfix();
+    }
+
+    /**
+     * @return Config
+     */
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrlKey()
+    {
+        return $this->getFacetSettings()->getUrlKey();
     }
 }

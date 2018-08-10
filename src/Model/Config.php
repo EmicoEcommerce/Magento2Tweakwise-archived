@@ -134,6 +134,15 @@ class Config
 
     /**
      * @param Store|null $store
+     * @return bool
+     */
+    public function getUseFormFilters(Store $store = null)
+    {
+        return (bool) $this->getStoreConfig($store, 'tweakwise/layered/form_filters');
+    }
+
+    /**
+     * @param Store|null $store
      * @return string
      */
     public function getQueryFilterType(Store $store = null)

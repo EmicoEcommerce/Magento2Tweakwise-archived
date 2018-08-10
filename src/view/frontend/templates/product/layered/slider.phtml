@@ -9,7 +9,11 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
 
 /** @var $block SliderRenderer */
 ?>
-<div class="slider-attribute" id="attribute-slider-<?=$block->getCssId()?>">
+<div class="slider-attribute" id="attribute-slider-<?=$block->getCssId()?>"
+     data-url-key="<?=$block->getUrlKey()?>"
+     data-min="<?=$block->getCurrentMinValue()?>"
+     data-max="<?=$block->getCurrentMaxValue()?>"
+>
     <div class="labels">
         <span class="min-value"><?=$block->renderPrice($block->getMinValue())?></span>
         <span class="max-value"><?=$block->renderPrice($block->getMaxValue())?></span>
@@ -30,6 +34,7 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
         var container = $('#attribute-slider-<?=$block->getCssId()?>');
         var currentMinValueContainer = container.find('.current-min-value');
         var currentMaxValueContainer = container.find('.current-max-value');
+        var formFilters = '<?=$block->getConfig()->getUseFormFilters()?>';
 
         container.find('.slider').slider({
             range: true,
@@ -44,11 +49,18 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
                 currentMaxValueContainer.html(currentMaxValue);
             },
             change: function(event, ui) {
-                var url = priceUrl;
-                url = url.replace('{{from}}', ui.values[0]);
-                url = url.replace('{{to}}', ui.values[1]);
-
-                window.location.href = url;
+                var min = ui.values[0];
+                var max = ui.values[1];
+                if (formFilters) {
+                    let slider = jQuery(event.target).closest('.slider-attribute');
+                    slider.attr('data-min', min);
+                    slider.attr('data-max', max);
+                } else {
+                    var url = priceUrl;
+                    url = url.replace(encodeURI('{{from}}'), min);
+                    url = url.replace(encodeURI('{{to}}'), max);
+                    window.location.href = url;
+                }
             }
         });
     });

@@ -8,6 +8,7 @@
 
 namespace Emico\Tweakwise\Block\LayeredNavigation\RenderLayered;
 
+use Emico\Tweakwise\Model\Config;
 use Magento\Tax\Helper\Data as TaxHelper;
 use Magento\Framework\Pricing\Helper\Data as PriceHelper;
 use Magento\Framework\View\Element\Template;
@@ -33,12 +34,13 @@ class SliderRenderer extends DefaultRenderer
      * SliderRenderer constructor.
      * @param PriceHelper $priceHelper
      * @param TaxHelper $taxHelper
+     * @param Config $config
      * @param Template\Context $context
      * @param array $data
      */
-    public function __construct(PriceHelper $priceHelper, TaxHelper $taxHelper, Template\Context $context, array $data = [])
+    public function __construct(PriceHelper $priceHelper, TaxHelper $taxHelper, Config $config, Template\Context $context, array $data = [])
     {
-        parent::__construct($context, $data);
+        parent::__construct($context, $config, $data);
         $this->priceHelper = $priceHelper;
         $this->taxHelper = $taxHelper;
     }
@@ -122,5 +124,13 @@ class SliderRenderer extends DefaultRenderer
         }
 
         return $items[0]->getUrl();
+    }
+
+    /**
+     * @return Config
+     */
+    public function getConfig()
+    {
+        return $this->config;
     }
 }
