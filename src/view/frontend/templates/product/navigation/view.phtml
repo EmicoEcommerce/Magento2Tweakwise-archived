@@ -14,6 +14,7 @@ if (!$block->canShowBlock()) return;
 ?>
 
 <?php $filters = $block->getFilters(); /** @var $filters Filter[] */ ?>
+<?php $useFormFilters = $block->getData('form_filters'); ?>
 <?php $hasFilters = count($filters) > 0; ?>
 <div class="block filter<?=($hasFilters ? ' filter-no-options' : '')?>"
      id="layered-filter-block"
@@ -34,8 +35,8 @@ if (!$block->canShowBlock()) return;
         <?php if ($filters): ?>
             <strong role="heading" aria-level="2" class="block-subtitle filter-subtitle"><?=__('Shopping Options') ?></strong>
             <div class="filter-options" id="narrow-by-list" data-role="content">
-                <?php if ($block->getData('form_filters')): ?>
-                    <form id="facet-filter-form" data-mage-init='{"tweakwiseNavigationForm": {"formFilters": "<?=$block->getData('form_filters')?>"}}'>
+                <?php if ($useFormFilters): ?>
+                    <form id="facet-filter-form" data-mage-init='{"tweakwiseNavigationForm": {"formFilters": "<?= $useFormFilters ?>"}}'>
                 <?php endif;?>
                 <?php foreach ($filters as $filter): ?>
                     <?php if ($filter->isCollapsible()): ?>
@@ -65,13 +66,13 @@ if (!$block->canShowBlock()) return;
                             </div>
                         </div>
                     <?php endif; ?>
-                    <?php if ($block->getData('form_filters')): ?>
+                    <?php if ($useFormFilters): ?>
                         <li class="show-items-link">
                             <button type="submit" class="btn btn-primary btn-block js-btn-filter"><?=__(sprintf('Show <span>%s</span> items', $this->getLayer()->getProductCount())); ?></button>
                         </li>
                     <?php endif;?>
                 <?php endforeach; ?>
-                <?php if ($block->getData('form_filters')): ?>
+                <?php if ($useFormFilters): ?>
                     </form>
                 <?php endif;?>
             </div>
