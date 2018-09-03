@@ -13,6 +13,7 @@ use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
 use Emico\Tweakwise\Model\Config;
 use Magento\Framework\View\Element\Template;
+use Magento\Framework\Serialize\Serializer\Json;
 
 class DefaultRenderer extends Template
 {
@@ -27,6 +28,11 @@ class DefaultRenderer extends Template
     protected $filter;
 
     /**
+     * @var Json
+     */
+    protected $jsonSerializer;
+
+    /**
      * @var Config
      */
     protected $config;
@@ -36,10 +42,12 @@ class DefaultRenderer extends Template
      *
      * @param Template\Context $context
      * @param Config $config
+     * @param Json $jsonSerializer
      * @param array $data
      */
-    public function __construct(Template\Context $context, Config $config, array $data = [])
+    public function __construct(Template\Context $context, Config $config, Json $jsonSerializer, array $data = [])
     {
+        $this->jsonSerializer = $jsonSerializer;
         $this->config = $config;
         parent::__construct($context, $data);
     }
@@ -178,11 +186,23 @@ class DefaultRenderer extends Template
     }
 
     /**
+     * @return string
+     */
+    public function getJsNavigationConfig(): string
+    {
+        return $this->jsonSerializer->serialize([
+            'tweakwiseNavigationFilter' => [
+                'formFilters' => $this->config->getUseFormFilters()
+            ],
+        ]);
+    }
+
+    /**
      * @return Config
      */
-    public function getConfig()
+    public function getJsUseFormFilters()
     {
-        return $this->config;
+        return $this->jsonSerializer->serialize($this->config->getUseFormFilters());
     }
 
     /**

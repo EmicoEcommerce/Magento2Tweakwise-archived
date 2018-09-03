@@ -34,7 +34,7 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
         var container = $('#attribute-slider-<?=$block->getCssId()?>');
         var currentMinValueContainer = container.find('.current-min-value');
         var currentMaxValueContainer = container.find('.current-max-value');
-        var formFilters = '<?=$block->getConfig()->getUseFormFilters()?>';
+        var formFilters = <?=$block->getJsUseFormFilters()?>;
 
         container.find('.slider').slider({
             range: true,
@@ -49,6 +49,7 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
                 currentMaxValueContainer.html(currentMaxValue);
             },
             change: function(event, ui) {
+                debugger;
                 var min = ui.values[0];
                 var max = ui.values[1];
                 if (formFilters) {

@@ -12,6 +12,7 @@ use Emico\Tweakwise\Model\Config;
 use Magento\Tax\Helper\Data as TaxHelper;
 use Magento\Framework\Pricing\Helper\Data as PriceHelper;
 use Magento\Framework\View\Element\Template;
+use Magento\Framework\Serialize\Serializer\Json;
 
 class SliderRenderer extends DefaultRenderer
 {
@@ -35,12 +36,20 @@ class SliderRenderer extends DefaultRenderer
      * @param PriceHelper $priceHelper
      * @param TaxHelper $taxHelper
      * @param Config $config
+     * @param Json $jsonSerializer
      * @param Template\Context $context
      * @param array $data
      */
-    public function __construct(PriceHelper $priceHelper, TaxHelper $taxHelper, Config $config, Template\Context $context, array $data = [])
+    public function __construct(
+        PriceHelper $priceHelper,
+        TaxHelper $taxHelper,
+        Config $config,
+        Json $jsonSerializer,
+        Template\Context $context,
+        array $data = []
+    )
     {
-        parent::__construct($context, $config, $data);
+        parent::__construct($context, $config, $jsonSerializer, $data);
         $this->priceHelper = $priceHelper;
         $this->taxHelper = $taxHelper;
     }
@@ -124,13 +133,5 @@ class SliderRenderer extends DefaultRenderer
         }
 
         return $items[0]->getUrl();
-    }
-
-    /**
-     * @return Config
-     */
-    public function getConfig()
-    {
-        return $this->config;
     }
 }

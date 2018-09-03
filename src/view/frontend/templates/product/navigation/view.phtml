@@ -67,9 +67,9 @@ if (!$block->canShowBlock()) return;
                         </div>
                     <?php endif; ?>
                     <?php if ($useFormFilters): ?>
-                        <li class="show-items-link">
+                        <div class="show-items-link">
                             <button type="submit" class="btn btn-primary btn-block js-btn-filter"><?=__(sprintf('Show <span>%s</span> items', $this->getLayer()->getProductCount())); ?></button>
-                        </li>
+                        </div>
                     <?php endif;?>
                 <?php endforeach; ?>
                 <?php if ($useFormFilters): ?>
