@@ -18,20 +18,41 @@ define(['jquery', 'jquery/ui'], function($) {
 
             let values = jQuery(this.element).serialize();
             let sliderValues = this._getSliderUrlParameters();
-            let url = '?';
+            let searchValue = this._getSearchParam();
 
-            if (values && sliderValues) {
-                url = url + values + '&' + sliderValues;
+            let url = '?';
+            if (searchValue) {
+                url = url + searchValue;
+            }
+
+            if (values && url !== '?') {
+                url = url + '&' + values;
             } else if (values) {
-                url = url + values
+                url = url + values;
+            }
+
+            if (sliderValues && url !== '?') {
+                url = url + '&' + sliderValues;
             } else if (sliderValues) {
                 url = url + sliderValues;
             }
 
-            if (url === '?') {
-                url = '';
+            url = encodeUriQuery(url);
+
+            if (url !== '?') {
+                window.location = url;
             }
-            window.location = url;
+        },
+
+        _getSearchParam: function() {
+            let urlParams = new URLSearchParams(window.location.search);
+            let q = urlParams.get('q');
+
+            if (q) {
+                return 'q=' + q;
+            }
+
+            return '';
         },
 
         _getSliderUrlParameters: function() {
