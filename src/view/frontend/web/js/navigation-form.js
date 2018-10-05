@@ -37,8 +37,6 @@ define(['jquery', 'jquery/ui'], function($) {
                 url = url + sliderValues;
             }
 
-            url = encodeUriQuery(url);
-
             if (url !== '?') {
                 window.location = url;
             }
@@ -47,9 +45,10 @@ define(['jquery', 'jquery/ui'], function($) {
         _getSearchParam: function() {
             let urlParams = new URLSearchParams(window.location.search);
             let q = urlParams.get('q');
-
+            let searchParam = {};
             if (q) {
-                return 'q=' + q;
+                searchParam['q'] = q;
+                return jQuery.param(searchParam);
             }
 
             return '';
