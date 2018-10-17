@@ -43,8 +43,7 @@ define(['jquery', 'jquery/ui'], function($) {
         },
 
         _getSearchParam: function() {
-            let urlParams = new URLSearchParams(window.location.search);
-            let q = urlParams.get('q');
+            let q = this._getQParam();
             let searchParam = {};
             if (q) {
                 searchParam['q'] = q;
@@ -52,6 +51,10 @@ define(['jquery', 'jquery/ui'], function($) {
             }
 
             return '';
+        },
+
+        _getQParam: function() {
+            return decodeURIComponent(window.location.search.match(/(\?|&)q\=([^&]*)/)[2]);
         },
 
         _getSliderUrlParameters: function() {
