@@ -36,7 +36,7 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
         var container = $('#attribute-slider-<?=$block->getCssId()?>');
         var currentMinValueContainer = container.find('.current-min-value');
         var currentMaxValueContainer = container.find('.current-max-value');
-        var formFilters = '<?=$block->getJsUseFormFilters()?>';
+        var formFilters = <?=$block->getJsUseFormFilters()?>;
         var maxFloat = <?=$block->getMaxFloatValue()?>;
 
         container.find('.slider').slider({
