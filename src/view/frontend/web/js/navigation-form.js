@@ -54,7 +54,12 @@ define(['jquery', 'jquery/ui'], function($) {
         },
 
         _getQParam: function() {
-            return decodeURIComponent(window.location.search.match(/(\?|&)q\=([^&]*)/)[2]);
+            let matches = window.location.search.match(/(\?|&)q\=([^&]*)/);
+            if (matches && matches[2]) {
+                return decodeURIComponent(matches[2]);
+            }
+
+            return '';
         },
 
         _getSliderUrlParameters: function() {
@@ -62,9 +67,13 @@ define(['jquery', 'jquery/ui'], function($) {
             jQuery('.slider-attribute').each(function(i, slider) {
                 slider = jQuery(slider);
                 let key = slider.data('url-key');
-                let from = slider.data('min');
-                let to = slider.data('max');
-                query[key] = from + '-' + to;
+                let min = slider.data('min');
+                let max = slider.data('max');
+                let rangeMin = slider.data('range-min');
+                let rangeMax = slider.data('range-max');
+                if ((min && max) && (rangeMin !== min || rangeMax !== max)) {
+                    query[key] = min + '-' + max;
+                }
             });
 
             return jQuery.param(query);
