@@ -10,7 +10,7 @@ define(['jquery', 'jquery/ui'], function($) {
         _hookEvents: function() {
             this.element.on('click', '.more-items', this._handleMoreItemsLink.bind(this));
             this.element.on('click', '.less-items', this._handleLessItemsLink.bind(this));
-            if (this.options.hasOwnProperty('formFilters') && this.options.formFilters !== "1") {
+            if (!this.options.hasOwnProperty('formFilters') || !this.options.formFilters) {
                 this.element.on('click', '.item input[type="checkbox"]', this._handleCheckboxClick.bind(this));
             }
         },

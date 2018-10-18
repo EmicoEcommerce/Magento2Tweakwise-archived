@@ -18,20 +18,48 @@ define(['jquery', 'jquery/ui'], function($) {
 
             let values = jQuery(this.element).serialize();
             let sliderValues = this._getSliderUrlParameters();
-            let url = '?';
+            let searchValue = this._getSearchParam();
 
-            if (values && sliderValues) {
-                url = url + values + '&' + sliderValues;
+            let url = '?';
+            if (searchValue) {
+                url = url + searchValue;
+            }
+
+            if (values && url !== '?') {
+                url = url + '&' + values;
             } else if (values) {
-                url = url + values
+                url = url + values;
+            }
+
+            if (sliderValues && url !== '?') {
+                url = url + '&' + sliderValues;
             } else if (sliderValues) {
                 url = url + sliderValues;
             }
 
-            if (url === '?') {
-                url = '';
+            if (url !== '?') {
+                window.location = url;
             }
-            window.location = url;
+        },
+
+        _getSearchParam: function() {
+            let q = this._getQParam();
+            let searchParam = {};
+            if (q) {
+                searchParam['q'] = q;
+                return jQuery.param(searchParam);
+            }
+
+            return '';
+        },
+
+        _getQParam: function() {
+            let matches = window.location.search.match(/(\?|&)q\=([^&]*)/);
+            if (matches && matches[2]) {
+                return decodeURIComponent(matches[2]);
+            }
+
+            return '';
         },
 
         _getSliderUrlParameters: function() {
@@ -39,9 +67,13 @@ define(['jquery', 'jquery/ui'], function($) {
             jQuery('.slider-attribute').each(function(i, slider) {
                 slider = jQuery(slider);
                 let key = slider.data('url-key');
-                let from = slider.data('min');
-                let to = slider.data('max');
-                query[key] = from + '-' + to;
+                let min = slider.data('min');
+                let max = slider.data('max');
+                let rangeMin = slider.data('range-min');
+                let rangeMax = slider.data('range-max');
+                if ((min && max) && (rangeMin !== min || rangeMax !== max)) {
+                    query[key] = min + '-' + max;
+                }
             });
 
             return jQuery.param(query);

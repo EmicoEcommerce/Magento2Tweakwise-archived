@@ -13,6 +13,8 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
      data-url-key="<?=$block->getUrlKey()?>"
      data-min="<?=$block->getCurrentMinValue()?>"
      data-max="<?=$block->getCurrentMaxValue()?>"
+     data-range-min="<?=$block->getMinValue()?>"
+     data-range-max="<?=$block->getMaxValue()?>"
 >
     <div class="labels">
         <span class="min-value"><?=$block->renderPrice($block->getMinValue())?></span>
@@ -34,7 +36,7 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
         var container = $('#attribute-slider-<?=$block->getCssId()?>');
         var currentMinValueContainer = container.find('.current-min-value');
         var currentMaxValueContainer = container.find('.current-max-value');
-        var formFilters = '<?=$block->getConfig()->getUseFormFilters()?>';
+        var formFilters = '<?=$block->getJsUseFormFilters()?>';
         var maxFloat = <?=$block->getMaxFloatValue()?>;
 
         container.find('.slider').slider({

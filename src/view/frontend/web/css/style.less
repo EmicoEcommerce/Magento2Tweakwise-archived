@@ -61,6 +61,15 @@
         content: '';
     }
 
+    .swatch-attribute-options {
+        input[type='checkbox']:checked {
+            + label .swatch-option {
+                outline: 2px solid #ee0000;
+                border: 1px solid #fff;
+            }
+        }
+    }
+
     .tooltip {
         float: right;
         position: relative;

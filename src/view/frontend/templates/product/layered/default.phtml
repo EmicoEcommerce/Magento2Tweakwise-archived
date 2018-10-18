@@ -9,7 +9,7 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\DefaultRenderer;
 
 /** @var $block DefaultRenderer */
 ?>
-<div data-mage-init='{"tweakwiseNavigationFilter": {"formFilters": "<?=$block->getConfig()->getUseFormFilters()?>"}}'>
+<div data-mage-init='<?=$block->getJsNavigationConfig()?>'>
     <ol class="items">
         <?php foreach ($block->getItems() as $item): ?>
             <li class="item<?=$block->itemDefaultHidden($item) ? ' default-hidden' : ''?>">
@@ -18,7 +18,7 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\DefaultRenderer;
                         <input id="inputCheckbox<?=$block->getCssItemId($item)?>"
                                name="<?=$item->getFilter()->getFacet()->getFacetSettings()->getUrlKey()?>[]"
                                type="checkbox" <?=($item->isSelected() ? 'checked="checked"' : '')?>
-                               value="<?=$item->getAttribute()->getTitle()?>"
+                               value="<?=$block->escapeHtmlAttr($item->getAttribute()->getTitle())?>"
                         >
 
                         <label for="inputCheckbox<?=$block->getCssItemId($item)?>">
