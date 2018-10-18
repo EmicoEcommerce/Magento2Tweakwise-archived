@@ -13,6 +13,8 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
      data-url-key="<?=$block->getUrlKey()?>"
      data-min="<?=$block->getCurrentMinValue()?>"
      data-max="<?=$block->getCurrentMaxValue()?>"
+     data-range-min="<?=$block->getMinValue()?>"
+     data-range-max="<?=$block->getMaxValue()?>"
 >
     <div class="labels">
         <span class="min-value"><?=$block->renderPrice($block->getMinValue())?></span>
@@ -49,7 +51,6 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
                 currentMaxValueContainer.html(currentMaxValue);
             },
             change: function(event, ui) {
-                debugger;
                 var min = ui.values[0];
                 var max = ui.values[1];
                 if (formFilters) {
