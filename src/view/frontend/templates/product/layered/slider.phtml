@@ -36,7 +36,8 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
         var container = $('#attribute-slider-<?=$block->getCssId()?>');
         var currentMinValueContainer = container.find('.current-min-value');
         var currentMaxValueContainer = container.find('.current-max-value');
-        var formFilters = <?=$block->getJsUseFormFilters()?>;
+        var formFilters = '<?=$block->getJsUseFormFilters()?>';
+        var maxFloat = <?=$block->getMaxFloatValue()?>;
 
         container.find('.slider').slider({
             range: true,
@@ -52,7 +53,7 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
             },
             change: function(event, ui) {
                 var min = ui.values[0];
-                var max = ui.values[1];
+                var max = ui.values[1] === Math.floor(maxFloat) ? maxFloat : ui.values[1];
                 if (formFilters) {
                     let slider = jQuery(event.target).closest('.slider-attribute');
                     slider.attr('data-min', min);

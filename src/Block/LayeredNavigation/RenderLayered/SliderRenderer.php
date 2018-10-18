@@ -61,12 +61,32 @@ class SliderRenderer extends DefaultRenderer
      */
     protected function getItemIntValue($index, $default = 0)
     {
+        return (int) $this->getItemValue($index, $default);
+    }
+
+    /**
+     * @param int $index
+     * @param float $default
+     * @return float
+     */
+    protected function getItemFloatValue($index, $default = 0.0)
+    {
+        return (float) $this->getItemValue($index, $default);
+    }
+
+    /**
+     * @param int $index
+     * @param int|float $default
+     * @return int|float|string
+     */
+    protected function getItemValue($index, $default = 0)
+    {
         $items = $this->getItems();
         if (!isset($items[$index])) {
             return $default;
         }
 
-        return (int) $items[$index]->getLabel();
+        return $items[$index]->getLabel();
     }
 
     /**
@@ -86,6 +106,14 @@ class SliderRenderer extends DefaultRenderer
     }
 
     /**
+     * @return float
+     */
+    public function getMaxFloatValue()
+    {
+        return $this->getItemFloatValue(3, $this->getCurrentMaxFloatValue());
+    }
+
+    /**
      * @return int
      */
     public function getCurrentMinValue()
@@ -99,6 +127,14 @@ class SliderRenderer extends DefaultRenderer
     public function getCurrentMaxValue()
     {
         return $this->getItemIntValue(1, 99999);
+    }
+
+    /**
+     * @return float
+     */
+    public function getCurrentMaxFloatValue()
+    {
+        return $this->getItemFloatValue(1, 99999);
     }
 
     /**
