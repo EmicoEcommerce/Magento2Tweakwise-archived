@@ -8,10 +8,31 @@
 
 namespace Emico\Tweakwise\Model\Observer;
 
+use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext;
+use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
+use Emico\Tweakwise\Model\Config;
+use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\Action\Context;
 use Magento\Framework\Event\Observer;
 
 class CatalogSearchRedirect extends AbstractProductNavigationRequestObserver
 {
+    /**
+     * CatalogSearchRedirect constructor.
+     * @param Config $config
+     * @param CurrentContext $context
+     * @param Context $actionContext
+     * @param NavigationContext $navigationContext
+     */
+    public function __construct(Config $config, CurrentContext $context, Context $actionContext, NavigationContext $navigationContext)
+    {
+        parent::__construct($config, $context, $actionContext);
+
+        if ($this->config->isSearchEnabled()) {
+            $this->context->getResponse();
+        }
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -30,5 +51,8 @@ class CatalogSearchRedirect extends AbstractProductNavigationRequestObserver
         }
 
         $this->getHttpResponse()->setRedirect($url);
+        /** @var Action $controller */
+        $controller = $observer->getData('controller_action');
+        $controller->getActionFlag()->set('', Action::FLAG_NO_DISPATCH, 1);
     }
 }

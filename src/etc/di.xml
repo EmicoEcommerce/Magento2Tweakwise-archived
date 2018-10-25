@@ -70,6 +70,15 @@
         </arguments>
     </type>
 
+    <type name="Emico\Tweakwise\Model\Observer\CatalogSearchRedirect">
+        <arguments>
+            <argument name="config" xsi:type="object">Emico\Tweakwise\Model\Config</argument>
+            <argument name="context" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext</argument>
+            <argument name="actionContext" xsi:type="object">Magento\Framework\App\Action\Context</argument>
+            <argument name="navigationContext" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\Search</argument>
+        </arguments>
+    </type>
+
     <!-- TW models -->
     <virtualType name="Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\Category" type="Emico\Tweakwise\Model\Catalog\Layer\NavigationContext">
         <arguments>
