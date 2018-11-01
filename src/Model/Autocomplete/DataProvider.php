@@ -207,6 +207,6 @@ class DataProvider implements DataProviderInterface
         $productResult = $this->getProductItems($response);
         $suggestionResult = $this->getSuggestionResult($response);
 
-        return array_merge($productResult, $suggestionResult);
+        return array_merge($suggestionResult, $productResult);
     }
 }
