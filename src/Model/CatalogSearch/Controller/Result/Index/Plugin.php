@@ -6,12 +6,15 @@
 
 namespace Emico\Tweakwise\Model\CatalogSearch\Controller\Result\Index;
 
-
-use Closure;
 use Emico\Tweakwise\Model\Config;
 use Magento\CatalogSearch\Controller\Result\Index;
 use Magento\Search\Model\QueryFactory;
 
+/**
+ * Class Plugin
+ *
+ * @package Emico\Tweakwise\Model\CatalogSearch\Controller\Result\Index
+ */
 class Plugin
 {
     /**
@@ -41,22 +44,16 @@ class Plugin
      * not redirect to a magento redirect
      *
      * @param Index $subject Original Controller interceptor
-     * @param Closure $proceed Wrapper for original
      *
      * @return mixed
      */
-    public function aroundExecute(Index $subject, Closure $proceed)
+    public function beforeExecute(Index $subject)
     {
-        if (!$this->config->isSearchEnabled()) {
-            return $proceed();
+        if ($this->config->isSearchEnabled()) {
+            /* @var $query \Magento\Search\Model\Query */
+            $query = $this->queryFactory->get();
+            // Set redirect to '', so that it does not get executed
+            $query->setRedirect('');
         }
-
-        /* @var $query \Magento\Search\Model\Query */
-        $query = $this->queryFactory->get();
-        // Set redirect to '', so that it does not get executed
-        $query->setRedirect('');
-
-        return $proceed();
     }
-
 }
