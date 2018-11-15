@@ -229,6 +229,15 @@ class Config
      * @param Store|null $store
      * @return int
      */
+    public function isSearchEnabled(Store $store = null)
+    {
+        return (int) $this->getStoreConfig($store, 'tweakwise/search/enabled');
+    }
+
+    /**
+     * @param Store|null $store
+     * @return int
+     */
     public function getSearchTemplateId(Store $store = null)
     {
         return (int) $this->getStoreConfig($store, 'tweakwise/search/template');
