@@ -196,19 +196,23 @@ class NavigationContext
     }
 
     /**
+     * Add correct visibility filters based on type of Request
      *
+     * @param ProductNavigationRequest $request
      */
     public function addVisibilityFilter(ProductNavigationRequest $request)
     {
+        $visibilityAttribute = 'visibility';
+
         $both = Visibility::VISIBILITY_BOTH;
-        $request->addAttributeFilter('visibility', $both);
+        $request->addAttributeFilter($visibilityAttribute, $both);
 
         if ($request instanceof ProductSearchRequest) {
             $search = Visibility::VISIBILITY_IN_SEARCH;
-            $request->addAttributeFilter('visibility', $search);
+            $request->addAttributeFilter($visibilityAttribute, $search);
         } else {
             $catalog = Visibility::VISIBILITY_IN_CATALOG;
-            $request->addAttributeFilter('visibility', $catalog);
+            $request->addAttributeFilter($visibilityAttribute, $catalog);
         }
     }
 }
