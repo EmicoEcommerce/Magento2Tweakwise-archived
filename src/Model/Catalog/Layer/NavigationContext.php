@@ -208,11 +208,9 @@ class NavigationContext
         $request->addAttributeFilter($visibilityAttribute, $both);
 
         if ($request instanceof ProductSearchRequest) {
-            $search = Visibility::VISIBILITY_IN_SEARCH;
-            $request->addAttributeFilter($visibilityAttribute, $search);
+            $request->addAttributeFilter($visibilityAttribute, Visibility::VISIBILITY_IN_SEARCH);
         } else {
-            $catalog = Visibility::VISIBILITY_IN_CATALOG;
-            $request->addAttributeFilter($visibilityAttribute, $catalog);
+            $request->addAttributeFilter($visibilityAttribute, Visibility::VISIBILITY_IN_CATALOG);
         }
     }
 }
