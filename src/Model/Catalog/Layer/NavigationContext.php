@@ -18,6 +18,7 @@ use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Helper\Product\ProductList;
 use Magento\Catalog\Model\Layer\FilterableAttributeListInterface;
 use Magento\Catalog\Model\Product\ProductList\Toolbar as ToolbarModel;
+use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Attribute;
 
 /**
@@ -179,7 +180,7 @@ class NavigationContext
     {
         // Apply magento config values
         $request->setLimit($this->productListHelper->getDefaultLimitPerPageValue($this->getCurrentViewMode()));
-
+        $this->addVisibilityFilter($request);
         // Apply tweakwise config values
         if ($request instanceof ProductSearchRequest) {
             $templateId = $this->config->getSearchTemplateId();
@@ -192,5 +193,22 @@ class NavigationContext
         $this->url->apply($request);
 
         return $this;
+    }
+
+    /**
+     *
+     */
+    public function addVisibilityFilter(ProductNavigationRequest $request)
+    {
+        $both = Visibility::VISIBILITY_BOTH;
+        $request->addAttributeFilter('visibility', $both);
+
+        if ($request instanceof ProductSearchRequest) {
+            $search = Visibility::VISIBILITY_IN_SEARCH;
+            $request->addAttributeFilter('visibility', $search);
+        } else {
+            $catalog = Visibility::VISIBILITY_IN_CATALOG;
+            $request->addAttributeFilter('visibility', $catalog);
+        }
     }
 }
