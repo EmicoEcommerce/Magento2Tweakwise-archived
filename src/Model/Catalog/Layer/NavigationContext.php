@@ -203,9 +203,7 @@ class NavigationContext
     public function addVisibilityFilter(ProductNavigationRequest $request)
     {
         $visibilityAttribute = 'visibility';
-
-        $both = Visibility::VISIBILITY_BOTH;
-        $request->addAttributeFilter($visibilityAttribute, $both);
+        $request->addAttributeFilter($visibilityAttribute, Visibility::VISIBILITY_BOTH);
 
         if ($request instanceof ProductSearchRequest) {
             $request->addAttributeFilter($visibilityAttribute, Visibility::VISIBILITY_IN_SEARCH);
