@@ -18,6 +18,7 @@ use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\CategoryRepository;
 use Magento\Catalog\Model\Layer\Category\CollectionFilter;
+use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as ProductCollectionFactory;
 use Magento\Framework\App\Request\Http as HttpRequest;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -27,9 +28,15 @@ use Magento\Search\Model\Query;
 use Magento\Search\Model\QueryFactory;
 use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
+use Emico\Tweakwise\Model\Client\Request;
 
 class DataProvider implements DataProviderInterface
 {
+    /**
+     * Visbility attribute code
+     */
+    const VISIBILITY_ATTRIBUTE = 'visibility';
+
     /**
      * @var ProductItemFactory
      */
@@ -86,6 +93,11 @@ class DataProvider implements DataProviderInterface
     protected $request;
 
     /**
+     * @var Visibility
+     */
+    protected $visibility;
+
+    /**
      * DataProvider constructor.
      *
      * @param ProductItemFactory $productItemFactory
@@ -99,6 +111,7 @@ class DataProvider implements DataProviderInterface
      * @param CategoryRepository $categoryRepository
      * @param Config $config
      * @param HttpRequest $request
+     * @param Visibility $visibility
      */
     public function __construct(
         ProductItemFactory $productItemFactory,
@@ -111,7 +124,8 @@ class DataProvider implements DataProviderInterface
         CollectionFilter $collectionFilter,
         CategoryRepository $categoryRepository,
         Config $config,
-        HttpRequest $request
+        HttpRequest $request,
+        Visibility $visibility
     )
     {
         $this->productItemFactory = $productItemFactory;
@@ -125,6 +139,7 @@ class DataProvider implements DataProviderInterface
         $this->categoryRepository = $categoryRepository;
         $this->config = $config;
         $this->request = $request;
+        $this->visibility = $visibility;
     }
 
     /**
@@ -201,6 +216,8 @@ class DataProvider implements DataProviderInterface
         $request->setMaxResult($config->getAutocompleteMaxResults());
         $request->setSearch($query);
 
+        $this->addVisibilityFilter($request);
+
         /** @var AutocompleteResponse $response */
         $response = $this->client->request($request);
 
@@ -208,5 +225,19 @@ class DataProvider implements DataProviderInterface
         $suggestionResult = $this->getSuggestionResult($response);
 
         return array_merge($suggestionResult, $productResult);
+    }
+
+    /**
+     * Add search visibility ids to request parameters
+     *
+     * @param Request $request
+     */
+    protected function addVisibilityFilter(Request $request)
+    {
+        $visibilityIds = $this->visibility->getVisibleInSearchIds();
+
+        foreach ($visibilityIds aS $visibilityId) {
+            $request->addParameter(self::VISIBILITY_ATTRIBUTE, $visibilityId);
+        }
     }
 }

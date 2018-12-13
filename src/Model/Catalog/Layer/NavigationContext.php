@@ -27,6 +27,11 @@ use Magento\Catalog\Model\ResourceModel\Attribute;
 class NavigationContext
 {
     /**
+     * Visbility attribute code
+     */
+    const VISIBILITY_ATTRIBUTE = 'visibility';
+
+    /**
      * @var ProductNavigationRequest
      */
     protected $request;
@@ -77,6 +82,11 @@ class NavigationContext
     protected $toolbarModel;
 
     /**
+     * @var Visibility
+     */
+    protected $visibility;
+
+    /**
      * NavigationContext constructor.
      *
      * @param Config $config
@@ -89,8 +99,16 @@ class NavigationContext
      * @param ToolbarModel $toolbarModel
      */
     public function __construct(
-        Config $config, RequestFactory $requestFactory, Client $client, Url $url, FilterableAttributeListInterface $filterableAttributes, CurrentContext $currentContext,
-        ProductList $productListHelper, ToolbarModel $toolbarModel)
+        Config $config,
+        RequestFactory $requestFactory,
+        Client $client,
+        Url $url,
+        FilterableAttributeListInterface $filterableAttributes,
+        CurrentContext $currentContext,
+        ProductList $productListHelper,
+        ToolbarModel $toolbarModel,
+        Visibility $visibility
+    )
     {
         $this->config = $config;
         $this->requestFactory = $requestFactory;
@@ -99,6 +117,7 @@ class NavigationContext
         $this->filterableAttributes = $filterableAttributes;
         $this->productListHelper = $productListHelper;
         $this->toolbarModel = $toolbarModel;
+        $this->visibility = $visibility;
 
         $currentContext->setContext($this);
     }
@@ -202,13 +221,14 @@ class NavigationContext
      */
     public function addVisibilityFilter(ProductNavigationRequest $request)
     {
-        $visibilityAttribute = 'visibility';
-        $request->addAttributeFilter($visibilityAttribute, Visibility::VISIBILITY_BOTH);
-
         if ($request instanceof ProductSearchRequest) {
-            $request->addAttributeFilter($visibilityAttribute, Visibility::VISIBILITY_IN_SEARCH);
+            $visibilityValues = $this->visibility->getVisibleInSearchIds();
         } else {
-            $request->addAttributeFilter($visibilityAttribute, Visibility::VISIBILITY_IN_CATALOG);
+            $visibilityValues = $this->visibility->getVisibleInCatalogIds();
+        }
+
+        foreach ($visibilityValues as $visibilityValue) {
+            $request->addAttributeFilter(self::VISIBILITY_ATTRIBUTE, $visibilityValue);
         }
     }
 }
