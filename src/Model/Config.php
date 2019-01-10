@@ -89,7 +89,7 @@ class Config
      */
     public function getTimeout(Store $store = null)
     {
-        return (float) $this->getStoreConfig($store, 'tweakwise/general/timeout');
+        return (int) $this->getStoreConfig($store, 'tweakwise/general/timeout');
     }
 
     /**
