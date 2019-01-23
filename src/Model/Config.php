@@ -287,6 +287,33 @@ class Config
 
     /**
      * @param Store|null $store
+     * @return bool
+     */
+    public function isSeoEnabled(Store $store = null)
+    {
+        return (bool) $this->getStoreConfig('tweakwise/seo/enabled', $store);
+    }
+
+    /**
+     * @param Store|null $store
+     * @return bool
+     */
+    public function getFilterWhitelist(Store $store = null)
+    {
+        return (bool) $this->getStoreConfig('tweakwise/seo/filter_whitelist', $store);
+    }
+
+    /**
+     * @param Store|null $store
+     * @return bool
+     */
+    public function getMaxAllowedFacets(Store $store = null)
+    {
+        return (bool) $this->getStoreConfig('tweakwise/seo/max_allowed_facets', $store);
+    }
+
+    /**
+     * @param Store|null $store
      * @param string $path
      * @return mixed|null|string
      */
