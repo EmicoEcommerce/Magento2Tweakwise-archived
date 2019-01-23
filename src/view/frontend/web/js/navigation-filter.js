@@ -39,11 +39,13 @@ define(['jquery', 'jquery/ui'], function($) {
         },
 
         _findHref: function (aElement) {
+            var href = aElement.attr('href');
             if (this.options.hasOwnProperty('seoEnabled') && this.options.seoEnabled) {
-                return aElement.data('seo-href');
+                var seoHref = aElement.data('seo-href');
+                return seoHref ? seoHref : href;
             }
 
-            return aElement.attr('href')
+            return href;
         },
 
         _create: function() {
