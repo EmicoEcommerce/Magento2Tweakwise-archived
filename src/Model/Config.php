@@ -296,11 +296,12 @@ class Config
 
     /**
      * @param Store|null $store
-     * @return bool
+     * @return array
      */
     public function getFilterWhitelist(Store $store = null)
     {
-        return (bool) $this->getStoreConfig('tweakwise/seo/filter_whitelist', $store);
+        $filterList = $this->getStoreConfig('tweakwise/seo/filter_whitelist', $store);
+        return explode(',', $filterList) ?: [];
     }
 
     /**
@@ -309,7 +310,7 @@ class Config
      */
     public function getMaxAllowedFacets(Store $store = null)
     {
-        return (bool) $this->getStoreConfig('tweakwise/seo/max_allowed_facets', $store);
+        return (int) $this->getStoreConfig('tweakwise/seo/max_allowed_facets', $store);
     }
 
     /**

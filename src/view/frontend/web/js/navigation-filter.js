@@ -31,11 +31,19 @@ define(['jquery', 'jquery/ui'], function($) {
 
         _handleCheckboxClick: function(event) {
             var a = $(event.currentTarget).closest('a');
-            var href = a.attr('href');
+            var href = this._findHref(a);
             if (href) {
                 window.location.href = href;
                 return false;
             }
+        },
+
+        _findHref: function (aElement) {
+            if (this.options.hasOwnProperty('seoEnabled') && this.options.seoEnabled) {
+                return aElement.data('seo-href');
+            }
+
+            return aElement.attr('href')
         },
 
         _create: function() {

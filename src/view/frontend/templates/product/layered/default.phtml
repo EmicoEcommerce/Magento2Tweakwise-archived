@@ -13,7 +13,7 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\DefaultRenderer;
     <ol class="items">
         <?php foreach ($block->getItems() as $item): ?>
             <li class="item<?=$block->itemDefaultHidden($item) ? ' default-hidden' : ''?>">
-                <a href="<?=$block->escapeUrl($item->getUrl())?>">
+                <?=$block->renderAnchorHtmlTag($item);?>
                     <?php if ($block->showCheckbox()): ?>
                         <input id="inputCheckbox<?=$block->getCssItemId($item)?>"
                                name="<?=$item->getFilter()->getFacet()->getFacetSettings()->getUrlKey()?>[]"
