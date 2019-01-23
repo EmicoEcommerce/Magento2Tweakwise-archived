@@ -95,6 +95,9 @@ class FilterHelper
     protected function exceedsMaxAllowedFacets(): bool
     {
         $maxAllowedFacetsCount = $this->config->getMaxAllowedFacets();
+        if (!$maxAllowedFacetsCount) {
+            return false;
+        }
         $layer = $this->layerResolver->get();
         $filters = $this->tweakwiseFilterList->getFilters($layer);
 
