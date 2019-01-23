@@ -86,7 +86,7 @@ class FilterHelper
         return $item->getFilter()
             ->getFacet()
             ->getFacetSettings()
-            ->getTitle();
+            ->getAttributename();
     }
 
     /**
