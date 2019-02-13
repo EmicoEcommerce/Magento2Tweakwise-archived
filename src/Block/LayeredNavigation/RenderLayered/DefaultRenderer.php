@@ -96,15 +96,14 @@ class DefaultRenderer extends Template
      * @param Item $item
      * @return string
      */
-    public function renderAnchorHtmlTag(Item $item)
+    public function renderAnchorHtmlTagAttributes(Item $item)
     {
         $anchorAttributes = $this->getAnchorTagAttributes($item);
         $attributeHtml = [];
         foreach ($anchorAttributes as $anchorAttribute => $anchorAttributeValue) {
             $attributeHtml[] = sprintf('%s="%s"', $anchorAttribute, $anchorAttributeValue);
         }
-        $attributeHtml = implode(' ', $attributeHtml);
-        return sprintf("<a %s>", $attributeHtml);
+        return implode(' ', $attributeHtml);
     }
 
     /**
