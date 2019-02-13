@@ -57,6 +57,6 @@ class SortFieldType extends Type
      */
     public function getUrlValue()
     {
-        return $this->getDisplayTitle();
+        return $this->getTitle();
     }
 }
