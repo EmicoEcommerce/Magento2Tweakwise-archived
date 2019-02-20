@@ -12,6 +12,7 @@ define(['jquery', 'jquery/ui'], function($) {
             this.element.on('click', '.less-items', this._handleLessItemsLink.bind(this));
             if (!this.options.hasOwnProperty('formFilters') || !this.options.formFilters) {
                 this.element.on('click', '.item input[type="checkbox"]', this._handleCheckboxClick.bind(this));
+                this.element.on('click', '.js-swatch-link', this._handleSwatchClick.bind(this));
             }
         },
 
@@ -36,6 +37,11 @@ define(['jquery', 'jquery/ui'], function($) {
                 window.location.href = href;
                 return false;
             }
+        },
+
+        _handleSwatchClick: function(event) {
+            event.preventDefault();
+            this._handleCheckboxClick(event);
         },
 
         _findHref: function (aElement) {

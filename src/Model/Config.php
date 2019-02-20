@@ -11,6 +11,7 @@ namespace Emico\Tweakwise\Model;
 use Emico\Tweakwise\Exception\InvalidArgumentException;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\Store;
+use Magento\Framework\Serialize\Serializer\Json;
 
 class Config
 {
@@ -36,6 +37,11 @@ class Config
     protected $config;
 
     /**
+     * @var Json
+     */
+    protected $jsonSerializer;
+
+    /**
      * @var bool
      */
     protected $tweakwiseExceptionThrown = false;
@@ -50,9 +56,10 @@ class Config
      *
      * @param ScopeConfigInterface $config
      */
-    public function __construct(ScopeConfigInterface $config)
+    public function __construct(ScopeConfigInterface $config, Json $jsonSerializer)
     {
         $this->config = $config;
+        $this->jsonSerializer = $jsonSerializer;
     }
 
     /**
@@ -350,5 +357,26 @@ class Config
             self::RECOMMENDATION_TYPE_CROSSSELL,
             self::RECOMMENDATION_TYPE_FEATURED
         ));
+    }
+
+    /**
+     * @return string
+     */
+    public function getJsNavigationConfig(): string
+    {
+        return $this->jsonSerializer->serialize([
+            'tweakwiseNavigationFilter' => [
+                'formFilters' => $this->getUseFormFilters(),
+                'seoEnabled' => $this->isSeoEnabled()
+            ],
+        ]);
+    }
+
+    /**
+     * @return Config
+     */
+    public function getJsUseFormFilters()
+    {
+        return $this->jsonSerializer->serialize($this->getUseFormFilters());
     }
 }

@@ -14,10 +14,11 @@ use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
 use Emico\Tweakwise\Model\Config;
 use Emico\Tweakwise\Model\Seo\FilterHelper;
 use Magento\Framework\View\Element\Template;
-use Magento\Framework\Serialize\Serializer\Json;
 
 class DefaultRenderer extends Template
 {
+    use AnchorRendererTrait;
+
     /**
      * {@inheritDoc}
      */
@@ -39,11 +40,6 @@ class DefaultRenderer extends Template
     protected $config;
 
     /**
-     * @var FilterHelper
-     */
-    protected $filterHelper;
-
-    /**
      * Constructor
      *
      * @param Template\Context $context
@@ -51,9 +47,8 @@ class DefaultRenderer extends Template
      * @param Json $jsonSerializer
      * @param array $data
      */
-    public function __construct(Template\Context $context, Config $config, Json $jsonSerializer, FilterHelper $filterHelper, array $data = [])
+    public function __construct(Template\Context $context, Config $config, FilterHelper $filterHelper, array $data = [])
     {
-        $this->jsonSerializer = $jsonSerializer;
         $this->config = $config;
         $this->filterHelper = $filterHelper;
         parent::__construct($context, $data);
@@ -90,34 +85,6 @@ class DefaultRenderer extends Template
         }
 
         return $items;
-    }
-
-    /**
-     * @param Item $item
-     * @return string
-     */
-    public function renderAnchorHtmlTagAttributes(Item $item)
-    {
-        $anchorAttributes = $this->getAnchorTagAttributes($item);
-        $attributeHtml = [];
-        foreach ($anchorAttributes as $anchorAttribute => $anchorAttributeValue) {
-            $attributeHtml[] = sprintf('%s="%s"', $anchorAttribute, $anchorAttributeValue);
-        }
-        return implode(' ', $attributeHtml);
-    }
-
-    /**
-     * @param Item $item
-     * @return string[]
-     */
-    protected function getAnchorTagAttributes(Item $item): array
-    {
-        $itemUrl = $this->getItemUrl($item);
-        if ($this->filterHelper->shouldFilterBeIndexable($item)) {
-            return ['href' => $itemUrl];
-        }
-
-        return ['href' => '#', 'data-seo-href' => $itemUrl];
     }
 
     /**
@@ -234,12 +201,7 @@ class DefaultRenderer extends Template
      */
     public function getJsNavigationConfig(): string
     {
-        return $this->jsonSerializer->serialize([
-            'tweakwiseNavigationFilter' => [
-                'formFilters' => $this->config->getUseFormFilters(),
-                'seoEnabled' => $this->config->isSeoEnabled()
-            ],
-        ]);
+        return $this->config->getJsNavigationConfig();
     }
 
     /**
@@ -247,7 +209,7 @@ class DefaultRenderer extends Template
      */
     public function getJsUseFormFilters()
     {
-        return $this->jsonSerializer->serialize($this->config->getUseFormFilters());
+        return $this->config->getJsUseFormFilters();
     }
 
     /**
