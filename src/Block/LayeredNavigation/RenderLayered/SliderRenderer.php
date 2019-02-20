@@ -159,9 +159,18 @@ class SliderRenderer extends DefaultRenderer
     }
 
     /**
+     * @deprecated since 1.5.0 use getFilterUrl()
      * @return string
      */
     public function getPriceUrl()
+    {
+        return $this->getFilterUrl();
+    }
+
+    /**
+     * @return string
+     */
+    public function getFilterUrl()
     {
         $items = $this->getItems();
         if (!isset($items[0])) {

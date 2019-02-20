@@ -28,16 +28,21 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
 </div>
 
 <script type="text/javascript">
-    require(['jquery', 'Magento_Catalog/js/price-utils', 'jquery/ui', 'domReady!'], function($, priceUtils, quote){
+    require(['jquery', 'jquery/ui', 'domReady!'], function($, priceUtils, quote){
         'use strict';
 
-        var priceFormat = <?=$block->getPriceFormatJson()?>;
-        var priceUrl = '<?=$block->getPriceUrl()?>';
+        var filterUrl = '<?=$block->getPriceUrl()?>';
+        var prefix = '<?=$block->getItemPrefix();?>'
+        var postfix = '<?=$block->getItemPostfix();?>'
         var container = $('#attribute-slider-<?=$block->getCssId()?>');
         var currentMinValueContainer = container.find('.current-min-value');
         var currentMaxValueContainer = container.find('.current-max-value');
         var formFilters = <?=$block->getJsUseFormFilters()?>;
         var maxFloat = <?=$block->getMaxFloatValue()?>;
+
+        function labelFormat(value, prefix, postfix) {
+            return '<span class="prefix">' + prefix + '</span>' + value + '<span class="postfix">' + postfix + '</span>'
+        }
 
         container.find('.slider').slider({
             range: true,
@@ -45,10 +50,10 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
             max: <?=$block->getMaxValue()?>,
             values: [ <?=$block->getCurrentMinValue()?>, <?=$block->getCurrentMaxValue()?> ],
             slide: function(event, ui) {
-                var currentMinValue = priceUtils.formatPrice(ui.values[0], priceFormat);
+                var currentMinValue = labelFormat(ui.values[0], prefix, postfix);
                 currentMinValueContainer.html(currentMinValue);
 
-                var currentMaxValue = priceUtils.formatPrice(ui.values[1], priceFormat);
+                var currentMaxValue = labelFormat(ui.values[1], prefix, postfix);
                 currentMaxValueContainer.html(currentMaxValue);
             },
             change: function(event, ui) {
@@ -59,12 +64,12 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
                     slider.attr('data-min', min);
                     slider.attr('data-max', max);
                 } else {
-                    var url = priceUrl;
+                    var url = filterUrl;
                     url = url.replace(encodeURI('{{from}}'), min);
                     url = url.replace(encodeURI('{{to}}'), max);
                     window.location.href = url;
                 }
-            }
+            },
         });
     });
 </script>
