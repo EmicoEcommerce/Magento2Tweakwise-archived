@@ -138,10 +138,21 @@ class SliderRenderer extends DefaultRenderer
     }
 
     /**
-     * @param int $value
+     * @deprecated 1.5.0 use renderValue()
+     * @see SliderRenderer::renderValue()
+     * @param string $value
      * @return string
      */
     public function renderPrice($value)
+    {
+        return $this->renderValue($value);
+    }
+
+    /**
+     * @param string $value
+     * @return float|string
+     */
+    public function renderValue($value)
     {
         if (!$this->filter->getFacet()->getFacetSettings()->isPrice()) {
             return $value;
@@ -159,7 +170,8 @@ class SliderRenderer extends DefaultRenderer
     }
 
     /**
-     * @deprecated since 1.5.0 use getFilterUrl()
+     * @deprecated 1.5.0 use getFilterUrl()
+     * @see SliderRenderer::getFilterUrl()
      * @return string
      */
     public function getPriceUrl()

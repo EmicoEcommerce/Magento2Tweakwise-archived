@@ -17,13 +17,29 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
      data-range-max="<?=$block->getMaxValue()?>"
 >
     <div class="labels">
-        <span class="min-value"><?=$block->renderPrice($block->getMinValue())?></span>
-        <span class="max-value"><?=$block->renderPrice($block->getMaxValue())?></span>
+        <span class="min-value">
+            <span class="prefix"><?=$block->getItemPrefix()?></span>
+            <?=$block->renderValue($block->getMinValue())?>
+            <span class="postfix"><?=$block->getItemPostfix()?></span>
+        </span>
+        <span class="max-value">
+            <span class="prefix"><?=$block->getItemPrefix()?></span>
+            <?=$block->renderValue($block->getMaxValue())?>
+            <span class="postfix"><?=$block->getItemPostfix()?></span>
+        </span>
     </div>
     <div class="slider"></div>
     <div class="labels">
-        <span class="current-min-value"><?=$block->renderPrice($block->getCurrentMinValue())?></span>
-        <span class="current-max-value"><?=$block->renderPrice($block->getCurrentMaxValue())?></span>
+        <span class="current-min-value">
+            <span class="prefix"><?=$block->getItemPrefix()?></span>
+            <?=$block->renderValue($block->getCurrentMinValue())?>
+            <span class="postfix"><?=$block->getItemPostfix()?></span>
+        </span>
+        <span class="current-max-value">
+            <span class="prefix"><?=$block->getItemPrefix()?></span>
+            <?=$block->renderValue($block->getCurrentMaxValue())?>
+            <span class="postfix"><?=$block->getItemPostfix()?></span>
+        </span>
     </div>
 </div>
 
@@ -32,8 +48,8 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
         'use strict';
 
         var filterUrl = '<?=$block->getPriceUrl()?>';
-        var prefix = '<?=$block->getItemPrefix();?>'
-        var postfix = '<?=$block->getItemPostfix();?>'
+        var prefix = '<span class="prefix">' + '<?=$block->getItemPrefix();?>' + '</span>'
+        var postfix = '<span class="postfix">' + '<?=$block->getItemPostfix();?>' + '</span>'
         var container = $('#attribute-slider-<?=$block->getCssId()?>');
         var currentMinValueContainer = container.find('.current-min-value');
         var currentMaxValueContainer = container.find('.current-max-value');
@@ -41,7 +57,7 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
         var maxFloat = <?=$block->getMaxFloatValue()?>;
 
         function labelFormat(value, prefix, postfix) {
-            return '<span class="prefix">' + prefix + '</span>' + value + '<span class="postfix">' + postfix + '</span>'
+            return prefix + value + postfix;
         }
 
         container.find('.slider').slider({
