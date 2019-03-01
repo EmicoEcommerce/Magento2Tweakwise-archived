@@ -89,7 +89,7 @@ class Config
      */
     public function getTimeout(Store $store = null)
     {
-        return (float) $this->getStoreConfig($store, 'tweakwise/general/timeout');
+        return (int) $this->getStoreConfig($store, 'tweakwise/general/timeout');
     }
 
     /**
@@ -130,6 +130,15 @@ class Config
     public function getUseDefaultLinkRenderer(Store $store = null)
     {
         return (bool) $this->getStoreConfig($store, 'tweakwise/layered/default_link_renderer');
+    }
+
+    /**
+     * @param Store|null $store
+     * @return bool
+     */
+    public function getUseFormFilters(Store $store = null)
+    {
+        return (bool) $this->getStoreConfig($store, 'tweakwise/layered/form_filters');
     }
 
     /**
@@ -214,6 +223,15 @@ class Config
     public function isAutocompleteStayInCategory(Store $store = null)
     {
         return (bool) $this->getStoreConfig($store, 'tweakwise/autocomplete/in_current_category');
+    }
+
+    /**
+     * @param Store|null $store
+     * @return int
+     */
+    public function isSearchEnabled(Store $store = null)
+    {
+        return (int) $this->getStoreConfig($store, 'tweakwise/search/enabled');
     }
 
     /**

@@ -8,9 +8,11 @@
 
 namespace Emico\Tweakwise\Block\LayeredNavigation\RenderLayered;
 
+use Emico\Tweakwise\Model\Config;
 use Magento\Tax\Helper\Data as TaxHelper;
 use Magento\Framework\Pricing\Helper\Data as PriceHelper;
 use Magento\Framework\View\Element\Template;
+use Magento\Framework\Serialize\Serializer\Json;
 
 class SliderRenderer extends DefaultRenderer
 {
@@ -33,12 +35,21 @@ class SliderRenderer extends DefaultRenderer
      * SliderRenderer constructor.
      * @param PriceHelper $priceHelper
      * @param TaxHelper $taxHelper
+     * @param Config $config
+     * @param Json $jsonSerializer
      * @param Template\Context $context
      * @param array $data
      */
-    public function __construct(PriceHelper $priceHelper, TaxHelper $taxHelper, Template\Context $context, array $data = [])
+    public function __construct(
+        PriceHelper $priceHelper,
+        TaxHelper $taxHelper,
+        Config $config,
+        Json $jsonSerializer,
+        Template\Context $context,
+        array $data = []
+    )
     {
-        parent::__construct($context, $data);
+        parent::__construct($context, $config, $jsonSerializer, $data);
         $this->priceHelper = $priceHelper;
         $this->taxHelper = $taxHelper;
     }
@@ -50,12 +61,32 @@ class SliderRenderer extends DefaultRenderer
      */
     protected function getItemIntValue($index, $default = 0)
     {
+        return (int) $this->getItemValue($index, $default);
+    }
+
+    /**
+     * @param int $index
+     * @param float $default
+     * @return float
+     */
+    protected function getItemFloatValue($index, $default = 0.0)
+    {
+        return (float) $this->getItemValue($index, $default);
+    }
+
+    /**
+     * @param int $index
+     * @param int|float $default
+     * @return int|float|string
+     */
+    protected function getItemValue($index, $default = 0)
+    {
         $items = $this->getItems();
         if (!isset($items[$index])) {
             return $default;
         }
 
-        return (int) $items[$index]->getLabel();
+        return $items[$index]->getLabel();
     }
 
     /**
@@ -75,6 +106,14 @@ class SliderRenderer extends DefaultRenderer
     }
 
     /**
+     * @return float
+     */
+    public function getMaxFloatValue()
+    {
+        return $this->getItemFloatValue(3, $this->getCurrentMaxFloatValue());
+    }
+
+    /**
      * @return int
      */
     public function getCurrentMinValue()
@@ -88,6 +127,14 @@ class SliderRenderer extends DefaultRenderer
     public function getCurrentMaxValue()
     {
         return $this->getItemIntValue(1, 99999);
+    }
+
+    /**
+     * @return float
+     */
+    public function getCurrentMaxFloatValue()
+    {
+        return $this->getItemFloatValue(1, 99999);
     }
 
     /**

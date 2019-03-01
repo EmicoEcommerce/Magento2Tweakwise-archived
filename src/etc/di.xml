@@ -27,6 +27,12 @@
     <type name="Magento\Theme\Block\Html\Pager">
         <plugin name="emico-tweakwise" type="Emico\Tweakwise\Block\Theme\Html\Pager\Plugin" sortOrder="0" />
     </type>
+    <type name="Magento\LayeredNavigation\Block\Navigation">
+        <plugin name="emico-tweakwise" type="Emico\Tweakwise\Block\LayeredNavigation\Navigation\Plugin" sortOrder="0" />
+    </type>
+    <type name="Magento\LayeredNavigationStaging\Block\Navigation">
+        <plugin name="emico-tweakwise" type="Emico\Tweakwise\Block\LayeredNavigation\Navigation\Plugin" sortOrder="0" />
+    </type>
     <type name="Magento\LayeredNavigation\Block\Navigation\FilterRenderer">
         <plugin name="emico-tweakwise" type="Emico\Tweakwise\Block\Navigation\FilterRenderer\Plugin" sortOrder="0" />
     </type>
@@ -45,6 +51,12 @@
     <type name="Magento\Catalog\Block\Product\ProductList\Related">
         <plugin name="emico-tweakwise" type="Emico\Tweakwise\Block\Catalog\Product\ProductList\Related\Plugin" sortOrder="0" />
     </type>
+    <type name="Magento\Swatches\Helper\Data">
+        <plugin name="emico-tweakwise" type="Emico\Tweakwise\Model\Swatches\Plugin" sortOrder="0" />
+    </type>
+    <type name="Magento\CatalogSearch\Controller\Result\Index">
+        <plugin name="emico-tweakwise" type="Emico\Tweakwise\Model\CatalogSearch\Controller\Result\Index\Plugin" sortOrder="0" />
+    </type>
 
     <type name="Magento\Search\Model\Autocomplete">
         <arguments>
@@ -58,6 +70,15 @@
             <argument name="productItemFactory" xsi:type="object">Emico\Tweakwise\Model\Autocomplete\DataProvider\ProductItemFactory</argument>
             <argument name="queryFactory" xsi:type="object">Magento\Search\Model\QueryFactory</argument>
             <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\AutocompleteRequest</argument>
+        </arguments>
+    </type>
+
+    <type name="Emico\Tweakwise\Model\Observer\CatalogSearchRedirect">
+        <arguments>
+            <argument name="config" xsi:type="object">Emico\Tweakwise\Model\Config</argument>
+            <argument name="context" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext</argument>
+            <argument name="actionContext" xsi:type="object">Magento\Framework\App\Action\Context</argument>
+            <argument name="navigationContext" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\Search</argument>
         </arguments>
     </type>
 

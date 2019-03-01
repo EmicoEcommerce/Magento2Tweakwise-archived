@@ -204,9 +204,9 @@ class DataProvider implements DataProviderInterface
         /** @var AutocompleteResponse $response */
         $response = $this->client->request($request);
 
-        $suggestionResult = $this->getSuggestionResult($response);
         $productResult = $this->getProductItems($response);
+        $suggestionResult = $this->getSuggestionResult($response);
 
-        return $suggestionResult + $productResult;
+        return array_merge($suggestionResult, $productResult);
     }
 }

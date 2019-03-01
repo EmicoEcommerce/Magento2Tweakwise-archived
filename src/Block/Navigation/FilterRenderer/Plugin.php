@@ -10,7 +10,7 @@ namespace Emico\Tweakwise\Block\Navigation\FilterRenderer;
 
 use Closure;
 use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\DefaultRenderer;
-use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\ColorRenderer;
+use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SwatchRenderer;
 use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
 use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\TreeRenderer;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter;
@@ -20,6 +20,7 @@ use Emico\TweakwiseExport\Model\Logger;
 use Magento\Catalog\Model\Layer\Filter\FilterInterface;
 use Magento\Framework\View\LayoutInterface;
 use Magento\LayeredNavigation\Block\Navigation\FilterRenderer;
+use Magento\Swatches\Block\LayeredNavigation\RenderLayered;
 
 class Plugin
 {
@@ -46,7 +47,7 @@ class Plugin
     protected $blockTypes = [
         SettingsType::SELECTION_TYPE_TREE => TreeRenderer::class,
         SettingsType::SELECTION_TYPE_SLIDER => SliderRenderer::class,
-        SettingsType::SELECTION_TYPE_COLOR => ColorRenderer::class,
+        SettingsType::SELECTION_TYPE_COLOR => SwatchRenderer::class,
     ];
 
     /**
@@ -57,6 +58,11 @@ class Plugin
         SettingsType::SELECTION_TYPE_CHECKBOX,
         SettingsType::SELECTION_TYPE_COLOR,
     ];
+
+    /**
+     * @var SwatchHelper
+     */
+    protected $swatchHelper;
 
     /**
      * @param Logger $log
@@ -98,7 +104,7 @@ class Plugin
         $blockType = isset($this->blockTypes[$renderType]) ? $this->blockTypes[$renderType] : DefaultRenderer::class;
         $block = $this->layout->createBlock($blockType);
 
-        if (!$block instanceof DefaultRenderer) {
+        if (!$block instanceof DefaultRenderer && !$block instanceof RenderLayered) {
             $this->log->error(sprintf('Invalid renderer block type %s not instanceof %s', $blockType, DefaultRenderer::class));
             return $proceed($filter);
         }

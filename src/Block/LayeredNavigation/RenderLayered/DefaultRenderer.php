@@ -11,7 +11,9 @@ namespace Emico\Tweakwise\Block\LayeredNavigation\RenderLayered;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
+use Emico\Tweakwise\Model\Config;
 use Magento\Framework\View\Element\Template;
+use Magento\Framework\Serialize\Serializer\Json;
 
 class DefaultRenderer extends Template
 {
@@ -24,6 +26,31 @@ class DefaultRenderer extends Template
      * @var Filter
      */
     protected $filter;
+
+    /**
+     * @var Json
+     */
+    protected $jsonSerializer;
+
+    /**
+     * @var Config
+     */
+    protected $config;
+
+    /**
+     * Constructor
+     *
+     * @param Template\Context $context
+     * @param Config $config
+     * @param Json $jsonSerializer
+     * @param array $data
+     */
+    public function __construct(Template\Context $context, Config $config, Json $jsonSerializer, array $data = [])
+    {
+        $this->jsonSerializer = $jsonSerializer;
+        $this->config = $config;
+        parent::__construct($context, $data);
+    }
 
     /**
      * @param Filter $filter
@@ -156,5 +183,33 @@ class DefaultRenderer extends Template
     public function getItemPostfix()
     {
         return $this->getFacetSettings()->getPostfix();
+    }
+
+    /**
+     * @return string
+     */
+    public function getJsNavigationConfig(): string
+    {
+        return $this->jsonSerializer->serialize([
+            'tweakwiseNavigationFilter' => [
+                'formFilters' => $this->config->getUseFormFilters()
+            ],
+        ]);
+    }
+
+    /**
+     * @return Config
+     */
+    public function getJsUseFormFilters()
+    {
+        return $this->jsonSerializer->serialize($this->config->getUseFormFilters());
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrlKey()
+    {
+        return $this->getFacetSettings()->getUrlKey();
     }
 }

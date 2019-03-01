@@ -3,8 +3,12 @@
     <event name="controller_action_postdispatch_catalog_category_view">
         <observer name="emico-tweakwise" instance="Emico\Tweakwise\Model\Observer\CatalogLastPageRedirect" />
     </event>
-    <event name="controller_action_postdispatch_catalogsearch_result_index">
+
+    <event name="controller_action_predispatch_catalogsearch_result_index">
         <observer name="emico-tweakwise-redirect" instance="Emico\Tweakwise\Model\Observer\CatalogSearchRedirect" />
+    </event>
+
+    <event name="controller_action_postdispatch_catalogsearch_result_index">
         <observer name="emico-tweakwise-last-page" instance="Emico\Tweakwise\Model\Observer\CatalogLastPageRedirect" />
     </event>
 

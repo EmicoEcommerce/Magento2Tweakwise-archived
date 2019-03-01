@@ -18,6 +18,7 @@ use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Helper\Product\ProductList;
 use Magento\Catalog\Model\Layer\FilterableAttributeListInterface;
 use Magento\Catalog\Model\Product\ProductList\Toolbar as ToolbarModel;
+use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Attribute;
 
 /**
@@ -25,6 +26,11 @@ use Magento\Catalog\Model\ResourceModel\Attribute;
  */
 class NavigationContext
 {
+    /**
+     * Visbility attribute code
+     */
+    const VISIBILITY_ATTRIBUTE = 'visibility';
+
     /**
      * @var ProductNavigationRequest
      */
@@ -76,6 +82,11 @@ class NavigationContext
     protected $toolbarModel;
 
     /**
+     * @var Visibility
+     */
+    protected $visibility;
+
+    /**
      * NavigationContext constructor.
      *
      * @param Config $config
@@ -88,8 +99,16 @@ class NavigationContext
      * @param ToolbarModel $toolbarModel
      */
     public function __construct(
-        Config $config, RequestFactory $requestFactory, Client $client, Url $url, FilterableAttributeListInterface $filterableAttributes, CurrentContext $currentContext,
-        ProductList $productListHelper, ToolbarModel $toolbarModel)
+        Config $config,
+        RequestFactory $requestFactory,
+        Client $client,
+        Url $url,
+        FilterableAttributeListInterface $filterableAttributes,
+        CurrentContext $currentContext,
+        ProductList $productListHelper,
+        ToolbarModel $toolbarModel,
+        Visibility $visibility
+    )
     {
         $this->config = $config;
         $this->requestFactory = $requestFactory;
@@ -98,6 +117,7 @@ class NavigationContext
         $this->filterableAttributes = $filterableAttributes;
         $this->productListHelper = $productListHelper;
         $this->toolbarModel = $toolbarModel;
+        $this->visibility = $visibility;
 
         $currentContext->setContext($this);
     }
@@ -179,7 +199,7 @@ class NavigationContext
     {
         // Apply magento config values
         $request->setLimit($this->productListHelper->getDefaultLimitPerPageValue($this->getCurrentViewMode()));
-
+        $this->addVisibilityFilter($request);
         // Apply tweakwise config values
         if ($request instanceof ProductSearchRequest) {
             $templateId = $this->config->getSearchTemplateId();
@@ -192,5 +212,23 @@ class NavigationContext
         $this->url->apply($request);
 
         return $this;
+    }
+
+    /**
+     * Add correct visibility filters based on type of Request
+     *
+     * @param ProductNavigationRequest $request
+     */
+    public function addVisibilityFilter(ProductNavigationRequest $request)
+    {
+        if ($request instanceof ProductSearchRequest) {
+            $visibilityValues = $this->visibility->getVisibleInSearchIds();
+        } else {
+            $visibilityValues = $this->visibility->getVisibleInCatalogIds();
+        }
+
+        foreach ($visibilityValues as $visibilityValue) {
+            $request->addAttributeFilter(self::VISIBILITY_ATTRIBUTE, $visibilityValue);
+        }
     }
 }
