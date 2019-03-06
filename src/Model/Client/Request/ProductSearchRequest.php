@@ -22,6 +22,18 @@ class ProductSearchRequest extends ProductNavigationRequest
     public function setSearch($query)
     {
         $this->setParameter('tn_q', $query);
+        $this->setDefaultCategory();
         return $this;
+    }
+
+    /**
+     * Add default category when no `tn_cid` parameter has been set
+     */
+    protected function setDefaultCategory()
+    {
+        if (is_null($this->getParameter('tn_cid'))) {
+            $rootCategoryId = $this->storeManager->getStore()->getRootCategoryId();
+            $this->addCategoryFilter($rootCategoryId);
+        }
     }
 }
