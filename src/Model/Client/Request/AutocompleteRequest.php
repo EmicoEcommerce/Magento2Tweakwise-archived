@@ -10,7 +10,6 @@ namespace Emico\Tweakwise\Model\Client\Request;
 
 use Emico\Tweakwise\Model\Client\Request;
 use Emico\Tweakwise\Model\Client\Response\AutocompleteResponse;
-use Magento\Catalog\Model\Category;
 
 class AutocompleteRequest extends Request
 {
@@ -34,25 +33,6 @@ class AutocompleteRequest extends Request
     public function setSearch($query)
     {
         $this->setParameter('tn_q', $query);
-        return $this;
-    }
-
-    /**
-     * @param Category|int $category
-     * @return $this
-     */
-    public function addCategoryFilter($category)
-    {
-        if ($category instanceof Category) {
-            $categoryId = $category->getId();
-            $storeId = $category->getStoreId();
-        } else {
-            $categoryId = (int) $category;
-            $storeId = $this->storeManager->getStore()->getId();
-        }
-
-        $tweakwiseId = $this->helper->getTweakwiseId($storeId, $categoryId);
-        $this->setParameter('tn_cid', $tweakwiseId);
         return $this;
     }
 
