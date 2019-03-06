@@ -206,17 +206,4 @@ class Request
 
         return null;
     }
-
-    /**
-     * @return int
-     */
-    protected function getStoreRootCategoryId()
-    {
-        $store = $this->getStore();
-        if ($store instanceof Store) {
-            return $store->getRootCategoryId();
-        }
-
-        return null;
-    }
 }

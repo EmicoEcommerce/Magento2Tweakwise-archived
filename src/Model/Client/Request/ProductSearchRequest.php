@@ -8,6 +8,8 @@
 
 namespace Emico\Tweakwise\Model\Client\Request;
 
+use Magento\Store\Model\Store;
+
 class ProductSearchRequest extends ProductNavigationRequest
 {
     /**
@@ -35,5 +37,18 @@ class ProductSearchRequest extends ProductNavigationRequest
             $rootCategoryId = $this->getStoreRootCategoryId() ?: 2;
             $this->addCategoryFilter($rootCategoryId);
         }
+    }
+
+    /**
+     * @return int
+     */
+    protected function getStoreRootCategoryId()
+    {
+        $store = $this->getStore();
+        if ($store instanceof Store) {
+            return $store->getRootCategoryId();
+        }
+
+        return null;
     }
 }
