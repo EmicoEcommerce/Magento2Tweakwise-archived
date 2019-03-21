@@ -34,12 +34,16 @@ define([
         },
 
         _onSubmit: function (e) {
-            var url = this.getSelectedProductUrl();
-            if (!url) {
-                return this._superApply(e);
+            var value = this.element.val().trim(),
+                url = this.getSelectedProductUrl();
+
+            if (!value) {
+                e.preventDefault();
             }
 
-            window.location.href = url;
+            if (url !== null) {
+                window.location.href = url;
+            }
         },
 
         _onPropertyChange: function () {
