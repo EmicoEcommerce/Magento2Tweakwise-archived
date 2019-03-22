@@ -56,7 +56,7 @@ define(['jquery', 'jquery/ui'], function($) {
         _getQParam: function() {
             let matches = window.location.search.match(/(\?|&)q\=([^&]*)/);
             if (matches && matches[2]) {
-                let trimmedMatch = matches[2].replace("+"," "),
+                let trimmedMatch = matches[2].replace(/\+/g, ' '),
                     searchVal    = jQuery('#search').val();
 
                 if (searchVal === trimmedMatch) {
