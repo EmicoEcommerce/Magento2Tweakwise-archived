@@ -9,6 +9,7 @@
 namespace Emico\Tweakwise\Model;
 
 use Emico\Tweakwise\Exception\InvalidArgumentException;
+use Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\Store;
 
@@ -178,6 +179,19 @@ class Config
 
     /**
      * @param Store|null $store
+     * @return string
+     */
+    public function getUrlStrategy(Store $store = null): string
+    {
+        $urlStrategy = $this->getStoreConfig($store, 'tweakwise/layered/url_strategy');
+        if (empty($urlStrategy)) {
+            $urlStrategy = QueryParameterStrategy::class;
+        }
+        return $urlStrategy;
+    }
+
+    /**
+     * @param Store|null $store
      * @return bool
      */
     public function isAutocompleteEnabled(Store $store = null)
@@ -284,7 +298,7 @@ class Config
     {
         return (string) $this->getStoreConfig($store, 'tweakwise/recommendations/featured_location');
     }
-
+    
     /**
      * @param Store|null $store
      * @param string $path

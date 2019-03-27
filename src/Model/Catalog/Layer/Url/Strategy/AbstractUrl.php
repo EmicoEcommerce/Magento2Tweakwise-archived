@@ -6,9 +6,12 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Emico\Tweakwise\Model\Catalog\Layer\Url;
+namespace Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy;
 
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
+use Emico\Tweakwise\Model\Catalog\Layer\Url\FilterApplierInterface;
+use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface;
+use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlModel;
 use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
 use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
@@ -18,7 +21,7 @@ use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\CategoryRepository;
 use Zend\Http\Request as HttpRequest;
 
-abstract class AbstractUrl implements UrlInterface
+abstract class AbstractUrl implements UrlInterface, FilterApplierInterface
 {
     /**
      * Commonly used query parameters from headers

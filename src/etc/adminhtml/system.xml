@@ -106,6 +106,14 @@
                         <field id="query_filter_type">regex</field>
                     </depends>
                 </field>
+                <field id="url_strategy" translate="label,comment" type="select" sortOrder="53" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>URL strategy</label>
+                    <comment>Specify how you want the filter URL's to be build</comment>
+                    <source_model>Emico\Tweakwise\Model\Config\Source\UrlStrategy</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
             </group>
             <group id="autocomplete" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Autocomplete</label>

@@ -18,7 +18,7 @@ class UrlModel extends MagentoUrl
      * @var Config
      */
     private $config;
-
+    
     /**
      * Used config as method injection to prevent overriding the constructor. The constructor changed it's arguments
      * between 2.1 and 2.2 and so it was not possible any longer to support both versions of Magento in one using constructor injection.

@@ -129,11 +129,13 @@
         </arguments>
     </virtualType>
 
-    <preference for="Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface" type="Emico\Tweakwise\Model\Catalog\Layer\Url\QueryParameters" />
+    <preference for="Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface" type="Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy" />
+    <preference for="Emico\Tweakwise\Model\Catalog\Layer\Url\FilterApplierInterface" type="Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy" />
+    <preference for="Emico\Tweakwise\Model\Catalog\Layer\Url\RouteMatchingInterface" type="Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\NullStrategy" />
+
     <type name="Emico\Tweakwise\Model\Catalog\Layer\Url">
         <arguments>
             <argument name="request" xsi:type="object">Magento\Framework\App\Request\Http</argument>
-            <argument name="implementation" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface</argument>
         </arguments>
     </type>
     <type name="Emico\Tweakwise\Model\Config\Source\FilterTemplate">
@@ -288,4 +290,17 @@
             <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\Recommendations\FeaturedRequest</argument>
         </arguments>
     </virtualType>
+
+    <!-- Custom router for SEO URLs -->
+    <type name="Magento\Framework\App\RouterList">
+        <arguments>
+            <argument name="routerList" xsi:type="array">
+                <item name="tweakwise_seo_router" xsi:type="array">
+                    <item name="class" xsi:type="string">Emico\Tweakwise\Controller\Router</item>
+                    <item name="disable" xsi:type="boolean">false</item>
+                    <item name="sortOrder" xsi:type="string">61</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
 </config>

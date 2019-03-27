@@ -9,6 +9,8 @@
 namespace Emico\Tweakwise\Model\Catalog\Layer;
 
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
+use Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\UrlStrategyFactory;
+use Emico\Tweakwise\Model\Catalog\Layer\Url\FilterApplierInterface;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface;
 use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
 use Zend\Http\Request as HttpRequest;
@@ -23,7 +25,12 @@ class Url
     /**
      * @var UrlInterface
      */
-    protected $implementation;
+    protected $urlStrategy;
+
+    /**
+     * @var FilterApplierInterface
+     */
+    protected $filterApplier;
 
     /**
      * @var HttpRequest
@@ -33,12 +40,19 @@ class Url
     /**
      * Builder constructor.
      *
-     * @param UrlInterface $implementation
+     * @param UrlStrategyFactory $urlStrategyFactory
+     * @param FilterApplierInterface $defaultFilterApplier
      * @param HttpRequest $request
      */
-    public function __construct(UrlInterface $implementation, HttpRequest $request)
+    public function __construct(UrlStrategyFactory $urlStrategyFactory, FilterApplierInterface $defaultFilterApplier, HttpRequest $request)
     {
-        $this->implementation = $implementation;
+        //@todo can we create a custom factory?
+        $this->urlStrategy = $urlStrategyFactory->create();
+        if ($this->urlStrategy instanceof FilterApplierInterface) {
+            $this->filterApplier = $this->urlStrategy;
+        } else {
+            $this->filterApplier = $defaultFilterApplier;
+        }
         $this->request = $request;
     }
 
@@ -48,7 +62,7 @@ class Url
      */
     public function getSelectFilter(Item $item)
     {
-        return $this->implementation->getSelectFilter($this->request, $item);
+        return $this->urlStrategy->getSelectFilter($this->request, $item);
     }
 
     /**
@@ -57,7 +71,7 @@ class Url
      */
     public function getRemoveFilter(Item $item)
     {
-        return $this->implementation->getRemoveFilter($this->request, $item);
+        return $this->urlStrategy->getRemoveFilter($this->request, $item);
     }
 
     /**
@@ -66,7 +80,7 @@ class Url
      */
     public function getClearUrl(array $activeFilterItems)
     {
-        return $this->implementation->getClearUrl($this->request, $activeFilterItems);
+        return $this->urlStrategy->getClearUrl($this->request, $activeFilterItems);
     }
 
     /**
@@ -74,7 +88,7 @@ class Url
      */
     public function apply(ProductNavigationRequest $navigationRequest)
     {
-        $this->implementation->apply($this->request, $navigationRequest);
+        $this->filterApplier->apply($this->request, $navigationRequest);
     }
 
     /**
@@ -83,6 +97,6 @@ class Url
      */
     public function getSliderUrl(Filter $facet)
     {
-        return $this->implementation->getSlider($this->request, $facet);
+        return $this->urlStrategy->getSlider($this->request, $facet);
     }
 }

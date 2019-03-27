@@ -54,13 +54,4 @@ interface UrlInterface
      * @return string
      */
     public function getClearUrl(HttpRequest $request, array $activeFilterItems);
-
-    /**
-     * Apply all attribute filters, category filters, sort order, page limit request parameters to navigation request
-     *
-     * @param HttpRequest $request
-     * @param ProductNavigationRequest $navigationRequest
-     * @return $this
-     */
-    public function apply(HttpRequest $request, ProductNavigationRequest $navigationRequest);
 }

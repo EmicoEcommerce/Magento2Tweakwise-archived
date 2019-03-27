@@ -6,14 +6,14 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Emico\Tweakwise\Model\Catalog\Layer\Url;
+namespace Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy;
 
 use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Magento\Catalog\Model\Category;
 use Zend\Http\Request as HttpRequest;
 
-class QueryParameters extends AbstractUrl
+class QueryParameterStrategy extends AbstractUrl
 {
     /**
      * Separator used in category tree urls
