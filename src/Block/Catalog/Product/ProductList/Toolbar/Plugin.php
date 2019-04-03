@@ -65,20 +65,4 @@ class Plugin
         }
         return $result;
     }
-
-    /**
-     * @param Toolbar $subject
-     * @param Closure $proceed
-     * @return mixed
-     */
-    public function aroundGetPagerUrl(Toolbar $subject, Closure $proceed)
-    {
-        return $proceed();
-
-        if ($this->config->getUrlStrategy() !== PathSlugStrategy::class) {
-            return $proceed();
-        }
-
-        return $this->pathSlugStrategy->getBaseUrlWithActiveFilters();
-    }
 }
