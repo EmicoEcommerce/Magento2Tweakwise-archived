@@ -10,6 +10,7 @@ namespace Emico\Tweakwise\Model;
 
 use Emico\Tweakwise\Exception\InvalidArgumentException;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\Store;
 
 class Config
@@ -296,7 +297,7 @@ class Config
             return $store->getConfig($path);
         }
 
-        return $this->config->getValue($path, 'store');
+        return $this->config->getValue($path, ScopeInterface::SCOPE_STORE);
     }
 
     /**
