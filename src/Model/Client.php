@@ -136,9 +136,6 @@ class Client
 
         /** @var SimpleXMLElement $node */
         foreach ((array) $element as $index => $node) {
-            if ($index === '@attributes') {
-                continue;
-            }
             if ($node instanceof SimpleXMLElement) {
                 $value = $this->xmlToArray($node);
             } elseif (is_array($node)) {
