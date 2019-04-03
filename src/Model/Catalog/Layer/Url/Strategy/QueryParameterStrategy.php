@@ -2,7 +2,7 @@
 /**
  * Tweakwise & Emico (https://www.tweakwise.com/ & https://www.emico.nl/) - All Rights Reserved
  *
- * @copyright Copyright (c) 2017-2017 Tweakwise.com B.V. (https://www.tweakwise.com)
+ * @copyright Copyright (c) 2017-2019 Tweakwise.com B.V. (https://www.tweakwise.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -288,11 +288,7 @@ class QueryParameterStrategy extends AbstractUrl
      */
     public function getSlider(HttpRequest $request, Filter $filter)
     {
-        $facet = $filter->getFacet();
-        $settings = $facet->getFacetSettings();
-
-        $urlKey = $settings->getUrlKey();
-        $query = [$urlKey => '{{from}}-{{to}}'];
+        $query = [$filter->getUrlKey() => '{{from}}-{{to}}'];
 
         return $this->getCurrentQueryUrl($query);
     }

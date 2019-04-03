@@ -303,4 +303,8 @@
             </argument>
         </arguments>
     </type>
+
+    <preference for="Emico\Tweakwise\Api\AttributeSlugRepositoryInterface" type="Emico\Tweakwise\Model\AttributeSlugRepository"/>
+    <preference for="Emico\Tweakwise\Api\Data\AttributeSlugSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+    <preference for="Emico\Tweakwise\Api\Data\AttributeSlugInterface" type="Emico\Tweakwise\Model\AttributeSlug"/>
 </config>

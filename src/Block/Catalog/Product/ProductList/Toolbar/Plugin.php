@@ -11,6 +11,7 @@ namespace Emico\Tweakwise\Block\Catalog\Product\ProductList\Toolbar;
 
 use Closure;
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
+use Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\PathSlugStrategy;
 use Emico\Tweakwise\Model\Client\Type\SortFieldType;
 use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Block\Product\ProductList\Toolbar;
@@ -26,6 +27,10 @@ class Plugin
      * @var Config
      */
     protected $config;
+    /**
+     * @var PathSlugStrategy
+     */
+    private $pathSlugStrategy;
 
     /**
      * Plugin constructor.
@@ -33,10 +38,11 @@ class Plugin
      * @param Config $config
      * @param CurrentContext $context
      */
-    public function __construct(Config $config, CurrentContext $context)
+    public function __construct(Config $config, CurrentContext $context, PathSlugStrategy $pathSlugStrategy)
     {
         $this->context = $context;
         $this->config = $config;
+        $this->pathSlugStrategy = $pathSlugStrategy;
     }
 
     /**
@@ -58,5 +64,21 @@ class Plugin
             $result[$field->getUrlValue()] = $field->getDisplayTitle();
         }
         return $result;
+    }
+
+    /**
+     * @param Toolbar $subject
+     * @param Closure $proceed
+     * @return mixed
+     */
+    public function aroundGetPagerUrl(Toolbar $subject, Closure $proceed)
+    {
+        return $proceed();
+
+        if ($this->config->getUrlStrategy() !== PathSlugStrategy::class) {
+            return $proceed();
+        }
+
+        return $this->pathSlugStrategy->getBaseUrlWithActiveFilters();
     }
 }

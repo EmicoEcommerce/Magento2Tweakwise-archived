@@ -442,6 +442,14 @@ class Filter extends AbstractFilter implements FilterInterface
     }
 
     /**
+     * @return string
+     */
+    public function getUrlKey()
+    {
+        return $this->facet->getFacetSettings()->getUrlKey();
+    }
+
+    /**
      * @param Item[] $activeItems
      * @return Item[]
      */

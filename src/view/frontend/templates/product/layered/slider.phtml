@@ -82,7 +82,9 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
                 } else {
                     var url = filterUrl;
                     url = url.replace(encodeURI('{{from}}'), min);
+                    url = url.replace('{{from}}', min);
                     url = url.replace(encodeURI('{{to}}'), max);
+                    url = url.replace('{{to}}', max);
                     window.location.href = url;
                 }
             },

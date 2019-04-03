@@ -1,7 +1,9 @@
 <?php
 /**
- * @author Bram Gerritsen <bgerritsen@emico.nl>
- * @copyright (c) Emico B.V. 2017
+ * Tweakwise & Emico (https://www.tweakwise.com/ & https://www.emico.nl/) - All Rights Reserved
+ *
+ * @copyright Copyright (c) 2017-2019 Tweakwise.com B.V. (https://www.tweakwise.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 namespace Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy;
@@ -27,7 +29,7 @@ use Magento\Framework\UrlInterface as MagentoUrlInterface;
 class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterApplierInterface
 {
     const REQUEST_FILTER_PATH = 'filter_path';
-    
+
     /**
      * @var Resolver
      */
@@ -42,10 +44,16 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      * @var UrlModel
      */
     private $url;
+
     /**
      * @var UrlFinderInterface
      */
     private $urlFinder;
+
+    /**
+     * @var Item[]
+     */
+    private $activeFilters;
 
     /**
      * Magento constructor.
@@ -56,8 +64,13 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      * @param UrlFinderInterface $urlFinder
      * @param FilterSlugManager $filterSlugManager
      */
-    public function __construct(UrlModel $url, Config $config, Resolver $layerResolver, UrlFinderInterface $urlFinder, FilterSlugManager $filterSlugManager)
-    {
+    public function __construct(
+        UrlModel $url,
+        Config $config,
+        Resolver $layerResolver,
+        UrlFinderInterface $urlFinder,
+        FilterSlugManager $filterSlugManager
+    ) {
         //@todo This must be done with setter injection somehow.
         $this->url = $url;
         $url->setConfig($config);
@@ -78,7 +91,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         $filters = $this->getActiveFilters();
         $filters[] = $item;
 
-        return $this->getBaseUrl() . $this->buildFilterSlugPath($filters);
+        return $this->buildFilterUrl($request, $this->buildFilterSlugPath($filters));
     }
 
     /**
@@ -97,7 +110,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
             }
         }
 
-        return $this->getBaseUrl() . $this->buildFilterSlugPath($filters);
+        return $this->buildFilterUrl($request, $this->buildFilterSlugPath($filters));
     }
 
     /**
@@ -107,8 +120,11 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      */
     public function getSlider(HttpRequest $request, Filter $filter)
     {
-        //@todo implement
-        return 'implement';
+        //@todo same facet gets added duplicate. IE http://tweakwise2-ce.test/women/tops-women.html/color/orange/final_price/0-40/size/l/final_price/{{from}}-{{to}}
+        $currentFilterPath = $this->buildFilterSlugPath($this->getActiveFilters());
+        $sliderPath = $filter->getUrlKey() . '/{{from}}-{{to}}';
+        $newFilterPath = $currentFilterPath . $sliderPath;
+        return $this->buildFilterUrl($request, $newFilterPath);
     }
 
     /**
@@ -120,7 +136,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      */
     public function getClearUrl(HttpRequest $request, array $activeFilterItems)
     {
-        return $this->getBaseUrl();
+        return $this->buildFilterUrl($request, '');
     }
 
     /**
@@ -140,30 +156,47 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
             return $this;
         }
 
+        $filterPath = trim($filterPath, '/');
         $filterParts = explode('/', $filterPath);
-        $facetKey = $filterParts[0];
+        $facet = $filterParts[0];
         foreach ($filterParts as $i => $part) {
             if ($i % 2 === 0) {
-                $facetKey = $part;
+                $facet = $part;
             } else {
-                //@todo look up slug
-                //$facetValue = $this->getSlugAttributeMapper()->getAttributeValueBySlug($part);
-                $facetValue = $part;
-                if (!empty($facetKey)) {
-                    $navigationRequest->addAttributeFilter($facetKey, $facetValue);
+                $attribute = $this->filterSlugManager->getAttributeBySlug($part);
+                // No attribute found for slug, this can be a slider slug i.e. "0-40", fallback and just pass the raw data to tweakwise.
+                // @todo Maybe we need some validation here if this is indeed a slider attribute. No idea how we can know this
+                if (empty($attribute)) {
+                    $attribute = $part;
                 }
+                $navigationRequest->addAttributeFilter($facet, $attribute);
             }
         }
+    }
 
-        //$navigationRequest->addAttributeFilter('size', 'l');
+    /**
+     * @return array|Item[]
+     */
+    protected function getActiveFilters(): array
+    {
+        if ($this->activeFilters !== null) {
+            return $this->activeFilters;
+        }
+
+        $filters = $this->getLayer()->getState()->getFilters();
+        if (!\is_array($filters)) {
+            return [];
+        }
+        $this->activeFilters = $filters;
+        return $this->activeFilters;
     }
 
     /**
      * @return string
      */
-    protected function getBaseUrl(): string
+    public function getCurrentUrl(): string
     {
-        $params['_current'] = false;
+        $params['_current'] = true;
         $params['_use_rewrite'] = true;
         $params['_escape'] = false;
         return $this->url->getUrl('*/*/*', $params);
@@ -178,15 +211,18 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
     }
 
     /**
-     * @return array|Item[]
+     * @param MagentoHttpRequest $request
+     * @param string $filterPath
+     * @return string
      */
-    protected function getActiveFilters(): array
+    protected function buildFilterUrl(MagentoHttpRequest $request, string $filterPath): string
     {
-        $filters = $this->getLayer()->getState()->getFilters();
-        if (!\is_array($filters)) {
-            $filters = [];
-        }
-        return $filters;
+        $currentUrl = $this->getCurrentUrl();
+
+        $currentFilterPath = $request->getParam(self::REQUEST_FILTER_PATH);
+
+        // Replace filter path in current URL with the new filter combination path
+        return str_replace($currentFilterPath, $filterPath, $currentUrl);
     }
 
     /**
@@ -199,21 +235,39 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
             return '';
         }
 
-        //@todo sort filters consistently
+        usort($filters, [$this, 'sortFilterItems']);
 
         $path = '';
-        /** @var Item $activeItem */
-        foreach ($filters as $activeItem) {
-            $filter = $activeItem->getFilter();
-            $facet = $filter->getFacet();
-            $settings = $facet->getFacetSettings();
-
-            $urlKey = $settings->getUrlKey();
-            $slug = $this->filterSlugManager->getSlugForFilterItemAttribute($activeItem);
+        /** @var Item $filterItem */
+        foreach ($filters as $filterItem) {
+            $filter = $filterItem->getFilter();
+            $urlKey = $filter->getUrlKey();
+            $slug = $this->filterSlugManager->getSlugForFilterItem($filterItem);
             $path .= $urlKey . '/' . $slug . '/';
         }
 
         return '/' . $path;
+    }
+
+    /**
+     * First sort filter items by facet and then on attribute
+     *
+     * @param Item $filterItemA
+     * @param Item $filterItemB
+     * @return int
+     */
+    protected function sortFilterItems(Item $filterItemA, Item $filterItemB): int
+    {
+        $facetA = $filterItemA->getFilter()->getUrlKey();
+        $facetB = $filterItemB->getFilter()->getUrlKey();
+        $attributeA = $filterItemA->getAttribute()->getTitle();
+        $attributeB = $filterItemB->getAttribute()->getTitle();
+
+        if ($facetA === $facetB) {
+            return $attributeA > $attributeB ? 1 : -1;
+        }
+
+        return $facetA > $facetB ? 1 : -1;
     }
 
     /**
@@ -240,20 +294,20 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         $rewrite = current($categoryRewrites);
 
         // Set the filter params part of the URL as a seperate request param, so we can apply filters later on
-        $request->setParam('filter_path', str_replace(ltrim(',', $rewrite->getRequestPath()), '', $path));
-
+        $request->setParam(self::REQUEST_FILTER_PATH, str_replace($rewrite->getRequestPath(), '', $path));
+        
         $request->setAlias(
             MagentoUrlInterface::REWRITE_REQUEST_PATH_ALIAS,
-            $rewrite->getRequestPath()
+            $path
         );
         $request->setPathInfo('/' . $rewrite->getTargetPath());
     }
 
     /**
-     * @param $fullUriPath
+     * @param string $fullUriPath
      * @return array
      */
-    protected function getPossibleCategoryPaths($fullUriPath): array
+    protected function getPossibleCategoryPaths(string $fullUriPath): array
     {
         $pathParts = explode('/', $fullUriPath);
         $lastPathPart = array_shift($pathParts);
