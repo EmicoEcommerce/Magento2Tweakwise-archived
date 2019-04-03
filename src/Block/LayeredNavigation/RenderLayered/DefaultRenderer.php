@@ -86,6 +86,22 @@ class DefaultRenderer extends Template
     }
 
     /**
+     * @return boolean
+     */
+    public function hasAlternateSortOrder()
+    {
+        $filter = function (Item $item)
+        {
+            return $item->getAlternateSortOrder() !== 0;
+        };
+
+        $items = $this->getItems();
+        $itemsWIthAlternateSortOrder = array_filter($items, $filter);
+
+        return \count($items) === \count($itemsWIthAlternateSortOrder);
+    }
+
+    /**
      * @param Item $item
      * @return bool
      */
@@ -192,7 +208,8 @@ class DefaultRenderer extends Template
     {
         return $this->jsonSerializer->serialize([
             'tweakwiseNavigationFilter' => [
-                'formFilters' => $this->config->getUseFormFilters()
+                'formFilters' => $this->config->getUseFormFilters(),
+                'hasAlternateSort' => $this->hasAlternateSortOrder(),
             ],
         ]);
     }
