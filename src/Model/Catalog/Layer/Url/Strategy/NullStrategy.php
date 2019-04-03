@@ -9,7 +9,6 @@
 namespace Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy;
 
 
-use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\FilterApplierInterface;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\RouteMatchingInterface;
@@ -37,7 +36,7 @@ class NullStrategy implements RouteMatchingInterface, UrlInterface, FilterApplie
      * @param ProductNavigationRequest $navigationRequest
      * @return $this
      */
-    public function apply(HttpRequest $request, ProductNavigationRequest $navigationRequest)
+    public function apply(HttpRequest $request, ProductNavigationRequest $navigationRequest): FilterApplierInterface
     {
         return $this;
     }
@@ -68,10 +67,10 @@ class NullStrategy implements RouteMatchingInterface, UrlInterface, FilterApplie
 
     /**
      * @param HttpRequest $request
-     * @param Filter $filter
+     * @param Item $item
      * @return string
      */
-    public function getSlider(HttpRequest $request, Filter $filter)
+    public function getSlider(HttpRequest $request, Item $item)
     {
         return '';
     }

@@ -28,5 +28,5 @@ interface FilterApplierInterface
      * @param ProductNavigationRequest $navigationRequest
      * @return $this
      */
-    public function apply(HttpRequest $request, ProductNavigationRequest $navigationRequest);
+    public function apply(HttpRequest $request, ProductNavigationRequest $navigationRequest): FilterApplierInterface;
 }

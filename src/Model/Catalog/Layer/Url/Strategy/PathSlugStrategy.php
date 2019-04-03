@@ -16,6 +16,7 @@ use Emico\Tweakwise\Model\Catalog\Layer\Url\RouteMatchingInterface;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlModel;
 use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
+use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
 use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Model\Layer;
 use Magento\Catalog\Model\Layer\Resolver;
@@ -82,7 +83,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
     /**
      * Get url when selecting item
      *
-     * @param HttpRequest $request
+     * @param MagentoHttpRequest|HttpRequest $request
      * @param Item $item
      * @return string
      */
@@ -91,13 +92,13 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         $filters = $this->getActiveFilters();
         $filters[] = $item;
 
-        return $this->buildFilterUrl($request, $this->buildFilterSlugPath($filters));
+        return $this->buildFilterUrl($request, $filters);
     }
 
     /**
      * Get url when removing item from selecting
      *
-     * @param HttpRequest $request
+     * @param MagentoHttpRequest|HttpRequest $request
      * @param Item $item
      * @return string
      */
@@ -110,33 +111,38 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
             }
         }
 
-        return $this->buildFilterUrl($request, $this->buildFilterSlugPath($filters));
+        return $this->buildFilterUrl($request, $filters);
     }
 
     /**
-     * @param HttpRequest $request
-     * @param Filter $filter
+     * @param MagentoHttpRequest|HttpRequest $request
+     * @param Item $item
      * @return string
      */
-    public function getSlider(HttpRequest $request, Filter $filter)
+    public function getSlider(HttpRequest $request, Item $item)
     {
-        //@todo same facet gets added duplicate. IE http://tweakwise2-ce.test/women/tops-women.html/color/orange/final_price/0-40/size/l/final_price/{{from}}-{{to}}
-        $currentFilterPath = $this->buildFilterSlugPath($this->getActiveFilters());
-        $sliderPath = $filter->getUrlKey() . '/{{from}}-{{to}}';
-        $newFilterPath = $currentFilterPath . $sliderPath;
-        return $this->buildFilterUrl($request, $newFilterPath);
+        $filters = $this->getActiveFilters();
+        foreach ($filters as $key => $activeItem) {
+            if ($activeItem->getFilter()->getUrlKey() === $item->getFilter()->getUrlKey()) {
+                unset($filters[$key]);
+            }
+        }
+        $item->getAttribute()->setValue('title', '{{from}}-{{to}}');
+        $filters[] = $item;
+
+        return $this->buildFilterUrl($request, $filters);
     }
 
     /**
      * Fetch clear all items from url
      *
-     * @param HttpRequest $request
+     * @param MagentoHttpRequest|HttpRequest $request
      * @param Item[] $activeFilterItems
      * @return string
      */
     public function getClearUrl(HttpRequest $request, array $activeFilterItems)
     {
-        return $this->buildFilterUrl($request, '');
+        return $this->buildFilterUrl($request, []);
     }
 
     /**
@@ -146,7 +152,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      * @param ProductNavigationRequest $navigationRequest
      * @return $this
      */
-    public function apply(HttpRequest $request, ProductNavigationRequest $navigationRequest)
+    public function apply(HttpRequest $request, ProductNavigationRequest $navigationRequest): FilterApplierInterface
     {
         if (!$request instanceof MagentoHttpRequest) {
             return $this;
@@ -172,6 +178,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
                 $navigationRequest->addAttributeFilter($facet, $attribute);
             }
         }
+        return $this;
     }
 
     /**
@@ -215,14 +222,15 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      * @param string $filterPath
      * @return string
      */
-    protected function buildFilterUrl(MagentoHttpRequest $request, string $filterPath): string
+    protected function buildFilterUrl(MagentoHttpRequest $request, array $filters = []): string
     {
         $currentUrl = $this->getCurrentUrl();
 
         $currentFilterPath = $request->getParam(self::REQUEST_FILTER_PATH);
+        $newFilterPath = $this->buildFilterSlugPath($filters);
 
         // Replace filter path in current URL with the new filter combination path
-        return str_replace($currentFilterPath, $filterPath, $currentUrl);
+        return str_replace($currentFilterPath, $newFilterPath, $currentUrl);
     }
 
     /**
@@ -242,7 +250,12 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         foreach ($filters as $filterItem) {
             $filter = $filterItem->getFilter();
             $urlKey = $filter->getUrlKey();
-            $slug = $this->filterSlugManager->getSlugForFilterItem($filterItem);
+            $selectionType = $filter->getFacet()->getFacetSettings()->getSelectionType();
+            if ($selectionType === SettingsType::SELECTION_TYPE_SLIDER) {
+                $slug = $filterItem->getAttribute()->getTitle();
+            } else {
+                $slug = $this->filterSlugManager->getSlugForFilterItem($filterItem);
+            }
             $path .= $urlKey . '/' . $slug . '/';
         }
 
@@ -295,7 +308,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
 
         // Set the filter params part of the URL as a seperate request param, so we can apply filters later on
         $request->setParam(self::REQUEST_FILTER_PATH, str_replace($rewrite->getRequestPath(), '', $path));
-        
+
         $request->setAlias(
             MagentoUrlInterface::REWRITE_REQUEST_PATH_ALIAS,
             $path

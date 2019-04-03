@@ -92,11 +92,11 @@ class Url
     }
 
     /**
-     * @param Filter $facet
+     * @param Item $item
      * @return string
      */
-    public function getSliderUrl(Filter $facet)
+    public function getSliderUrl(Item $item)
     {
-        return $this->urlStrategy->getSlider($this->request, $facet);
+        return $this->urlStrategy->getSlider($this->request, $item);
     }
 }

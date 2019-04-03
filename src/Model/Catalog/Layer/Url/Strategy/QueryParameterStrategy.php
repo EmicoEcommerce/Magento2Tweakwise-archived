@@ -286,9 +286,9 @@ class QueryParameterStrategy extends AbstractUrl
     /**
      * {@inheritdoc}
      */
-    public function getSlider(HttpRequest $request, Filter $filter)
+    public function getSlider(HttpRequest $request, Item $item)
     {
-        $query = [$filter->getUrlKey() => '{{from}}-{{to}}'];
+        $query = [$item->getFilter()->getUrlKey() => '{{from}}-{{to}}'];
 
         return $this->getCurrentQueryUrl($query);
     }

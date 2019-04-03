@@ -105,7 +105,7 @@ abstract class AbstractUrl implements UrlInterface, FilterApplierInterface
     /**
      * {@inheritdoc}
      */
-    public function apply(HttpRequest $request, ProductNavigationRequest $navigationRequest)
+    public function apply(HttpRequest $request, ProductNavigationRequest $navigationRequest): FilterApplierInterface
     {
         $categories = $this->getCategoryFilters($request);
         foreach ($categories as $categoryId) {

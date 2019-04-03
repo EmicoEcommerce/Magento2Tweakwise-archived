@@ -41,10 +41,10 @@ interface UrlInterface
 
     /**
      * @param HttpRequest $request
-     * @param Filter $filter
+     * @param Item $item
      * @return string
      */
-    public function getSlider(HttpRequest $request, Filter $filter);
+    public function getSlider(HttpRequest $request, Item $item);
 
     /**
      * Fetch clear all items from url
