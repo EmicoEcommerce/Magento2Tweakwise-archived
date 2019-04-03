@@ -9,7 +9,6 @@
 namespace Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy;
 
 
-use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\FilterApplierInterface;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\RouteMatchingInterface;
@@ -219,7 +218,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
 
     /**
      * @param MagentoHttpRequest $request
-     * @param string $filterPath
+     * @param array $filters
      * @return string
      */
     protected function buildFilterUrl(MagentoHttpRequest $request, array $filters = []): string
@@ -228,6 +227,10 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
 
         $currentFilterPath = $request->getParam(self::REQUEST_FILTER_PATH);
         $newFilterPath = $this->buildFilterSlugPath($filters);
+
+        if (empty($currentFilterPath)) {
+            return $currentUrl . $newFilterPath;
+        }
 
         // Replace filter path in current URL with the new filter combination path
         return str_replace($currentFilterPath, $newFilterPath, $currentUrl);
@@ -294,7 +297,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         $pathsToCheck = $this->getPossibleCategoryPaths($path);
         $categoryRewrites = $this->urlFinder->findAllByData(
             [
-                UrlRewrite::ENTITY_TYPE => 'category',
+                UrlRewrite::ENTITY_TYPE => ['category', 'landingpage'],
                 UrlRewrite::REQUEST_PATH => $pathsToCheck
             ]
         );
