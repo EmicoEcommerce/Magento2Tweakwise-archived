@@ -122,7 +122,7 @@
             <argument name="visibility" xsi:type="object">Magento\Catalog\Model\Product\Visibility</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context\Featured" type="Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context">
+    <virtualType name="Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context\Featured" shared="false" type="Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context">
         <arguments>
             <argument name="client" xsi:type="object">Emico\Tweakwise\Model\Client</argument>
             <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Recommendations\FeaturedRequest</argument>
@@ -172,7 +172,7 @@
             <argument name="templateFinder" xsi:type="object">Emico\Tweakwise\Model\Config\TemplateFinder</argument>
             <argument name="categoryRepository" xsi:type="object">Magento\Catalog\Api\CategoryRepositoryInterface</argument>
             <argument name="urlHelper" xsi:type="object">Magento\Framework\Url\Helper\Data</argument>
-            <argument name="recommendationsContext" xsi:type="object">Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context\Featured</argument>
+            <argument name="recommendationsContext" xsi:type="object" shared="false">Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context\Featured</argument>
             <argument name="config" xsi:type="object">Emico\Tweakwise\Model\Config</argument>
         </arguments>
     </type>

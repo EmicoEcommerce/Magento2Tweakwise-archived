@@ -9,7 +9,11 @@
 namespace Emico\Tweakwise\Model\Client;
 
 use Emico\TweakwiseExport\Model\Helper;
+use Magento\Catalog\Model\Category;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\StoreManager;
+use Magento\Store\Model\StoreManagerInterface;
 
 class Request
 {
@@ -155,5 +159,50 @@ class Request
     public function hasParameter($parameter)
     {
         return isset($this->parameters[$parameter]);
+    }
+
+    /**
+     * @param Category|int $category
+     * @return $this
+     */
+    public function addCategoryFilter($category)
+    {
+        if ($category instanceof Category) {
+            $categoryId = $category->getId();
+            $storeId = $category->getStoreId();
+        } else {
+            $categoryId = (int) $category;
+            $storeId = (int) $this->getStoreId();
+        }
+
+        $tweakwiseId = $this->helper->getTweakwiseId($storeId, $categoryId);
+        $this->setParameter('tn_cid', $tweakwiseId);
+        return $this;
+    }
+
+    /**
+     * @return StoreManagerInterface
+     */
+    protected function getStore()
+    {
+        try {
+            return $this->storeManager->getStore();
+        } catch (NoSuchEntityException $e) {
+            // Chose to not implement a good catch as this will not happen in practice.
+            return null;
+        }
+    }
+
+    /**
+     * @return int
+     */
+    protected function getStoreId()
+    {
+        $store = $this->getStore();
+        if ($store instanceof StoreInterface) {
+            return $store->getId();
+        }
+
+        return null;
     }
 }

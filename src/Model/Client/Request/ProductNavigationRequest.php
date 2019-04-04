@@ -10,7 +10,6 @@ namespace Emico\Tweakwise\Model\Client\Request;
 
 use Emico\Tweakwise\Model\Client\Request;
 use Emico\Tweakwise\Model\Client\Response\ProductNavigationResponse;
-use Magento\Catalog\Model\Category;
 
 class ProductNavigationRequest extends Request
 {
@@ -36,25 +35,6 @@ class ProductNavigationRequest extends Request
     public function getResponseType()
     {
         return ProductNavigationResponse::class;
-    }
-
-    /**
-     * @param Category|int $category
-     * @return $this
-     */
-    public function addCategoryFilter($category)
-    {
-        if ($category instanceof Category) {
-            $categoryId = $category->getId();
-            $storeId = $category->getStoreId();
-        } else {
-            $categoryId = (int) $category;
-            $storeId = $this->storeManager->getStore()->getId();
-        }
-
-        $tweakwiseId = $this->helper->getTweakwiseId($storeId, $categoryId);
-        $this->addParameter('tn_cid', $tweakwiseId, '-');
-        return $this;
     }
 
     /**
