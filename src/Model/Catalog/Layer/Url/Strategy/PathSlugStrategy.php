@@ -10,6 +10,7 @@ namespace Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy;
 
 
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
+use Emico\Tweakwise\Model\Catalog\Layer\Url\CategoryUrlInterface;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\FilterApplierInterface;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\RouteMatchingInterface;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface;
@@ -17,8 +18,10 @@ use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlModel;
 use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
 use Emico\Tweakwise\Model\Config;
+use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Layer;
 use Magento\Catalog\Model\Layer\Resolver;
+use Magento\Catalog\Test\Handler\Category\CategoryInterface;
 use Magento\Framework\App\ActionInterface;
 use Magento\UrlRewrite\Model\UrlFinderInterface;
 use Magento\UrlRewrite\Service\V1\Data\UrlRewrite;
@@ -54,6 +57,10 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      * @var Item[]
      */
     private $activeFilters;
+    /**
+     * @var QueryParameterStrategy
+     */
+    private $queryParameterStrategy;
 
     /**
      * Magento constructor.
@@ -69,7 +76,8 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         Config $config,
         Resolver $layerResolver,
         UrlFinderInterface $urlFinder,
-        FilterSlugManager $filterSlugManager
+        FilterSlugManager $filterSlugManager,
+        QueryParameterStrategy $queryParameterStrategy
     ) {
         //@todo This must be done with setter injection somehow.
         $this->url = $url;
@@ -77,6 +85,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         $this->layerResolver = $layerResolver;
         $this->filterSlugManager = $filterSlugManager;
         $this->urlFinder = $urlFinder;
+        $this->queryParameterStrategy = $queryParameterStrategy;
     }
 
     /**
@@ -86,7 +95,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      * @param Item $item
      * @return string
      */
-    public function getSelectFilter(HttpRequest $request, Item $item)
+    public function getAttributeSelectUrl(HttpRequest $request, Item $item): string
     {
         $filters = $this->getActiveFilters();
         $filters[] = $item;
@@ -101,7 +110,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      * @param Item $item
      * @return string
      */
-    public function getRemoveFilter(HttpRequest $request, Item $item)
+    public function getAttributeRemoveUrl(HttpRequest $request, Item $item): string
     {
         $filters = $this->getActiveFilters();
         foreach ($filters as $key => $activeItem) {
@@ -118,7 +127,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      * @param Item $item
      * @return string
      */
-    public function getSlider(HttpRequest $request, Item $item)
+    public function getSliderUrl(HttpRequest $request, Item $item): string
     {
         $filters = $this->getActiveFilters();
         foreach ($filters as $key => $activeItem) {
@@ -139,7 +148,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      * @param Item[] $activeFilterItems
      * @return string
      */
-    public function getClearUrl(HttpRequest $request, array $activeFilterItems)
+    public function getClearUrl(HttpRequest $request, array $activeFilterItems): string
     {
         return $this->buildFilterUrl($request, []);
     }
@@ -153,6 +162,9 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      */
     public function apply(HttpRequest $request, ProductNavigationRequest $navigationRequest): FilterApplierInterface
     {
+        // Order / pagination etc. is still done with query parameters. Also apply this using the queryParameter strategy
+        $this->queryParameterStrategy->apply($request, $navigationRequest);
+
         if (!$request instanceof MagentoHttpRequest) {
             return $this;
         }
@@ -177,6 +189,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
                 $navigationRequest->addAttributeFilter($facet, $attribute);
             }
         }
+
         return $this;
     }
 

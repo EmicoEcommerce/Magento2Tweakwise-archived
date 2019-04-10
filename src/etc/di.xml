@@ -132,6 +132,7 @@
     <preference for="Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface" type="Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy" />
     <preference for="Emico\Tweakwise\Model\Catalog\Layer\Url\FilterApplierInterface" type="Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy" />
     <preference for="Emico\Tweakwise\Model\Catalog\Layer\Url\RouteMatchingInterface" type="Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\NullStrategy" />
+    <preference for="Emico\Tweakwise\Model\Catalog\Layer\Url\CategoryUrlInterface" type="Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy" />
 
     <type name="Emico\Tweakwise\Model\Catalog\Layer\Url">
         <arguments>

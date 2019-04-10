@@ -48,7 +48,7 @@ class NullStrategy implements RouteMatchingInterface, UrlInterface, FilterApplie
      * @param Item $item
      * @return string
      */
-    public function getSelectFilter(HttpRequest $request, Item $item)
+    public function getAttributeSelectUrl(HttpRequest $request, Item $item): string
     {
         return '';
     }
@@ -60,7 +60,7 @@ class NullStrategy implements RouteMatchingInterface, UrlInterface, FilterApplie
      * @param Item $item
      * @return string
      */
-    public function getRemoveFilter(HttpRequest $request, Item $item)
+    public function getAttributeRemoveUrl(HttpRequest $request, Item $item): string
     {
         return '';
     }
@@ -70,7 +70,7 @@ class NullStrategy implements RouteMatchingInterface, UrlInterface, FilterApplie
      * @param Item $item
      * @return string
      */
-    public function getSlider(HttpRequest $request, Item $item)
+    public function getSliderUrl(HttpRequest $request, Item $item): string
     {
         return '';
     }
@@ -82,7 +82,7 @@ class NullStrategy implements RouteMatchingInterface, UrlInterface, FilterApplie
      * @param Item[] $activeFilterItems
      * @return string
      */
-    public function getClearUrl(HttpRequest $request, array $activeFilterItems)
+    public function getClearUrl(HttpRequest $request, array $activeFilterItems): string
     {
         return '';
     }
