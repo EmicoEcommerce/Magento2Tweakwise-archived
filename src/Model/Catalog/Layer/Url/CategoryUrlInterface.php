@@ -26,7 +26,7 @@ interface CategoryUrlInterface
     /**
      * @param HttpRequest $request
      * @param Item $item
-     * @param Category $category
+     * @param CategoryInterface $category
      * @return string
      */
     public function getCategoryTreeSelectUrl(HttpRequest $request, Item $item, CategoryInterface $category): string;
@@ -34,7 +34,7 @@ interface CategoryUrlInterface
     /**
      * @param HttpRequest $request
      * @param Item $item
-     * @param Category $category
+     * @param CategoryInterface $category
      * @return mixed
      */
     public function getCategoryTreeRemoveUrl(HttpRequest $request, Item $item, CategoryInterface $category): string;
@@ -42,7 +42,7 @@ interface CategoryUrlInterface
     /**
      * @param HttpRequest $request
      * @param Item $item
-     * @param Category $category
+     * @param CategoryInterface $category
      * @return mixed
      */
     public function getCategoryFilterSelectUrl(HttpRequest $request, Item $item, CategoryInterface $category): string;
@@ -50,7 +50,7 @@ interface CategoryUrlInterface
     /**
      * @param HttpRequest $request
      * @param Item $item
-     * @param Category $category
+     * @param CategoryInterface $category
      * @return mixed
      */
     public function getCategoryFilterRemoveUrl(HttpRequest $request, Item $item, CategoryInterface $category): string;

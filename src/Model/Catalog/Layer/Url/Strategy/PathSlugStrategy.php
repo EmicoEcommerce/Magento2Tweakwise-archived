@@ -18,10 +18,10 @@ use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlModel;
 use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
 use Emico\Tweakwise\Model\Config;
+use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Layer;
 use Magento\Catalog\Model\Layer\Resolver;
-use Magento\Catalog\Test\Handler\Category\CategoryInterface;
 use Magento\Framework\App\ActionInterface;
 use Magento\UrlRewrite\Model\UrlFinderInterface;
 use Magento\UrlRewrite\Service\V1\Data\UrlRewrite;
@@ -29,7 +29,7 @@ use Zend\Http\Request as HttpRequest;
 use Magento\Framework\App\Request\Http as MagentoHttpRequest;
 use Magento\Framework\UrlInterface as MagentoUrlInterface;
 
-class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterApplierInterface
+class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterApplierInterface, CategoryUrlInterface
 {
     const REQUEST_FILTER_PATH = 'filter_path';
 
@@ -70,6 +70,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      * @param Resolver $layerResolver
      * @param UrlFinderInterface $urlFinder
      * @param FilterSlugManager $filterSlugManager
+     * @param QueryParameterStrategy $queryParameterStrategy
      */
     public function __construct(
         UrlModel $url,
@@ -351,5 +352,61 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
             $paths[] = $lastPathPart;
         }
         return array_reverse($paths);
+    }
+
+    /**
+     * @param HttpRequest $request
+     * @param Item $item
+     * @param CategoryInterface $category
+     * @return string
+     */
+    public function getCategoryTreeSelectUrl(
+        HttpRequest $request,
+        Item $item,
+        CategoryInterface $category
+    ): string {
+        return $this->queryParameterStrategy->getCategoryTreeSelectUrl($request, $item, $category);
+    }
+
+    /**
+     * @param HttpRequest $request
+     * @param Item $item
+     * @param CategoryInterface $category
+     * @return mixed
+     */
+    public function getCategoryTreeRemoveUrl(
+        HttpRequest $request,
+        Item $item,
+        CategoryInterface $category
+    ): string {
+        return $this->queryParameterStrategy->getCategoryTreeRemoveUrl($request, $item, $category);
+    }
+
+    /**
+     * @param HttpRequest $request
+     * @param Item $item
+     * @param CategoryInterface $category
+     * @return mixed
+     */
+    public function getCategoryFilterSelectUrl(
+        HttpRequest $request,
+        Item $item,
+        CategoryInterface $category
+    ): string {
+        return $this->getAttributeSelectUrl($request, $item);
+    }
+
+    /**
+     * @param HttpRequest $request
+     * @param Item $item
+     * @param CategoryInterface $category
+     * @return mixed
+     */
+    public function getCategoryFilterRemoveUrl(
+        HttpRequest $request,
+        Item $item,
+        CategoryInterface $category
+    ): string {
+        return $this->getAttributeRemoveUrl($request, $item);
     }
 }
