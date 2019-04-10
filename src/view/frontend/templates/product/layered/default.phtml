@@ -15,8 +15,10 @@ $hasAlternateSortOrder = $block->hasAlternateSortOrder();
     <ol class="items">
         <?php foreach ($block->getItems() as $index => $item): ?>
             <li class="item<?=$block->itemDefaultHidden($item) ? ' default-hidden' : ''?>"
-                data-original-sort="<?=$index;?>"
-                <?php if ($hasHiddenItems && $hasAlternateSortOrder):?> data-alternate-sort="<?=$item->getAlternateSortOrder();?>"<?php endif;?>
+                <?php if ($hasHiddenItems && $hasAlternateSortOrder):?>
+                    data-alternate-sort="<?=$item->getAlternateSortOrder();?>"
+                    data-original-sort="<?=$index;?>"
+                <?php endif;?>
             >
                 <a href="<?=$block->escapeUrl($item->getUrl())?>">
                     <?php if ($block->showCheckbox()): ?>
