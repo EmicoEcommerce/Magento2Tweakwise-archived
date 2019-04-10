@@ -92,7 +92,7 @@ class DefaultRenderer extends Template
     {
         $filter = function (Item $item)
         {
-            return $item->getAlternateSortOrder() !== 0;
+            return $item->getAlternateSortOrder() !== null;
         };
 
         $items = $this->getItems();
