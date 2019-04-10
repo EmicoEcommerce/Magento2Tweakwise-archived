@@ -229,7 +229,12 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         $newFilterPath = $this->buildFilterSlugPath($filters);
 
         if (empty($currentFilterPath)) {
-            return $currentUrl . $newFilterPath;
+            $urlParts = parse_url($currentUrl);
+            $url = $urlParts['path'] . $newFilterPath;
+            if (isset($urlParts['query'])) {
+                $url .= '?' . $urlParts['query'];
+            }
+            return $url;
         }
 
         // Replace filter path in current URL with the new filter combination path
