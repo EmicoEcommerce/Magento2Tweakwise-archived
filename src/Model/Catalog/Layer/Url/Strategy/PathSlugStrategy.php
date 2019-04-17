@@ -11,6 +11,7 @@ namespace Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy;
 
 use Emico\Tweakwise\Exception\UnexpectedValueException;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
+use Emico\Tweakwise\Model\Catalog\Layer\UrlFactory;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\CategoryUrlInterface;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\FilterApplierInterface;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\RouteMatchingInterface;
@@ -45,7 +46,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
     /**
      * @var UrlModel
      */
-    private $url;
+    private $magentoUrl;
 
     /**
      * @var UrlFinderInterface
@@ -56,32 +57,40 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      * @var Item[]
      */
     private $activeFilters;
+    
     /**
      * @var QueryParameterStrategy
      */
     private $queryParameterStrategy;
 
     /**
+     * @var UrlFactory
+     */
+    private $urlFactory;
+
+    /**
      * Magento constructor.
      *
-     * @param UrlModel $url
+     * @param UrlModel $magentoUrl
      * @param Resolver $layerResolver
      * @param UrlFinderInterface $urlFinder
      * @param FilterSlugManager $filterSlugManager
      * @param QueryParameterStrategy $queryParameterStrategy
      */
     public function __construct(
-        UrlModel $url,
+        UrlModel $magentoUrl,
+        UrlFactory $urlFactory,
         Resolver $layerResolver,
         UrlFinderInterface $urlFinder,
         FilterSlugManager $filterSlugManager,
         QueryParameterStrategy $queryParameterStrategy
     ) {
-        $this->url = $url;
+        $this->magentoUrl = $magentoUrl;
         $this->layerResolver = $layerResolver;
         $this->filterSlugManager = $filterSlugManager;
         $this->urlFinder = $urlFinder;
         $this->queryParameterStrategy = $queryParameterStrategy;
+        $this->urlFactory = $urlFactory;
     }
 
     /**
@@ -131,8 +140,9 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
                 unset($filters[$key]);
             }
         }
-        $item->getAttribute()->setValue('title', '{{from}}-{{to}}');
-        $filters[] = $item;
+        $attribute = clone $item->getAttribute();
+        $attribute->setValue('title', '{{from}}-{{to}}');
+        $filters[] = new Item($item->getFilter(), $attribute, $this->urlFactory->create());
 
         return $this->buildFilterUrl($request, $filters);
     }
@@ -213,7 +223,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         $params['_current'] = true;
         $params['_use_rewrite'] = true;
         $params['_escape'] = false;
-        return $this->url->getUrl('*/*/*', $params);
+        return $this->magentoUrl->getUrl('*/*/*', $params);
     }
 
     /**
