@@ -72,6 +72,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      * Magento constructor.
      *
      * @param UrlModel $magentoUrl
+     * @param UrlFactory $urlFactory
      * @param Resolver $layerResolver
      * @param UrlFinderInterface $urlFinder
      * @param FilterSlugManager $filterSlugManager
@@ -398,7 +399,6 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         CategoryInterface $category
     ): string {
         return $this->queryParameterStrategy->getCategoryFilterSelectUrl($request, $item, $category);
-        return $this->getAttributeSelectUrl($request, $item);
     }
 
     /**
