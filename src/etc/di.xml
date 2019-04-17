@@ -82,6 +82,14 @@
         </arguments>
     </type>
 
+    <type name="Emico\Tweakwise\Model\Catalog\Layer\Url\UrlModel">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="tw_config" xsi:type="object">Emico\Tweakwise\Model\Config</item>
+            </argument>
+        </arguments>
+    </type>
+
     <!-- TW models -->
     <virtualType name="Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\Category" type="Emico\Tweakwise\Model\Catalog\Layer\NavigationContext">
         <arguments>

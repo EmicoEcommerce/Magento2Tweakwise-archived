@@ -9,6 +9,7 @@
 namespace Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy;
 
 
+use Emico\Tweakwise\Exception\UnexpectedValueException;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\CategoryUrlInterface;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\FilterApplierInterface;
@@ -17,9 +18,7 @@ use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlModel;
 use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
-use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Api\Data\CategoryInterface;
-use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Layer;
 use Magento\Catalog\Model\Layer\Resolver;
 use Magento\Framework\App\ActionInterface;
@@ -66,7 +65,6 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      * Magento constructor.
      *
      * @param UrlModel $url
-     * @param Config $config
      * @param Resolver $layerResolver
      * @param UrlFinderInterface $urlFinder
      * @param FilterSlugManager $filterSlugManager
@@ -74,15 +72,12 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      */
     public function __construct(
         UrlModel $url,
-        Config $config,
         Resolver $layerResolver,
         UrlFinderInterface $urlFinder,
         FilterSlugManager $filterSlugManager,
         QueryParameterStrategy $queryParameterStrategy
     ) {
-        //@todo This must be done with setter injection somehow.
         $this->url = $url;
-        $url->setConfig($config);
         $this->layerResolver = $layerResolver;
         $this->filterSlugManager = $filterSlugManager;
         $this->urlFinder = $urlFinder;
@@ -181,10 +176,9 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
             if ($i % 2 === 0) {
                 $facet = $part;
             } else {
-                $attribute = $this->filterSlugManager->getAttributeBySlug($part);
-                // No attribute found for slug, this can be a slider slug i.e. "0-40", fallback and just pass the raw data to tweakwise.
-                // @todo Maybe we need some validation here if this is indeed a slider attribute. No idea how we can know this
-                if (empty($attribute)) {
+                try {
+                    $attribute = $this->filterSlugManager->getAttributeBySlug($part);
+                } catch (UnexpectedValueException $exception) {
                     $attribute = $part;
                 }
                 $navigationRequest->addAttributeFilter($facet, $attribute);
@@ -393,6 +387,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         Item $item,
         CategoryInterface $category
     ): string {
+        return $this->queryParameterStrategy->getCategoryFilterSelectUrl($request, $item, $category);
         return $this->getAttributeSelectUrl($request, $item);
     }
 

@@ -10,6 +10,7 @@ namespace Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy;
 
 use Emico\Tweakwise\Api\AttributeSlugRepositoryInterface;
 use Emico\Tweakwise\Api\Data\AttributeSlugInterfaceFactory;
+use Emico\Tweakwise\Exception\UnexpectedValueException;
 use Emico\Tweakwise\Model\AttributeSlug;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Magento\Framework\Api\SearchCriteria;
@@ -89,7 +90,6 @@ class FilterSlugManager
             return $lookupTable[$attribute];
         }
 
-        //@todo batch persist new slugs
         $slug = $this->translitUrl->filter($attribute);
 
         /** @var AttributeSlug $attributeSlugEntity */
@@ -106,12 +106,18 @@ class FilterSlugManager
     /**
      * @param string $slug
      * @return string
+     * @throws \Emico\Tweakwise\Exception\UnexpectedValueException
      */
     public function getAttributeBySlug(string $slug): string
     {
         $attribute = array_search($slug, $this->getLookupTable(), true);
         if ($attribute === false) {
-            //@todo exception handling
+            // Check if slug matched the pattern for a slider filter (i.e. 80-120).
+            if (preg_match('/^\d+-\d+$/', $slug)) {
+                return $slug;
+            }
+
+            throw new UnexpectedValueException(sprintf('No attribute found for slug "%s"', $slug));
         }
         return $attribute;
     }

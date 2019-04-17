@@ -64,6 +64,7 @@ class Url
      * Builder constructor.
      *
      * @param UrlStrategyFactory $urlStrategyFactory
+     * @param FilterApplierInterface $defaultFilterApplier
      * @param HttpRequest $request
      * @param CategoryRepositoryInterface $categoryRepository
      * @param ExportHelper $exportHelper
@@ -71,13 +72,19 @@ class Url
      */
     public function __construct(
         UrlStrategyFactory $urlStrategyFactory,
+        FilterApplierInterface $defaultFilterApplier,
         HttpRequest $request,
         CategoryRepositoryInterface $categoryRepository,
         ExportHelper $exportHelper,
         Config $config
     ) {
-        $this->urlStrategy = $urlStrategyFactory->create(UrlInterface::class);
-        $this->filterApplier = $urlStrategyFactory->create(FilterApplierInterface::class);
+        //@todo can we create a custom factory?
+        $this->urlStrategy = $urlStrategyFactory->create();
+        if ($this->urlStrategy instanceof FilterApplierInterface) {
+            $this->filterApplier = $this->urlStrategy;
+        } else {
+            $this->filterApplier = $defaultFilterApplier;
+        }
         $this->categoryUrlStrategy = $urlStrategyFactory->create(CategoryUrlInterface::class);
         $this->request = $request;
         $this->categoryRepository = $categoryRepository;

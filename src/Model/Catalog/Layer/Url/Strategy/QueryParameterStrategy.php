@@ -15,7 +15,6 @@ use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface;
 use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlModel;
 use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
-use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Zend\Http\Request as HttpRequest;
 
@@ -57,11 +56,9 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
      * Magento constructor.
      *
      * @param UrlModel $url
-     * @param Config $config
      */
-    public function __construct(UrlModel $url, Config $config)
+    public function __construct(UrlModel $url)
     {
-        $url->setConfig($config);
         $this->url = $url;
     }
 
