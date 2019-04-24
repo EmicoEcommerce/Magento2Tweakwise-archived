@@ -17,6 +17,7 @@ define(['jquery', 'jquery/ui'], function($) {
         },
 
         _handleMoreItemsLink: function() {
+            this._sortItems('alternate-sort');
             this.element.find('.default-hidden').show();
             this.element.find('.more-items').hide();
 
@@ -24,10 +25,22 @@ define(['jquery', 'jquery/ui'], function($) {
         },
 
         _handleLessItemsLink: function() {
+            this._sortItems('original-sort');
             this.element.find('.default-hidden').hide();
             this.element.find('.more-items').show();
 
             return false;
+        },
+
+        _sortItems: function (type) {
+            if (!this.options.hasAlternateSort) {
+                return;
+            }
+
+            let list = this.element.find('.items');
+            list.children('.item').sort(function (a, b) {
+                return $(a).data(type) - $(b).data(type);
+            }).appendTo(list);
         },
 
         _handleCheckboxClick: function(event) {

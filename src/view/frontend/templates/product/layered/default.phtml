@@ -8,11 +8,18 @@
 use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\DefaultRenderer;
 
 /** @var $block DefaultRenderer */
+$hasHiddenItems = $block->hasHiddenItems();
+$hasAlternateSortOrder = $block->hasAlternateSortOrder();
 ?>
 <div data-mage-init='<?=$block->getJsNavigationConfig()?>'>
     <ol class="items">
-        <?php foreach ($block->getItems() as $item): ?>
-            <li class="item<?=$block->itemDefaultHidden($item) ? ' default-hidden' : ''?>">
+        <?php foreach ($block->getItems() as $index => $item): ?>
+            <li class="item<?=$block->itemDefaultHidden($item) ? ' default-hidden' : ''?>"
+                <?php if ($hasHiddenItems && $hasAlternateSortOrder):?>
+                    data-alternate-sort="<?=$item->getAlternateSortOrder();?>"
+                    data-original-sort="<?=$index;?>"
+                <?php endif;?>
+            >
                 <a <?=$block->renderAnchorHtmlTagAttributes($item);?>>
                     <?php if ($block->showCheckbox()): ?>
                         <input id="inputCheckbox<?=$block->getCssItemId($item)?>"
@@ -49,7 +56,7 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\DefaultRenderer;
         <?php endforeach; ?>
     </ol>
 
-    <?php if ($block->hasHiddenItems()): ?>
+    <?php if ($hasHiddenItems): ?>
         <a class="more-items"><?=__($block->getMoreItemText())?></a>
         <a class="less-items default-hidden"><?=__($block->getLessItemText())?></a>
     <?php endif; ?>

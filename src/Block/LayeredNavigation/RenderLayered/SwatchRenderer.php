@@ -55,7 +55,7 @@ class SwatchRenderer extends RenderLayered
      * @param Data $swatchHelper
      * @param Media $mediaHelper
      * @param Config $config
-     * @param AttributeFactory $attributeFactory
+     * @param EavAttributeFactory $attributeFactory
      * @param array $data
      */
     public function __construct(

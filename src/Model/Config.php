@@ -361,15 +361,19 @@ class Config
     }
 
     /**
+     * @param array $navigationOptions
      * @return string
      */
-    public function getJsNavigationConfig(): string
+    public function getJsNavigationConfig(array $navigationOptions = []): string
     {
         return $this->jsonSerializer->serialize([
-            'tweakwiseNavigationFilter' => [
-                'formFilters' => $this->getUseFormFilters(),
-                'seoEnabled' => $this->isSeoEnabled()
-            ],
+            'tweakwiseNavigationFilter' => array_merge(
+                [
+                    'formFilters' => $this->getUseFormFilters(),
+                    'seoEnabled' => $this->isSeoEnabled()
+                ],
+                $navigationOptions
+            )
         ]);
     }
 
