@@ -13,6 +13,7 @@ use Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\Store;
+use Magento\Framework\Serialize\Serializer\Json;
 
 class Config
 {
@@ -38,6 +39,11 @@ class Config
     protected $config;
 
     /**
+     * @var Json
+     */
+    protected $jsonSerializer;
+
+    /**
      * @var bool
      */
     protected $tweakwiseExceptionThrown = false;
@@ -52,9 +58,10 @@ class Config
      *
      * @param ScopeConfigInterface $config
      */
-    public function __construct(ScopeConfigInterface $config)
+    public function __construct(ScopeConfigInterface $config, Json $jsonSerializer)
     {
         $this->config = $config;
+        $this->jsonSerializer = $jsonSerializer;
     }
 
     /**
@@ -73,7 +80,7 @@ class Config
      */
     public function getGeneralServerUrl(Store $store = null)
     {
-        return (string) $this->getStoreConfig($store, 'tweakwise/general/server_url');
+        return (string) $this->getStoreConfig('tweakwise/general/server_url', $store);
     }
 
     /**
@@ -82,7 +89,7 @@ class Config
      */
     public function getGeneralAuthenticationKey(Store $store = null)
     {
-        return (string) $this->getStoreConfig($store, 'tweakwise/general/authentication_key');
+        return (string) $this->getStoreConfig('tweakwise/general/authentication_key', $store);
     }
 
     /**
@@ -91,7 +98,7 @@ class Config
      */
     public function getTimeout(Store $store = null)
     {
-        return (int) $this->getStoreConfig($store, 'tweakwise/general/timeout');
+        return (int) $this->getStoreConfig('tweakwise/general/timeout', $store);
     }
 
     /**
@@ -104,7 +111,7 @@ class Config
             return false;
         }
 
-        return (bool) $this->getStoreConfig($store, 'tweakwise/layered/enabled');
+        return (bool) $this->getStoreConfig('tweakwise/layered/enabled', $store);
     }
 
     /**
@@ -113,7 +120,7 @@ class Config
      */
     public function getCategoryAsLink(Store $store = null)
     {
-        return (bool) $this->getStoreConfig($store, 'tweakwise/layered/category_links');
+        return (bool) $this->getStoreConfig('tweakwise/layered/category_links', $store);
     }
 
     /**
@@ -122,7 +129,7 @@ class Config
      */
     public function getHideSingleOptions(Store $store = null)
     {
-        return (bool) $this->getStoreConfig($store, 'tweakwise/layered/hide_single_option');
+        return (bool) $this->getStoreConfig('tweakwise/layered/hide_single_option', $store);
     }
 
     /**
@@ -131,7 +138,7 @@ class Config
      */
     public function getUseDefaultLinkRenderer(Store $store = null)
     {
-        return (bool) $this->getStoreConfig($store, 'tweakwise/layered/default_link_renderer');
+        return (bool) $this->getStoreConfig('tweakwise/layered/default_link_renderer', $store);
     }
 
     /**
@@ -140,7 +147,7 @@ class Config
      */
     public function getUseFormFilters(Store $store = null)
     {
-        return (bool) $this->getStoreConfig($store, 'tweakwise/layered/form_filters');
+        return (bool) $this->getStoreConfig('tweakwise/layered/form_filters', $store);
     }
 
     /**
@@ -149,7 +156,7 @@ class Config
      */
     public function getQueryFilterType(Store $store = null)
     {
-        return (string) $this->getStoreConfig($store, 'tweakwise/layered/query_filter_type');
+        return (string) $this->getStoreConfig('tweakwise/layered/query_filter_type', $store);
     }
 
     /**
@@ -159,7 +166,7 @@ class Config
     public function getQueryFilterArguments(Store $store = null)
     {
         if ($this->parsedFilterArguments === null) {
-            $arguments = $this->getStoreConfig($store, 'tweakwise/layered/query_filter_arguments');
+            $arguments = $this->getStoreConfig('tweakwise/layered/query_filter_arguments', $store);
             $arguments = explode("\n", $arguments);
             $arguments = array_map('trim', $arguments);
             $arguments = array_filter($arguments);
@@ -175,7 +182,7 @@ class Config
      */
     public function getQueryFilterRegex(Store $store = null)
     {
-        return (string) $this->getStoreConfig($store, 'tweakwise/layered/query_filter_regex');
+        return (string) $this->getStoreConfig('tweakwise/layered/query_filter_regex', $store);
     }
 
     /**
@@ -201,7 +208,7 @@ class Config
             return false;
         }
 
-        return (bool) $this->getStoreConfig($store, 'tweakwise/autocomplete/enabled');
+        return (bool) $this->getStoreConfig('tweakwise/autocomplete/enabled', $store);
     }
 
     /**
@@ -210,7 +217,7 @@ class Config
      */
     public function isAutocompleteProductsEnabled(Store $store = null)
     {
-        return (bool) $this->getStoreConfig($store, 'tweakwise/autocomplete/show_products');
+        return (bool) $this->getStoreConfig('tweakwise/autocomplete/show_products', $store);
     }
 
     /**
@@ -219,7 +226,7 @@ class Config
      */
     public function isAutocompleteSuggestionsEnabled(Store $store = null)
     {
-        return (bool) $this->getStoreConfig($store, 'tweakwise/autocomplete/show_suggestions');
+        return (bool) $this->getStoreConfig('tweakwise/autocomplete/show_suggestions', $store);
     }
 
     /**
@@ -228,7 +235,7 @@ class Config
      */
     public function getAutocompleteMaxResults(Store $store = null)
     {
-        return (int) $this->getStoreConfig($store, 'tweakwise/autocomplete/max_results');
+        return (int) $this->getStoreConfig('tweakwise/autocomplete/max_results', $store);
     }
 
     /**
@@ -237,7 +244,7 @@ class Config
      */
     public function isAutocompleteStayInCategory(Store $store = null)
     {
-        return (bool) $this->getStoreConfig($store, 'tweakwise/autocomplete/in_current_category');
+        return (bool) $this->getStoreConfig('tweakwise/autocomplete/in_current_category', $store);
     }
 
     /**
@@ -246,7 +253,7 @@ class Config
      */
     public function isSearchEnabled(Store $store = null)
     {
-        return (int) $this->getStoreConfig($store, 'tweakwise/search/enabled');
+        return (int) $this->getStoreConfig('tweakwise/search/enabled', $store);
     }
 
     /**
@@ -255,7 +262,7 @@ class Config
      */
     public function getSearchTemplateId(Store $store = null)
     {
-        return (int) $this->getStoreConfig($store, 'tweakwise/search/template');
+        return (int) $this->getStoreConfig('tweakwise/search/template', $store);
     }
 
     /**
@@ -266,7 +273,7 @@ class Config
     public function isRecommendationsEnabled($type, Store $store = null)
     {
         $this->validateRecommendationType($type);
-        return (bool) $this->getStoreConfig($store, sprintf('tweakwise/recommendations/%s_enabled', $type));
+        return (bool) $this->getStoreConfig(sprintf('tweakwise/recommendations/%s_enabled', $type), $store);
     }
 
     /**
@@ -277,7 +284,7 @@ class Config
     public function getRecommendationsTemplate($type, Store $store = null)
     {
         $this->validateRecommendationType($type);
-        return (int) $this->getStoreConfig($store, sprintf('tweakwise/recommendations/%s_template', $type));
+        return (int) $this->getStoreConfig(sprintf('tweakwise/recommendations/%s_template', $type), $store);
     }
 
     /**
@@ -288,7 +295,7 @@ class Config
     public function getRecommendationsGroupCode($type, Store $store = null)
     {
         $this->validateRecommendationType($type);
-        return $this->getStoreConfig($store, sprintf('tweakwise/recommendations/%s_group_code', $type));
+        return $this->getStoreConfig(sprintf('tweakwise/recommendations/%s_group_code', $type), $store);
     }
 
     /**
@@ -297,7 +304,35 @@ class Config
      */
     public function getRecommendationsFeaturedLocation(Store $store = null)
     {
-        return (string) $this->getStoreConfig($store, 'tweakwise/recommendations/featured_location');
+        return (string) $this->getStoreConfig('tweakwise/recommendations/featured_location', $store);
+    }
+
+    /**
+     * @param Store|null $store
+     * @return bool
+     */
+    public function isSeoEnabled(Store $store = null)
+    {
+        return (bool) $this->getStoreConfig('tweakwise/seo/enabled', $store);
+    }
+
+    /**
+     * @param Store|null $store
+     * @return array
+     */
+    public function getFilterWhitelist(Store $store = null)
+    {
+        $filterList = $this->getStoreConfig('tweakwise/seo/filter_whitelist', $store);
+        return explode(',', $filterList) ?: [];
+    }
+
+    /**
+     * @param Store|null $store
+     * @return bool
+     */
+    public function getMaxAllowedFacets(Store $store = null)
+    {
+        return (int) $this->getStoreConfig('tweakwise/seo/max_allowed_facets', $store);
     }
     
     /**
@@ -305,7 +340,7 @@ class Config
      * @param string $path
      * @return mixed|null|string
      */
-    protected function getStoreConfig(Store $store = null, $path)
+    protected function getStoreConfig(string $path, Store $store = null)
     {
         if ($store) {
             return $store->getConfig($path);
@@ -337,5 +372,30 @@ class Config
             self::RECOMMENDATION_TYPE_CROSSSELL,
             self::RECOMMENDATION_TYPE_FEATURED
         ));
+    }
+
+    /**
+     * @param array $navigationOptions
+     * @return string
+     */
+    public function getJsNavigationConfig(array $navigationOptions = []): string
+    {
+        return $this->jsonSerializer->serialize([
+            'tweakwiseNavigationFilter' => array_merge(
+                [
+                    'formFilters' => $this->getUseFormFilters(),
+                    'seoEnabled' => $this->isSeoEnabled()
+                ],
+                $navigationOptions
+            )
+        ]);
+    }
+
+    /**
+     * @return Config
+     */
+    public function getJsUseFormFilters()
+    {
+        return $this->jsonSerializer->serialize($this->getUseFormFilters());
     }
 }

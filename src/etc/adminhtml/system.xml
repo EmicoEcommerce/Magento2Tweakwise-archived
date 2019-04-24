@@ -115,7 +115,33 @@
                     </depends>
                 </field>
             </group>
-            <group id="autocomplete" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="seo" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <depends>
+                    <field id="tweakwise/layered/default_link_renderer">0</field>
+                </depends>
+                <label>Seo</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="filter_whitelist" translate="label" type="multiselect" sortOrder="20" showInStore="1" showInWebsite="1" showInDefault="1">
+                    <label>Filter Whitelist</label>
+                    <comment>Attributes whose filters should be indexable</comment>
+                    <source_model>Emico\TweakwiseExport\Model\Config\Source\ProductAttributes</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="max_allowed_facets" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Max allowed selected filter</label>
+                    <comment>Max allowed filters before rendering filters as not indexable</comment>
+                    <validate>validate-number</validate>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="autocomplete" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Autocomplete</label>
                 <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enabled</label>
@@ -153,7 +179,7 @@
                     </depends>
                 </field>
             </group>
-            <group id="search" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="search" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Search</label>
                 <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enabled</label>
@@ -167,7 +193,7 @@
                     </depends>
                 </field>
             </group>
-            <group id="recommendations" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="recommendations" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Recommendations</label>
                 <field id="crosssell_enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Crosssell enabled</label>

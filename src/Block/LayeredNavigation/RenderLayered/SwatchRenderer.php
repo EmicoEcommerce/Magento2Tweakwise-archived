@@ -18,10 +18,13 @@ use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Magento\Swatches\Helper\Data;
 use Magento\Swatches\Helper\Media;
 use Emico\Tweakwise\Model\Config;
+use Emico\Tweakwise\Model\Seo\FilterHelper;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory as EavAttributeFactory;
 
 class SwatchRenderer extends RenderLayered
 {
+    use AnchorRendererTrait;
+
     /**
      * Path to template file.
      *
@@ -45,6 +48,35 @@ class SwatchRenderer extends RenderLayered
     protected $eavAttributeFactory;
 
     /**
+     * SwatchRenderer constructor.
+     * @param Context $context
+     * @param Attribute $eavAttribute
+     * @param AttributeFactory $layerAttribute
+     * @param Data $swatchHelper
+     * @param Media $mediaHelper
+     * @param Config $config
+     * @param EavAttributeFactory $attributeFactory
+     * @param array $data
+     */
+    public function __construct(
+        Context $context,
+        Attribute $eavAttribute,
+        AttributeFactory $layerAttribute,
+        Data $swatchHelper,
+        Media $mediaHelper,
+        Config $config,
+        EavAttributeFactory $eavAttributeFactory,
+        FilterHelper $filterHelper,
+        array $data = []
+    )
+    {
+        parent::__construct($context, $eavAttribute, $layerAttribute, $swatchHelper, $mediaHelper, $data);
+        $this->config = $config;
+        $this->eavAttributeFactory = $eavAttributeFactory;
+        $this->filterHelper = $filterHelper;
+    }
+
+    /**
      * @param Filter $filter
      * @throws \Magento\Framework\Exception\LocalizedException
      */
@@ -59,33 +91,6 @@ class SwatchRenderer extends RenderLayered
             $this->filter->setAttributeModel($attributeModel);
         }
         $this->setSwatchFilter($filter);
-    }
-
-    /**
-     * SwatchRenderer constructor.
-     * @param Context $context
-     * @param Attribute $eavAttribute
-     * @param AttributeFactory $layerAttribute
-     * @param Data $swatchHelper
-     * @param Media $mediaHelper
-     * @param Config $config
-     * @param AttributeFactory $attributeFactory
-     * @param array $data
-     */
-    public function __construct(
-        Context $context,
-        Attribute $eavAttribute,
-        AttributeFactory $layerAttribute,
-        Data $swatchHelper,
-        Media $mediaHelper,
-        Config $config,
-        EavAttributeFactory $eavAttributeFactory,
-        array $data = []
-    )
-    {
-        parent::__construct($context, $eavAttribute, $layerAttribute, $swatchHelper, $mediaHelper, $data);
-        $this->config = $config;
-        $this->eavAttributeFactory = $eavAttributeFactory;
     }
 
     /**
@@ -112,5 +117,13 @@ class SwatchRenderer extends RenderLayered
     public function getItemForSwatch($id)
     {
         return $this->filter->getItemByOptionId($id);
+    }
+
+    /**
+     * @return string
+     */
+    public function getJsNavigationConfig()
+    {
+        return $this->config->getJsNavigationConfig();
     }
 }

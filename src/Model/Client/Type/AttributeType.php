@@ -73,4 +73,14 @@ class AttributeType extends Type
     {
         return (string) $this->getDataValue('url');
     }
+
+    /**
+     * @return int|null
+     */
+    public function getAlternateSortOrder()
+    {
+        return $this->hasValue('@alternatesortorder')
+            ? (int) $this->getDataValue('@alternatesortorder')
+            : null;
+    }
 }

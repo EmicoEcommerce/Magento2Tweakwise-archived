@@ -89,6 +89,14 @@ class Item extends MagentoItem
     }
 
     /**
+     * @return int
+     */
+    public function getAlternateSortOrder()
+    {
+        return $this->attributeType->getAlternateSortOrder();
+    }
+
+    /**
      * Method is called for swatches and should return the original value instead of the label.
      * Used for the default swatch renderer
      *

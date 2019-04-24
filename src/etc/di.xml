@@ -57,6 +57,9 @@
     <type name="Magento\CatalogSearch\Controller\Result\Index">
         <plugin name="emico-tweakwise" type="Emico\Tweakwise\Model\CatalogSearch\Controller\Result\Index\Plugin" sortOrder="0" />
     </type>
+    <type name="Magento\Framework\View\Page\Config">
+        <plugin name="emico-tweakwise" type="Emico\Tweakwise\Model\Seo\Robots\Plugin" sortOrder="0" />
+    </type>
 
     <type name="Magento\Search\Model\Autocomplete">
         <arguments>

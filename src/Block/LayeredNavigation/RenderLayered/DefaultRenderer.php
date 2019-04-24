@@ -12,11 +12,14 @@ use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
 use Emico\Tweakwise\Model\Config;
+use Emico\Tweakwise\Model\Seo\FilterHelper;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\Serialize\Serializer\Json;
 
 class DefaultRenderer extends Template
 {
+    use AnchorRendererTrait;
+
     /**
      * {@inheritDoc}
      */
@@ -42,14 +45,16 @@ class DefaultRenderer extends Template
      *
      * @param Template\Context $context
      * @param Config $config
+     * @param FilterHelper $filterHelper
      * @param Json $jsonSerializer
      * @param array $data
      */
-    public function __construct(Template\Context $context, Config $config, Json $jsonSerializer, array $data = [])
+    public function __construct(Template\Context $context, Config $config, FilterHelper $filterHelper, Json $jsonSerializer, array $data = [])
     {
-        $this->jsonSerializer = $jsonSerializer;
-        $this->config = $config;
         parent::__construct($context, $data);
+        $this->config = $config;
+        $this->filterHelper = $filterHelper;
+        $this->jsonSerializer = $jsonSerializer;
     }
 
     /**
@@ -83,6 +88,22 @@ class DefaultRenderer extends Template
         }
 
         return $items;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasAlternateSortOrder()
+    {
+        $filter = function (Item $item)
+        {
+            return $item->getAlternateSortOrder() !== null;
+        };
+
+        $items = $this->getItems();
+        $itemsWIthAlternateSortOrder = array_filter($items, $filter);
+
+        return \count($items) === \count($itemsWIthAlternateSortOrder);
     }
 
     /**
@@ -190,11 +211,8 @@ class DefaultRenderer extends Template
      */
     public function getJsNavigationConfig(): string
     {
-        return $this->jsonSerializer->serialize([
-            'tweakwiseNavigationFilter' => [
-                'formFilters' => $this->config->getUseFormFilters()
-            ],
-        ]);
+        $navigationOptions = ['hasAlternateSort' => $this->hasAlternateSortOrder()];
+        return $this->config->getJsNavigationConfig($navigationOptions);
     }
 
     /**
@@ -202,7 +220,7 @@ class DefaultRenderer extends Template
      */
     public function getJsUseFormFilters()
     {
-        return $this->jsonSerializer->serialize($this->config->getUseFormFilters());
+        return $this->config->getJsUseFormFilters();
     }
 
     /**

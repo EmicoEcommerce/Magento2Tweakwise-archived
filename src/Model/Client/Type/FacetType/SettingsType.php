@@ -41,6 +41,15 @@ class SettingsType extends Type
     }
 
     /**
+     * This returns the original (magento) attribute this facet is associated with
+     * @return string
+     */
+    public function getAttributename()
+    {
+        return (string) $this->getDataValue('attributename');
+    }
+
+    /**
      * @return bool
      */
     public function getIsMultipleSelect()
