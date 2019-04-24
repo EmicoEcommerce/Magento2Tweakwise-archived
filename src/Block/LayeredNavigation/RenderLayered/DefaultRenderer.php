@@ -45,6 +45,7 @@ class DefaultRenderer extends Template
      *
      * @param Template\Context $context
      * @param Config $config
+     * @param FilterHelper $filterHelper
      * @param Json $jsonSerializer
      * @param array $data
      */

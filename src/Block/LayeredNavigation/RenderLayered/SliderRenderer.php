@@ -38,6 +38,9 @@ class SliderRenderer extends DefaultRenderer
      * @param TaxHelper $taxHelper
      * @param Config $config
      * @param FilterHelper $filterHelper
+     * @param Template\Context $context
+     * @param Json $jsonSerializer
+     * @param array $data
      */
     public function __construct(
         PriceHelper $priceHelper,
@@ -45,10 +48,11 @@ class SliderRenderer extends DefaultRenderer
         Config $config,
         FilterHelper $filterHelper,
         Template\Context $context,
+        Json $jsonSerializer,
         array $data = []
     )
     {
-        parent::__construct($context, $config, $filterHelper, $data);
+        parent::__construct($context, $config, $filterHelper, $jsonSerializer, $data);
         $this->priceHelper = $priceHelper;
         $this->taxHelper = $taxHelper;
     }
