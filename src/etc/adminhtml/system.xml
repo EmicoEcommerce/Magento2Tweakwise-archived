@@ -117,6 +117,7 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="filter_whitelist" translate="label" type="multiselect" sortOrder="20" showInStore="1" showInWebsite="1" showInDefault="1">
+                    <label>Filter Whitelist</label>
                     <comment>Attributes whose filters should be indexable</comment>
                     <source_model>Emico\TweakwiseExport\Model\Config\Source\ProductAttributes</source_model>
                     <depends>
@@ -124,6 +125,7 @@
                     </depends>
                 </field>
                 <field id="max_allowed_facets" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Max allowed selected filter</label>
                     <comment>Max allowed filters before rendering filters as not indexable</comment>
                     <validate>validate-number</validate>
                     <depends>
