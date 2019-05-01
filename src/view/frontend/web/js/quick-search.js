@@ -34,11 +34,9 @@ define([
         },
 
         _onSubmit: function (e) {
-            var value = this.element.val().trim(),
-                url = this.getSelectedProductUrl();
-
-            if (!value) {
-                e.preventDefault();
+            var url = this.getSelectedProductUrl();
+            if (!url) {
+                return this._superApply(arguments);
             }
 
             if (url !== null) {
