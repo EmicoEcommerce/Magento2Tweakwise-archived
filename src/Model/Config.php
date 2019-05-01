@@ -191,7 +191,7 @@ class Config
      */
     public function getUrlStrategy(Store $store = null): string
     {
-        $urlStrategy = $this->getStoreConfig($store, 'tweakwise/layered/url_strategy');
+        $urlStrategy = $this->getStoreConfig('tweakwise/layered/url_strategy', $store);
         if (empty($urlStrategy)) {
             $urlStrategy = QueryParameterStrategy::class;
         }
