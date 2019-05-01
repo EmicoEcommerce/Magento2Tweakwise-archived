@@ -50,6 +50,11 @@ class CatalogLastPageRedirect implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
+        $response = $this->getHttpResponse();
+        if (!$response || $response->isRedirect()) {
+            return;
+        }
+
         $properties = $this->context->getResponse()->getProperties();
         if (!$properties->getNumberOfItems()) {
             return;
@@ -58,11 +63,6 @@ class CatalogLastPageRedirect implements ObserverInterface
         $lastPage = $properties->getNumberOfPages();
         $page = $properties->getCurrentPage();
         if ($page <= $lastPage) {
-            return;
-        }
-
-        $response = $this->getHttpResponse();
-        if (!$response || $response->isRedirect()) {
             return;
         }
 
