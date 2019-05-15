@@ -240,7 +240,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      * @param array $filters
      * @return string
      */
-    protected function buildFilterUrl(MagentoHttpRequest $request, array $filters = []): string
+    public function buildFilterUrl(MagentoHttpRequest $request, array $filters = []): string
     {
         $currentUrl = $this->getCurrentUrl();
 
