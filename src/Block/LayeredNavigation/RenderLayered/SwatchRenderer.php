@@ -18,10 +18,13 @@ use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Magento\Swatches\Helper\Data;
 use Magento\Swatches\Helper\Media;
 use Emico\Tweakwise\Model\Config;
+use Emico\Tweakwise\Model\Seo\FilterHelper;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory as EavAttributeFactory;
 
 class SwatchRenderer extends RenderLayered
 {
+    use AnchorRendererTrait;
+
     /**
      * Path to template file.
      *
@@ -45,23 +48,6 @@ class SwatchRenderer extends RenderLayered
     protected $eavAttributeFactory;
 
     /**
-     * @param Filter $filter
-     * @throws \Magento\Framework\Exception\LocalizedException
-     */
-    public function setFilter(Filter $filter)
-    {
-        $this->filter = $filter;
-        // Make sure attribute model exists
-        if (!$this->filter->getAttributeModel()) {
-            $attributeCode = $filter->getFacet()->getFacetSettings()->getUrlKey();
-            $attributeModel = $this->eavAttributeFactory->create([]);
-            $attributeModel->loadByCode(Product::ENTITY, $attributeCode);
-            $this->filter->setAttributeModel($attributeModel);
-        }
-        $this->setSwatchFilter($filter);
-    }
-
-    /**
      * SwatchRenderer constructor.
      * @param Context $context
      * @param Attribute $eavAttribute
@@ -80,12 +66,31 @@ class SwatchRenderer extends RenderLayered
         Media $mediaHelper,
         Config $config,
         EavAttributeFactory $eavAttributeFactory,
+        FilterHelper $filterHelper,
         array $data = []
     )
     {
         parent::__construct($context, $eavAttribute, $layerAttribute, $swatchHelper, $mediaHelper, $data);
         $this->config = $config;
         $this->eavAttributeFactory = $eavAttributeFactory;
+        $this->filterHelper = $filterHelper;
+    }
+
+    /**
+     * @param Filter $filter
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function setFilter(Filter $filter)
+    {
+        $this->filter = $filter;
+        // Make sure attribute model exists
+        if (!$this->filter->getAttributeModel()) {
+            $attributeCode = $filter->getFacet()->getFacetSettings()->getUrlKey();
+            $attributeModel = $this->eavAttributeFactory->create([]);
+            $attributeModel->loadByCode(Product::ENTITY, $attributeCode);
+            $this->filter->setAttributeModel($attributeModel);
+        }
+        $this->setSwatchFilter($filter);
     }
 
     /**
@@ -112,5 +117,13 @@ class SwatchRenderer extends RenderLayered
     public function getItemForSwatch($id)
     {
         return $this->filter->getItemByOptionId($id);
+    }
+
+    /**
+     * @return string
+     */
+    public function getJsNavigationConfig()
+    {
+        return $this->config->getJsNavigationConfig();
     }
 }

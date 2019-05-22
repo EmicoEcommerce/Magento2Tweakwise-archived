@@ -11,6 +11,8 @@ namespace Emico\Tweakwise\Model\Catalog\Layer\Url;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
+use Magento\Catalog\Api\Data\CategoryInterface;
+use Magento\Catalog\Model\Category;
 use Magento\Framework\Api\SortOrder;
 use Zend\Http\Request as HttpRequest;
 
@@ -19,39 +21,37 @@ use Zend\Http\Request as HttpRequest;
  *
  *
  */
-interface UrlInterface
+interface CategoryUrlInterface
 {
     /**
-     * Get url when selecting item
-     *
      * @param HttpRequest $request
      * @param Item $item
+     * @param CategoryInterface $category
      * @return string
      */
-    public function getAttributeSelectUrl(HttpRequest $request, Item $item): string;
-
-    /**
-     * Get url when removing item from selecting
-     *
-     * @param HttpRequest $request
-     * @param Item $item
-     * @return string
-     */
-    public function getAttributeRemoveUrl(HttpRequest $request, Item $item): string;
+    public function getCategoryTreeSelectUrl(HttpRequest $request, Item $item, CategoryInterface $category): string;
 
     /**
      * @param HttpRequest $request
      * @param Item $item
-     * @return string
+     * @param CategoryInterface $category
+     * @return mixed
      */
-    public function getSliderUrl(HttpRequest $request, Item $item): string;
+    public function getCategoryTreeRemoveUrl(HttpRequest $request, Item $item, CategoryInterface $category): string;
 
     /**
-     * Fetch clear all items from url
-     *
      * @param HttpRequest $request
-     * @param Item[] $activeFilterItems
-     * @return string
+     * @param Item $item
+     * @param CategoryInterface $category
+     * @return mixed
      */
-    public function getClearUrl(HttpRequest $request, array $activeFilterItems): string;
+    public function getCategoryFilterSelectUrl(HttpRequest $request, Item $item, CategoryInterface $category): string;
+
+    /**
+     * @param HttpRequest $request
+     * @param Item $item
+     * @param CategoryInterface $category
+     * @return mixed
+     */
+    public function getCategoryFilterRemoveUrl(HttpRequest $request, Item $item, CategoryInterface $category): string;
 }

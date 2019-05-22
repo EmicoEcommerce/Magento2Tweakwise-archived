@@ -2,7 +2,7 @@
 /**
  * Tweakwise & Emico (https://www.tweakwise.com/ & https://www.emico.nl/) - All Rights Reserved
  *
- * @copyright Copyright (c) 2017-2017 Tweakwise.com B.V. (https://www.tweakwise.com)
+ * @copyright Copyright (c) 2017-2019 Tweakwise.com B.V. (https://www.tweakwise.com)
  * @license   Proprietary and confidential, Unauthorized copying of this file, via any medium is strictly prohibited
  */
 
@@ -15,19 +15,11 @@ use Magento\Framework\Url as MagentoUrl;
 class UrlModel extends MagentoUrl
 {
     /**
-     * @var Config
+     * @return Config
      */
-    private $config;
-
-    /**
-     * Used config as method injection to prevent overriding the constructor. The constructor changed it's arguments
-     * between 2.1 and 2.2 and so it was not possible any longer to support both versions of Magento in one using constructor injection.
-     *
-     * @param Config $config
-     */
-    public function setConfig(Config $config)
+    protected function getConfig(): Config
     {
-        $this->config = $config;
+        return $this->getData('tw_config');
     }
 
     /**
@@ -38,7 +30,7 @@ class UrlModel extends MagentoUrl
      */
     protected function _getQuery($escape = false)
     {
-        if ($this->config->getQueryFilterType() === QueryFilterType::TYPE_NONE) {
+        if ($this->getConfig()->getQueryFilterType() === QueryFilterType::TYPE_NONE) {
             return parent::_getQuery($escape);
         }
 
@@ -61,17 +53,17 @@ class UrlModel extends MagentoUrl
      */
     private function shouldFilter($param)
     {
-        $filterType = $this->config->getQueryFilterType();
+        $filterType = $this->getConfig()->getQueryFilterType();
         if ($filterType === QueryFilterType::TYPE_NONE) {
             return false;
         }
 
         if ($filterType === QueryFilterType::TYPE_REGEX) {
-            return (bool) preg_match('/' . $this->config->getQueryFilterRegex() . '/', $param);
+            return (bool) preg_match('/' . $this->getConfig()->getQueryFilterRegex() . '/', $param);
         }
 
         if ($filterType === QueryFilterType::TYPE_SPECIFIC) {
-            return \in_array($param, $this->config->getQueryFilterArguments(), true);
+            return \in_array($param, $this->getConfig()->getQueryFilterArguments(), true);
         }
 
         return true;

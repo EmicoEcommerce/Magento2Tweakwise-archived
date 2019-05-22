@@ -114,7 +114,7 @@ class Item extends MagentoItem
     {
         $settings = $this->getFilter()->getFacet()->getFacetSettings();
         if ($settings->getSelectionType() === SettingsType::SELECTION_TYPE_SLIDER) {
-            return $this->url->getSliderUrl($this->getFilter());
+            return $this->url->getSliderUrl($this);
         }
 
         if ($this->isSelected()) {

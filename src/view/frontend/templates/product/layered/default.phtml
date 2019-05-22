@@ -20,7 +20,7 @@ $hasAlternateSortOrder = $block->hasAlternateSortOrder();
                     data-original-sort="<?=$index;?>"
                 <?php endif;?>
             >
-                <a href="<?=$block->escapeUrl($item->getUrl())?>">
+                <a <?=$block->renderAnchorHtmlTagAttributes($item);?>>
                     <?php if ($block->showCheckbox()): ?>
                         <input id="inputCheckbox<?=$block->getCssItemId($item)?>"
                                name="<?=$item->getFilter()->getFacet()->getFacetSettings()->getUrlKey()?>[]"

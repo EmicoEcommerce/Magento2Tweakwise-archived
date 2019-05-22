@@ -2,18 +2,23 @@
 /**
  * Tweakwise & Emico (https://www.tweakwise.com/ & https://www.emico.nl/) - All Rights Reserved
  *
- * @copyright Copyright (c) 2017-2017 Tweakwise.com B.V. (https://www.tweakwise.com)
+ * @copyright Copyright (c) 2017-2019 Tweakwise.com B.V. (https://www.tweakwise.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Emico\Tweakwise\Model\Catalog\Layer\Url;
+namespace Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy;
 
-use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
-use Magento\Catalog\Model\Category;
+use Emico\Tweakwise\Model\Catalog\Layer\Url\CategoryUrlInterface;
+use Emico\Tweakwise\Model\Catalog\Layer\Url\FilterApplierInterface;
+use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface;
+use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
+use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlModel;
+use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
+use Magento\Catalog\Api\Data\CategoryInterface;
 use Zend\Http\Request as HttpRequest;
 
-class QueryParameters extends AbstractUrl
+class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, CategoryUrlInterface
 {
     /**
      * Separator used in category tree urls
@@ -25,6 +30,14 @@ class QueryParameters extends AbstractUrl
      */
     const PARAM_MODE = 'product_list_mode';
     const PARAM_CATEGORY = 'categorie';
+
+    /**
+     * Commonly used query parameters from headers
+     */
+    const PARAM_LIMIT = 'product_list_limit';
+    const PARAM_ORDER = 'product_list_order';
+    const PARAM_PAGE = 'p';
+    const PARAM_SEARCH = 'q';
 
     /**
      * Parameters to be ignored as attribute filters
@@ -40,9 +53,19 @@ class QueryParameters extends AbstractUrl
     ];
 
     /**
+     * Magento constructor.
+     *
+     * @param UrlModel $url
+     */
+    public function __construct(UrlModel $url)
+    {
+        $this->url = $url;
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function getClearUrl(HttpRequest $request, array $activeFilterItems)
+    public function getClearUrl(HttpRequest $request, array $activeFilterItems): string
     {
         $query = [];
         /** @var Item $item */
@@ -109,7 +132,7 @@ class QueryParameters extends AbstractUrl
     /**
      * {@inheritdoc}
      */
-    protected function getCategoryTreeSelectUrl(HttpRequest $request, Item $item, Category $category)
+    public function getCategoryTreeSelectUrl(HttpRequest $request, Item $item, CategoryInterface $category): string
     {
         $filter = $item->getFilter();
         $facet = $filter->getFacet();
@@ -135,7 +158,7 @@ class QueryParameters extends AbstractUrl
     /**
      * {@inheritdoc}
      */
-    protected function getCategoryTreeRemoveUrl(HttpRequest $request, Item $item, Category $category)
+    public function getCategoryTreeRemoveUrl(HttpRequest $request, Item $item, CategoryInterface $category): string
     {
         $filter = $item->getFilter();
         $facet = $filter->getFacet();
@@ -168,7 +191,7 @@ class QueryParameters extends AbstractUrl
     /**
      * {@inheritdoc}
      */
-    protected function getCategoryFilterSelectUrl(HttpRequest $request, Item $item, Category $category)
+    public function getCategoryFilterSelectUrl(HttpRequest $request, Item $item, CategoryInterface $category): string
     {
         $attribute = $item->getAttribute();
         $filter = $item->getFilter();
@@ -185,7 +208,7 @@ class QueryParameters extends AbstractUrl
     /**
      * {@inheritdoc}
      */
-    protected function getCategoryFilterRemoveUrl(HttpRequest $request, Item $item, Category $category)
+    public function getCategoryFilterRemoveUrl(HttpRequest $request, Item $item, CategoryInterface $category): string
     {
         $filter = $item->getFilter();
         $facet = $filter->getFacet();
@@ -200,7 +223,7 @@ class QueryParameters extends AbstractUrl
     /**
      * {@inheritdoc}
      */
-    protected function getAttributeSelectUrl(HttpRequest $request, Item $item)
+    public function getAttributeSelectUrl(HttpRequest $request, Item $item): string
     {
         $attribute = $item->getAttribute();
         $filter = $item->getFilter();
@@ -227,7 +250,7 @@ class QueryParameters extends AbstractUrl
     /**
      * {@inheritdoc}
      */
-    protected function getAttributeRemoveUrl(HttpRequest $request, Item $item)
+    public function getAttributeRemoveUrl(HttpRequest $request, Item $item): string
     {
         $filter = $item->getFilter();
         $facet = $filter->getFacet();
@@ -286,14 +309,89 @@ class QueryParameters extends AbstractUrl
     /**
      * {@inheritdoc}
      */
-    public function getSlider(HttpRequest $request, Filter $filter)
+    public function getSliderUrl(HttpRequest $request, Item $item): string
     {
-        $facet = $filter->getFacet();
-        $settings = $facet->getFacetSettings();
-
-        $urlKey = $settings->getUrlKey();
-        $query = [$urlKey => '{{from}}-{{to}}'];
+        $query = [$item->getFilter()->getUrlKey() => '{{from}}-{{to}}'];
 
         return $this->getCurrentQueryUrl($query);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function apply(HttpRequest $request, ProductNavigationRequest $navigationRequest): FilterApplierInterface
+    {
+        $categories = $this->getCategoryFilters($request);
+        foreach ($categories as $categoryId) {
+            $navigationRequest->addCategoryFilter($categoryId);
+        }
+
+        $attributeFilters = $this->getAttributeFilters($request);
+        foreach ($attributeFilters as $attribute => $values) {
+            if (!is_array($values)) {
+                $values = [$values];
+            }
+
+            foreach ($values as $value) {
+                $navigationRequest->addAttributeFilter($attribute, $value);
+            }
+        }
+
+        $sortOrder = $this->getSortOrder($request);
+        if ($sortOrder) {
+            $navigationRequest->setOrder($sortOrder);
+        }
+
+        $page = $this->getPage($request);
+        if ($page) {
+            $navigationRequest->setPage($page);
+        }
+
+        $limit = $this->getLimit($request);
+        if ($limit) {
+            $navigationRequest->setLimit($limit);
+        }
+
+        $search = $this->getSearch($request);
+        if ($search && $navigationRequest instanceof ProductSearchRequest) {
+            $navigationRequest->setSearch($search);
+        }
+        return $this;
+    }
+
+    /**
+     * @param HttpRequest $request
+     * @return string|null
+     */
+    protected function getSortOrder(HttpRequest $request)
+    {
+        return $request->getQuery(self::PARAM_ORDER);
+    }
+
+    /**
+     * @param HttpRequest $request
+     * @return int|null
+     */
+    protected function getPage(HttpRequest $request)
+    {
+        return $request->getQuery(self::PARAM_PAGE);
+    }
+
+    /**
+     * @param HttpRequest $request
+     * @return int|null
+     */
+    protected function getLimit(HttpRequest $request)
+    {
+        return $request->getQuery(self::PARAM_LIMIT);
+    }
+
+    /**
+     * @param HttpRequest $request
+     * @return string|null
+     */
+    protected function getSearch(HttpRequest $request)
+    {
+        return $request->getQuery(self::PARAM_SEARCH);
     }
 }
