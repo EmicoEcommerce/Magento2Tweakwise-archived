@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <event name="controller_action_postdispatch_catalog_category_view">
-        <observer name="emico-tweakwise" instance="Emico\Tweakwise\Model\Observer\CatalogLastPageRedirect" />
+        <observer name="emico-tweakwise" instance="Emico\Tweakwise\Model\Observer\CatalogNavigationLastPageRedirect" />
     </event>
 
     <event name="controller_action_predispatch_catalogsearch_result_index">
@@ -9,7 +9,7 @@
     </event>
 
     <event name="controller_action_postdispatch_catalogsearch_result_index">
-        <observer name="emico-tweakwise-last-page" instance="Emico\Tweakwise\Model\Observer\CatalogLastPageRedirect" />
+        <observer name="emico-tweakwise-last-page" instance="Emico\Tweakwise\Model\Observer\CatalogSearchLastPageRedirect" />
     </event>
 
     <event name="view_block_abstract_to_html_before">
