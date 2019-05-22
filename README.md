@@ -5,7 +5,6 @@
 ## Installation
 Install package using composer
 ```sh
-composer config minimum-stability dev
 composer require emico/tweakwise
 ```
 
