@@ -299,20 +299,7 @@
             <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\Recommendations\FeaturedRequest</argument>
         </arguments>
     </virtualType>
-
-    <!-- Custom router for SEO URLs -->
-    <type name="Magento\Framework\App\RouterList">
-        <arguments>
-            <argument name="routerList" xsi:type="array">
-                <item name="tweakwise_seo_router" xsi:type="array">
-                    <item name="class" xsi:type="string">Emico\Tweakwise\Controller\Router</item>
-                    <item name="disable" xsi:type="boolean">false</item>
-                    <item name="sortOrder" xsi:type="string">61</item>
-                </item>
-            </argument>
-        </arguments>
-    </type>
-
+    
     <preference for="Emico\Tweakwise\Api\AttributeSlugRepositoryInterface" type="Emico\Tweakwise\Model\AttributeSlugRepository"/>
     <preference for="Emico\Tweakwise\Api\Data\AttributeSlugSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
     <preference for="Emico\Tweakwise\Api\Data\AttributeSlugInterface" type="Emico\Tweakwise\Model\AttributeSlug"/>

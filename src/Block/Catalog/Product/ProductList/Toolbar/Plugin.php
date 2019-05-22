@@ -11,7 +11,6 @@ namespace Emico\Tweakwise\Block\Catalog\Product\ProductList\Toolbar;
 
 use Closure;
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
-use Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\PathSlugStrategy;
 use Emico\Tweakwise\Model\Client\Type\SortFieldType;
 use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Block\Product\ProductList\Toolbar;
@@ -27,10 +26,6 @@ class Plugin
      * @var Config
      */
     protected $config;
-    /**
-     * @var PathSlugStrategy
-     */
-    private $pathSlugStrategy;
 
     /**
      * Plugin constructor.
@@ -38,11 +33,10 @@ class Plugin
      * @param Config $config
      * @param CurrentContext $context
      */
-    public function __construct(Config $config, CurrentContext $context, PathSlugStrategy $pathSlugStrategy)
+    public function __construct(Config $config, CurrentContext $context)
     {
         $this->context = $context;
         $this->config = $config;
-        $this->pathSlugStrategy = $pathSlugStrategy;
     }
 
     /**
