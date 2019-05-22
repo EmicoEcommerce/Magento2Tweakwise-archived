@@ -14,6 +14,7 @@ use Emico\Tweakwise\Model\Config;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Event\Observer;
+use Emico\Tweakwise\Model\Catalog\Layer\Url\AbstractUrl;
 
 class CatalogSearchRedirect extends AbstractProductNavigationRequestObserver
 {
@@ -28,7 +29,7 @@ class CatalogSearchRedirect extends AbstractProductNavigationRequestObserver
     {
         parent::__construct($config, $context, $actionContext);
 
-        if ($this->config->isSearchEnabled()) {
+        if ($this->config->isSearchEnabled() && $actionContext->getRequest()->getParam(AbstractUrl::PARAM_SEARCH)) {
             $this->context->getResponse();
         }
     }

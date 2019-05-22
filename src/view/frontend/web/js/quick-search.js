@@ -36,10 +36,12 @@ define([
         _onSubmit: function (e) {
             var url = this.getSelectedProductUrl();
             if (!url) {
-                return this._superApply(e);
+                return this._superApply(arguments);
             }
 
-            window.location.href = url;
+            if (url !== null) {
+                window.location.href = url;
+            }
         },
 
         _onPropertyChange: function () {
