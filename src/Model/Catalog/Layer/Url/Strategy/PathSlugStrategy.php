@@ -23,15 +23,25 @@ use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Model\Layer;
 use Magento\Catalog\Model\Layer\Resolver;
 use Magento\Framework\App\ActionInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\UrlRewrite\Model\UrlFinderInterface;
 use Magento\UrlRewrite\Service\V1\Data\UrlRewrite;
 use Zend\Http\Request as HttpRequest;
 use Magento\Framework\App\Request\Http as MagentoHttpRequest;
 use Magento\Framework\UrlInterface as MagentoUrlInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterApplierInterface, CategoryUrlInterface
 {
     const REQUEST_FILTER_PATH = 'filter_path';
+
+    const MEDIA_EXTENSIONS = [
+        '.jpg',
+        '.png',
+        '.jpeg',
+        '.webp',
+        '.gif'
+    ];
 
     /**
      * @var Resolver
@@ -69,6 +79,11 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
     private $urlFactory;
 
     /**
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
+
+    /**
      * Magento constructor.
      *
      * @param UrlModel $magentoUrl
@@ -84,7 +99,8 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         Resolver $layerResolver,
         UrlFinderInterface $urlFinder,
         FilterSlugManager $filterSlugManager,
-        QueryParameterStrategy $queryParameterStrategy
+        QueryParameterStrategy $queryParameterStrategy,
+        StoreManagerInterface $storeManager
     ) {
         $this->magentoUrl = $magentoUrl;
         $this->layerResolver = $layerResolver;
@@ -92,6 +108,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         $this->urlFinder = $urlFinder;
         $this->queryParameterStrategy = $queryParameterStrategy;
         $this->urlFactory = $urlFactory;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -316,19 +333,34 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      */
     public function match(MagentoHttpRequest $request)
     {
+        if ($this->skip($request)) {
+            return false;
+        }
+
         $path = trim($request->getPathInfo(), '/');
-
         $pathsToCheck = $this->getPossibleCategoryPaths($path);
-        $categoryRewrites = $this->urlFinder->findAllByData(
-            [
-                UrlRewrite::ENTITY_TYPE => ['category', 'landingpage'],
-                UrlRewrite::REQUEST_PATH => $pathsToCheck
-            ]
-        );
 
+        $rewriteFilterData = [
+            UrlRewrite::ENTITY_TYPE => $this->getRewriteEntitiesToCheck(),
+            UrlRewrite::REQUEST_PATH => $pathsToCheck
+        ];
+        try {
+            $storeId = $this->storeManager->getStore()->getId();
+            $rewriteFilterData[UrlRewrite::STORE_ID] = $storeId;
+        } catch (NoSuchEntityException $e) {
+            // No implementation
+        }
+
+        $categoryRewrites = $this->urlFinder->findAllByData($rewriteFilterData);
         if (\count($categoryRewrites) === 0) {
             return false;
         }
+
+        $sortByLongestMatch = function (UrlRewrite $rewrite1, UrlRewrite $rewrite2) {
+            return
+                \strlen($rewrite2->getRequestPath()) - \strlen($rewrite1->getRequestPath());
+        };
+        usort($categoryRewrites, $sortByLongestMatch);
 
         /** @var UrlRewrite $rewrite */
         $rewrite = current($categoryRewrites);
@@ -341,6 +373,32 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
             $path
         );
         $request->setPathInfo('/' . $rewrite->getTargetPath());
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getRewriteEntitiesToCheck(): array
+    {
+        return ['category'];
+    }
+
+    /**
+     * We dont need to match on media urls
+     *
+     * @param MagentoHttpRequest $request
+     * @return bool
+     */
+    protected function skip(MagentoHttpRequest $request): bool
+    {
+        $requestPath = $request->getPathInfo();
+        foreach (self::MEDIA_EXTENSIONS as $fileExtention) {
+            if (strpos($requestPath, $fileExtention, -\strlen($fileExtention)) !== false) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
