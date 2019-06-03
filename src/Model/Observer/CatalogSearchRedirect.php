@@ -13,9 +13,9 @@ use Emico\Tweakwise\Model\Config;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Event\Observer;
-use Emico\Tweakwise\Model\Catalog\Layer\Url\AbstractUrl;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\HTTP\PhpEnvironment\Response;
+use Magento\Search\Model\QueryFactory;
 
 class CatalogSearchRedirect implements ObserverInterface
 {
@@ -56,7 +56,7 @@ class CatalogSearchRedirect implements ObserverInterface
             return;
         }
 
-        if (!$this->actionContext->getRequest()->getParam(AbstractUrl::PARAM_SEARCH)) {
+        if (!$this->actionContext->getRequest()->getParam(QueryFactory::QUERY_VAR_NAME)) {
             return;
         }
 
