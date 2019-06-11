@@ -18,6 +18,8 @@ use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Zend\Http\Request as HttpRequest;
+use Magento\Catalog\Api\CategoryRepositoryInterface;
+use Emico\TweakwiseExport\Model\Helper as ExportHelper;
 
 /**
  * Class Url will later implement logic to use implementation selected in configuration.
@@ -42,6 +44,16 @@ class Url
     protected $categoryUrlStrategy;
 
     /**
+     * @var CategoryRepositoryInterface
+     */
+    private $categoryRepository;
+
+    /**
+     * @var ExportHelper
+     */
+    private $exportHelper;
+
+    /**
      * @var HttpRequest
      */
     protected $request;
@@ -61,11 +73,15 @@ class Url
     public function __construct(
         UrlStrategyFactory $urlStrategyFactory,
         HttpRequest $request,
+        CategoryRepositoryInterface $categoryRepository,
+        ExportHelper $exportHelper,
         Config $config
     ) {
         $this->urlStrategy = $urlStrategyFactory->create();
         $this->filterApplier = $urlStrategyFactory->create(FilterApplierInterface::class);
         $this->categoryUrlStrategy = $urlStrategyFactory->create(CategoryUrlInterface::class);
+        $this->categoryRepository = $categoryRepository;
+        $this->exportHelper = $exportHelper;
         $this->request = $request;
         $this->config = $config;
     }
@@ -91,7 +107,6 @@ class Url
 
     /**
      * @param Item $item
-     * @param CategoryInterface $category
      * @return string
      */
     protected function getCategorySelectUrl(Item $item): string
@@ -102,14 +117,17 @@ class Url
             ->getFacetSettings();
 
         if ($settings->getSelectionType() === SettingsType::SELECTION_TYPE_TREE) {
-            return $this->categoryUrlStrategy->getCategoryTreeSelectUrl($this->request, $item);
+            return $this->categoryUrlStrategy
+                ->getCategoryTreeSelectUrl($this->request, $item);
         }
 
         if ($this->config->getCategoryAsLink()) {
-            return $item->getCategory()->getUrl();
+            return $this->getCategoryFromItem($item)
+                ->getUrl();
         }
 
-        return $this->categoryUrlStrategy->getCategoryFilterSelectUrl($this->request, $item);
+        return $this->categoryUrlStrategy
+            ->getCategoryFilterSelectUrl($this->request, $item);
     }
 
     /**
@@ -122,8 +140,7 @@ class Url
             ->getFacetSettings();
 
         if ($settings->getSource() === SettingsType::SOURCE_CATEGORY) {
-            $category = $this->getCategoryFromItem($item);
-            return $this->getCategoryRemoveUrl($item, $category);
+            return $this->getCategoryRemoveUrl($item);
         }
 
         return $this->urlStrategy->getAttributeRemoveUrl($this->request, $item);
@@ -131,10 +148,9 @@ class Url
 
     /**
      * @param Item $item
-     * @param CategoryInterface $category
      * @return string
      */
-    protected function getCategoryRemoveUrl(Item $item, CategoryInterface $category): string
+    protected function getCategoryRemoveUrl(Item $item): string
     {
         $settings = $item->getFilter()
             ->getFacet()
@@ -145,6 +161,7 @@ class Url
         }
 
         if ($this->config->getCategoryAsLink()) {
+            $category = $this->getCategoryFromItem($item);
             return $category->getParentCategory()->getUrl();
         }
 
@@ -175,5 +192,18 @@ class Url
     public function getSliderUrl(Item $item)
     {
         return $this->urlStrategy->getSliderUrl($this->request, $item);
+    }
+
+    /**
+     * @param Item $item
+     * @return CategoryInterface
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    protected function getCategoryFromItem(Item $item): CategoryInterface
+    {
+        $tweakwiseCategoryId = $item->getAttribute()->getAttributeId();
+        $categoryId = $this->exportHelper->getStoreId($tweakwiseCategoryId);
+
+        return $this->categoryRepository->get($categoryId);
     }
 }
