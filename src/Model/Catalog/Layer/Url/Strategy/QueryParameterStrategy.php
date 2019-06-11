@@ -291,12 +291,6 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
      */
     public function apply(HttpRequest $request, ProductNavigationRequest $navigationRequest): FilterApplierInterface
     {
-        $categories = $this->getCategoryFilters();
-
-        if ($categories) {
-            $navigationRequest->addCategoryPathFilter($categories);
-        }
-
         $attributeFilters = $this->getAttributeFilters($request);
         foreach ($attributeFilters as $attribute => $values) {
             if (!is_array($values)) {
@@ -323,8 +317,20 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
             $navigationRequest->setLimit($limit);
         }
 
+        $isSearchRequest = $navigationRequest instanceof ProductSearchRequest;
+        // Do not check for category paths in case of search request.
+        // This will throw an exception on layer resolver.
+        if (!$isSearchRequest) {
+            $categories = $this->getCategoryFilters();
+
+            if ($categories) {
+                $navigationRequest->addCategoryPathFilter($categories);
+            }
+        }
+
         $search = $this->getSearch($request);
-        if ($search && $navigationRequest instanceof ProductSearchRequest) {
+        if ($search && $isSearchRequest) {
+            /** @var ProductSearchRequest $navigationRequest */
             $navigationRequest->setSearch($search);
         }
         return $this;
