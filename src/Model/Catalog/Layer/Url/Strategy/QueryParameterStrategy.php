@@ -176,7 +176,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
         /** @var \Magento\Catalog\Model\Category $parentCategory */
         $parentCategory = $category->getParentCategory();
         if (!$parentCategory || !$parentCategory->getId() || \in_array($parentCategory->getId(), [1,2], false)) {
-            return $category->getId();
+            return $category->getUrl();
         }
         return $parentCategory->getUrl();
     }

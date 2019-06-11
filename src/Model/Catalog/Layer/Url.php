@@ -116,7 +116,7 @@ class Url
             ->getFacetSettings();
 
         if ($settings->getSource() === SettingsType::SOURCE_CATEGORY) {
-            $this->categoryUrlStrategy->getCategoryFilterRemoveUrl($this->request, $item);
+            return $this->categoryUrlStrategy->getCategoryFilterRemoveUrl($this->request, $item);
         }
 
         return $this->urlStrategy->getAttributeRemoveUrl($this->request, $item);
