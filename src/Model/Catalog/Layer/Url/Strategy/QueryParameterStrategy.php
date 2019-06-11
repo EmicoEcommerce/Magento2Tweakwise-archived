@@ -249,7 +249,8 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
             return [];
         }
 
-        if (\in_array($parentCategoryId,  [1, 2], true)) {
+        $rootCategoryId = (int)$currentCategory->getStore()->getRootCategoryId();
+        if (\in_array($parentCategoryId,  [1, $rootCategoryId], true)) {
             return [];
         }
 
