@@ -255,7 +255,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
         }
 
         return [
-            $currentCategory->getParentCategory()->getId(),
+            $parentCategoryId,
             $currentCategoryId
         ];
     }
