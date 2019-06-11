@@ -51,13 +51,4 @@ class ProductSearchRequest extends ProductNavigationRequest
 
         return null;
     }
-
-    /**
-     * @param array $categoryIds
-     * @return $this
-     */
-    public function addCategoryPathFilter()
-    {
-        return $this;
-    }
 }

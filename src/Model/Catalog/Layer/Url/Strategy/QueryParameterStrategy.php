@@ -19,6 +19,7 @@ use Magento\Catalog\Api\Data\CategoryInterface;
 use Zend\Http\Request as HttpRequest;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Emico\TweakwiseExport\Model\Helper as ExportHelper;
+use Magento\Catalog\Model\Layer\Resolver;
 
 
 class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, CategoryUrlInterface
@@ -71,6 +72,11 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     private $url;
 
     /**
+     * @var Resolver
+     */
+    private $layerResolver;
+
+    /**
      * Magento constructor.
      *
      * @param UrlModel $url
@@ -78,11 +84,13 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     public function __construct(
         UrlModel $url,
         CategoryRepositoryInterface $categoryRepository,
-        ExportHelper $exportHelper)
+        ExportHelper $exportHelper,
+        Resolver $layerResolver)
     {
         $this->url = $url;
         $this->categoryRepository = $categoryRepository;
         $this->exportHelper = $exportHelper;
+        $this->layerResolver = $layerResolver;
     }
 
     /**
@@ -232,6 +240,29 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     /**
      * {@inheritdoc}
      */
+    protected function getCategoryFilters()
+    {
+        $currentCategory = $this->layerResolver->get()->getCurrentCategory();
+        $currentCategoryId = (int)$currentCategory->getId();
+        $parentCategoryId = (int)$currentCategory->getParentCategory()->getId();
+        if (!$currentCategoryId || $currentCategoryId === 1 || !$parentCategoryId) {
+            return [];
+        }
+
+        $rootCategoryId = (int)$currentCategory->getStore()->getRootCategoryId();
+        if (\in_array($parentCategoryId,  [1, $rootCategoryId], true)) {
+            return [];
+        }
+
+        return [
+            $parentCategoryId,
+            $currentCategoryId
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function getAttributeFilters(HttpRequest $request)
     {
         $result = [];
@@ -260,7 +291,11 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
      */
     public function apply(HttpRequest $request, ProductNavigationRequest $navigationRequest): FilterApplierInterface
     {
-        $navigationRequest->addCategoryPathFilter();
+        $categories = $this->getCategoryFilters();
+
+        if ($categories) {
+            $navigationRequest->addCategoryPathFilter($categories);
+        }
 
         $attributeFilters = $this->getAttributeFilters($request);
         foreach ($attributeFilters as $attribute => $values) {

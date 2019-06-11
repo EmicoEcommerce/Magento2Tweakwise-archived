@@ -10,9 +10,6 @@ namespace Emico\Tweakwise\Model\Client\Request;
 
 use Emico\Tweakwise\Model\Client\Request;
 use Emico\Tweakwise\Model\Client\Response\ProductNavigationResponse;
-use Magento\Catalog\Model\Layer\Resolver;
-use Emico\TweakwiseExport\Model\Helper;
-use Magento\Store\Model\StoreManager;
 
 class ProductNavigationRequest extends Request
 {
@@ -31,23 +28,6 @@ class ProductNavigationRequest extends Request
      * {@inheritDoc}
      */
     protected $path = 'navigation';
-
-    /**
-     * @var Resolver
-     */
-    private $layerResolver;
-
-    /**
-     * Request constructor.
-     *
-     * @param Helper $helper
-     * @param StoreManager $storeManager
-     */
-    public function __construct(Helper $helper, StoreManager $storeManager, Resolver $layerResolver)
-    {
-        parent::__construct($helper, $storeManager);
-        $this->layerResolver = $layerResolver;
-    }
 
     /**
      * {@inheritdoc}
@@ -112,45 +92,6 @@ class ProductNavigationRequest extends Request
     public function setTemplateId($templateId)
     {
         $this->setParameter('tn_ft', $templateId);
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getCategoryFilters()
-    {
-        $currentCategory = $this->layerResolver->get()->getCurrentCategory();
-        $currentCategoryId = (int)$currentCategory->getId();
-        $parentCategoryId = (int)$currentCategory->getParentCategory()->getId();
-        if (!$currentCategoryId || $currentCategoryId === 1 || !$parentCategoryId) {
-            return [];
-        }
-
-        $rootCategoryId = (int)$currentCategory->getStore()->getRootCategoryId();
-        if (\in_array($parentCategoryId,  [1, $rootCategoryId], true)) {
-            return [];
-        }
-
-        return [
-            $parentCategoryId,
-            $currentCategoryId
-        ];
-    }
-
-    /**
-     * @return $this
-     */
-    public function addCategoryPathFilter()
-    {
-        $categoryIds = $this->getCategoryFilters();
-        $categoryIds = array_map('intval', $categoryIds);
-        $storeId = (int) $this->getStoreId();
-        $tweakwiseIdMapper = function (int $categoryId) use ($storeId) {
-            return $this->helper->getTweakwiseId($storeId, $categoryId);
-        };
-        $tweakwiseIds = array_map($tweakwiseIdMapper, $categoryIds);
-        $this->setParameter('tn_cid', implode('-', $tweakwiseIds));
         return $this;
     }
 }
