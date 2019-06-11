@@ -425,30 +425,6 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
     /**
      * @param HttpRequest $request
      * @param Item $item
-     * @return string
-     */
-    public function getCategoryTreeSelectUrl(
-        HttpRequest $request,
-        Item $item
-    ): string {
-        return $this->queryParameterStrategy->getCategoryTreeSelectUrl($request, $item);
-    }
-
-    /**
-     * @param HttpRequest $request
-     * @param Item $item
-     * @return mixed
-     */
-    public function getCategoryTreeRemoveUrl(
-        HttpRequest $request,
-        Item $item
-    ): string {
-        return $this->queryParameterStrategy->getCategoryFilterRemoveUrl($request, $item);
-    }
-
-    /**
-     * @param HttpRequest $request
-     * @param Item $item
      * @param CategoryInterface $category
      * @return mixed
      */

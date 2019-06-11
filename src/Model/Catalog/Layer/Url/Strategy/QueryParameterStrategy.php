@@ -161,63 +161,6 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     /**
      * {@inheritdoc}
      */
-    public function getCategoryTreeSelectUrl(HttpRequest $request, Item $item): string
-    {
-        $urlKey = $item
-            ->getFilter()
-            ->getUrlKey();
-
-        $requestData = $request->getQuery($urlKey);
-        if (!$requestData) {
-            $requestData = [];
-        } else {
-            $requestData = explode(self::CATEGORY_TREE_SEPARATOR, $requestData);
-        }
-
-        $categoryId = $this->getCategoryFromItem($item)->getId();
-        if (!in_array($categoryId, $requestData)) {
-            $requestData[] = $categoryId;
-        }
-
-        $query = [$urlKey => join(self::CATEGORY_TREE_SEPARATOR, $requestData)];
-        return $this->getCurrentQueryUrl($query);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCategoryTreeRemoveUrl(HttpRequest $request, Item $item): string
-    {
-        $filter = $item->getFilter();
-        $urlKey = $filter
-            ->getUrlKey();
-
-        $requestData = $request->getQuery($urlKey);
-        if (!$requestData) {
-            $requestData = [];
-        } else {
-            $requestData = explode(self::CATEGORY_TREE_SEPARATOR, $requestData);
-        }
-
-        $categoryId = $this->getCategoryFromItem($item)->getId();
-        $index = array_search($categoryId, $requestData, false);
-        if ($index !== false) {
-            array_splice($requestData, $index);
-        }
-
-        if (count($requestData)) {
-            $value = join(self::CATEGORY_TREE_SEPARATOR, $requestData);
-        } else {
-            $value = $filter->getResetValue();
-        }
-
-        $query = [$urlKey => $value];
-        return $this->getCurrentQueryUrl($query);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getCategoryFilterSelectUrl(HttpRequest $request, Item $item): string
     {
         return $this->getCategoryFromItem($item)->getUrl();

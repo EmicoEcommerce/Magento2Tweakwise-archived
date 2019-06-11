@@ -23,22 +23,6 @@ interface CategoryUrlInterface
      * @param HttpRequest $request
      * @param Item $item
      * @param CategoryInterface $category
-     * @return string
-     */
-    public function getCategoryTreeSelectUrl(HttpRequest $request, Item $item): string;
-
-    /**
-     * @param HttpRequest $request
-     * @param Item $item
-     * @param CategoryInterface $category
-     * @return mixed
-     */
-    public function getCategoryTreeRemoveUrl(HttpRequest $request, Item $item): string;
-
-    /**
-     * @param HttpRequest $request
-     * @param Item $item
-     * @param CategoryInterface $category
      * @return mixed
      */
     public function getCategoryFilterSelectUrl(HttpRequest $request, Item $item): string;

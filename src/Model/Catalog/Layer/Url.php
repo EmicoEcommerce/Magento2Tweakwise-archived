@@ -116,32 +116,10 @@ class Url
             ->getFacetSettings();
 
         if ($settings->getSource() === SettingsType::SOURCE_CATEGORY) {
-            return $this->getCategoryRemoveUrl($item);
+            $this->categoryUrlStrategy->getCategoryFilterRemoveUrl($this->request, $item);
         }
 
         return $this->urlStrategy->getAttributeRemoveUrl($this->request, $item);
-    }
-
-    /**
-     * @param Item $item
-     * @return string
-     */
-    protected function getCategoryRemoveUrl(Item $item): string
-    {
-        $settings = $item->getFilter()
-            ->getFacet()
-            ->getFacetSettings();
-
-        if ($settings->getSelectionType() === SettingsType::SELECTION_TYPE_TREE) {
-            return $this->categoryUrlStrategy->getCategoryTreeRemoveUrl($this->request, $item);
-        }
-
-        if ($this->config->getCategoryAsLink()) {
-            $category = $this->getCategoryFromItem($item);
-            return $category->getParentCategory()->getUrl();
-        }
-
-        return $this->categoryUrlStrategy->getCategoryFilterRemoveUrl($this->request, $item);
     }
 
     /**
