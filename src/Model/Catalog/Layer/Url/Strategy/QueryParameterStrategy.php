@@ -66,6 +66,11 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     private $exportHelper;
 
     /**
+     * @var UrlModel
+     */
+    private $url;
+
+    /**
      * Magento constructor.
      *
      * @param UrlModel $url
@@ -187,7 +192,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
         }
 
         $categoryId = $this->getCategoryFromItem($item)->getId();
-        $index = array_search($categoryId, $requestData);
+        $index = array_search($categoryId, $requestData, false);
         if ($index !== false) {
             array_splice($requestData, $index);
         }
@@ -273,7 +278,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
             $value = $attribute->getTitle();
             $values = $this->getRequestValues($request, $item);
 
-            $index = array_search($value, $values);
+            $index = array_search($value, $values, false);
             if ($index !== false) {
                 unset($values[$index]);
             }
@@ -307,7 +312,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     {
         $result = [];
         foreach ($request->getQuery() as $attribute => $value) {
-            if (in_array(mb_strtolower($attribute), $this->ignoredQueryParameters)) {
+            if (in_array(mb_strtolower($attribute), $this->ignoredQueryParameters, false)) {
                 continue;
             }
 

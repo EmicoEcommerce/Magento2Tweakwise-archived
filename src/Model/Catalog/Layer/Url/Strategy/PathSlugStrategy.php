@@ -174,7 +174,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      */
     public function getClearUrl(HttpRequest $request, array $activeFilterItems): string
     {
-        return $this->buildFilterUrl($request, []);
+        return $this->buildFilterUrl($request);
     }
 
     /**
