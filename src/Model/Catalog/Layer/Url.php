@@ -99,35 +99,11 @@ class Url
             ->getFacetSettings();
 
         if ($settings->getSource() === SettingsType::SOURCE_CATEGORY) {
-            return $this->getCategorySelectUrl($item);
+            return $this->categoryUrlStrategy
+                ->getCategoryFilterSelectUrl($this->request, $item);
         }
 
         return $this->urlStrategy->getAttributeSelectUrl($this->request, $item);
-    }
-
-    /**
-     * @param Item $item
-     * @return string
-     */
-    protected function getCategorySelectUrl(Item $item): string
-    {
-        $settings = $item
-            ->getFilter()
-            ->getFacet()
-            ->getFacetSettings();
-
-        if ($settings->getSelectionType() === SettingsType::SELECTION_TYPE_TREE) {
-            return $this->categoryUrlStrategy
-                ->getCategoryTreeSelectUrl($this->request, $item);
-        }
-
-        if ($this->config->getCategoryAsLink()) {
-            return $this->getCategoryFromItem($item)
-                ->getUrl();
-        }
-
-        return $this->categoryUrlStrategy
-            ->getCategoryFilterSelectUrl($this->request, $item);
     }
 
     /**

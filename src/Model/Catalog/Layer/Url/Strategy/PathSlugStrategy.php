@@ -293,9 +293,14 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         /** @var Item $filterItem */
         foreach ($filters as $filterItem) {
             $filter = $filterItem->getFilter();
+
             $urlKey = $filter->getUrlKey();
-            $selectionType = $filter->getFacet()->getFacetSettings()->getSelectionType();
-            if ($selectionType === SettingsType::SELECTION_TYPE_SLIDER) {
+            $facetSettings = $filter->getFacet()->getFacetSettings();
+            if ($facetSettings->getSource() === SettingsType::SOURCE_CATEGORY) {
+                continue;
+            }
+
+            if ($facetSettings->getSelectionType() === SettingsType::SELECTION_TYPE_SLIDER) {
                 $slug = $filterItem->getAttribute()->getTitle();
             } else {
                 $slug = $this->filterSlugManager->getSlugForFilterItem($filterItem);
@@ -438,7 +443,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         HttpRequest $request,
         Item $item
     ): string {
-        return $this->queryParameterStrategy->getCategoryTreeRemoveUrl($request, $item);
+        return $this->queryParameterStrategy->getCategoryFilterRemoveUrl($request, $item);
     }
 
     /**
@@ -464,6 +469,6 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         HttpRequest $request,
         Item $item
     ): string {
-        return $this->getAttributeRemoveUrl($request, $item);
+        return $this->queryParameterStrategy->getCategoryFilterRemoveUrl($request, $item);
     }
 }

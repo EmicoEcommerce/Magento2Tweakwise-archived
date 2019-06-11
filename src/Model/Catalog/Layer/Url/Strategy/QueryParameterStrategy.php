@@ -19,6 +19,7 @@ use Magento\Catalog\Api\Data\CategoryInterface;
 use Zend\Http\Request as HttpRequest;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Emico\TweakwiseExport\Model\Helper as ExportHelper;
+use Magento\Catalog\Model\Layer\Resolver;
 
 
 class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, CategoryUrlInterface
@@ -71,6 +72,11 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     private $url;
 
     /**
+     * @var Resolver
+     */
+    private $layerResolver;
+
+    /**
      * Magento constructor.
      *
      * @param UrlModel $url
@@ -78,11 +84,13 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     public function __construct(
         UrlModel $url,
         CategoryRepositoryInterface $categoryRepository,
-        ExportHelper $exportHelper)
+        ExportHelper $exportHelper,
+        Resolver $layerResolver)
     {
         $this->url = $url;
         $this->categoryRepository = $categoryRepository;
         $this->exportHelper = $exportHelper;
+        $this->layerResolver = $layerResolver;
     }
 
     /**
@@ -212,15 +220,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
      */
     public function getCategoryFilterSelectUrl(HttpRequest $request, Item $item): string
     {
-        $attribute = $item->getAttribute();
-        $urlKey = $item
-            ->getFilter()
-            ->getUrlKey();
-
-        $value = $attribute->getTitle();
-
-        $query = [$urlKey => $value];
-        return $this->getCurrentQueryUrl($query);
+        return $this->getCategoryFromItem($item)->getUrl();
     }
 
     /**
@@ -228,11 +228,14 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
      */
     public function getCategoryFilterRemoveUrl(HttpRequest $request, Item $item): string
     {
-        $filter = $item->getFilter();
-        $urlKey = $filter->getUrlKey();
-
-        $query = [$urlKey => $filter->getCleanValue()];
-        return $this->getCurrentQueryUrl($query);
+        /** @var \Magento\Catalog\Model\Category $category */
+        $category = $this->getCategoryFromItem($item);
+        /** @var \Magento\Catalog\Model\Category $parentCategory */
+        $parentCategory = $category->getParentCategory();
+        if (!$parentCategory || !$parentCategory->getId() || \in_array($parentCategory->getId(), [1,2], false)) {
+            return $category->getId();
+        }
+        return $parentCategory->getUrl();
     }
 
     /**
@@ -294,15 +297,23 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     /**
      * {@inheritdoc}
      */
-    protected function getCategoryFilters(HttpRequest $request)
+    protected function getCategoryFilters()
     {
-        $categories = $request->getQuery('categorie');
-        $categories = explode(self::CATEGORY_TREE_SEPARATOR, $categories);
-        $categories = array_map('intval', $categories);
-        $categories = array_filter($categories);
-        $categories = array_unique($categories);
+        $currentCategory = $this->layerResolver->get()->getCurrentCategory();
+        $currentCategoryId = (int)$currentCategory->getId();
+        $parentCategoryId = (int)$currentCategory->getParentCategory()->getId();
+        if (!$currentCategoryId || $currentCategoryId === 1 || !$parentCategoryId) {
+            return [];
+        }
 
-        return $categories;
+        if (\in_array($parentCategoryId,  [1, 2], true)) {
+            return [];
+        }
+
+        return [
+            $currentCategory->getParentCategory()->getId(),
+            $currentCategoryId
+        ];
     }
 
     /**
@@ -336,9 +347,10 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
      */
     public function apply(HttpRequest $request, ProductNavigationRequest $navigationRequest): FilterApplierInterface
     {
-        $categories = $this->getCategoryFilters($request);
-        foreach ($categories as $categoryId) {
-            $navigationRequest->addCategoryFilter($categoryId);
+        $categories = $this->getCategoryFilters();
+
+        if ($categories) {
+            $navigationRequest->addCategoryPathFilter($categories);
         }
 
         $attributeFilters = $this->getAttributeFilters($request);
