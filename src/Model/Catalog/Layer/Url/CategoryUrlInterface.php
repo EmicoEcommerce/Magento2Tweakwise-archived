@@ -8,12 +8,8 @@
 
 namespace Emico\Tweakwise\Model\Catalog\Layer\Url;
 
-use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
-use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
 use Magento\Catalog\Api\Data\CategoryInterface;
-use Magento\Catalog\Model\Category;
-use Magento\Framework\Api\SortOrder;
 use Zend\Http\Request as HttpRequest;
 
 /**
@@ -27,9 +23,9 @@ interface CategoryUrlInterface
      * @param HttpRequest $request
      * @param Item $item
      * @param CategoryInterface $category
-     * @return string
+     * @return mixed
      */
-    public function getCategoryTreeSelectUrl(HttpRequest $request, Item $item, CategoryInterface $category): string;
+    public function getCategoryFilterSelectUrl(HttpRequest $request, Item $item): string;
 
     /**
      * @param HttpRequest $request
@@ -37,21 +33,5 @@ interface CategoryUrlInterface
      * @param CategoryInterface $category
      * @return mixed
      */
-    public function getCategoryTreeRemoveUrl(HttpRequest $request, Item $item, CategoryInterface $category): string;
-
-    /**
-     * @param HttpRequest $request
-     * @param Item $item
-     * @param CategoryInterface $category
-     * @return mixed
-     */
-    public function getCategoryFilterSelectUrl(HttpRequest $request, Item $item, CategoryInterface $category): string;
-
-    /**
-     * @param HttpRequest $request
-     * @param Item $item
-     * @param CategoryInterface $category
-     * @return mixed
-     */
-    public function getCategoryFilterRemoveUrl(HttpRequest $request, Item $item, CategoryInterface $category): string;
+    public function getCategoryFilterRemoveUrl(HttpRequest $request, Item $item): string;
 }

@@ -17,6 +17,10 @@ use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlModel;
 use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Zend\Http\Request as HttpRequest;
+use Magento\Catalog\Api\CategoryRepositoryInterface;
+use Emico\TweakwiseExport\Model\Helper as ExportHelper;
+use Magento\Catalog\Model\Layer\Resolver;
+
 
 class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, CategoryUrlInterface
 {
@@ -53,13 +57,40 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     ];
 
     /**
+     * @var CategoryRepositoryInterface
+     */
+    private $categoryRepository;
+
+    /**
+     * @var ExportHelper
+     */
+    private $exportHelper;
+
+    /**
+     * @var UrlModel
+     */
+    private $url;
+
+    /**
+     * @var Resolver
+     */
+    private $layerResolver;
+
+    /**
      * Magento constructor.
      *
      * @param UrlModel $url
      */
-    public function __construct(UrlModel $url)
+    public function __construct(
+        UrlModel $url,
+        CategoryRepositoryInterface $categoryRepository,
+        ExportHelper $exportHelper,
+        Resolver $layerResolver)
     {
         $this->url = $url;
+        $this->categoryRepository = $categoryRepository;
+        $this->exportHelper = $exportHelper;
+        $this->layerResolver = $layerResolver;
     }
 
     /**
@@ -71,11 +102,8 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
         /** @var Item $item */
         foreach ($activeFilterItems as $item) {
             $filter = $item->getFilter();
-            $facet = $filter->getFacet();
-            $settings = $facet->getFacetSettings();
 
-            $urlKey = $settings->getUrlKey();
-
+            $urlKey = $filter->getUrlKey();
             $query[$urlKey] = $filter->getCleanValue();
         }
 
@@ -105,10 +133,11 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     protected function getRequestValues(HttpRequest $request, Item $item)
     {
         $filter = $item->getFilter();
-        $facet = $filter->getFacet();
-        $settings = $facet->getFacetSettings();
+        $settings = $filter
+            ->getFacet()
+            ->getFacetSettings();
 
-        $urlKey = $settings->getUrlKey();
+        $urlKey = $filter->getUrlKey();
 
         $data = $request->getQuery($urlKey);
         if (!$data) {
@@ -132,92 +161,24 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     /**
      * {@inheritdoc}
      */
-    public function getCategoryTreeSelectUrl(HttpRequest $request, Item $item, CategoryInterface $category): string
+    public function getCategoryFilterSelectUrl(HttpRequest $request, Item $item): string
     {
-        $filter = $item->getFilter();
-        $facet = $filter->getFacet();
-        $settings = $facet->getFacetSettings();
-        $urlKey = $settings->getUrlKey();
-
-        $requestData = $request->getQuery($urlKey);
-        if (!$requestData) {
-            $requestData = [];
-        } else {
-            $requestData = explode(self::CATEGORY_TREE_SEPARATOR, $requestData);
-        }
-
-        $categoryId = $category->getId();
-        if (!in_array($categoryId, $requestData)) {
-            $requestData[] = $categoryId;
-        }
-
-        $query = [$urlKey => join(self::CATEGORY_TREE_SEPARATOR, $requestData)];
-        return $this->getCurrentQueryUrl($query);
+        return $this->getCategoryFromItem($item)->getUrl();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCategoryTreeRemoveUrl(HttpRequest $request, Item $item, CategoryInterface $category): string
+    public function getCategoryFilterRemoveUrl(HttpRequest $request, Item $item): string
     {
-        $filter = $item->getFilter();
-        $facet = $filter->getFacet();
-        $settings = $facet->getFacetSettings();
-        $urlKey = $settings->getUrlKey();
-
-        $requestData = $request->getQuery($urlKey);
-        if (!$requestData) {
-            $requestData = [];
-        } else {
-            $requestData = explode(self::CATEGORY_TREE_SEPARATOR, $requestData);
+        /** @var \Magento\Catalog\Model\Category $category */
+        $category = $this->getCategoryFromItem($item);
+        /** @var \Magento\Catalog\Model\Category $parentCategory */
+        $parentCategory = $category->getParentCategory();
+        if (!$parentCategory || !$parentCategory->getId() || \in_array($parentCategory->getId(), [1,2], false)) {
+            return $category->getUrl();
         }
-
-        $categoryId = $category->getId();
-        $index = array_search($categoryId, $requestData);
-        if ($index !== false) {
-            array_splice($requestData, $index);
-        }
-
-        if (count($requestData)) {
-            $value = join(self::CATEGORY_TREE_SEPARATOR, $requestData);
-        } else {
-            $value = $filter->getResetValue();
-        }
-
-        $query = [$urlKey => $value];
-        return $this->getCurrentQueryUrl($query);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCategoryFilterSelectUrl(HttpRequest $request, Item $item, CategoryInterface $category): string
-    {
-        $attribute = $item->getAttribute();
-        $filter = $item->getFilter();
-        $facet = $filter->getFacet();
-        $settings = $facet->getFacetSettings();
-
-        $urlKey = $settings->getUrlKey();
-        $value = $attribute->getTitle();
-
-        $query = [$urlKey => $value];
-        return $this->getCurrentQueryUrl($query);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCategoryFilterRemoveUrl(HttpRequest $request, Item $item, CategoryInterface $category): string
-    {
-        $filter = $item->getFilter();
-        $facet = $filter->getFacet();
-        $settings = $facet->getFacetSettings();
-
-        $urlKey = $settings->getUrlKey();
-
-        $query = [$urlKey => $filter->getCleanValue()];
-        return $this->getCurrentQueryUrl($query);
+        return $parentCategory->getUrl();
     }
 
     /**
@@ -225,10 +186,11 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
      */
     public function getAttributeSelectUrl(HttpRequest $request, Item $item): string
     {
+        $settings = $item
+            ->getFilter()
+            ->getFacet()
+            ->getFacetSettings();
         $attribute = $item->getAttribute();
-        $filter = $item->getFilter();
-        $facet = $filter->getFacet();
-        $settings = $facet->getFacetSettings();
 
         $urlKey = $settings->getUrlKey();
         $value = $attribute->getTitle();
@@ -253,8 +215,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     public function getAttributeRemoveUrl(HttpRequest $request, Item $item): string
     {
         $filter = $item->getFilter();
-        $facet = $filter->getFacet();
-        $settings = $facet->getFacetSettings();
+        $settings = $filter->getFacet()->getFacetSettings();
 
         $urlKey = $settings->getUrlKey();
 
@@ -263,7 +224,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
             $value = $attribute->getTitle();
             $values = $this->getRequestValues($request, $item);
 
-            $index = array_search($value, $values);
+            $index = array_search($value, $values, false);
             if ($index !== false) {
                 unset($values[$index]);
             }
@@ -279,15 +240,24 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     /**
      * {@inheritdoc}
      */
-    protected function getCategoryFilters(HttpRequest $request)
+    protected function getCategoryFilters()
     {
-        $categories = $request->getQuery('categorie');
-        $categories = explode(self::CATEGORY_TREE_SEPARATOR, $categories);
-        $categories = array_map('intval', $categories);
-        $categories = array_filter($categories);
-        $categories = array_unique($categories);
+        $currentCategory = $this->layerResolver->get()->getCurrentCategory();
+        $currentCategoryId = (int)$currentCategory->getId();
+        $parentCategoryId = (int)$currentCategory->getParentCategory()->getId();
+        if (!$currentCategoryId || $currentCategoryId === 1 || !$parentCategoryId) {
+            return [];
+        }
 
-        return $categories;
+        $rootCategoryId = (int)$currentCategory->getStore()->getRootCategoryId();
+        if (\in_array($parentCategoryId,  [1, $rootCategoryId], true)) {
+            return [];
+        }
+
+        return [
+            $parentCategoryId,
+            $currentCategoryId
+        ];
     }
 
     /**
@@ -297,7 +267,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     {
         $result = [];
         foreach ($request->getQuery() as $attribute => $value) {
-            if (in_array(mb_strtolower($attribute), $this->ignoredQueryParameters)) {
+            if (in_array(mb_strtolower($attribute), $this->ignoredQueryParameters, false)) {
                 continue;
             }
 
@@ -321,9 +291,10 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
      */
     public function apply(HttpRequest $request, ProductNavigationRequest $navigationRequest): FilterApplierInterface
     {
-        $categories = $this->getCategoryFilters($request);
-        foreach ($categories as $categoryId) {
-            $navigationRequest->addCategoryFilter($categoryId);
+        $categories = $this->getCategoryFilters();
+
+        if ($categories) {
+            $navigationRequest->addCategoryPathFilter($categories);
         }
 
         $attributeFilters = $this->getAttributeFilters($request);
@@ -393,5 +364,18 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     protected function getSearch(HttpRequest $request)
     {
         return $request->getQuery(self::PARAM_SEARCH);
+    }
+
+    /**
+     * @param Item $item
+     * @return CategoryInterface
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    protected function getCategoryFromItem(Item $item): CategoryInterface
+    {
+        $tweakwiseCategoryId = $item->getAttribute()->getAttributeId();
+        $categoryId = $this->exportHelper->getStoreId($tweakwiseCategoryId);
+
+        return $this->categoryRepository->get($categoryId);
     }
 }
