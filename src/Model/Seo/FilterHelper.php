@@ -75,9 +75,6 @@ class FilterHelper
     public function shouldPageBeIndexable(): bool
     {
         foreach ($this->getActiveFilterItems() as $item) {
-            if ($item->getFilter()->getFacet()->getFacetSettings()->getSource() === SettingsType::SOURCE_CATEGORY) {
-                continue;
-            }
             if (!$this->shouldFilterBeIndexable($item)) {
                 return false;
             }
