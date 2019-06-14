@@ -113,10 +113,11 @@ class FilterHelper
     protected function exceedsMaxAllowedFacets(): bool
     {
         $maxAllowedFacetsCount = $this->config->getMaxAllowedFacets();
-        if (!$maxAllowedFacetsCount) {
+        if (!is_numeric($maxAllowedFacetsCount)) {
             return false;
         }
 
+        $maxAllowedFacetsCount = (int) $maxAllowedFacetsCount;
         $selectedFilterCount = \count($this->getActiveFilterItems());
 
         return $selectedFilterCount > $maxAllowedFacetsCount;
