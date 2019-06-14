@@ -9,6 +9,7 @@ namespace Emico\Tweakwise\Model\Seo;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Catalog\Layer\FilterList\Tweakwise;
+use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
 use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Model\Layer\Resolver;
 
@@ -69,6 +70,20 @@ class FilterHelper
     }
 
     /**
+     * @return bool
+     */
+    public function shouldPageBeIndexable(): bool
+    {
+        foreach ($this->getActiveFilterItems() as $item) {
+            if (!$this->shouldFilterBeIndexable($item)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * @param Item $item
      * @return bool
      */
@@ -95,20 +110,12 @@ class FilterHelper
     protected function exceedsMaxAllowedFacets(): bool
     {
         $maxAllowedFacetsCount = $this->config->getMaxAllowedFacets();
-        if (!$maxAllowedFacetsCount) {
+        if (!is_numeric($maxAllowedFacetsCount)) {
             return false;
         }
-        $layer = $this->layerResolver->get();
-        $filters = $this->tweakwiseFilterList->getFilters($layer);
 
-        $selectedFilterCount = \array_sum(
-            \array_map(
-                function (Filter $filter) {
-                    return \count($filter->getActiveItems());
-                },
-                $filters
-            )
-        );
+        $maxAllowedFacetsCount = (int) $maxAllowedFacetsCount;
+        $selectedFilterCount = \count($this->getActiveFilterItems());
 
         return $selectedFilterCount > $maxAllowedFacetsCount;
     }
@@ -123,5 +130,14 @@ class FilterHelper
         $attributeCode = $this->getAttributeCodeFromFilterItem($item);
 
         return \in_array($attributeCode, $filterWhiteList, true);
+    }
+
+    /**
+     * @return Item[]
+     */
+    protected function getActiveFilterItems(): array
+    {
+        $layer = $this->layerResolver->get();
+        return $layer->getState()->getFilters();
     }
 }

@@ -328,11 +328,11 @@ class Config
 
     /**
      * @param Store|null $store
-     * @return bool
+     * @return int
      */
     public function getMaxAllowedFacets(Store $store = null)
     {
-        return (int) $this->getStoreConfig('tweakwise/seo/max_allowed_facets', $store);
+        return $this->getStoreConfig('tweakwise/seo/max_allowed_facets', $store);
     }
     
     /**
