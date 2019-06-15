@@ -86,6 +86,16 @@ class DataProvider implements DataProviderInterface
     protected $request;
 
     /**
+     * @var int|null
+     */
+    protected $categoryId;
+
+    /**
+     * @var string|null
+     */
+    protected $queryText;
+
+    /**
      * DataProvider constructor.
      *
      * @param ProductItemFactory $productItemFactory
@@ -128,12 +138,56 @@ class DataProvider implements DataProviderInterface
     }
 
     /**
+     * @param string|null $text
+     */
+    public function setQueryText($text)
+    {
+        $this->queryText = $text;
+    }
+
+    /**
+     * @param int|null $categoryId
+     */
+    public function setCategoryId($categoryId)
+    {
+        $this->categoryId = $categoryId;
+    }
+
+    /**
+     * @return ItemInterface[]
+     */
+    public function getItems()
+    {
+        /** @var Query $query */
+        $query = $this->queryFactory->get();
+        $query = $this->queryText ?? $query->getQueryText();
+        $config = $this->config;
+
+        /** @var AutocompleteRequest $request */
+        $request = $this->requestFactory->create();
+        $request->addCategoryFilter($this->getCategory());
+        $request->setGetProducts($config->isAutocompleteProductsEnabled());
+        $request->setGetSuggestions($config->isAutocompleteSuggestionsEnabled());
+        $request->setMaxResult($config->getAutocompleteMaxResults());
+        $request->setSearch($query);
+
+        /** @var AutocompleteResponse $response */
+        $response = $this->client->request($request);
+
+        $productResult = $this->getProductItems($response);
+        $suggestionResult = $this->getSuggestionResult($response);
+
+        return array_merge($suggestionResult, $productResult);
+    }
+
+    /**
      * @return Category
      */
     protected function getCategory()
     {
-        if ($this->config->isAutocompleteStayInCategory() && $this->request->getParam('cid')) {
-            $categoryId = (int) $this->request->getParam('cid');
+        $categoryId = $this->categoryId ?? $this->request->getParam('cid');
+        if ($this->config->isAutocompleteStayInCategory() && $categoryId) {
+            $categoryId = (int) $categoryId;
 
             try {
                 return $this->categoryRepository->get($categoryId);
@@ -181,32 +235,5 @@ class DataProvider implements DataProviderInterface
             $result[] = $this->suggestionItemFactory->create(['suggestion' => $suggestion]);
         }
         return $result;
-    }
-
-    /**
-     * @return ItemInterface[]
-     */
-    public function getItems()
-    {
-        /** @var Query $query */
-        $query = $this->queryFactory->get();
-        $query = $query->getQueryText();
-        $config = $this->config;
-
-        /** @var AutocompleteRequest $request */
-        $request = $this->requestFactory->create();
-        $request->addCategoryFilter($this->getCategory());
-        $request->setGetProducts($config->isAutocompleteProductsEnabled());
-        $request->setGetSuggestions($config->isAutocompleteSuggestionsEnabled());
-        $request->setMaxResult($config->getAutocompleteMaxResults());
-        $request->setSearch($query);
-
-        /** @var AutocompleteResponse $response */
-        $response = $this->client->request($request);
-
-        $productResult = $this->getProductItems($response);
-        $suggestionResult = $this->getSuggestionResult($response);
-
-        return array_merge($suggestionResult, $productResult);
     }
 }

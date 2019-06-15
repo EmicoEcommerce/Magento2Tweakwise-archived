@@ -63,4 +63,12 @@ class ProductItem implements ItemInterface
             'row_class' => 'qs-option-product',
         ];
     }
+
+    /**
+     * @return Product
+     */
+    public function getProduct()
+    {
+        return $this->product;
+    }
 }
