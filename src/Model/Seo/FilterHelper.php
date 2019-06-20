@@ -131,11 +131,11 @@ class FilterHelper
 
         return \in_array($attributeCode, $filterWhiteList, true);
     }
-
+    
     /**
      * @return Item[]
      */
-    protected function getActiveFilterItems(): array
+    public function getActiveFilterItems(): array
     {
         $layer = $this->layerResolver->get();
         return $layer->getState()->getFilters();
