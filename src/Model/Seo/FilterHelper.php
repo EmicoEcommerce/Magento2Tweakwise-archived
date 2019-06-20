@@ -70,11 +70,15 @@ class FilterHelper
     }
 
     /**
+     * @param array|null $activeFilters
      * @return bool
      */
-    public function shouldPageBeIndexable(): bool
+    public function shouldPageBeIndexable(array $activeFilters = null): bool
     {
-        foreach ($this->getActiveFilterItems() as $item) {
+        if ($activeFilters === null) {
+            $activeFilters = $this->getActiveFilterItems();
+        }
+        foreach ($activeFilters as $item) {
             if (!$this->shouldFilterBeIndexable($item)) {
                 return false;
             }
@@ -131,11 +135,11 @@ class FilterHelper
 
         return \in_array($attributeCode, $filterWhiteList, true);
     }
-
+    
     /**
      * @return Item[]
      */
-    protected function getActiveFilterItems(): array
+    public function getActiveFilterItems(): array
     {
         $layer = $this->layerResolver->get();
         return $layer->getState()->getFilters();
