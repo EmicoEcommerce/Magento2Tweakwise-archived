@@ -70,15 +70,11 @@ class FilterHelper
     }
 
     /**
-     * @param array|null $activeFilters
      * @return bool
      */
-    public function shouldPageBeIndexable(array $activeFilters = null): bool
+    public function shouldPageBeIndexable(): bool
     {
-        if ($activeFilters === null) {
-            $activeFilters = $this->getActiveFilterItems();
-        }
-        foreach ($activeFilters as $item) {
+        foreach ($this->getActiveFilterItems() as $item) {
             if (!$this->shouldFilterBeIndexable($item)) {
                 return false;
             }
