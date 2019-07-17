@@ -20,6 +20,7 @@ use Magento\Catalog\Model\CategoryRepository;
 use Magento\Catalog\Model\Layer\Category\CollectionFilter;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as ProductCollectionFactory;
 use Magento\Framework\App\Request\Http as HttpRequest;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Search\Model\Autocomplete\DataProviderInterface;
 use Magento\Search\Model\Autocomplete\ItemInterface;
@@ -203,6 +204,7 @@ class DataProvider implements DataProviderInterface
     /**
      * @param AutocompleteResponse $response
      * @return ItemInterface[]
+     * @throws LocalizedException
      */
     protected function getProductItems(AutocompleteResponse $response)
     {
@@ -210,6 +212,7 @@ class DataProvider implements DataProviderInterface
         $productCollection->setStore($this->storeManager->getStore());
         $productCollection->addAttributeToFilter('entity_id', ['in' => $response->getProductIds()]);
         $this->collectionFilter->filter($productCollection, $this->getCategory());
+        $productCollection->addMediaGalleryData();
 
         $result = [];
         foreach ($response->getProductIds() as $productId) {
