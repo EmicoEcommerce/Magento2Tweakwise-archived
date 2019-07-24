@@ -244,6 +244,17 @@
             <argument name="collectionProvider" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\ItemCollectionProvider\Category</argument>
         </arguments>
     </virtualType>
+    <virtualType name="Magento\Elasticsearch\Model\Layer\Search\Context">
+        <arguments>
+            <argument name="collectionProvider" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\ItemCollectionProvider\Search</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magento\Elasticsearch\Model\Layer\Category\Context">
+        <arguments>
+            <argument name="collectionProvider" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\ItemCollectionProvider\Category</argument>
+        </arguments>
+    </virtualType>
+
 
     <!-- Configuration models -->
     <type name="Emico\Tweakwise\Model\Config\Source\FilterTemplate">
