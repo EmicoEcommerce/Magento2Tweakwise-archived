@@ -22,20 +22,6 @@
                     <comment>Default: http://navigator-group1.tweakwise.com/</comment>
                     <validate>required-entry validate-url</validate>
                 </field>
-                <field id="log" translate="label,comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Log enabled</label>
-                    <comment>Log requests to tweakwise.</comment>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-                <field id="log_developer" translate="label,comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Log Developer</label>
-                    <comment>Only log developer IP's</comment>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <depends>
-                        <field id="enabled">1</field>
-                        <field id="log">1</field>
-                    </depends>
-                </field>
                 <field id="timeout" translate="label,comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Timeout</label>
                     <comment>Timeout for requests to tweakwise</comment>
