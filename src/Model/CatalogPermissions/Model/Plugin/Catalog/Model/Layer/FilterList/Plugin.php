@@ -8,7 +8,6 @@ namespace Emico\Tweakwise\Model\CatalogPermissions\Model\Plugin\Catalog\Model\La
 
 use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Magento\Catalog\Model\Layer\Filter\AbstractFilter;
-use Magento\Catalog\Model\Layer\Filter\FilterInterface;
 use Magento\CatalogPermissions\Model\Plugin\Catalog\Model\Layer\FilterList as FilterListPlugin;
 use Magento\Catalog\Model\Layer\FilterList;
 use Magento\Catalog\Model\Entity\AttributeFactory;
