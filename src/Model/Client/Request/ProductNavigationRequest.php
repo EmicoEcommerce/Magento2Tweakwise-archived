@@ -94,4 +94,14 @@ class ProductNavigationRequest extends Request
         $this->setParameter('tn_ft', $templateId);
         return $this;
     }
+
+    /**
+     * @param int|null $templateId
+     * @return $this
+     */
+    public function setSortTemplateId($templateId)
+    {
+        $this->setParameter('tn_st', $templateId);
+        return $this;
+    }
 }
