@@ -10,7 +10,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
     <group id="default">
         <job name="emico_tweakwise_version" instance="Emico\Tweakwise\Cron\Version" method="execute">
-            <!-- once every day ad midnight-->
+            <!-- once every day at midnight-->
             <schedule>0 0 * * *</schedule>
         </job>
     </group>
