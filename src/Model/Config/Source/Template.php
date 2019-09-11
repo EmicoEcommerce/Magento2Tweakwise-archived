@@ -12,19 +12,14 @@ use Emico\Tweakwise\Exception\ApiException;
 use Emico\Tweakwise\Model\Client;
 use Emico\Tweakwise\Model\Client\RequestFactory;
 use Emico\Tweakwise\Model\Client\Response\Catalog\TemplateResponse;
-use Magento\Framework\Option\ArrayInterface;
+use Magento\Framework\Data\OptionSourceInterface;
 
-class FilterTemplate implements ArrayInterface
+class Template implements OptionSourceInterface
 {
     /**
      * @var Client
      */
     protected $client;
-
-    /**
-     * @var
-     */
-    protected $templates;
 
     /**
      * @var RequestFactory

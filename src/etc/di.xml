@@ -165,12 +165,20 @@
             <argument name="request" xsi:type="object">Magento\Framework\App\Request\Http</argument>
         </arguments>
     </type>
-    <type name="Emico\Tweakwise\Model\Config\Source\FilterTemplate">
+
+    <virtualType name="Emico\Tweakwise\Model\Config\Source\FilterTemplate" type="Emico\Tweakwise\Model\Config\Source\Template">
         <arguments>
             <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Catalog\TemplateRequest</argument>
             <argument name="client" xsi:type="object">Emico\Tweakwise\Model\Client</argument>
         </arguments>
-    </type>
+    </virtualType>
+
+    <virtualType name="Emico\Tweakwise\Model\Config\Source\SortTemplate" type="Emico\Tweakwise\Model\Config\Source\Template">
+        <arguments>
+            <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Catalog\SortTemplateRequest</argument>
+            <argument name="client" xsi:type="object">Emico\Tweakwise\Model\Client</argument>
+        </arguments>
+    </virtualType>
 
     <!-- TW blocks -->
     <virtualType name="Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList\Plugin\Upsell" type="Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList\Plugin">
@@ -255,15 +263,6 @@
         </arguments>
     </virtualType>
 
-
-    <!-- Configuration models -->
-    <type name="Emico\Tweakwise\Model\Config\Source\FilterTemplate">
-        <arguments>
-            <argument name="client" xsi:type="object">Emico\Tweakwise\Model\Client</argument>
-            <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Catalog\TemplateRequest</argument>
-        </arguments>
-    </type>
-
     <virtualType name="Emico\Tweakwise\Model\Config\Source\RecommendationOption\Product" type="Emico\Tweakwise\Model\Config\Source\RecommendationOption">
         <arguments>
             <argument name="client" xsi:type="object">Emico\Tweakwise\Model\Client</argument>
@@ -306,6 +305,11 @@
     <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\Catalog\TemplateRequest" type="Emico\Tweakwise\Model\Client\RequestFactory">
         <arguments>
             <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\Catalog\TemplateRequest</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\Catalog\SortTemplateRequest" type="Emico\Tweakwise\Model\Client\RequestFactory">
+        <arguments>
+            <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\Catalog\SortTemplateRequest</argument>
         </arguments>
     </virtualType>
     <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\Catalog\Recommendation\ProductRequest" type="Emico\Tweakwise\Model\Client\RequestFactory">
