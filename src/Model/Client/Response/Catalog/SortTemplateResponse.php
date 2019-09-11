@@ -23,7 +23,7 @@ class SortTemplateResponse extends Response
         $values = [];
         foreach ($templates as $value) {
             if (!$value instanceof TemplateType) {
-                $value = new TemplateType($value);
+                $value = new TemplateType($value, 'sorttemplateid');
             }
 
             $values[] = $value;
