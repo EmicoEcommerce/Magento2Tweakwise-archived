@@ -180,6 +180,13 @@
         </arguments>
     </virtualType>
 
+    <type name="Emico\Tweakwise\Model\Config\Source\Language">
+        <arguments>
+            <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Catalog\LanguageRequest</argument>
+            <argument name="client" xsi:type="object">Emico\Tweakwise\Model\Client</argument>
+        </arguments>
+    </type>
+
     <!-- TW blocks -->
     <virtualType name="Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList\Plugin\Upsell" type="Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList\Plugin">
         <arguments>
@@ -310,6 +317,11 @@
     <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\Catalog\SortTemplateRequest" type="Emico\Tweakwise\Model\Client\RequestFactory">
         <arguments>
             <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\Catalog\SortTemplateRequest</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\Catalog\LanguageRequest" type="Emico\Tweakwise\Model\Client\RequestFactory">
+        <arguments>
+            <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\Catalog\LanguageRequest</argument>
         </arguments>
     </virtualType>
     <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\Catalog\Recommendation\ProductRequest" type="Emico\Tweakwise\Model\Client\RequestFactory">

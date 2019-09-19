@@ -8,9 +8,9 @@
 
 namespace Emico\Tweakwise\Model\Config\Source;
 
-use Magento\Framework\Option\ArrayInterface;
+use Magento\Framework\Data\OptionSourceInterface;
 
-class QueryFilterType implements ArrayInterface
+class QueryFilterType implements OptionSourceInterface
 {
     /**
      * Possible filter types
