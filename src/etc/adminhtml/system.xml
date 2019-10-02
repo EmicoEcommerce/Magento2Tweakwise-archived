@@ -181,7 +181,7 @@
                 <field id="language" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Search language</label>
                     <source_model>Emico\Tweakwise\Model\Config\Source\Language</source_model>
-                    <comment>The language for search</comment>
+                    <comment>Language for search, used to keep track of word conjugations. For example searching for "bed" wil also yield results matching "beds" if english is selected.</comment>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
