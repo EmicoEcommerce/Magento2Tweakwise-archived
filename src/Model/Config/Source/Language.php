@@ -8,6 +8,7 @@ namespace Emico\Tweakwise\Model\Config\Source;
 
 use Emico\Tweakwise\Model\Client;
 use Emico\Tweakwise\Model\Client\RequestFactory;
+use Emico\Tweakwise\Model\Client\Response\Catalog\LanguageResponse;
 use Magento\Framework\Data\OptionSourceInterface;
 
 class Language implements OptionSourceInterface
@@ -43,15 +44,24 @@ class Language implements OptionSourceInterface
     public function toOptionArray()
     {
         $request = $this->requestFactory->create();
+        /** @var LanguageResponse $response */
         $response = $this->client->request($request);
 
-        $language = $response->getValue('language');
-        $languageName = $language['name'];
-        $languageValue = $language['key'];
-
-        return [
-            ['label' => 'Don\'t use language in search', 'value' => ''],
-            ['label' => $languageName, 'value' => $languageValue]
+        $languages = $response->getLanguages();
+        $options = [
+            [
+                'label' => 'Don\'t use language in search',
+                'value' => ''
+            ]
         ];
+
+        foreach ($languages as $language) {
+            $options[] = [
+                'label' => $language['name'],
+                'value' => $language['key']
+            ];
+        }
+
+        return $options;
     }
 }
