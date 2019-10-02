@@ -8,8 +8,10 @@
 
 namespace Emico\Tweakwise\Model\Client\Response;
 
+use Emico\Tweakwise\Model\Client\Request;
 use Emico\Tweakwise\Model\Client\Response;
 use Emico\Tweakwise\Model\Client\Type\ItemType;
+use Emico\TweakwiseExport\Model\Helper;
 
 /**
  * Class RecommendationsResponse
@@ -19,11 +21,32 @@ use Emico\Tweakwise\Model\Client\Type\ItemType;
 class RecommendationsResponse extends Response
 {
     /**
+     * RecommendationsResponse constructor.
+     * @param Helper $helper
+     * @param Request $request
+     * @param array|null $data
+     */
+    public function __construct(
+        Helper $helper,
+        Request $request,
+        array $data = null
+    ) {
+        parent::__construct($helper, $request, $data);
+    }
+
+    /**
      * @param array $recommendation
      */
     public function setRecommendation(array $recommendation)
     {
-        $this->setData($recommendation);
+        if (is_array($recommendation) && !isset($recommendation['items'])) {
+            $recommendations = $recommendation;
+            foreach ($recommendations as $recommendationEntry) {
+                $this->setData($recommendationEntry);
+            }
+        } else {
+            $this->setData($recommendation);
+        }
     }
 
     /**
