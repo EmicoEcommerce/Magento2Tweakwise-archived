@@ -407,4 +407,12 @@ class Config
     {
         return $this->jsonSerializer->serialize($this->getUseFormFilters());
     }
+
+    /**
+     * @return string|null
+     */
+    public function getUserAgentString()
+    {
+        return $this->getStoreConfig('tweakwise/general/version') ?: null;
+    }
 }
