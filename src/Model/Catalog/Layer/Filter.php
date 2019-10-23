@@ -344,7 +344,7 @@ class Filter extends AbstractFilter implements FilterInterface
             $map = [];
             /** @var Option $option */
             foreach ($this->getAttributeModel()->getOptions() as $option) {
-                $map[$option->getLabel()] = $option->getValue();
+                $map[(string)$option->getLabel()] = $option->getValue();
             }
 
             $this->optionLabelValueMap = $map;
