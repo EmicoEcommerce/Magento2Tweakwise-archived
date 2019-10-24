@@ -226,6 +226,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
 
             $index = array_search($value, $values, false);
             if ($index !== false) {
+                /** @noinspection OffsetOperationsInspection */
                 unset($values[$index]);
             }
 
@@ -383,5 +384,15 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
         $categoryId = $this->exportHelper->getStoreId($tweakwiseCategoryId);
 
         return $this->categoryRepository->get($categoryId);
+    }
+
+    /**
+     * Determine if this UrlInterface is allowed in the current context
+     *
+     * @return boolean
+     */
+    public function isAllowed(): bool
+    {
+        return true;
     }
 }

@@ -97,6 +97,7 @@ class NavigationContext
      * @param CurrentContext $currentContext
      * @param ProductList $productListHelper
      * @param ToolbarModel $toolbarModel
+     * @param Visibility $visibility
      */
     public function __construct(
         Config $config,
@@ -108,8 +109,7 @@ class NavigationContext
         ProductList $productListHelper,
         ToolbarModel $toolbarModel,
         Visibility $visibility
-    )
-    {
+    ) {
         $this->config = $config;
         $this->requestFactory = $requestFactory;
         $this->client = $client;
@@ -184,6 +184,7 @@ class NavigationContext
         $availableModes = $this->productListHelper->getAvailableViewMode();
         $mode = $this->toolbarModel->getMode();
 
+        /** @noinspection OffsetOperationsInspection */
         if ($mode && isset($availableModes[$mode])) {
             return $mode;
         }
