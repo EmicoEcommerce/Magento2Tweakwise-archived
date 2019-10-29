@@ -22,7 +22,11 @@ use Magento\Framework\App\RequestInterface;
 use Magento\Store\Model\StoreManager;
 
 /**
- * Class Filter Extends Magento\Catalog\Model\Layer\Filter\AbstractFilter only for the type hint in Magento\Swatches\Block\LayeredNavigation\RenderLayered
+ * Class Filter Extends
+ *
+ * @see \Magento\Catalog\Model\Layer\Filter\AbstractFilter
+ * only for the type hint in
+ * @see \Magento\Swatches\Block\LayeredNavigation\RenderLayered
  *
  * @package Emico\Tweakwise\Model\Catalog\Layer
  */
@@ -92,8 +96,13 @@ class Filter extends AbstractFilter implements FilterInterface
      * @param StoreManager $storeManager
      * @param Attribute|null $attribute
      */
-    public function __construct(Layer $layer, FacetType $facet, ItemFactory $itemFactory, StoreManager $storeManager, Attribute $attribute = null)
-    {
+    public function __construct(
+        Layer $layer,
+        FacetType $facet,
+        ItemFactory $itemFactory,
+        StoreManager $storeManager,
+        Attribute $attribute = null
+    ) {
         $this->layer = $layer;
         $this->facet = $facet;
         $this->itemFactory = $itemFactory;

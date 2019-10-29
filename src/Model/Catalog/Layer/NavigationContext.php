@@ -108,8 +108,7 @@ class NavigationContext
         ProductList $productListHelper,
         ToolbarModel $toolbarModel,
         Visibility $visibility
-    )
-    {
+    ) {
         $this->config = $config;
         $this->requestFactory = $requestFactory;
         $this->client = $client;
@@ -175,7 +174,8 @@ class NavigationContext
     }
 
     /**
-     * Retrieve current View mode simplified version of Magento\Catalog\Block\Product\ProductList\Toolbar::getCurrentMode()
+     * Retrieve current View mode simplified version
+     * @see \Magento\Catalog\Block\Product\ProductList\Toolbar::getCurrentMode()
      *
      * @return string
      */

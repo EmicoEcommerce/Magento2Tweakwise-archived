@@ -44,8 +44,11 @@ class Tweakwise
      * @param FilterFactory $filterFactory
      * @param CurrentContext $context
      */
-    public function __construct(FilterFactory $filterFactory, CurrentContext $context, Config $config)
-    {
+    public function __construct(
+        FilterFactory $filterFactory,
+        CurrentContext $context,
+        Config $config
+    ) {
         $this->filterFactory = $filterFactory;
         $this->context = $context;
         $this->config = $config;
