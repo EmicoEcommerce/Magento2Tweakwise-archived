@@ -15,6 +15,7 @@ use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
 use Emico\Tweakwise\Model\Client\RequestFactory;
 use Emico\Tweakwise\Model\Client\Response\ProductNavigationResponse;
 use Emico\Tweakwise\Model\Config;
+use Emico\TweakwiseExport\Model\Helper;
 use Magento\Catalog\Helper\Product\ProductList;
 use Magento\Catalog\Model\Layer\FilterableAttributeListInterface;
 use Magento\Catalog\Model\Product\ProductList\Toolbar as ToolbarModel;
@@ -87,6 +88,11 @@ class NavigationContext
     protected $visibility;
 
     /**
+     * @var Helper
+     */
+    private $helper;
+
+    /**
      * NavigationContext constructor.
      *
      * @param Config $config
@@ -97,6 +103,8 @@ class NavigationContext
      * @param CurrentContext $currentContext
      * @param ProductList $productListHelper
      * @param ToolbarModel $toolbarModel
+     * @param Helper $helper
+     * @param Visibility $visibility
      */
     public function __construct(
         Config $config,
@@ -107,6 +115,7 @@ class NavigationContext
         CurrentContext $currentContext,
         ProductList $productListHelper,
         ToolbarModel $toolbarModel,
+        Helper $helper,
         Visibility $visibility
     ) {
         $this->config = $config;
@@ -117,6 +126,7 @@ class NavigationContext
         $this->productListHelper = $productListHelper;
         $this->toolbarModel = $toolbarModel;
         $this->visibility = $visibility;
+        $this->helper = $helper;
 
         $currentContext->setContext($this);
     }
@@ -164,12 +174,12 @@ class NavigationContext
     {
         if ($this->filterAttributeMap === null) {
             $map = [];
-            /** @var Attribute $attribute */
-            foreach ($this->filterableAttributes->getList() as $attribute) {
+            foreach ($this->helper->getAttributesToExport() as $attribute) {
                 $map[$attribute->getData('attribute_code')] = $attribute;
             }
             $this->filterAttributeMap = $map;
         }
+
         return $this->filterAttributeMap;
     }
 
