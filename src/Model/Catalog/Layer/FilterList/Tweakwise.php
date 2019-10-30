@@ -11,6 +11,7 @@ namespace Emico\Tweakwise\Model\Catalog\Layer\FilterList;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\FilterFactory;
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
+use Emico\Tweakwise\Model\Client\Type\FacetType;
 use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Model\Layer;
 use Magento\Catalog\Model\Layer\Filter\FilterInterface;
@@ -69,7 +70,6 @@ class Tweakwise
 
     /**
      * @param Layer $layer
-     * @return $this
      */
     protected function initFilters(Layer $layer)
     {
@@ -78,11 +78,20 @@ class Tweakwise
 
         $facets = $this->context->getResponse()->getFacets();
 
-        $navigationContext = $this->context->getContext();
-        $filterAttributes = $navigationContext->getFilterAttributeMap();
+        $facetAttributeNames = array_map(
+            function (FacetType $facet) {
+                return $facet->getFacetSettings()->getAttributename();
+            },
+            $facets
+        );
+
+        $filterAttributes = $this->context
+            ->getContext()
+            ->getFilterAttributeMap($facetAttributeNames);
+
         $this->filters = [];
         foreach ($facets as $facet) {
-            $key = $facet->getFacetSettings()->getUrlKey();
+            $key = $facet->getFacetSettings()->getAttributename();
             $attribute = $filterAttributes[$key] ?? null;
             $filter = $this->filterFactory->create(
                 [
@@ -101,15 +110,13 @@ class Tweakwise
                 $layer->getState()->addFilter($activeFilterItem);
             }
         }
-
-        return $this;
     }
 
     /**
      * @param Filter $filter
      * @return bool
      */
-    protected function shouldHideFacet(Filter $filter)
+    protected function shouldHideFacet(Filter $filter): bool
     {
         if (!$this->config->getHideSingleOptions()) {
             return false;
