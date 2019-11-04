@@ -11,9 +11,12 @@ namespace Emico\Tweakwise\Model\Catalog\Layer\FilterList;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\FilterFactory;
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
+use Emico\Tweakwise\Model\Client\Type\FacetType;
 use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Model\Layer;
 use Magento\Catalog\Model\Layer\Filter\FilterInterface;
+use Magento\Catalog\Model\Entity\AttributeFactory;
+use Magento\Eav\Model\Entity\Attribute;
 
 class Tweakwise
 {
@@ -38,27 +41,35 @@ class Tweakwise
     private $config;
 
     /**
+     * @var AttributeFactory
+     */
+    private $attributeFactory;
+
+    /**
      * Tweakwise constructor.
      *
      * @param FilterFactory $filterFactory
      * @param CurrentContext $context
      * @param Config $config
+     * @param AttributeFactory $attributeFactory
      */
     public function __construct(
         FilterFactory $filterFactory,
         CurrentContext $context,
-        Config $config
+        Config $config,
+        AttributeFactory $attributeFactory
     ) {
         $this->filterFactory = $filterFactory;
         $this->context = $context;
         $this->config = $config;
+        $this->attributeFactory = $attributeFactory;
     }
 
     /**
      * @param Layer $layer
      * @return FilterInterface[]
      */
-    public function getFilters(Layer $layer)
+    public function getFilters(Layer $layer): array
     {
         if (!$this->filters) {
             $this->initFilters($layer);
@@ -90,8 +101,10 @@ class Tweakwise
 
         $this->filters = [];
         foreach ($facets as $facet) {
-            $key = $facet->getFacetSettings()->getAttributename();
-            $attribute = $filterAttributes[$key] ?? null;
+            $attributeName = $facet->getFacetSettings()->getAttributename();
+            $attribute = $filterAttributes[$attributeName]
+                ?? $this->mockAttributeModel($attributeName);
+
             $filter = $this->filterFactory->create(
                 [
                     'facet' => $facet,
@@ -122,5 +135,18 @@ class Tweakwise
         }
 
         return count($filter->getItems()) === 1;
+    }
+
+    /**
+     * @param string $attributeName
+     * @return Attribute
+     */
+    protected function mockAttributeModel(string $attributeName): Attribute
+    {
+        /** @var Attribute $attributeModel */
+        $attributeModel = $this->attributeFactory->create();
+        $attributeModel->setAttributeCode($attributeName);
+
+        return $attributeModel;
     }
 }

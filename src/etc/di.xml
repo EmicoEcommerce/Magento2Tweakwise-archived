@@ -61,10 +61,6 @@
         <plugin name="emico-tweakwise" type="Emico\Tweakwise\Model\Seo\Robots\Plugin" />
     </type>
 
-    <type name="Magento\CatalogPermissions\Model\Plugin\Catalog\Model\Layer\FilterList">
-        <plugin name="tweakwiseCatalogPermissionsSetAttributeModel" type="Emico\Tweakwise\Model\CatalogPermissions\Model\Plugin\Catalog\Model\Layer\FilterList\Plugin" />
-    </type>
-
     <type name="Magento\Search\Model\Autocomplete">
         <arguments>
             <argument name="dataProviders" xsi:type="array">
