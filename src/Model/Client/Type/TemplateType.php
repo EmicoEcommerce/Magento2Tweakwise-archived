@@ -14,10 +14,26 @@ namespace Emico\Tweakwise\Model\Client\Type;
 class TemplateType extends Type
 {
     /**
+     * @var string
+     */
+    protected $idField;
+
+    /**
+     * TemplateType constructor.
+     * @param array $data
+     * @param string $idField
+     */
+    public function __construct(array $data = [], string $idField = 'templateid')
+    {
+        parent::__construct($data);
+        $this->idField = $idField;
+    }
+
+    /**
      * @return int
      */
     public function getTemplateId()
     {
-        return (int) $this->getDataValue('templateid');
+        return (int) $this->getDataValue($this->idField);
     }
 }
