@@ -39,7 +39,7 @@ class RecommendationsResponse extends Response
      */
     public function setRecommendation(array $recommendation)
     {
-        if (is_array($recommendation) && !isset($recommendation['items'])) {
+        if (!empty($recommendation) && !isset($recommendation['items'])) {
             $recommendations = $recommendation;
             foreach ($recommendations as $recommendationEntry) {
                 $this->setData($recommendationEntry);
