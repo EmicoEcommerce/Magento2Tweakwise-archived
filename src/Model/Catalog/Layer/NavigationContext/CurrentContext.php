@@ -23,13 +23,10 @@ class CurrentContext
 
     /**
      * @param NavigationContext $context
-     *
-     * @return $this
      */
     public function setContext(NavigationContext $context)
     {
         $this->context = $context;
-        return $this;
     }
 
     /**
