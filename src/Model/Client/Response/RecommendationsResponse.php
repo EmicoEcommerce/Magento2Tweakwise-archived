@@ -88,7 +88,7 @@ class RecommendationsResponse extends Response
     /**
      * @return int[]
      */
-    public function getProductIds()
+    public function getProductIds(): array
     {
         $ids = [];
         foreach ($this->getItems() as $item) {
