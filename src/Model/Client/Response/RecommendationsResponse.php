@@ -54,7 +54,7 @@ class RecommendationsResponse extends Response
     /**
      * @return ItemType[]
      */
-    public function getItems()
+    public function getItems(): array
     {
         $data = $this->getDataValue('items');
         if (!$data) {
