@@ -196,6 +196,7 @@ class NavigationContext
         $availableModes = $this->productListHelper->getAvailableViewMode();
         $mode = $this->toolbarModel->getMode();
 
+        /** @noinspection OffsetOperationsInspection */
         if ($mode && isset($availableModes[$mode])) {
             return $mode;
         }

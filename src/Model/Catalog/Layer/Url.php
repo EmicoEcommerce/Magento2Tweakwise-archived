@@ -8,7 +8,6 @@
 
 namespace Emico\Tweakwise\Model\Catalog\Layer;
 
-use Emico\Tweakwise\Model\Config;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\CategoryUrlInterface;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\UrlStrategyFactory;
@@ -17,6 +16,7 @@ use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface;
 use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
 use Magento\Catalog\Api\Data\CategoryInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Zend\Http\Request as HttpRequest;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Emico\TweakwiseExport\Model\Helper as ExportHelper;
@@ -46,12 +46,12 @@ class Url
     /**
      * @var CategoryRepositoryInterface
      */
-    private $categoryRepository;
+    protected $categoryRepository;
 
     /**
      * @var ExportHelper
      */
-    private $exportHelper;
+    protected $exportHelper;
 
     /**
      * @var HttpRequest
@@ -59,37 +59,72 @@ class Url
     protected $request;
 
     /**
-     * @var Config
+     * @var UrlStrategyFactory
      */
-    private $config;
+    protected $urlStrategyFactory;
 
     /**
      * Builder constructor.
      *
      * @param UrlStrategyFactory $urlStrategyFactory
      * @param HttpRequest $request
-     * @param Config $config
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param ExportHelper $exportHelper
      */
     public function __construct(
         UrlStrategyFactory $urlStrategyFactory,
         HttpRequest $request,
         CategoryRepositoryInterface $categoryRepository,
-        ExportHelper $exportHelper,
-        Config $config
+        ExportHelper $exportHelper
     ) {
-        $this->urlStrategy = $urlStrategyFactory->create();
-        $this->filterApplier = $urlStrategyFactory->create(FilterApplierInterface::class);
-        $this->categoryUrlStrategy = $urlStrategyFactory->create(CategoryUrlInterface::class);
+        $this->urlStrategyFactory = $urlStrategyFactory;
         $this->categoryRepository = $categoryRepository;
         $this->exportHelper = $exportHelper;
         $this->request = $request;
-        $this->config = $config;
+    }
+
+    /**
+     * @return UrlInterface
+     */
+    protected function getUrlStrategy()
+    {
+        if (!$this->urlStrategy) {
+            $this->urlStrategy = $this->urlStrategyFactory->create();
+        }
+
+        return $this->urlStrategy;
+    }
+
+    /**
+     * @return FilterApplierInterface
+     */
+    protected function getFilterApplier()
+    {
+        if (!$this->filterApplier) {
+            $this->filterApplier = $this->urlStrategyFactory
+                ->create(FilterApplierInterface::class);
+        }
+
+        return $this->filterApplier;
+    }
+
+    /**
+     * @return CategoryUrlInterface
+     */
+    protected function getCategoryUrlStrategy()
+    {
+        if (!$this->categoryUrlStrategy) {
+            $this->categoryUrlStrategy = $this->urlStrategyFactory
+                ->create(CategoryUrlInterface::class);
+        }
+
+        return $this->categoryUrlStrategy;
     }
 
     /**
      * @param Item $item
      * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function getSelectFilter(Item $item): string
     {
@@ -99,11 +134,11 @@ class Url
             ->getFacetSettings();
 
         if ($settings->getSource() === SettingsType::SOURCE_CATEGORY) {
-            return $this->categoryUrlStrategy
+            return $this->getCategoryUrlStrategy()
                 ->getCategoryFilterSelectUrl($this->request, $item);
         }
 
-        return $this->urlStrategy->getAttributeSelectUrl($this->request, $item);
+        return $this->getUrlStrategy()->getAttributeSelectUrl($this->request, $item);
     }
 
     /**
@@ -116,10 +151,11 @@ class Url
             ->getFacetSettings();
 
         if ($settings->getSource() === SettingsType::SOURCE_CATEGORY) {
-            return $this->categoryUrlStrategy->getCategoryFilterRemoveUrl($this->request, $item);
+            return $this->getCategoryUrlStrategy()
+                ->getCategoryFilterRemoveUrl($this->request, $item);
         }
 
-        return $this->urlStrategy->getAttributeRemoveUrl($this->request, $item);
+        return $this->getUrlStrategy()->getAttributeRemoveUrl($this->request, $item);
     }
 
     /**
@@ -128,7 +164,8 @@ class Url
      */
     public function getClearUrl(array $activeFilterItems)
     {
-        return $this->urlStrategy->getClearUrl($this->request, $activeFilterItems);
+        return $this->getUrlStrategy()
+            ->getClearUrl($this->request, $activeFilterItems);
     }
 
     /**
@@ -136,7 +173,7 @@ class Url
      */
     public function apply(ProductNavigationRequest $navigationRequest)
     {
-        $this->filterApplier->apply($this->request, $navigationRequest);
+        $this->getFilterApplier()->apply($this->request, $navigationRequest);
     }
 
     /**
@@ -145,13 +182,13 @@ class Url
      */
     public function getSliderUrl(Item $item)
     {
-        return $this->urlStrategy->getSliderUrl($this->request, $item);
+        return $this->getUrlStrategy()->getSliderUrl($this->request, $item);
     }
 
     /**
      * @param Item $item
      * @return CategoryInterface
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     protected function getCategoryFromItem(Item $item): CategoryInterface
     {

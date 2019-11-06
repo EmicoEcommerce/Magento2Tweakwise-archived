@@ -86,4 +86,14 @@ class NullStrategy implements RouteMatchingInterface, UrlInterface, FilterApplie
     {
         return '';
     }
+
+    /**
+     * Determine if this UrlInterface is allowed in the current context
+     *
+     * @return boolean
+     */
+    public function isAllowed(): bool
+    {
+        return true;
+    }
 }
