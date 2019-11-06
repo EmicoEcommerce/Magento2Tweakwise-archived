@@ -18,7 +18,7 @@
         </argument>
         <field name="tweakwise_featured_template">
             <argument name="data" xsi:type="array">
-                <item name="options" xsi:type="object">Emico\Tweakwise\Model\Config\Source\RecommendationOption\Featured</item>
+                <item name="options" xsi:type="object">Emico\Tweakwise\Model\Config\Source\Category\RecommendationOption\Featured</item>
                 <item name="config" xsi:type="array">
                     <item name="formElement" xsi:type="string">select</item>
                     <item name="label" xsi:type="string" translate="true">Featured products template</item>

@@ -59,10 +59,25 @@ class Featured extends ListProduct
      * @internal param Config $config
      * @internal param array $data
      */
-    public function __construct(ProductContext $productContext, PostHelper $postDataHelper, Resolver $layerResolver, TemplateFinder $templateFinder,
-        CategoryRepositoryInterface $categoryRepository, Data $urlHelper, RecommendationsContext $recommendationsContext, Config $config, array $data = [])
-    {
-        parent::__construct($productContext, $postDataHelper, $layerResolver, $categoryRepository, $urlHelper, $data);
+    public function __construct(
+        ProductContext $productContext,
+        PostHelper $postDataHelper,
+        Resolver $layerResolver,
+        TemplateFinder $templateFinder,
+        CategoryRepositoryInterface $categoryRepository,
+        Data $urlHelper,
+        RecommendationsContext $recommendationsContext,
+        Config $config,
+        array $data = []
+    ) {
+        parent::__construct(
+            $productContext,
+            $postDataHelper,
+            $layerResolver,
+            $categoryRepository,
+            $urlHelper,
+            $data
+        );
         $this->recommendationsContext = $recommendationsContext;
         $this->config = $config;
         $this->templateFinder = $templateFinder;
@@ -97,13 +112,16 @@ class Featured extends ListProduct
     {
         if ($this->_productCollection === null) {
             if (!$this->checkRecommendationEnabled()) {
-                $this->_productCollection = parent::_getProductCollection()->addFieldToFilter('entity_id', ['null' => true]);
+                $this->_productCollection = parent::_getProductCollection()
+                    ->addFieldToFilter('entity_id', ['null' => true]);
             } else {
                 try {
                     $this->configureRequest($this->recommendationsContext->getRequest());
-                    $this->_productCollection = $this->recommendationsContext->getCollection();
+                    $this->_productCollection = $this->recommendationsContext
+                        ->getCollection();
                 } catch (ApiException $e) {
-                    $this->_productCollection = parent::_getProductCollection()->addFieldToFilter('entity_id', ['null' => true]);
+                    $this->_productCollection = parent::_getProductCollection()
+                        ->addFieldToFilter('entity_id', ['null' => true]);
                 }
             }
         }
@@ -114,7 +132,7 @@ class Featured extends ListProduct
     /**
      * @return bool
      */
-    protected function checkRecommendationEnabled()
+    protected function checkRecommendationEnabled(): bool
     {
         return $this->config->isRecommendationsEnabled(Config::RECOMMENDATION_TYPE_FEATURED);
     }

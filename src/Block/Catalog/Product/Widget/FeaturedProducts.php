@@ -35,7 +35,7 @@ class FeaturedProducts extends Featured implements BlockInterface
     /**
      * @return bool
      */
-    protected function checkRecommendationEnabled()
+    protected function checkRecommendationEnabled(): bool
     {
         return (bool) $this->getRuleId();
     }
@@ -51,7 +51,7 @@ class FeaturedProducts extends Featured implements BlockInterface
     /**
      * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return 'new';
     }
@@ -59,7 +59,7 @@ class FeaturedProducts extends Featured implements BlockInterface
     /**
      * @return Collection
      */
-    public function getItems()
+    public function getItems(): Collection
     {
         return $this->_getProductCollection();
     }
