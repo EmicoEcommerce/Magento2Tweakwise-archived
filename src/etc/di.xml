@@ -259,7 +259,6 @@
 
     <virtualType name="Emico\Tweakwise\Model\Config\Source\RecommendationOption\Product" type="Emico\Tweakwise\Model\Config\Source\RecommendationOption">
         <arguments>
-            <argument name="client" xsi:type="object">Emico\Tweakwise\Model\Client</argument>
             <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Catalog\Recommendation\ProductRequest</argument>
             <argument name="addCodeOption" xsi:type="boolean">true</argument>
             <argument name="addEmpty" xsi:type="boolean">true</argument>
@@ -267,7 +266,6 @@
     </virtualType>
     <virtualType name="Emico\Tweakwise\Model\Config\Source\RecommendationOption\Product\System" type="Emico\Tweakwise\Model\Config\Source\RecommendationOption">
         <arguments>
-            <argument name="client" xsi:type="object">Emico\Tweakwise\Model\Client</argument>
             <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Catalog\Recommendation\ProductRequest</argument>
             <argument name="addCodeOption" xsi:type="boolean">true</argument>
             <argument name="addEmpty" xsi:type="boolean">true</argument>
@@ -275,8 +273,14 @@
     </virtualType>
     <virtualType name="Emico\Tweakwise\Model\Config\Source\RecommendationOption\Featured" type="Emico\Tweakwise\Model\Config\Source\RecommendationOption">
         <arguments>
-            <argument name="client" xsi:type="object">Emico\Tweakwise\Model\Client</argument>
             <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Catalog\Recommendation\FeaturedRequest</argument>
+        </arguments>
+    </virtualType>
+    <!-- Same as above but with an empty option so it can fallback to the default option defined in Stores > Configuration > Catalog > Tweakwise > Featured template -->
+    <virtualType name="Emico\Tweakwise\Model\Config\Source\Category\RecommendationOption\Featured" type="Emico\Tweakwise\Model\Config\Source\RecommendationOption">
+        <arguments>
+            <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Catalog\Recommendation\FeaturedRequest</argument>
+            <argument name="addEmpty" xsi:type="boolean">true</argument>
         </arguments>
     </virtualType>
 
