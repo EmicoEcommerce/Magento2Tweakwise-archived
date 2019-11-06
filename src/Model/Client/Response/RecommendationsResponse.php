@@ -44,9 +44,11 @@ class RecommendationsResponse extends Response
             foreach ($recommendations as $recommendationEntry) {
                 $this->setData($recommendationEntry);
             }
-        } else {
-            $this->setData($recommendation);
+
+            return;
         }
+
+        $this->setData($recommendation);
     }
 
     /**
@@ -58,6 +60,7 @@ class RecommendationsResponse extends Response
         if (!$data) {
             return [];
         }
+
         return $data;
     }
 
@@ -91,6 +94,7 @@ class RecommendationsResponse extends Response
         foreach ($this->getItems() as $item) {
             $ids[] = $this->helper->getStoreId($item->getId());
         }
+
         return $ids;
     }
 }
