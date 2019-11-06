@@ -25,7 +25,7 @@ class RecommendationOption extends AbstractSource
     /**
      * @var Client
      */
-    private $client;
+    protected $client;
 
     /**
      * @var RequestFactory
@@ -35,17 +35,17 @@ class RecommendationOption extends AbstractSource
     /**
      * @var array
      */
-    private $options;
+    protected $options;
 
     /**
      * @var bool
      */
-    private $addCodeOption;
+    protected $addCodeOption;
 
     /**
      * @var bool
      */
-    private $addEmpty;
+    protected $addEmpty;
 
     /**
      * Template constructor.
@@ -55,8 +55,12 @@ class RecommendationOption extends AbstractSource
      * @param bool $addCodeOption
      * @param bool $addEmpty
      */
-    public function __construct(Client $client, RequestFactory $requestFactory, $addCodeOption = false, $addEmpty = false)
-    {
+    public function __construct(
+        Client $client,
+        RequestFactory $requestFactory,
+        $addCodeOption = false,
+        $addEmpty = false
+    ) {
         $this->client = $client;
         $this->requestFactory = $requestFactory;
         $this->addCodeOption = $addCodeOption;
@@ -75,16 +79,26 @@ class RecommendationOption extends AbstractSource
         $result = [];
 
         if ($this->addEmpty) {
-            $result[] = ['value' => self::OPTION_EMPTY, 'label' => ' '];
+            $result[] = [
+                'value' => self::OPTION_EMPTY,
+                'label' => ' '
+            ];
         }
 
         if ($this->addCodeOption) {
-            $result[] = ['value' => self::OPTION_CODE, 'label' => __('- Group code -')];
+            $result[] = [
+                'value' => self::OPTION_CODE,
+                'label' => __('- Group code -')
+            ];
         }
 
         foreach ($response->getRecommendations() as $recommendation) {
-            $result[] = ['value' => $recommendation->getId(), 'label' => $recommendation->getName()];
+            $result[] = [
+                'value' => $recommendation->getId(),
+                'label' => $recommendation->getName()
+            ];
         }
+
         return $result;
     }
 
@@ -101,6 +115,7 @@ class RecommendationOption extends AbstractSource
             }
             $this->options = $options;
         }
+
         return $this->options;
     }
 }

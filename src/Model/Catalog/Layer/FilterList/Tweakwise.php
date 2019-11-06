@@ -69,7 +69,6 @@ class Tweakwise
 
     /**
      * @param Layer $layer
-     * @return $this
      */
     protected function initFilters(Layer $layer)
     {
@@ -78,14 +77,28 @@ class Tweakwise
 
         $facets = $this->context->getResponse()->getFacets();
 
-        $navigationContext = $this->context->getContext();
-        $filterAttributes = $navigationContext->getFilterAttributeMap();
+        $facetAttributeNames = array_map(
+            function (FacetType $facet) {
+                return $facet->getFacetSettings()->getAttributename();
+            },
+            $facets
+        );
+
+        $filterAttributes = $this->context
+            ->getContext()
+            ->getFilterAttributeMap($facetAttributeNames);
+
         $this->filters = [];
         foreach ($facets as $facet) {
-            $key = $facet->getFacetSettings()->getUrlKey();
-            $attribute = isset($filterAttributes[$key]) ? $filterAttributes[$key] : null;
-
-            $filter = $this->filterFactory->create(['facet' => $facet, 'layer' => $layer, 'attribute' => $attribute]);
+            $key = $facet->getFacetSettings()->getAttributename();
+            $attribute = $filterAttributes[$key] ?? null;
+            $filter = $this->filterFactory->create(
+                [
+                    'facet' => $facet,
+                    'layer' => $layer,
+                    'attribute' => $attribute
+                ]
+            );
             if ($this->shouldHideFacet($filter)) {
                 continue;
             }
@@ -96,15 +109,13 @@ class Tweakwise
                 $layer->getState()->addFilter($activeFilterItem);
             }
         }
-
-        return $this;
     }
 
     /**
      * @param Filter $filter
      * @return bool
      */
-    protected function shouldHideFacet(Filter $filter)
+    protected function shouldHideFacet(Filter $filter): bool
     {
         if (!$this->config->getHideSingleOptions()) {
             return false;
