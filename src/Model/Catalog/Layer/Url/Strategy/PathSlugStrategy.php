@@ -8,9 +8,10 @@
 
 namespace Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy;
 
-
+use Emico\Tweakwise\Exception\RuntimeException;
 use Emico\Tweakwise\Exception\UnexpectedValueException;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
+use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
 use Emico\Tweakwise\Model\Catalog\Layer\UrlFactory;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\CategoryUrlInterface;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\FilterApplierInterface;
@@ -18,8 +19,9 @@ use Emico\Tweakwise\Model\Catalog\Layer\Url\RouteMatchingInterface;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlModel;
 use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
+use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
-use Magento\Catalog\Api\Data\CategoryInterface;
+use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Model\Layer;
 use Magento\Catalog\Model\Layer\Resolver;
 use Magento\Framework\App\ActionInterface;
@@ -84,6 +86,16 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
     private $storeManager;
 
     /**
+     * @var Config
+     */
+    private $config;
+
+    /**
+     * @var CurrentContext
+     */
+    private $currentContext;
+
+    /**
      * Magento constructor.
      *
      * @param UrlModel $magentoUrl
@@ -92,6 +104,9 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      * @param UrlFinderInterface $urlFinder
      * @param FilterSlugManager $filterSlugManager
      * @param QueryParameterStrategy $queryParameterStrategy
+     * @param StoreManagerInterface $storeManager
+     * @param Config $config
+     * @param CurrentContext $currentContext
      */
     public function __construct(
         UrlModel $magentoUrl,
@@ -100,7 +115,9 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         UrlFinderInterface $urlFinder,
         FilterSlugManager $filterSlugManager,
         QueryParameterStrategy $queryParameterStrategy,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        Config $config,
+        CurrentContext $currentContext
     ) {
         $this->magentoUrl = $magentoUrl;
         $this->layerResolver = $layerResolver;
@@ -109,6 +126,8 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         $this->queryParameterStrategy = $queryParameterStrategy;
         $this->urlFactory = $urlFactory;
         $this->storeManager = $storeManager;
+        $this->config = $config;
+        $this->currentContext = $currentContext;
     }
 
     /**
@@ -425,7 +444,6 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
     /**
      * @param HttpRequest $request
      * @param Item $item
-     * @param CategoryInterface $category
      * @return mixed
      */
     public function getCategoryFilterSelectUrl(
@@ -438,7 +456,6 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
     /**
      * @param HttpRequest $request
      * @param Item $item
-     * @param CategoryInterface $category
      * @return mixed
      */
     public function getCategoryFilterRemoveUrl(
@@ -446,5 +463,22 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         Item $item
     ): string {
         return $this->queryParameterStrategy->getCategoryFilterRemoveUrl($request, $item);
+    }
+
+    /**
+     * Determine if this UrlInterface is allowed in the current context
+     *
+     * @return boolean
+     */
+    public function isAllowed(): bool
+    {
+        try {
+            $context = $this->currentContext->getContext();
+        } catch (RuntimeException $e) {
+            return true;
+        }
+
+        return !$context->getRequest() instanceof ProductSearchRequest
+            && !$this->config->getUseFormFilters();
     }
 }

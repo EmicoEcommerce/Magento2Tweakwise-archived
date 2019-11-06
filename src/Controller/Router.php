@@ -28,6 +28,11 @@ class Router implements RouterInterface
     private $routeMatchingStrategy;
 
     /**
+     * @var UrlStrategyFactory
+     */
+    private $urlStrategyFactory;
+
+    /**
      * Router constructor.
      * @param ActionFactory $actionFactory
      * @param UrlStrategyFactory $urlStrategyFactory
@@ -35,7 +40,19 @@ class Router implements RouterInterface
     public function __construct(ActionFactory $actionFactory, UrlStrategyFactory $urlStrategyFactory)
     {
         $this->actionFactory = $actionFactory;
-        $this->routeMatchingStrategy = $urlStrategyFactory->create(RouteMatchingInterface::class);
+        $this->urlStrategyFactory = $urlStrategyFactory;
+    }
+
+    /**
+     *
+     */
+    protected function getRouteMatchingStrategy(): RouteMatchingInterface
+    {
+        if (!$this->routeMatchingStrategy) {
+            $this->routeMatchingStrategy = $this->urlStrategyFactory->create(RouteMatchingInterface::class);
+        }
+
+        return $this->routeMatchingStrategy;
     }
 
     /**
@@ -50,7 +67,7 @@ class Router implements RouterInterface
             return false;
         }
 
-        $result = $this->routeMatchingStrategy->match($request);
+        $result = $this->getRouteMatchingStrategy()->match($request);
 
         if ($result === false) {
             return false;

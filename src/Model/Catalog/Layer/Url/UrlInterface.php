@@ -54,4 +54,11 @@ interface UrlInterface
      * @return string
      */
     public function getClearUrl(HttpRequest $request, array $activeFilterItems): string;
+
+    /**
+     * Determine if this UrlInterface is allowed in the current context
+     *
+     * @return boolean
+     */
+    public function isAllowed(): bool;
 }

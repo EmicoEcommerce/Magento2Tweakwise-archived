@@ -15,6 +15,7 @@ use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
 use Emico\Tweakwise\Model\Client\RequestFactory;
 use Emico\Tweakwise\Model\Client\Response\ProductNavigationResponse;
 use Emico\Tweakwise\Model\Config;
+use Emico\TweakwiseExport\Model\ProductAttributes;
 use Magento\Catalog\Helper\Product\ProductList;
 use Magento\Catalog\Model\Layer\FilterableAttributeListInterface;
 use Magento\Catalog\Model\Product\ProductList\Toolbar as ToolbarModel;
@@ -22,7 +23,8 @@ use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Attribute;
 
 /**
- * Class to keep navigation context for page request. This ensures a single request for navigation data facet's and products.
+ * Class to keep navigation context for page request.
+ * This ensures a single request for navigation data facet's and products.
  */
 class NavigationContext
 {
@@ -87,6 +89,11 @@ class NavigationContext
     protected $visibility;
 
     /**
+     * @var ProductAttributes
+     */
+    protected $productAttributes;
+
+    /**
      * NavigationContext constructor.
      *
      * @param Config $config
@@ -97,6 +104,8 @@ class NavigationContext
      * @param CurrentContext $currentContext
      * @param ProductList $productListHelper
      * @param ToolbarModel $toolbarModel
+     * @param ProductAttributes $productAttributes
+     * @param Visibility $visibility
      */
     public function __construct(
         Config $config,
@@ -107,9 +116,9 @@ class NavigationContext
         CurrentContext $currentContext,
         ProductList $productListHelper,
         ToolbarModel $toolbarModel,
+        ProductAttributes $productAttributes,
         Visibility $visibility
-    )
-    {
+    ) {
         $this->config = $config;
         $this->requestFactory = $requestFactory;
         $this->client = $client;
@@ -118,6 +127,7 @@ class NavigationContext
         $this->productListHelper = $productListHelper;
         $this->toolbarModel = $toolbarModel;
         $this->visibility = $visibility;
+        $this->productAttributes = $productAttributes;
 
         $currentContext->setContext($this);
     }
@@ -125,7 +135,7 @@ class NavigationContext
     /**
      * @return ProductNavigationRequest
      */
-    public function getRequest()
+    public function getRequest(): ProductNavigationRequest
     {
         if (!$this->request) {
             $this->request = $this->requestFactory->create();
@@ -136,7 +146,7 @@ class NavigationContext
     /**
      * @return ProductNavigationResponse
      */
-    public function getResponse()
+    public function getResponse(): ProductNavigationResponse
     {
         if (!$this->response) {
             $request = $this->getRequest();
@@ -153,29 +163,31 @@ class NavigationContext
      *
      * @return bool
      */
-    public function hasResponse()
+    public function hasResponse(): bool
     {
-        return $this->response != null;
+        return $this->response !== null;
     }
 
     /**
+     * @param $attributeCodes
      * @return Attribute[]
      */
-    public function getFilterAttributeMap()
+    public function getFilterAttributeMap(array $attributeCodes = null): array
     {
         if ($this->filterAttributeMap === null) {
             $map = [];
-            /** @var Attribute $attribute */
-            foreach ($this->filterableAttributes->getList() as $attribute) {
+            foreach ($this->productAttributes->getAttributesToExport($attributeCodes) as $attribute) {
                 $map[$attribute->getData('attribute_code')] = $attribute;
             }
             $this->filterAttributeMap = $map;
         }
+
         return $this->filterAttributeMap;
     }
 
     /**
-     * Retrieve current View mode simplified version of Magento\Catalog\Block\Product\ProductList\Toolbar::getCurrentMode()
+     * Retrieve current View mode simplified version
+     * @see \Magento\Catalog\Block\Product\ProductList\Toolbar::getCurrentMode()
      *
      * @return string
      */
@@ -184,6 +196,7 @@ class NavigationContext
         $availableModes = $this->productListHelper->getAvailableViewMode();
         $mode = $this->toolbarModel->getMode();
 
+        /** @noinspection OffsetOperationsInspection */
         if ($mode && isset($availableModes[$mode])) {
             return $mode;
         }

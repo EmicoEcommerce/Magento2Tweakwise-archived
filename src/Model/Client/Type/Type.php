@@ -108,7 +108,7 @@ class Type
      */
     protected function getDataValue($key)
     {
-        return isset($this->data[$key]) ? $this->data[$key] : null;
+        return $this->data[$key] ?? null;
     }
 
     /**

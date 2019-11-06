@@ -16,6 +16,10 @@ use Emico\Tweakwise\Model\Config;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\ObjectManagerInterface;
 
+/**
+ * Class UrlStrategyFactory
+ * @package Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy
+ */
 class UrlStrategyFactory
 {
     /**
@@ -32,8 +36,10 @@ class UrlStrategyFactory
      * @param ObjectManagerInterface $objectManager
      * @param Config $config
      */
-    public function __construct(ObjectManagerInterface $objectManager, Config $config)
-    {
+    public function __construct(
+        ObjectManagerInterface $objectManager,
+        Config $config
+    ) {
         $this->objectManager = $objectManager;
         $this->config = $config;
     }
@@ -46,15 +52,21 @@ class UrlStrategyFactory
      */
     public function create(string $interface = UrlInterface::class)
     {
-        $urlStrategy = $this->config->getUrlStrategy();
-        if ($urlStrategy === PathSlugStrategy::class && $this->config->getUseFormFilters()) {
-            $urlStrategy = QueryParameterStrategy::class;
+        $urlStrategy = $this->config->getUrlStrategy();  //path of query
+        $implementation = $this->objectManager->get($urlStrategy);
+
+        if ($implementation instanceof UrlInterface
+            && !$implementation->isAllowed()
+        ) {
+            return $this->objectManager->get($interface);
         }
 
-        $implementation = $this->objectManager->get($urlStrategy);
-        if (\in_array($interface, class_implements($implementation), true)) {
-            return $implementation;
+        // Check if concrete implementation implements the given interface.
+        // If not return preference in di.xml
+        if (!in_array($interface, class_implements($implementation), true)) {
+            return $this->objectManager->get($interface);
         }
-        return $this->objectManager->get($interface);
+
+        return $implementation;
     }
 }
