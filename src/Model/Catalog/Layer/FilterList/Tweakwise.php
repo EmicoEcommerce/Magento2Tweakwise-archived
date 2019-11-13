@@ -16,6 +16,7 @@ use Magento\Catalog\Model\Layer;
 use Magento\Catalog\Model\Layer\Filter\FilterInterface;
 use Magento\Catalog\Model\Entity\AttributeFactory;
 use Magento\Eav\Model\Entity\Attribute;
+use Emico\Tweakwise\Model\Client\Type\FacetType;
 
 class Tweakwise
 {
