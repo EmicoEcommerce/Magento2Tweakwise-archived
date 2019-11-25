@@ -41,14 +41,22 @@ class Client
     protected $requestFactory;
 
     /**
+     * @var string
+     */
+    protected $userAgentString;
+
+    /**
      * Client constructor.
      *
      * @param Config $config
      * @param Logger $log
      * @param ResponseFactory $responseFactory
      */
-    public function __construct(Config $config, Logger $log, ResponseFactory $responseFactory)
-    {
+    public function __construct(
+        Config $config,
+        Logger $log,
+        ResponseFactory $responseFactory
+    ) {
         $this->config = $config;
         $this->log = $log;
         $this->responseFactory = $responseFactory;
@@ -73,7 +81,13 @@ class Client
         );
 
         $client = new HttpClient();
-        $client->setOptions(['timeout' => $this->config->getTimeout()]);
+        $options = ['timeout' => $this->config->getTimeout()];
+
+        if ($userAgent = $this->getUserAgentString()) {
+            $options['useragent'] = $userAgent;
+        }
+
+        $client->setOptions($options);
         $client->setUri($url);
         $client->getUri()->setQuery($parameters);
 
@@ -123,8 +137,6 @@ class Client
         return $this->responseFactory->create($request, $result);
     }
 
-    
-
     /**
      * @param SimpleXMLElement $element
      * @return array
@@ -167,6 +179,19 @@ class Client
         }
 
         return (string) $value;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getUserAgentString()
+    {
+        if ($this->userAgentString) {
+            return $this->userAgentString;
+        }
+
+        $this->userAgentString = $this->config->getUserAgentString();
+        return $this->userAgentString;
     }
 
     /**

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Tweakwise & Emico (https://www.tweakwise.com/ & https://www.emico.nl/) - All Rights Reserved
+ *
+ * @copyright Copyright (c) 2017-2017 Tweakwise.com B.V. (https://www.tweakwise.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="emico_tweakwise_version" instance="Emico\Tweakwise\Cron\Version" method="execute">
+            <!-- once every day at midnight-->
+            <schedule>0 0 * * *</schedule>
+        </job>
+    </group>
+</config>

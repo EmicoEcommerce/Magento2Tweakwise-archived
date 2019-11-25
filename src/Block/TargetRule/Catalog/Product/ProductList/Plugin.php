@@ -16,42 +16,41 @@ use Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context;
 use Emico\Tweakwise\Model\Client\Request\Recommendations\ProductRequest;
 use Emico\Tweakwise\Model\Config;
 use Emico\Tweakwise\Model\Config\TemplateFinder;
-use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Registry;
 use Magento\TargetRule\Block\Catalog\Product\ProductList\AbstractProductList;
 
-class Plugin
+abstract class Plugin
 {
     /**
      * @var string
      */
-    private $type;
+    protected $type;
 
     /**
      * @var Collection
      */
-    private $collection;
+    protected $collection;
 
     /**
      * @var Config
      */
-    private $config;
+    protected $config;
 
     /**
      * @var Registry
      */
-    private $registry;
+    protected $registry;
 
     /**
      * @var Context
      */
-    private $context;
+    protected $context;
     
     /**
      * @var TemplateFinder
      */
-    private $templateFinder;
+    protected $templateFinder;
 
     /**
      * Plugin constructor.
@@ -62,9 +61,8 @@ class Plugin
      * @param Context $context
      * @param TemplateFinder $templateFinder
      */
-    public function __construct($type, Config $config, Registry $registry, Context $context, TemplateFinder $templateFinder)
+    public function __construct(Config $config, Registry $registry, Context $context, TemplateFinder $templateFinder)
     {
-        $this->type = (string) $type;
         $this->config = $config;
         $this->registry = $registry;
         $this->context = $context;

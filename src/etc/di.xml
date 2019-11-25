@@ -40,10 +40,10 @@
         <plugin name="emico-tweakwise" type="Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\Plugin" sortOrder="0" />
     </type>
     <type name="Magento\TargetRule\Block\Catalog\Product\ProductList\Upsell">
-        <plugin name="emico-tweakwise" type="Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList\Plugin\Upsell" sortOrder="0" />
+        <plugin name="emico-tweakwise" type="Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList\UpsellPlugin" sortOrder="0" />
     </type>
     <type name="Magento\TargetRule\Block\Catalog\Product\ProductList\Related">
-        <plugin name="emico-tweakwise" type="Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList\Plugin\Related" sortOrder="0" />
+        <plugin name="emico-tweakwise" type="Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList\RelatedPlugin" sortOrder="0" />
     </type>
     <type name="Magento\Catalog\Block\Product\ProductList\Upsell">
         <plugin name="emico-tweakwise" type="Emico\Tweakwise\Block\Catalog\Product\ProductList\Upsell\Plugin" sortOrder="0" />
@@ -165,30 +165,32 @@
             <argument name="request" xsi:type="object">Magento\Framework\App\Request\Http</argument>
         </arguments>
     </type>
-    <type name="Emico\Tweakwise\Model\Config\Source\FilterTemplate">
+
+    <virtualType name="Emico\Tweakwise\Model\Config\Source\FilterTemplate" type="Emico\Tweakwise\Model\Config\Source\Template">
         <arguments>
             <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Catalog\TemplateRequest</argument>
             <argument name="client" xsi:type="object">Emico\Tweakwise\Model\Client</argument>
         </arguments>
-    </type>
+    </virtualType>
+
+    <virtualType name="Emico\Tweakwise\Model\Config\Source\SortTemplate" type="Emico\Tweakwise\Model\Config\Source\Template">
+        <arguments>
+            <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Catalog\SortTemplateRequest</argument>
+            <argument name="client" xsi:type="object">Emico\Tweakwise\Model\Client</argument>
+        </arguments>
+    </virtualType>
 
     <!-- TW blocks -->
-    <virtualType name="Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList\Plugin\Upsell" type="Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList\Plugin">
+    <type name="Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList\UpsellPlugin">
         <arguments>
-            <argument name="type" xsi:type="string">upsell</argument>
-            <argument name="config" xsi:type="object">Emico\Tweakwise\Model\Config</argument>
-            <argument name="registry" xsi:type="object">Magento\Framework\Registry</argument>
             <argument name="context" xsi:type="object">Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context\Product\Upsell</argument>
         </arguments>
-    </virtualType>
-    <virtualType name="Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList\Plugin\Related" type="Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList\Plugin">
+    </type>
+    <type name="Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList\RelatedPlugin">
         <arguments>
-            <argument name="type" xsi:type="string">crosssell</argument>
-            <argument name="config" xsi:type="object">Emico\Tweakwise\Model\Config</argument>
-            <argument name="registry" xsi:type="object">Magento\Framework\Registry</argument>
             <argument name="context" xsi:type="object">Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context\Product\Related</argument>
         </arguments>
-    </virtualType>
+    </type>
 
     <type name="Emico\Tweakwise\Block\Catalog\Product\ProductList\Featured">
         <arguments>
@@ -244,18 +246,19 @@
             <argument name="collectionProvider" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\ItemCollectionProvider\Category</argument>
         </arguments>
     </virtualType>
-
-    <!-- Configuration models -->
-    <type name="Emico\Tweakwise\Model\Config\Source\FilterTemplate">
+    <virtualType name="Magento\Elasticsearch\Model\Layer\Search\Context">
         <arguments>
-            <argument name="client" xsi:type="object">Emico\Tweakwise\Model\Client</argument>
-            <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Catalog\TemplateRequest</argument>
+            <argument name="collectionProvider" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\ItemCollectionProvider\Search</argument>
         </arguments>
-    </type>
+    </virtualType>
+    <virtualType name="Magento\Elasticsearch\Model\Layer\Category\Context">
+        <arguments>
+            <argument name="collectionProvider" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\ItemCollectionProvider\Category</argument>
+        </arguments>
+    </virtualType>
 
     <virtualType name="Emico\Tweakwise\Model\Config\Source\RecommendationOption\Product" type="Emico\Tweakwise\Model\Config\Source\RecommendationOption">
         <arguments>
-            <argument name="client" xsi:type="object">Emico\Tweakwise\Model\Client</argument>
             <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Catalog\Recommendation\ProductRequest</argument>
             <argument name="addCodeOption" xsi:type="boolean">true</argument>
             <argument name="addEmpty" xsi:type="boolean">true</argument>
@@ -263,7 +266,6 @@
     </virtualType>
     <virtualType name="Emico\Tweakwise\Model\Config\Source\RecommendationOption\Product\System" type="Emico\Tweakwise\Model\Config\Source\RecommendationOption">
         <arguments>
-            <argument name="client" xsi:type="object">Emico\Tweakwise\Model\Client</argument>
             <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Catalog\Recommendation\ProductRequest</argument>
             <argument name="addCodeOption" xsi:type="boolean">true</argument>
             <argument name="addEmpty" xsi:type="boolean">true</argument>
@@ -271,8 +273,14 @@
     </virtualType>
     <virtualType name="Emico\Tweakwise\Model\Config\Source\RecommendationOption\Featured" type="Emico\Tweakwise\Model\Config\Source\RecommendationOption">
         <arguments>
-            <argument name="client" xsi:type="object">Emico\Tweakwise\Model\Client</argument>
             <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Catalog\Recommendation\FeaturedRequest</argument>
+        </arguments>
+    </virtualType>
+    <!-- Same as above but with an empty option so it can fallback to the default option defined in Stores > Configuration > Catalog > Tweakwise > Featured template -->
+    <virtualType name="Emico\Tweakwise\Model\Config\Source\Category\RecommendationOption\Featured" type="Emico\Tweakwise\Model\Config\Source\RecommendationOption">
+        <arguments>
+            <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Catalog\Recommendation\FeaturedRequest</argument>
+            <argument name="addEmpty" xsi:type="boolean">true</argument>
         </arguments>
     </virtualType>
 
@@ -295,6 +303,11 @@
     <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\Catalog\TemplateRequest" type="Emico\Tweakwise\Model\Client\RequestFactory">
         <arguments>
             <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\Catalog\TemplateRequest</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\Catalog\SortTemplateRequest" type="Emico\Tweakwise\Model\Client\RequestFactory">
+        <arguments>
+            <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\Catalog\SortTemplateRequest</argument>
         </arguments>
     </virtualType>
     <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\Catalog\Recommendation\ProductRequest" type="Emico\Tweakwise\Model\Client\RequestFactory">
