@@ -33,7 +33,7 @@ define(['jquery', 'jquery/ui'], function($) {
         },
 
         _sortItems: function (type) {
-            if (!this.options.hasAlternateSort) {
+            if (!this.options.hasOwnProperty('hasAlternateSort') || !this.options.hasAlternateSort) {
                 return;
             }
 
