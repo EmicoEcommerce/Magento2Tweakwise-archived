@@ -37,6 +37,14 @@
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="ajax_filters" translate="label" type="select" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Ajax filtering</label>
+                    <comment>When enabled non category filter results will be fetched via ajax instead of navigation</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
                 <field id="category_links" translate="label,comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Category filters as link</label>
                     <comment>When category filter is not of type tree in Tweakwise use links to child categories instead of filter values.</comment>

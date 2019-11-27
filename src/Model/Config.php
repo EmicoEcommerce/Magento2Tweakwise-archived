@@ -118,6 +118,15 @@ class Config
      * @param Store|null $store
      * @return bool
      */
+    public function isAjaxFiltering(Store $store = null)
+    {
+        return (bool) $this->getStoreConfig('tweakwise/layered/ajax_filters', $store);
+    }
+
+    /**
+     * @param Store|null $store
+     * @return bool
+     */
     public function getCategoryAsLink(Store $store = null)
     {
         return (bool) $this->getStoreConfig('tweakwise/layered/category_links', $store);
