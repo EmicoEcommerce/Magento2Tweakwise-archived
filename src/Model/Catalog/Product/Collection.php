@@ -14,7 +14,6 @@ use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Indexer\Product\Flat\State;
 use Magento\Catalog\Model\Product\OptionFactory;
 use Magento\Catalog\Model\ResourceModel\Helper as CatalogResourceHelper;
-use Magento\Catalog\Model\ResourceModel\Product\Collection as ProductCollection;
 use Magento\Catalog\Model\ResourceModel\Url;
 use Magento\Customer\Api\GroupManagementInterface;
 use Magento\Customer\Model\Session;
@@ -32,7 +31,6 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\Validator\UniversalFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
-use Zend_Db_Select;
 
 class Collection extends AbstractCollection
 {
@@ -108,7 +106,7 @@ class Collection extends AbstractCollection
      * @param string $query
      * @return $this
      */
-    public function addSearchFilter($query)
+    public function addSearchFilter(string $query)
     {
         $request = $this->navigationContext->getRequest();
         if ($request instanceof ProductSearchRequest) {

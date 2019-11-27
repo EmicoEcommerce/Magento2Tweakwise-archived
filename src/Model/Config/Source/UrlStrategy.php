@@ -10,9 +10,9 @@ namespace Emico\Tweakwise\Model\Config\Source;
 
 use Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\PathSlugStrategy;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy;
-use Magento\Framework\Option\ArrayInterface;
+use Magento\Framework\Data\OptionSourceInterface;
 
-class UrlStrategy implements ArrayInterface
+class UrlStrategy implements OptionSourceInterface
 {
     /**
      * Possible filter types

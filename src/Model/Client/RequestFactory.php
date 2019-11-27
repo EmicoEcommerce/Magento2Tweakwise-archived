@@ -18,7 +18,7 @@ class RequestFactory
      *
      * @var ObjectManagerInterface
      */
-    protected $objectManager = null;
+    protected $objectManager;
 
     /**
      * @var string

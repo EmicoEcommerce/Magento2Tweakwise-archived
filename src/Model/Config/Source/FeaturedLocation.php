@@ -8,9 +8,9 @@
 
 namespace Emico\Tweakwise\Model\Config\Source;
 
-use Magento\Framework\Option\ArrayInterface;
+use Magento\Framework\Data\OptionSourceInterface;
 
-class FeaturedLocation implements ArrayInterface
+class FeaturedLocation implements OptionSourceInterface
 {
     /**
      * Possible product locations

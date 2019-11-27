@@ -8,10 +8,17 @@
 
 namespace Emico\Tweakwise\Model\Autocomplete\DataProvider;
 
-use Magento\Catalog\Helper\Product as ProductHelper;
+use Magento\Catalog\Block\Product\Image;
+use Magento\Catalog\Block\Product\ImageBuilder;
+use Magento\Catalog\Block\Product\ImageFactory;
 use Magento\Catalog\Model\Product;
 use Magento\Search\Model\Autocomplete\ItemInterface;
+use Magento\Framework\App\ProductMetadataInterface;
 
+/**
+ * Class ProductItem
+ * @package Emico\Tweakwise\Model\Autocomplete\DataProvider
+ */
 class ProductItem implements ItemInterface
 {
     /**
@@ -20,26 +27,44 @@ class ProductItem implements ItemInterface
     protected $product;
 
     /**
-     * @var ProductHelper
+     * @var ImageFactory
      */
-    protected $productHelper;
+    protected $imageFactory;
+
+    /**
+     * @var ImageBuilder
+     */
+    protected $imageBuilder;
+
+    /**
+     * @var ProductMetadataInterface
+     */
+    protected $productMetadata;
 
     /**
      * ProductItem constructor.
      *
      * @param Product $product
-     * @param ProductHelper $productHelper
+     * @param ImageFactory $imageFactory
+     * @param ImageBuilder $imageBuilder
+     * @param ProductMetadataInterface $productMetadata
      */
-    public function __construct(Product $product, ProductHelper $productHelper)
-    {
+    public function __construct(
+        Product $product,
+        ImageFactory $imageFactory,
+        ImageBuilder $imageBuilder,
+        ProductMetadataInterface $productMetadata
+    ) {
         $this->product = $product;
-        $this->productHelper = $productHelper;
+        $this->imageFactory = $imageFactory;
+        $this->imageBuilder = $imageBuilder;
+        $this->productMetadata = $productMetadata;
     }
 
     /**
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->product->getName();
     }
@@ -47,16 +72,16 @@ class ProductItem implements ItemInterface
     /**
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
-        $productHelper = $this->productHelper;
         $product = $this->product;
         $price = $product->getPriceInfo();
+        $image = $this->getImage();
 
         return [
             'title' => $this->getTitle(),
             'url' => $product->getProductUrl(),
-            'image' => $productHelper->getSmallImageUrl($product),
+            'image' => $image->getImageUrl(),
             'price' => (float) $price->getPrice('regular_price')->getValue(),
             'final_price' => (float) $price->getPrice('final_price')->getValue(),
             'type' => 'product',
@@ -70,5 +95,26 @@ class ProductItem implements ItemInterface
     public function getProduct()
     {
         return $this->product;
+    }
+
+    /**
+     * ImageFactory class does not exist in 2.2 so we need a proxy
+     *
+     * @return Image
+     */
+    protected function getImage(): Image
+    {
+        $version = $this->productMetadata->getVersion();
+        if (version_compare($version, '2.3.0', '<')) {
+            $imageResolver = $this->imageBuilder;
+        } else {
+            $imageResolver = $this->imageFactory;
+        }
+
+        return $imageResolver->create(
+            $this->product,
+            'product_thumbnail_image',
+            []
+        );
     }
 }
