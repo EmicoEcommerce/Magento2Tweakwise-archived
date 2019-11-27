@@ -70,9 +70,15 @@
     </type>
     <type name="Emico\Tweakwise\Model\Autocomplete\DataProvider">
         <arguments>
-            <argument name="productItemFactory" xsi:type="object">Emico\Tweakwise\Model\Autocomplete\DataProvider\ProductItemFactory</argument>
             <argument name="queryFactory" xsi:type="object">Magento\Search\Model\QueryFactory</argument>
             <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\AutocompleteRequest</argument>
+        </arguments>
+    </type>
+
+    <type name="Emico\Tweakwise\Model\Autocomplete\DataProvider\ProductItem">
+        <arguments>
+            <argument name="imageFactory" xsi:type="object">Magento\Catalog\Block\Product\ImageFactory\Proxy</argument>
+            <argument name="imageBuilder" xsi:type="object">Magento\Catalog\Block\Product\ImageBuilder\Proxy</argument>
         </arguments>
     </type>
 
