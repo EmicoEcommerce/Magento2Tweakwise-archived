@@ -25,7 +25,6 @@ use Magento\Search\Model\Autocomplete\DataProviderInterface;
 use Magento\Search\Model\Autocomplete\ItemInterface;
 use Magento\Search\Model\Query;
 use Magento\Search\Model\QueryFactory;
-use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
 
 class DataProvider implements DataProviderInterface
