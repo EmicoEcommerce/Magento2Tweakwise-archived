@@ -142,7 +142,7 @@ class DataProvider implements DataProviderInterface
      */
     public function setQueryText($text)
     {
-        $this->queryText = $text;
+        $this->queryText = $text ? (string) $text : null;
     }
 
     /**
@@ -150,7 +150,7 @@ class DataProvider implements DataProviderInterface
      */
     public function setCategoryId($categoryId)
     {
-        $this->categoryId = $categoryId;
+        $this->categoryId = $categoryId ? (int) $categoryId : null;
     }
 
     /**
@@ -186,7 +186,7 @@ class DataProvider implements DataProviderInterface
     protected function getCategory()
     {
         $categoryId = $this->categoryId ?? $this->request->getParam('cid');
-        if ($this->config->isAutocompleteStayInCategory() && $categoryId) {
+        if ($categoryId && $this->config->isAutocompleteStayInCategory()) {
             $categoryId = (int) $categoryId;
 
             try {
