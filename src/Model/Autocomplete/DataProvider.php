@@ -96,6 +96,11 @@ class DataProvider implements DataProviderInterface
     protected $queryText;
 
     /**
+     * @var bool
+     */
+    protected $addMediaGalleryData = false;
+
+    /**
      * DataProvider constructor.
      *
      * @param ProductItemFactory $productItemFactory
@@ -151,6 +156,14 @@ class DataProvider implements DataProviderInterface
     public function setCategoryId($categoryId)
     {
         $this->categoryId = $categoryId ? (int) $categoryId : null;
+    }
+
+    /**
+     * @param bool $addMediaGalleryData
+     */
+    public function setAddMediaGalleryData(bool $addMediaGalleryData = true)
+    {
+        $this->addMediaGalleryData = $addMediaGalleryData;
     }
 
     /**
@@ -211,7 +224,10 @@ class DataProvider implements DataProviderInterface
         $productCollection->setStore($this->storeManager->getStore());
         $productCollection->addAttributeToFilter('entity_id', ['in' => $response->getProductIds()]);
         $this->collectionFilter->filter($productCollection, $this->getCategory());
-        $productCollection->addMediaGalleryData();
+
+        if ($this->addMediaGalleryData) {
+            $productCollection->addMediaGalleryData();
+        }
 
         $result = [];
         foreach ($response->getProductIds() as $productId) {
