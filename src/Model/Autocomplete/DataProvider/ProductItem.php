@@ -64,7 +64,7 @@ class ProductItem implements ItemInterface
     /**
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->product->getName();
     }
@@ -72,7 +72,7 @@ class ProductItem implements ItemInterface
     /**
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         $product = $this->product;
         $price = $product->getPriceInfo();
