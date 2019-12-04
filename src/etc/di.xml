@@ -127,12 +127,6 @@
             <argument name="filterableAttributes" xsi:type="object">Magento\Catalog\Model\Layer\Search\FilterableAttributeList</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\Autocomplete" type="Emico\Tweakwise\Model\Catalog\Layer\NavigationContext">
-        <arguments>
-            <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\ProductSearchRequest</argument>
-            <argument name="filterableAttributes" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\FilterList\EmptyAttributeList</argument>
-        </arguments>
-    </virtualType>
     <virtualType name="Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context\Product\Upsell" type="Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context">
         <arguments>
             <argument name="client" xsi:type="object">Emico\Tweakwise\Model\Client</argument>
