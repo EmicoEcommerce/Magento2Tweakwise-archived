@@ -90,6 +90,14 @@ class ProductItem implements ItemInterface
     }
 
     /**
+     * @return Product
+     */
+    public function getProduct()
+    {
+        return $this->product;
+    }
+
+    /**
      * ImageFactory class does not exist in 2.2 so we need a proxy
      *
      * @return Image

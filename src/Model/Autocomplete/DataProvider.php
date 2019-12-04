@@ -20,6 +20,7 @@ use Magento\Catalog\Model\CategoryRepository;
 use Magento\Catalog\Model\Layer\Category\CollectionFilter;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as ProductCollectionFactory;
 use Magento\Framework\App\Request\Http as HttpRequest;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Search\Model\Autocomplete\DataProviderInterface;
 use Magento\Search\Model\Autocomplete\ItemInterface;
@@ -85,6 +86,21 @@ class DataProvider implements DataProviderInterface
     protected $request;
 
     /**
+     * @var int|null
+     */
+    protected $categoryId;
+
+    /**
+     * @var string|null
+     */
+    protected $queryText;
+
+    /**
+     * @var bool
+     */
+    protected $addMediaGalleryData = false;
+
+    /**
      * DataProvider constructor.
      *
      * @param ProductItemFactory $productItemFactory
@@ -111,8 +127,7 @@ class DataProvider implements DataProviderInterface
         CategoryRepository $categoryRepository,
         Config $config,
         HttpRequest $request
-    )
-    {
+    ) {
         $this->productItemFactory = $productItemFactory;
         $this->suggestionItemFactory = $suggestionItemFactory;
         $this->queryFactory = $queryFactory;
@@ -127,27 +142,79 @@ class DataProvider implements DataProviderInterface
     }
 
     /**
+     * @param string|null $text
+     */
+    public function setQueryText(string $text = null)
+    {
+        $this->queryText = $text;
+    }
+
+    /**
+     * @param int|null $categoryId
+     */
+    public function setCategoryId(int $categoryId = null)
+    {
+        $this->categoryId = $categoryId;
+    }
+
+    /**
+     * @param bool $addMediaGalleryData
+     */
+    public function setAddMediaGalleryData(bool $addMediaGalleryData = true)
+    {
+        $this->addMediaGalleryData = $addMediaGalleryData;
+    }
+
+    /**
+     * @return ItemInterface[]
+     */
+    public function getItems()
+    {
+        /** @var Query $query */
+        $query = $this->queryFactory->get();
+        $query = $this->queryText ?? $query->getQueryText();
+        $config = $this->config;
+
+        /** @var AutocompleteRequest $request */
+        $request = $this->requestFactory->create();
+        $request->addCategoryFilter($this->getCategory());
+        $request->setGetProducts($config->isAutocompleteProductsEnabled());
+        $request->setGetSuggestions($config->isAutocompleteSuggestionsEnabled());
+        $request->setMaxResult($config->getAutocompleteMaxResults());
+        $request->setSearch($query);
+
+        /** @var AutocompleteResponse $response */
+        $response = $this->client->request($request);
+
+        $productResult = $this->getProductItems($response);
+        $suggestionResult = $this->getSuggestionResult($response);
+
+        return array_merge($suggestionResult, $productResult);
+    }
+
+    /**
      * @return Category
      */
     protected function getCategory()
     {
-        if ($this->config->isAutocompleteStayInCategory() && $this->request->getParam('cid')) {
-            $categoryId = (int) $this->request->getParam('cid');
-
+        $categoryId = (int)($this->categoryId ?? $this->request->getParam('cid'));
+        if ($categoryId && $this->config->isAutocompleteStayInCategory()) {
             try {
                 return $this->categoryRepository->get($categoryId);
-            } catch (NoSuchEntityException $e) {}
+            } catch (NoSuchEntityException $e) {
+
+            }
         }
 
         $store = $this->storeManager->getStore();
         $categoryId = $store->getRootCategoryId();
         return $this->categoryRepository->get($categoryId);
-
     }
 
     /**
      * @param AutocompleteResponse $response
      * @return ItemInterface[]
+     * @throws LocalizedException
      */
     protected function getProductItems(AutocompleteResponse $response)
     {
@@ -155,6 +222,10 @@ class DataProvider implements DataProviderInterface
         $productCollection->setStore($this->storeManager->getStore());
         $productCollection->addAttributeToFilter('entity_id', ['in' => $response->getProductIds()]);
         $this->collectionFilter->filter($productCollection, $this->getCategory());
+
+        if ($this->addMediaGalleryData) {
+            $productCollection->addMediaGalleryData();
+        }
 
         $result = [];
         foreach ($response->getProductIds() as $productId) {
@@ -180,32 +251,5 @@ class DataProvider implements DataProviderInterface
             $result[] = $this->suggestionItemFactory->create(['suggestion' => $suggestion]);
         }
         return $result;
-    }
-
-    /**
-     * @return ItemInterface[]
-     */
-    public function getItems()
-    {
-        /** @var Query $query */
-        $query = $this->queryFactory->get();
-        $query = $query->getQueryText();
-        $config = $this->config;
-
-        /** @var AutocompleteRequest $request */
-        $request = $this->requestFactory->create();
-        $request->addCategoryFilter($this->getCategory());
-        $request->setGetProducts($config->isAutocompleteProductsEnabled());
-        $request->setGetSuggestions($config->isAutocompleteSuggestionsEnabled());
-        $request->setMaxResult($config->getAutocompleteMaxResults());
-        $request->setSearch($query);
-
-        /** @var AutocompleteResponse $response */
-        $response = $this->client->request($request);
-
-        $productResult = $this->getProductItems($response);
-        $suggestionResult = $this->getSuggestionResult($response);
-
-        return array_merge($suggestionResult, $productResult);
     }
 }

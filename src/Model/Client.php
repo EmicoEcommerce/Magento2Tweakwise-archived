@@ -153,21 +153,32 @@ class Client
             if ($index === '@attributes') {
                 continue;
             }
-            if ($node instanceof SimpleXMLElement) {
-                $value = $this->xmlToArray($node);
-            } elseif (is_array($node)) {
-                $value = [];
-                foreach ($node as $element) {
-                    $value[] = $this->xmlToArray($element);
-                }
-            } else {
-                $value = (string) $node;
-            }
 
-            $result[$index] = $value;
+            $result[$index] = $this->xmlToArrayValue($node);
         }
 
         return $result;
+    }
+
+    /**
+     * @param mixed $value
+     * @return array|string
+     */
+    protected function xmlToArrayValue($value)
+    {
+        if ($value instanceof SimpleXMLElement) {
+            return $this->xmlToArray($value);
+        }
+
+        if (is_array($value)) {
+            $values = [];
+            foreach ($value as $element) {
+                $values[] = $this->xmlToArrayValue($element);
+            }
+            return $values;
+        }
+
+        return (string) $value;
     }
 
     /**
