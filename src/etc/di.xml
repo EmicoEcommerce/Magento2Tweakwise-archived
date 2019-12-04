@@ -9,6 +9,15 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 
+    <preference for="Emico\Tweakwise\Api\AttributeSlugRepositoryInterface" type="Emico\Tweakwise\Model\AttributeSlugRepository"/>
+    <preference for="Emico\Tweakwise\Api\Data\AttributeSlugSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+    <preference for="Emico\Tweakwise\Api\Data\AttributeSlugInterface" type="Emico\Tweakwise\Model\AttributeSlug"/>
+
+    <preference for="Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface" type="Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy" />
+    <preference for="Emico\Tweakwise\Model\Catalog\Layer\Url\FilterApplierInterface" type="Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy" />
+    <preference for="Emico\Tweakwise\Model\Catalog\Layer\Url\RouteMatchingInterface" type="Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\NullStrategy" />
+    <preference for="Emico\Tweakwise\Model\Catalog\Layer\Url\CategoryUrlInterface" type="Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy" />
+
     <!-- Frontend plugins -->
     <type name="Magento\Catalog\Model\Layer\FilterList">
         <plugin name="emico-tweakwise" type="Emico\Tweakwise\Model\Catalog\Layer\FilterList\Plugin" />
@@ -135,11 +144,6 @@
             <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Recommendations\FeaturedRequest</argument>
         </arguments>
     </virtualType>
-
-    <preference for="Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface" type="Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy" />
-    <preference for="Emico\Tweakwise\Model\Catalog\Layer\Url\FilterApplierInterface" type="Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy" />
-    <preference for="Emico\Tweakwise\Model\Catalog\Layer\Url\RouteMatchingInterface" type="Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\NullStrategy" />
-    <preference for="Emico\Tweakwise\Model\Catalog\Layer\Url\CategoryUrlInterface" type="Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy" />
 
     <type name="Emico\Tweakwise\Model\Catalog\Layer\Url">
         <arguments>
@@ -307,8 +311,5 @@
             <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\Recommendations\FeaturedRequest</argument>
         </arguments>
     </virtualType>
-    
-    <preference for="Emico\Tweakwise\Api\AttributeSlugRepositoryInterface" type="Emico\Tweakwise\Model\AttributeSlugRepository"/>
-    <preference for="Emico\Tweakwise\Api\Data\AttributeSlugSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
-    <preference for="Emico\Tweakwise\Api\Data\AttributeSlugInterface" type="Emico\Tweakwise\Model\AttributeSlug"/>
+
 </config>
