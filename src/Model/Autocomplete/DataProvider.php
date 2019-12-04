@@ -127,8 +127,7 @@ class DataProvider implements DataProviderInterface
         CategoryRepository $categoryRepository,
         Config $config,
         HttpRequest $request
-    )
-    {
+    ) {
         $this->productItemFactory = $productItemFactory;
         $this->suggestionItemFactory = $suggestionItemFactory;
         $this->queryFactory = $queryFactory;
@@ -145,17 +144,17 @@ class DataProvider implements DataProviderInterface
     /**
      * @param string|null $text
      */
-    public function setQueryText($text)
+    public function setQueryText(string $text = null)
     {
-        $this->queryText = $text ? (string) $text : null;
+        $this->queryText = $text;
     }
 
     /**
      * @param int|null $categoryId
      */
-    public function setCategoryId($categoryId)
+    public function setCategoryId(int $categoryId = null)
     {
-        $this->categoryId = $categoryId ? (int) $categoryId : null;
+        $this->categoryId = $categoryId;
     }
 
     /**
@@ -198,19 +197,18 @@ class DataProvider implements DataProviderInterface
      */
     protected function getCategory()
     {
-        $categoryId = $this->categoryId ?? $this->request->getParam('cid');
+        $categoryId = (int)($this->categoryId ?? $this->request->getParam('cid'));
         if ($categoryId && $this->config->isAutocompleteStayInCategory()) {
-            $categoryId = (int) $categoryId;
-
             try {
                 return $this->categoryRepository->get($categoryId);
-            } catch (NoSuchEntityException $e) {}
+            } catch (NoSuchEntityException $e) {
+
+            }
         }
 
         $store = $this->storeManager->getStore();
         $categoryId = $store->getRootCategoryId();
         return $this->categoryRepository->get($categoryId);
-
     }
 
     /**
