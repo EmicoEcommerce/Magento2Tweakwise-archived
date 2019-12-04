@@ -14,7 +14,6 @@ use Emico\Tweakwise\Model\Client\RequestFactory;
 use Emico\Tweakwise\Model\Client\Response\RecommendationsResponse;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\Config as CatalogConfig;
-use Magento\Framework\Exception\LocalizedException;
 
 class Context
 {
@@ -67,9 +66,13 @@ class Context
      * @param CatalogConfig $catalogConfig
      * @param Visibility $visibility
      */
-    public function __construct(Client $client, RequestFactory $requestFactory, CollectionFactory $collectionFactory,
-        CatalogConfig $catalogConfig, Visibility $visibility)
-    {
+    public function __construct(
+        Client $client,
+        RequestFactory $requestFactory,
+        CollectionFactory $collectionFactory,
+        CatalogConfig $catalogConfig,
+        Visibility $visibility
+    ) {
         $this->client = $client;
         $this->requestFactory = $requestFactory;
         $this->collectionFactory = $collectionFactory;
