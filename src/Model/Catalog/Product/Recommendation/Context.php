@@ -14,6 +14,7 @@ use Emico\Tweakwise\Model\Client\RequestFactory;
 use Emico\Tweakwise\Model\Client\Response\RecommendationsResponse;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\Config as CatalogConfig;
+use Magento\Framework\Exception\LocalizedException;
 
 class Context
 {
