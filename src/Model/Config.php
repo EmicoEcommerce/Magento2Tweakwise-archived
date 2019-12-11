@@ -70,7 +70,7 @@ class Config
      */
     public function setTweakwiseExceptionThrown($thrown = true)
     {
-        $this->tweakwiseExceptionThrown = (bool) $thrown;
+        $this->tweakwiseExceptionThrown = (bool)$thrown;
         return $this;
     }
 
@@ -80,7 +80,7 @@ class Config
      */
     public function getGeneralServerUrl(Store $store = null)
     {
-        return (string) $this->getStoreConfig('tweakwise/general/server_url', $store);
+        return (string)$this->getStoreConfig('tweakwise/general/server_url', $store);
     }
 
     /**
@@ -89,7 +89,7 @@ class Config
      */
     public function getGeneralAuthenticationKey(Store $store = null)
     {
-        return (string) $this->getStoreConfig('tweakwise/general/authentication_key', $store);
+        return (string)$this->getStoreConfig('tweakwise/general/authentication_key', $store);
     }
 
     /**
@@ -98,7 +98,7 @@ class Config
      */
     public function getTimeout(Store $store = null)
     {
-        return (int) $this->getStoreConfig('tweakwise/general/timeout', $store);
+        return (int)$this->getStoreConfig('tweakwise/general/timeout', $store);
     }
 
     /**
@@ -111,7 +111,7 @@ class Config
             return false;
         }
 
-        return (bool) $this->getStoreConfig('tweakwise/layered/enabled', $store);
+        return (bool)$this->getStoreConfig('tweakwise/layered/enabled', $store);
     }
 
     /**
@@ -120,7 +120,7 @@ class Config
      */
     public function isAjaxFiltering(Store $store = null)
     {
-        return (bool) $this->getStoreConfig('tweakwise/layered/ajax_filters', $store);
+        return (bool)$this->getStoreConfig('tweakwise/layered/ajax_filters', $store);
     }
 
     /**
@@ -129,7 +129,7 @@ class Config
      */
     public function getCategoryAsLink(Store $store = null)
     {
-        return (bool) $this->getStoreConfig('tweakwise/layered/category_links', $store);
+        return (bool)$this->getStoreConfig('tweakwise/layered/category_links', $store);
     }
 
     /**
@@ -138,7 +138,7 @@ class Config
      */
     public function getHideSingleOptions(Store $store = null)
     {
-        return (bool) $this->getStoreConfig('tweakwise/layered/hide_single_option', $store);
+        return (bool)$this->getStoreConfig('tweakwise/layered/hide_single_option', $store);
     }
 
     /**
@@ -147,7 +147,7 @@ class Config
      */
     public function getUseDefaultLinkRenderer(Store $store = null)
     {
-        return (bool) $this->getStoreConfig('tweakwise/layered/default_link_renderer', $store);
+        return (bool)$this->getStoreConfig('tweakwise/layered/default_link_renderer', $store);
     }
 
     /**
@@ -156,7 +156,7 @@ class Config
      */
     public function getUseFormFilters(Store $store = null)
     {
-        return (bool) $this->getStoreConfig('tweakwise/layered/form_filters', $store);
+        return (bool)$this->getStoreConfig('tweakwise/layered/form_filters', $store);
     }
 
     /**
@@ -165,7 +165,7 @@ class Config
      */
     public function getQueryFilterType(Store $store = null)
     {
-        return (string) $this->getStoreConfig('tweakwise/layered/query_filter_type', $store);
+        return (string)$this->getStoreConfig('tweakwise/layered/query_filter_type', $store);
     }
 
     /**
@@ -191,7 +191,7 @@ class Config
      */
     public function getQueryFilterRegex(Store $store = null)
     {
-        return (string) $this->getStoreConfig('tweakwise/layered/query_filter_regex', $store);
+        return (string)$this->getStoreConfig('tweakwise/layered/query_filter_regex', $store);
     }
 
     /**
@@ -217,7 +217,7 @@ class Config
             return false;
         }
 
-        return (bool) $this->getStoreConfig('tweakwise/autocomplete/enabled', $store);
+        return (bool)$this->getStoreConfig('tweakwise/autocomplete/enabled', $store);
     }
 
     /**
@@ -226,7 +226,7 @@ class Config
      */
     public function isAutocompleteProductsEnabled(Store $store = null)
     {
-        return (bool) $this->getStoreConfig('tweakwise/autocomplete/show_products', $store);
+        return (bool)$this->getStoreConfig('tweakwise/autocomplete/show_products', $store);
     }
 
     /**
@@ -235,7 +235,7 @@ class Config
      */
     public function isAutocompleteSuggestionsEnabled(Store $store = null)
     {
-        return (bool) $this->getStoreConfig('tweakwise/autocomplete/show_suggestions', $store);
+        return (bool)$this->getStoreConfig('tweakwise/autocomplete/show_suggestions', $store);
     }
 
     /**
@@ -244,7 +244,7 @@ class Config
      */
     public function getAutocompleteMaxResults(Store $store = null)
     {
-        return (int) $this->getStoreConfig('tweakwise/autocomplete/max_results', $store);
+        return (int)$this->getStoreConfig('tweakwise/autocomplete/max_results', $store);
     }
 
     /**
@@ -253,7 +253,7 @@ class Config
      */
     public function isAutocompleteStayInCategory(Store $store = null)
     {
-        return (bool) $this->getStoreConfig('tweakwise/autocomplete/in_current_category', $store);
+        return (bool)$this->getStoreConfig('tweakwise/autocomplete/in_current_category', $store);
     }
 
     /**
@@ -262,7 +262,7 @@ class Config
      */
     public function isSearchEnabled(Store $store = null)
     {
-        return (int) $this->getStoreConfig('tweakwise/search/enabled', $store);
+        return (int)$this->getStoreConfig('tweakwise/search/enabled', $store);
     }
 
     /**
@@ -271,7 +271,7 @@ class Config
      */
     public function getSearchTemplateId(Store $store = null)
     {
-        return (int) $this->getStoreConfig('tweakwise/search/template', $store);
+        return (int)$this->getStoreConfig('tweakwise/search/template', $store);
     }
 
     /**
@@ -282,7 +282,7 @@ class Config
     public function isRecommendationsEnabled($type, Store $store = null)
     {
         $this->validateRecommendationType($type);
-        return (bool) $this->getStoreConfig(sprintf('tweakwise/recommendations/%s_enabled', $type), $store);
+        return (bool)$this->getStoreConfig(sprintf('tweakwise/recommendations/%s_enabled', $type), $store);
     }
 
     /**
@@ -293,7 +293,7 @@ class Config
     public function getRecommendationsTemplate($type, Store $store = null)
     {
         $this->validateRecommendationType($type);
-        return (int) $this->getStoreConfig(sprintf('tweakwise/recommendations/%s_template', $type), $store);
+        return (int)$this->getStoreConfig(sprintf('tweakwise/recommendations/%s_template', $type), $store);
     }
 
     /**
@@ -313,7 +313,7 @@ class Config
      */
     public function getRecommendationsFeaturedLocation(Store $store = null)
     {
-        return (string) $this->getStoreConfig('tweakwise/recommendations/featured_location', $store);
+        return (string)$this->getStoreConfig('tweakwise/recommendations/featured_location', $store);
     }
 
     /**
@@ -322,7 +322,7 @@ class Config
      */
     public function isSeoEnabled(Store $store = null)
     {
-        return (bool) $this->getStoreConfig('tweakwise/seo/enabled', $store);
+        return (bool)$this->getStoreConfig('tweakwise/seo/enabled', $store);
     }
 
     /**
@@ -352,7 +352,7 @@ class Config
     {
         return $this->getStoreConfig('tweakwise/search/language', $store);
     }
-    
+
     /**
      * @param Store|null $store
      * @param string $path
@@ -394,19 +394,19 @@ class Config
 
     /**
      * @param array $navigationOptions
-     * @return string
+     * @return array
      */
-    public function getJsNavigationConfig(array $navigationOptions = []): string
+    public function getJsNavigationConfig(): array
     {
-        return $this->jsonSerializer->serialize([
-            'tweakwiseNavigationFilter' => array_merge(
-                [
-                    'formFilters' => $this->getUseFormFilters(),
+        if (!$this->getUseFormFilters()) {
+            return [
+                'tweakwiseNavigationFilter' => [
                     'seoEnabled' => $this->isSeoEnabled()
                 ],
-                $navigationOptions
-            )
-        ]);
+            ];
+        }
+
+        return [];
     }
 
     /**

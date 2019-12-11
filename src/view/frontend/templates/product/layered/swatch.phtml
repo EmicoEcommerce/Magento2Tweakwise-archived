@@ -9,10 +9,11 @@
 /** @var $block \Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SwatchRenderer */
 ?>
 <?php $swatchData = $block->getSwatchData(); ?>
+<?php $navigationConfig = $block->getJsNavigationConfig();?>
 <div class="swatch-attribute swatch-layered <?= /* @escapeNotVerified */ $swatchData['attribute_code'] ?>"
      attribute-code="<?= /* @escapeNotVerified */ $swatchData['attribute_code'] ?>"
      attribute-id="<?= /* @escapeNotVerified */ $swatchData['attribute_id'] ?>"
-     data-mage-init='<?=$block->getJsNavigationConfig()?>'>
+     <?php if ($navigationConfig):?> data-mage-init='<?=$navigationConfig?>' <?php endif;?>>
     <div class="swatch-attribute-options clearfix">
         <?php foreach ($swatchData['options'] as $option => $label): ?>
             <?php $item = $block->getItemForSwatch($option);?>

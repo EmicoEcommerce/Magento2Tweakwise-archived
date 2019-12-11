@@ -166,7 +166,7 @@ class Type
             }
         }
 
-        throw new BadMethodCallException(sprintf('Invalid method %1::%2', get_class($this), $method));
+        throw new BadMethodCallException(sprintf('Invalid method %s::%s', get_class($this), $method));
     }
 
     /**

@@ -19,6 +19,7 @@ use Magento\Swatches\Helper\Data;
 use Magento\Swatches\Helper\Media;
 use Emico\Tweakwise\Model\Config;
 use Emico\Tweakwise\Model\Seo\FilterHelper;
+use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory as EavAttributeFactory;
 
 class SwatchRenderer extends RenderLayered
@@ -48,6 +49,11 @@ class SwatchRenderer extends RenderLayered
     protected $eavAttributeFactory;
 
     /**
+     * @var Json
+     */
+    protected $jsonSerializer;
+
+    /**
      * SwatchRenderer constructor.
      * @param Context $context
      * @param Attribute $eavAttribute
@@ -67,6 +73,7 @@ class SwatchRenderer extends RenderLayered
         Config $config,
         EavAttributeFactory $eavAttributeFactory,
         FilterHelper $filterHelper,
+        Json $jsonSerializer,
         array $data = []
     )
     {
@@ -74,6 +81,7 @@ class SwatchRenderer extends RenderLayered
         $this->config = $config;
         $this->eavAttributeFactory = $eavAttributeFactory;
         $this->filterHelper = $filterHelper;
+        $this->jsonSerializer = $jsonSerializer;
     }
 
     /**
@@ -124,6 +132,7 @@ class SwatchRenderer extends RenderLayered
      */
     public function getJsNavigationConfig()
     {
-        return $this->config->getJsNavigationConfig();
+        $navigationConfig = $this->config->getJsNavigationConfig();
+        return $this->jsonSerializer->serialize($navigationConfig);
     }
 }

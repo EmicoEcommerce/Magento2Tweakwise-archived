@@ -100,8 +100,7 @@ class DefaultRenderer extends Template
      */
     public function hasAlternateSortOrder()
     {
-        $filter = function (Item $item)
-        {
+        $filter = function (Item $item) {
             return $item->getAlternateSortOrder() !== null;
         };
 
@@ -216,8 +215,14 @@ class DefaultRenderer extends Template
      */
     public function getJsNavigationConfig(): string
     {
-        $navigationOptions = ['hasAlternateSort' => $this->hasAlternateSortOrder()];
-        return $this->config->getJsNavigationConfig($navigationOptions);
+        $navigationConfig = $this->config->getJsNavigationConfig();
+        $sortOrderConfig = [
+            'tweakwiseNavigationSort' => [
+                'hasAlternateSortOrder' => $this->hasAlternateSortOrder()
+            ]
+        ];
+
+        return $this->jsonSerializer->serialize(array_merge($navigationConfig, $sortOrderConfig));
     }
 
     /**

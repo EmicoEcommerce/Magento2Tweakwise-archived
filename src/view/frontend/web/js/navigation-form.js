@@ -8,9 +8,7 @@
 define(['jquery', 'jquery/ui'], function($) {
     $.widget('tweakwise.navigationForm', {
         _hookEvents: function() {
-            if (this.options.hasOwnProperty('formFilters') && this.options.formFilters === "1") {
-                this.element.on('submit', this._handleFilterButtonClick.bind(this));
-            }
+            this.element.on('submit', this._handleFilterButtonClick.bind(this));
         },
 
         _handleFilterButtonClick: function(event) {
