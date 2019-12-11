@@ -6,22 +6,22 @@
 
 namespace Emico\Tweakwise\Block\LayeredNavigation\Navigation;
 
-use Emico\Tweakwise\Model\Config;
+use Emico\Tweakwise\Model\NavigationConfig;
 use Magento\LayeredNavigation\Block\Navigation;
 
 class Plugin
 {
     /**
-     * @var Config
+     * @var NavigationConfig
      */
-    protected $config;
+    protected $navigationConfig;
 
     /**
-     * @param Config $config
+     * @param NavigationConfig $navigationConfig
      */
-    public function __construct(Config $config)
+    public function __construct(NavigationConfig $navigationConfig)
     {
-        $this->config = $config;
+        $this->navigationConfig = $navigationConfig;
     }
 
     /**
@@ -31,7 +31,7 @@ class Plugin
      */
     public function afterGetFilters(Navigation $block, $result)
     {
-        $block->setData('form_filters', $this->config->getUseFormFilters());
+        $block->setData('form_filters', $this->navigationConfig->getJsFormConfig());
         return $result;
     }
 }

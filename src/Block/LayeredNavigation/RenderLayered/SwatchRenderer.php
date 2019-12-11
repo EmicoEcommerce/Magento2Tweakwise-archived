@@ -9,6 +9,7 @@
 namespace Emico\Tweakwise\Block\LayeredNavigation\RenderLayered;
 
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
+use Emico\Tweakwise\Model\NavigationConfig;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Layer\Filter\AttributeFactory;
 use Magento\Eav\Model\Entity\Attribute;
@@ -54,6 +55,11 @@ class SwatchRenderer extends RenderLayered
     protected $jsonSerializer;
 
     /**
+     * @var NavigationConfig
+     */
+    protected $navigationConfig;
+
+    /**
      * SwatchRenderer constructor.
      * @param Context $context
      * @param Attribute $eavAttribute
@@ -61,7 +67,10 @@ class SwatchRenderer extends RenderLayered
      * @param Data $swatchHelper
      * @param Media $mediaHelper
      * @param Config $config
-     * @param EavAttributeFactory $attributeFactory
+     * @param NavigationConfig $navigationConfig
+     * @param EavAttributeFactory $eavAttributeFactory
+     * @param FilterHelper $filterHelper
+     * @param Json $jsonSerializer
      * @param array $data
      */
     public function __construct(
@@ -72,6 +81,7 @@ class SwatchRenderer extends RenderLayered
         Media $mediaHelper,
         Config $config,
         EavAttributeFactory $eavAttributeFactory,
+        NavigationConfig $navigationConfig,
         FilterHelper $filterHelper,
         Json $jsonSerializer,
         array $data = []
@@ -82,6 +92,7 @@ class SwatchRenderer extends RenderLayered
         $this->eavAttributeFactory = $eavAttributeFactory;
         $this->filterHelper = $filterHelper;
         $this->jsonSerializer = $jsonSerializer;
+        $this->navigationConfig = $navigationConfig;
     }
 
     /**
@@ -130,9 +141,23 @@ class SwatchRenderer extends RenderLayered
     /**
      * @return string
      */
-    public function getJsNavigationConfig()
+    public function getJsFilterNavigationConfig()
     {
-        $navigationConfig = $this->config->getJsNavigationConfig();
-        return $this->jsonSerializer->serialize($navigationConfig);
+        return $this->navigationConfig->getJsFilterNavigationConfig($this->hasAlternateSortOrder());
+    }
+
+    /**
+     * @return boolean
+     */
+    protected function hasAlternateSortOrder()
+    {
+        $filter = static function (Item $item) {
+            return $item->getAlternateSortOrder() !== null;
+        };
+
+        $items = $this->filter->getItems();
+        $itemsWithAlternateSortOrder = array_filter($items, $filter);
+
+        return count($items) === count($itemsWithAlternateSortOrder);
     }
 }

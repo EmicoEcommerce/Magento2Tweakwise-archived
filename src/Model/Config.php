@@ -393,31 +393,6 @@ class Config
     }
 
     /**
-     * @param array $navigationOptions
-     * @return array
-     */
-    public function getJsNavigationConfig(): array
-    {
-        if (!$this->getUseFormFilters()) {
-            return [
-                'tweakwiseNavigationFilter' => [
-                    'seoEnabled' => $this->isSeoEnabled()
-                ],
-            ];
-        }
-
-        return [];
-    }
-
-    /**
-     * @return string|bool
-     */
-    public function getJsUseFormFilters()
-    {
-        return $this->jsonSerializer->serialize($this->getUseFormFilters());
-    }
-
-    /**
      * @return string|null
      */
     public function getUserAgentString()

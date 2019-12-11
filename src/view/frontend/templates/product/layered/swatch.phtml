@@ -9,7 +9,7 @@
 /** @var $block \Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SwatchRenderer */
 ?>
 <?php $swatchData = $block->getSwatchData(); ?>
-<?php $navigationConfig = $block->getJsNavigationConfig();?>
+<?php $navigationConfig = $block->getJsFilterNavigationConfig();?>
 <div class="swatch-attribute swatch-layered <?= /* @escapeNotVerified */ $swatchData['attribute_code'] ?>"
      attribute-code="<?= /* @escapeNotVerified */ $swatchData['attribute_code'] ?>"
      attribute-id="<?= /* @escapeNotVerified */ $swatchData['attribute_id'] ?>"

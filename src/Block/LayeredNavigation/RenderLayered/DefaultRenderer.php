@@ -12,6 +12,7 @@ use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
 use Emico\Tweakwise\Model\Config;
+use Emico\Tweakwise\Model\NavigationConfig;
 use Emico\Tweakwise\Model\Seo\FilterHelper;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\Serialize\Serializer\Json;
@@ -41,10 +42,16 @@ class DefaultRenderer extends Template
     protected $config;
 
     /**
+     * @var NavigationConfig
+     */
+    protected $navigationConfig;
+
+    /**
      * Constructor
      *
      * @param Template\Context $context
      * @param Config $config
+     * @param NavigationConfig $navigationConfig
      * @param FilterHelper $filterHelper
      * @param Json $jsonSerializer
      * @param array $data
@@ -52,6 +59,7 @@ class DefaultRenderer extends Template
     public function __construct(
         Template\Context $context,
         Config $config,
+        NavigationConfig $navigationConfig,
         FilterHelper $filterHelper,
         Json $jsonSerializer,
         array $data = []
@@ -60,6 +68,7 @@ class DefaultRenderer extends Template
         $this->config = $config;
         $this->filterHelper = $filterHelper;
         $this->jsonSerializer = $jsonSerializer;
+        $this->navigationConfig = $navigationConfig;
     }
 
     /**
@@ -213,24 +222,9 @@ class DefaultRenderer extends Template
     /**
      * @return string
      */
-    public function getJsNavigationConfig(): string
+    public function getJsFilterNavigationConfig(): string
     {
-        $navigationConfig = $this->config->getJsNavigationConfig();
-        $sortOrderConfig = [
-            'tweakwiseNavigationSort' => [
-                'hasAlternateSortOrder' => $this->hasAlternateSortOrder()
-            ]
-        ];
-
-        return $this->jsonSerializer->serialize(array_merge($navigationConfig, $sortOrderConfig));
-    }
-
-    /**
-     * @return bool|string
-     */
-    public function getJsUseFormFilters()
-    {
-        return $this->config->getJsUseFormFilters();
+        return $this->navigationConfig->getJsFilterNavigationConfig($this->hasAlternateSortOrder());
     }
 
     /**
