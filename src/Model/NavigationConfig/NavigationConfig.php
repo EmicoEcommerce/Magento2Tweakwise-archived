@@ -5,8 +5,9 @@
  */
 declare(strict_types=1);
 
-namespace Emico\Tweakwise\Model;
+namespace Emico\Tweakwise\Model\NavigationConfig;
 
+use Emico\Tweakwise\Model\Config;
 use Magento\Framework\Serialize\Serializer\Json;
 
 /**
