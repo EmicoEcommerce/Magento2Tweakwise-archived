@@ -73,6 +73,7 @@ class NavigationConfig implements NavigationConfigInterface
 
     /**
      * @return NavigationConfigInterface
+     * @TODO move to factory method? If so cleanup di.xml
      */
     protected function getProviderInstance(): NavigationConfigInterface
     {
