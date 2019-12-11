@@ -6,20 +6,20 @@
 
 namespace Emico\Tweakwise\Block\LayeredNavigation\Navigation;
 
-use Emico\Tweakwise\Model\NavigationConfig\NavigationConfig;
+use Emico\Tweakwise\Model\NavigationConfig\NavigationConfigInterface;
 use Magento\LayeredNavigation\Block\Navigation;
 
 class Plugin
 {
     /**
-     * @var NavigationConfig
+     * @var NavigationConfigInterface
      */
     protected $navigationConfig;
 
     /**
-     * @param \Emico\Tweakwise\Model\NavigationConfig\NavigationConfig $navigationConfig
+     * @param NavigationConfigInterface $navigationConfig
      */
-    public function __construct(NavigationConfig $navigationConfig)
+    public function __construct(NavigationConfigInterface $navigationConfig)
     {
         $this->navigationConfig = $navigationConfig;
     }

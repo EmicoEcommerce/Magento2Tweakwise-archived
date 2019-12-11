@@ -19,7 +19,7 @@ use Magento\Framework\Serialize\Serializer\Json;
  * @see \Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer
  * @package Emico\Tweakwise\Model
  */
-class NavigationConfig
+class NavigationConfig implements NavigationConfigInterface
 {
     /**
      * @var Config
@@ -32,46 +32,78 @@ class NavigationConfig
     private $jsonSerializer;
 
     /**
+     * @var NavigationConfigInterface[]
+     */
+    private $navigationConfigProviders;
+
+    /**
+     * @var NavigationConfigInterface
+     */
+    private $providerInstance;
+
+    /**
      * NavigationConfig constructor.
      * @param Config $config
      * @param Json $jsonSerializer
+     * @param NavigationConfigInterface[] $navigationConfigProviders
      */
     public function __construct(
         Config $config,
-        Json $jsonSerializer
+        Json $jsonSerializer,
+        array $navigationConfigProviders
     ) {
         $this->config = $config;
         $this->jsonSerializer = $jsonSerializer;
+        $this->navigationConfigProviders = $navigationConfigProviders;
+    }
+
+    /**
+     * @return NavigationConfigInterface
+     */
+    protected function getInstance(): NavigationConfigInterface
+    {
+        if ($this->providerInstance) {
+            return $this->providerInstance;
+        }
+
+        $this->providerInstance = $this->getProviderInstance();
+
+        return $this->providerInstance;
+    }
+
+    /**
+     * @return NavigationConfigInterface
+     */
+    protected function getProviderInstance(): NavigationConfigInterface
+    {
+        $ajaxEnabled = $this->config->isAjaxFiltering();
+        $formFiltersEnabled = $this->config->getUseFormFilters();
+
+        if ($ajaxEnabled && $formFiltersEnabled) {
+            return $this->navigationConfigProviders['ajax_form_filter'];
+        }
+
+        if ($ajaxEnabled) {
+            return $this->navigationConfigProviders['ajax'];
+        }
+
+        if ($formFiltersEnabled) {
+            return $this->navigationConfigProviders['form_filter'];
+        }
+
+        return $this->navigationConfigProviders['default'];
     }
 
     /**
      * @param bool $hasAlternateSortOrder
-     * @return bool|string
+     * @return string
      */
     public function getJsFilterNavigationConfig(bool $hasAlternateSortOrder = false)
     {
-        $config[] = [
-            'tweakwiseNavigationSort' => [
-                'hasAlternateSortOrder' => $hasAlternateSortOrder
-            ]
-        ];
-        if (!$this->config->getUseFormFilters()) {
-            $config[] = [
-                'tweakwiseNavigationFilter' => [
-                    'seoEnabled' => $this->config->isSeoEnabled()
-                ],
-            ];
-        }
+        $jsFilterNavigationConfig = $this->getInstance()
+            ->getJsFilterNavigationConfig($hasAlternateSortOrder);
 
-        return $this->jsonSerializer->serialize(array_merge(...$config));
-    }
-
-    /**
-     * @return string
-     */
-    public function getJsUseFormFilters()
-    {
-        return $this->jsonSerializer->serialize($this->config->getUseFormFilters());
+        return $jsFilterNavigationConfig ? $this->jsonSerializer->serialize($jsFilterNavigationConfig) : '';
     }
 
     /**
@@ -79,14 +111,7 @@ class NavigationConfig
      */
     public function getJsFormConfig()
     {
-        if (!$this->config->getUseFormFilters()) {
-            return '';
-        }
-
-        $jsFormConfig = [
-            'tweakwiseNavigationForm' => []
-        ];
-
-        return $this->jsonSerializer->serialize($jsFormConfig);
+        $jsFormConfig = $this->getInstance()->getJsFormConfig();
+        return $jsFormConfig ? $this->jsonSerializer->serialize($jsFormConfig) : '';
     }
 }

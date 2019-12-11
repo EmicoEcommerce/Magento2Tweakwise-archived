@@ -12,6 +12,7 @@
     <preference for="Emico\Tweakwise\Api\AttributeSlugRepositoryInterface" type="Emico\Tweakwise\Model\AttributeSlugRepository"/>
     <preference for="Emico\Tweakwise\Api\Data\AttributeSlugSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
     <preference for="Emico\Tweakwise\Api\Data\AttributeSlugInterface" type="Emico\Tweakwise\Model\AttributeSlug"/>
+    <preference for="Emico\Tweakwise\Model\NavigationConfig\NavigationConfigInterface" type="Emico\Tweakwise\Model\NavigationConfig\NavigationConfig"/>
 
     <preference for="Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface" type="Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy" />
     <preference for="Emico\Tweakwise\Model\Catalog\Layer\Url\FilterApplierInterface" type="Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy" />
@@ -194,6 +195,17 @@
     <type name="Emico\Tweakwise\Block\Catalog\Product\ProductList\Related\Plugin">
         <arguments>
             <argument name="context" xsi:type="object">Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context\Product\Related</argument>
+        </arguments>
+    </type>
+
+    <type name="Emico\Tweakwise\Model\NavigationConfig\NavigationConfig">
+        <arguments>
+            <argument name="navigationConfigProviders" xsi:type="array">
+                <item name="default" xsi:type="object">Emico\Tweakwise\Model\NavigationConfig\DefaultNavigationConfig</item>
+                <item name="ajax" xsi:type="object">Emico\Tweakwise\Model\NavigationConfig\AjaxNavigationConfig</item>
+                <item name="form_filter" xsi:type="object">Emico\Tweakwise\Model\NavigationConfig\FormFilterNavigationConfig</item>
+                <item name="ajax_form_filter" xsi:type="object">Emico\Tweakwise\Model\NavigationConfig\AjaxFormFilterNavigationConfig</item>
+            </argument>
         </arguments>
     </type>
 

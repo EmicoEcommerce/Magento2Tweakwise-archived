@@ -9,7 +9,7 @@
 namespace Emico\Tweakwise\Block\LayeredNavigation\RenderLayered;
 
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
-use Emico\Tweakwise\Model\NavigationConfig\NavigationConfig;
+use Emico\Tweakwise\Model\NavigationConfig\NavigationConfigInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Layer\Filter\AttributeFactory;
 use Magento\Eav\Model\Entity\Attribute;
@@ -55,7 +55,7 @@ class SwatchRenderer extends RenderLayered
     protected $jsonSerializer;
 
     /**
-     * @var \Emico\Tweakwise\Model\NavigationConfig\NavigationConfig
+     * @var NavigationConfigInterface
      */
     protected $navigationConfig;
 
@@ -67,7 +67,7 @@ class SwatchRenderer extends RenderLayered
      * @param Data $swatchHelper
      * @param Media $mediaHelper
      * @param Config $config
-     * @param NavigationConfig $navigationConfig
+     * @param NavigationConfigInterface $navigationConfig
      * @param EavAttributeFactory $eavAttributeFactory
      * @param FilterHelper $filterHelper
      * @param Json $jsonSerializer
@@ -81,12 +81,11 @@ class SwatchRenderer extends RenderLayered
         Media $mediaHelper,
         Config $config,
         EavAttributeFactory $eavAttributeFactory,
-        NavigationConfig $navigationConfig,
+        NavigationConfigInterface $navigationConfig,
         FilterHelper $filterHelper,
         Json $jsonSerializer,
         array $data = []
-    )
-    {
+    ) {
         parent::__construct($context, $eavAttribute, $layerAttribute, $swatchHelper, $mediaHelper, $data);
         $this->config = $config;
         $this->eavAttributeFactory = $eavAttributeFactory;

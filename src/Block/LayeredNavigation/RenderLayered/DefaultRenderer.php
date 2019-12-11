@@ -12,7 +12,7 @@ use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
 use Emico\Tweakwise\Model\Config;
-use Emico\Tweakwise\Model\NavigationConfig\NavigationConfig;
+use Emico\Tweakwise\Model\NavigationConfig\NavigationConfigInterface;
 use Emico\Tweakwise\Model\Seo\FilterHelper;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\Serialize\Serializer\Json;
@@ -42,7 +42,7 @@ class DefaultRenderer extends Template
     protected $config;
 
     /**
-     * @var \Emico\Tweakwise\Model\NavigationConfig\NavigationConfig
+     * @var NavigationConfigInterface
      */
     protected $navigationConfig;
 
@@ -51,7 +51,7 @@ class DefaultRenderer extends Template
      *
      * @param Template\Context $context
      * @param Config $config
-     * @param \Emico\Tweakwise\Model\NavigationConfig\NavigationConfig $navigationConfig
+     * @param NavigationConfigInterface $navigationConfig
      * @param FilterHelper $filterHelper
      * @param Json $jsonSerializer
      * @param array $data
@@ -59,7 +59,7 @@ class DefaultRenderer extends Template
     public function __construct(
         Template\Context $context,
         Config $config,
-        NavigationConfig $navigationConfig,
+        NavigationConfigInterface $navigationConfig,
         FilterHelper $filterHelper,
         Json $jsonSerializer,
         array $data = []
