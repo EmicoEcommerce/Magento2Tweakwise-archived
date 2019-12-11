@@ -42,6 +42,8 @@ class DefaultNavigationConfig implements NavigationConfigInterface
                 'seoEnabled' => $this->config->isSeoEnabled()
             ],
         ];
+
+        return $config;
     }
 
     /**

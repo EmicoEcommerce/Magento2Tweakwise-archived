@@ -13,27 +13,36 @@ define(['jquery', 'jquery/ui'], function($) {
         },
 
         _handleCheckboxClick: function(event) {
-            var a = $(event.currentTarget).closest('a');
-            var href = this._findHref(a);
-            if (href) {
-                window.location.href = href;
-                return false;
-            }
+            var url = this.options.ajaxEndpoint;
+            var form = this.element.closest('form');
+
+            this._startLoader();
+            jQuery.ajax({
+                url: url,
+                parameters: jQuery.serialize(form),
+                success: function(response) {
+
+                },
+                error: function(response) {
+
+                },
+                complete: function() {
+                    this._stopLoader();
+                }
+            });
+        },
+
+        _startLoader: function(state) {
+
+        },
+
+        _stopLoader: function(state) {
+
         },
 
         _handleSwatchClick: function(event) {
             event.preventDefault();
             this._handleCheckboxClick(event);
-        },
-
-        _findHref: function (aElement) {
-            var href = aElement.attr('href');
-            if (this.options.hasOwnProperty('seoEnabled') && this.options.seoEnabled) {
-                var seoHref = aElement.data('seo-href');
-                return seoHref ? seoHref : href;
-            }
-
-            return href;
         },
 
         _create: function() {

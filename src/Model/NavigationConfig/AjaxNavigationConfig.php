@@ -38,9 +38,14 @@ class AjaxNavigationConfig implements NavigationConfigInterface
 
         $config[] = [
             'tweakwiseNavigationFilterAjax' => [
-                'seoEnabled' => $this->config->isSeoEnabled()
+                'seoEnabled' => $this->config->isSeoEnabled(),
+                'ajaxEndpoint' => 'tweakwise/ajax/navigation',
+                'filterSelector' => '#layered-filter-block',
+                'productListSelector'
             ],
         ];
+
+        return $config;
     }
 
     /**

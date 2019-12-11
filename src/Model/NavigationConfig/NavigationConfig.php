@@ -29,17 +29,17 @@ class NavigationConfig implements NavigationConfigInterface
     /**
      * @var Json
      */
-    private $jsonSerializer;
+    protected $jsonSerializer;
 
     /**
      * @var NavigationConfigInterface[]
      */
-    private $navigationConfigProviders;
+    protected $navigationConfigProviders;
 
     /**
      * @var NavigationConfigInterface
      */
-    private $providerInstance;
+    protected $providerInstance;
 
     /**
      * NavigationConfig constructor.

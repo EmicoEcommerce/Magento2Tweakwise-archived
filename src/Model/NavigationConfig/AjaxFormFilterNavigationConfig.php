@@ -8,10 +8,12 @@ declare(strict_types=1);
 
 namespace Emico\Tweakwise\Model\NavigationConfig;
 
-
+/**
+ * Class AjaxFormFilterNavigationConfig
+ * @package Emico\Tweakwise\Model\NavigationConfig
+ */
 class AjaxFormFilterNavigationConfig implements NavigationConfigInterface
 {
-
     /**
      * @inheritDoc
      */
