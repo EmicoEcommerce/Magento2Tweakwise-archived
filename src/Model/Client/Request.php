@@ -181,22 +181,6 @@ class Request
     }
 
     /**
-     * @param array $categoryIds
-     * @return $this
-     */
-    public function addCategoryPathFilter(array $categoryIds)
-    {
-        $categoryIds = array_map('intval', $categoryIds);
-        $storeId = (int) $this->getStoreId();
-        $tweakwiseIdMapper = function (int $categoryId) use ($storeId) {
-            return $this->helper->getTweakwiseId($storeId, $categoryId);
-        };
-        $tweakwiseIds = array_map($tweakwiseIdMapper, $categoryIds);
-        $this->setParameter('tn_cid', implode('-', $tweakwiseIds));
-        return $this;
-    }
-
-    /**
      * @return StoreManagerInterface
      */
     protected function getStore()

@@ -241,29 +241,6 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     /**
      * {@inheritdoc}
      */
-    protected function getCategoryFilters()
-    {
-        $currentCategory = $this->layerResolver->get()->getCurrentCategory();
-        $currentCategoryId = (int)$currentCategory->getId();
-        $parentCategoryId = (int)$currentCategory->getParentCategory()->getId();
-        if (!$currentCategoryId || $currentCategoryId === 1 || !$parentCategoryId) {
-            return [];
-        }
-
-        $rootCategoryId = (int)$currentCategory->getStore()->getRootCategoryId();
-        if (\in_array($parentCategoryId,  [1, $rootCategoryId], true)) {
-            return [];
-        }
-
-        return [
-            $parentCategoryId,
-            $currentCategoryId
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function getAttributeFilters(HttpRequest $request)
     {
         $result = [];
@@ -319,16 +296,6 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
         }
 
         $isSearchRequest = $navigationRequest instanceof ProductSearchRequest;
-        // Do not check for category paths in case of search request.
-        // This will throw an exception on layer resolver.
-        if (!$isSearchRequest) {
-            $categories = $this->getCategoryFilters();
-
-            if ($categories) {
-                $navigationRequest->addCategoryPathFilter($categories);
-            }
-        }
-
         $search = $this->getSearch($request);
         if ($search && $isSearchRequest) {
             /** @var ProductSearchRequest $navigationRequest */
