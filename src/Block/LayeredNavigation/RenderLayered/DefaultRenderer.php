@@ -49,8 +49,13 @@ class DefaultRenderer extends Template
      * @param Json $jsonSerializer
      * @param array $data
      */
-    public function __construct(Template\Context $context, Config $config, FilterHelper $filterHelper, Json $jsonSerializer, array $data = [])
-    {
+    public function __construct(
+        Template\Context $context,
+        Config $config,
+        FilterHelper $filterHelper,
+        Json $jsonSerializer,
+        array $data = []
+    ) {
         parent::__construct($context, $data);
         $this->config = $config;
         $this->filterHelper = $filterHelper;
@@ -216,7 +221,7 @@ class DefaultRenderer extends Template
     }
 
     /**
-     * @return Config
+     * @return bool|string
      */
     public function getJsUseFormFilters()
     {

@@ -48,8 +48,8 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
         'use strict';
 
         var filterUrl = '<?=$block->getPriceUrl()?>';
-        var prefix = '<span class="prefix">' + '<?=$block->getItemPrefix();?>' + '</span>'
-        var postfix = '<span class="postfix">' + '<?=$block->getItemPostfix();?>' + '</span>'
+        var prefix = '<span class="prefix">' + '<?=$block->getItemPrefix();?>' + '</span>';
+        var postfix = '<span class="postfix">' + '<?=$block->getItemPostfix();?>' + '</span>';
         var container = $('#attribute-slider-<?=$block->getCssId()?>');
         var currentMinValueContainer = container.find('.current-min-value');
         var currentMaxValueContainer = container.find('.current-max-value');

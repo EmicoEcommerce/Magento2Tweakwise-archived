@@ -410,7 +410,7 @@ class Config
     }
 
     /**
-     * @return Config
+     * @return string|bool
      */
     public function getJsUseFormFilters()
     {
