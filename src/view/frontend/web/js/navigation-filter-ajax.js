@@ -6,7 +6,7 @@
  */
 
 define(['jquery', 'jquery/ui'], function($) {
-    $.widget('tweakwise.navigationFilter', {
+    $.widget('tweakwise.navigationFilterAjax', {
         _hookEvents: function() {
             this.element.on('click', '.item input[type="checkbox"]', this._handleCheckboxClick.bind(this));
             this.element.on('click', '.js-swatch-link', this._handleSwatchClick.bind(this));

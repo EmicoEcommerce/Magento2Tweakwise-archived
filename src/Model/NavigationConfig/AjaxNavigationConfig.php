@@ -30,13 +30,10 @@ class AjaxNavigationConfig implements NavigationConfigInterface
      */
     public function getJsFilterNavigationConfig(bool $hasAlternateSortOrder = false)
     {
-        $config[] = [
+        return [
             'tweakwiseNavigationSort' => [
                 'hasAlternateSortOrder' => $hasAlternateSortOrder
-            ]
-        ];
-
-        $config[] = [
+            ],
             'tweakwiseNavigationFilterAjax' => [
                 'seoEnabled' => $this->config->isSeoEnabled(),
                 'ajaxEndpoint' => 'tweakwise/ajax/navigation',
@@ -44,8 +41,6 @@ class AjaxNavigationConfig implements NavigationConfigInterface
                 'productListSelector'
             ],
         ];
-
-        return $config;
     }
 
     /**

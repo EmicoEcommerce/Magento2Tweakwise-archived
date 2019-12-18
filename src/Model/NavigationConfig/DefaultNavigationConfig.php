@@ -31,19 +31,14 @@ class DefaultNavigationConfig implements NavigationConfigInterface
      */
     public function getJsFilterNavigationConfig(bool $hasAlternateSortOrder = false)
     {
-        $config[] = [
+        return [
             'tweakwiseNavigationSort' => [
                 'hasAlternateSortOrder' => $hasAlternateSortOrder
-            ]
-        ];
-
-        $config[] = [
+            ],
             'tweakwiseNavigationFilter' => [
                 'seoEnabled' => $this->config->isSeoEnabled()
-            ],
+            ]
         ];
-
-        return $config;
     }
 
     /**

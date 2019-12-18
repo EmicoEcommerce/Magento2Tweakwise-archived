@@ -114,9 +114,9 @@ class DefaultRenderer extends Template
         };
 
         $items = $this->getItems();
-        $itemsWIthAlternateSortOrder = array_filter($items, $filter);
+        $itemsWithAlternateSortOrder = array_filter($items, $filter);
 
-        return \count($items) === \count($itemsWIthAlternateSortOrder);
+        return \count($items) === \count($itemsWithAlternateSortOrder);
     }
 
     /**
