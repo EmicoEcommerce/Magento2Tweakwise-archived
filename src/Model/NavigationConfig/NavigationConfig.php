@@ -9,6 +9,7 @@ namespace Emico\Tweakwise\Model\NavigationConfig;
 
 use Emico\Tweakwise\Model\Config;
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Framework\View\Element\Block\ArgumentInterface;
 
 /**
  * Class NavigationConfig
@@ -19,7 +20,7 @@ use Magento\Framework\Serialize\Serializer\Json;
  * @see \Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer
  * @package Emico\Tweakwise\Model
  */
-class NavigationConfig implements NavigationConfigInterface
+class NavigationConfig implements NavigationConfigInterface, ArgumentInterface
 {
     /**
      * @var Config
@@ -114,5 +115,13 @@ class NavigationConfig implements NavigationConfigInterface
     {
         $jsFormConfig = $this->getInstance()->getJsFormConfig();
         return $jsFormConfig ? $this->jsonSerializer->serialize($jsFormConfig) : '';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAjaxNavigation()
+    {
+        return $this->config->isAjaxFiltering();
     }
 }

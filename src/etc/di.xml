@@ -37,9 +37,6 @@
     <type name="Magento\Theme\Block\Html\Pager">
         <plugin name="emico-tweakwise" type="Emico\Tweakwise\Block\Theme\Html\Pager\Plugin" sortOrder="0" />
     </type>
-    <type name="Magento\LayeredNavigation\Block\Navigation">
-        <plugin name="emico-tweakwise" type="Emico\Tweakwise\Block\LayeredNavigation\Navigation\Plugin" sortOrder="0" />
-    </type>
     <type name="Magento\LayeredNavigationStaging\Block\Navigation">
         <plugin name="emico-tweakwise" type="Emico\Tweakwise\Block\LayeredNavigation\Navigation\Plugin" sortOrder="0" />
     </type>
@@ -78,6 +75,7 @@
             </argument>
         </arguments>
     </type>
+
     <type name="Emico\Tweakwise\Model\Autocomplete\DataProvider">
         <arguments>
             <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\AutocompleteRequest</argument>

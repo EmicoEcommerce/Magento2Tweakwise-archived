@@ -56,6 +56,8 @@ class Navigation extends Action
             throw new NotFoundException(__('Page not found.'));
         }
 
+        $filters = $this->getRequest()->getParam('filters');
+
         $results = $this->ajaxHandler->getResults($this->getRequest());
     }
 }

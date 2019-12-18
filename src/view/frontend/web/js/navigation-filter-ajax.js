@@ -15,11 +15,12 @@ define(['jquery', 'jquery/ui'], function($) {
         _handleCheckboxClick: function(event) {
             var url = this.options.ajaxEndpoint;
             var form = this.element.closest('form');
+            var filters = jQuery(form).serialize();
 
             this._startLoader();
             jQuery.ajax({
                 url: url,
-                parameters: jQuery.serialize(form),
+                data: filters,
                 success: function(response) {
 
                 },
@@ -32,11 +33,11 @@ define(['jquery', 'jquery/ui'], function($) {
             });
         },
 
-        _startLoader: function(state) {
+        _startLoader: function() {
 
         },
 
-        _stopLoader: function(state) {
+        _stopLoader: function() {
 
         },
 
@@ -51,5 +52,5 @@ define(['jquery', 'jquery/ui'], function($) {
         }
     });
 
-    return $.tweakwise.navigationFilter;
+    return $.tweakwise.navigationFilterAjax;
 });

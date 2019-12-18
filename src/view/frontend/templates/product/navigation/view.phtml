@@ -7,14 +7,21 @@
  */
 
 use Emico\Tweakwise\Model\Catalog\Layer\Filter;
+use Emico\Tweakwise\Model\NavigationConfig\NavigationConfig;
+use Magento\LayeredNavigation\Block\Navigation;
 
-/** @var $block \Magento\LayeredNavigation\Block\Navigation */
+/** @var $block Navigation */
 
 if (!$block->canShowBlock()) return;
 ?>
 
 <?php $filters = $block->getFilters(); /** @var $filters Filter[] */ ?>
-<?php $jsFormConfig = $block->getData('form_filters'); ?>
+<?php /** @var NavigationConfig $tweakwiseNavigationConfig */?>
+<?php $tweakwiseNavigationConfig = $block->getData('tweakwise_navigation_config');?>
+<?php $jsFormConfig = $tweakwiseNavigationConfig->getJsFormConfig(); ?>
+<?php $isAjax = $tweakwiseNavigationConfig->isAjaxNavigation();?>
+<?php $renderForm = $jsFormConfig || $isAjax;?>
+
 <?php $hasFilters = count($filters) > 0; ?>
 <div class="block filter<?=($hasFilters ? ' filter-no-options' : '')?>"
      id="layered-filter-block"
@@ -35,8 +42,8 @@ if (!$block->canShowBlock()) return;
         <?php if ($filters): ?>
             <strong role="heading" aria-level="2" class="block-subtitle filter-subtitle"><?=__('Shopping Options') ?></strong>
             <div class="filter-options" id="narrow-by-list" data-role="content">
-                <?php if ($jsFormConfig): ?>
-                    <form id="facet-filter-form" data-mage-init='<?=$jsFormConfig?>'>
+                <?php if ($renderForm): ?>
+                    <form id="facet-filter-form" <?=($jsFormConfig ? sprintf('data-mage-init=\'%s\'', $jsFormConfig) : '')?>>
                 <?php endif;?>
                 <?php foreach ($filters as $filter): ?>
                     <?php if ($filter->isCollapsible()): ?>
@@ -66,13 +73,13 @@ if (!$block->canShowBlock()) return;
                             </div>
                         </div>
                     <?php endif; ?>
-                    <?php if ($jsFormConfig): ?>
+                    <?php if ($renderForm && $jsFormConfig): ?>
                         <div class="show-items-link">
                             <button type="submit" class="btn btn-primary btn-block js-btn-filter"><?=__(sprintf('Show <span>%s</span> items', $this->getLayer()->getProductCount())); ?></button>
                         </div>
                     <?php endif;?>
                 <?php endforeach; ?>
-                <?php if ($jsFormConfig): ?>
+                <?php if ($renderForm): ?>
                     </form>
                 <?php endif;?>
             </div>
