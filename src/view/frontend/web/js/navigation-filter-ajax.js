@@ -16,16 +16,17 @@ define(['jquery', 'jquery/ui'], function($) {
             var url = this.options.ajaxEndpoint;
             var form = this.element.closest('form');
             var filters = jQuery(form).serialize();
+            filters = filters + '&category_id=' + this.options.categoryId;
 
             this._startLoader();
             jQuery.ajax({
                 url: url,
                 data: filters,
                 success: function(response) {
-
+                    var test = 1;
                 },
                 error: function(response) {
-
+                    var test = 1;
                 },
                 complete: function() {
                     this._stopLoader();

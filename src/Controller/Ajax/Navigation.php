@@ -7,10 +7,14 @@
 namespace Emico\Tweakwise\Controller\Ajax;
 
 use Emico\Tweakwise\Model\Config;
+use Magento\Catalog\Model\CategoryRepository;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\NotFoundException;
+use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Registry;
 
 /**
  * Class Navigation
@@ -30,16 +34,38 @@ class Navigation extends Action
     protected $config;
 
     /**
+     * @var ResultFactory
+     */
+    protected $resultFactory;
+    /**
+     * @var Registry
+     */
+    private $registry;
+    /**
+     * @var CategoryRepository
+     */
+    private $categoryRepository;
+
+    /**
      * Navigation constructor.
      * @param Context $context Request context
      * @param Config $config Tweakwise configuration provider
+     * @param ResultFactory $resultFactory
+     * @param Registry $registry
+     * @param CategoryRepository $categoryRepository
      */
     public function __construct(
         Context $context,
-        Config $config
+        Config $config,
+        ResultFactory $resultFactory,
+        Registry $registry,
+        CategoryRepository $categoryRepository
     ) {
         parent::__construct($context);
         $this->config = $config;
+        $this->resultFactory = $resultFactory;
+        $this->registry = $registry;
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -55,9 +81,13 @@ class Navigation extends Action
         if (!$this->config->isAjaxFiltering()) {
             throw new NotFoundException(__('Page not found.'));
         }
+        $categoryId = $this->getRequest()->getParam('category_id') ?: 2;
 
-        $filters = $this->getRequest()->getParam('filters');
+        if (!$this->registry->registry('current_category')) {
+            $category = $this->categoryRepository->get((int)$categoryId);
+            $this->registry->register('current_category', $category);
+        }
 
-        $results = $this->ajaxHandler->getResults($this->getRequest());
+        return $this->resultFactory->create(ResultFactory::TYPE_LAYOUT);
     }
 }
