@@ -204,4 +204,12 @@ class SliderRenderer extends DefaultRenderer
     {
         return $this->jsonSerializer->serialize($this->config->getUseFormFilters());
     }
+
+    /**
+     * @return string
+     */
+    public function getJsSliderConfig(): string
+    {
+        return $this->navigationConfig->getJsSliderConfig($this);
+    }
 }

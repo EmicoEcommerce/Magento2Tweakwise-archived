@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace Emico\Tweakwise\Model\NavigationConfig;
 
+use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
 use Emico\Tweakwise\Model\Config;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
@@ -115,6 +116,46 @@ class NavigationConfig implements NavigationConfigInterface, ArgumentInterface
     {
         $jsFormConfig = $this->getInstance()->getJsFormConfig();
         return $jsFormConfig ? $this->jsonSerializer->serialize($jsFormConfig) : '';
+    }
+
+    /**
+     * @param SliderRenderer $sliderRenderer
+     * @return string
+     */
+    public function getJsSliderConfig(SliderRenderer $sliderRenderer)
+    {
+        $jsSliderConfig = $this->getInstance()->getJsSliderConfig($sliderRenderer) ?: [];
+        $jsSliderConfig = array_merge_recursive($this->getDefaultSliderConfig($sliderRenderer), $jsSliderConfig);
+
+        return $jsSliderConfig ? $this->jsonSerializer->serialize($jsSliderConfig) : '';
+    }
+
+    /**
+     * @param SliderRenderer $sliderRenderer
+     * @return array
+     */
+    protected function getDefaultSliderConfig(SliderRenderer $sliderRenderer)
+    {
+        return [
+            'tweakwiseNavigationSlider' => [
+                'filterUrl' => $sliderRenderer->getFilterUrl(),
+                'prefix' => "<span class=\"prefix\">{$sliderRenderer->getItemPrefix()}</span>",
+                'postfix' => "<span class=\"prefix\">{$sliderRenderer->getItemPostfix()}</span>",
+                'container' => "#attribute-slider-{$sliderRenderer->getCssId()}",
+                'min' => $sliderRenderer->getMinValue(),
+                'max' => $sliderRenderer->getMaxValue(),
+                'currentMin' => $sliderRenderer->getCurrentMinValue(),
+                'currentMax' => $sliderRenderer->getCurrentMaxValue(),
+            ]
+        ];
+    }
+
+    /**
+     * @return bool
+     */
+    public function getUseFormFilters()
+    {
+        return $this->config->getUseFormFilters();
     }
 
     /**

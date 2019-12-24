@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace Emico\Tweakwise\Model\NavigationConfig;
 
+use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
 use Emico\Tweakwise\Model\Config;
 
 class DefaultNavigationConfig implements NavigationConfigInterface
@@ -47,5 +48,14 @@ class DefaultNavigationConfig implements NavigationConfigInterface
     public function getJsFormConfig()
     {
         return '';
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function getJsSliderConfig(SliderRenderer $sliderRenderer)
+    {
+        return [];
     }
 }

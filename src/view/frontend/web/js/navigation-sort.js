@@ -7,6 +7,11 @@
 
 define(['jquery', 'jquery/ui'], function($) {
     $.widget('tweakwise.navigationSort', {
+
+        options: {
+            hasAlternateSort: false,
+        },
+
         _hookEvents: function() {
             this.element.on('click', '.more-items', this._handleMoreItemsLink.bind(this));
             this.element.on('click', '.less-items', this._handleLessItemsLink.bind(this));
@@ -29,7 +34,7 @@ define(['jquery', 'jquery/ui'], function($) {
         },
 
         _sortItems: function (type) {
-            if (!this.options.hasOwnProperty('hasAlternateSort') || !this.options.hasAlternateSort) {
+            if (!this.options.hasAlternateSort) {
                 return;
             }
 

@@ -146,6 +146,14 @@ class SwatchRenderer extends RenderLayered
     }
 
     /**
+     * @return string
+     */
+    public function getJsFormConfig()
+    {
+        return $this->navigationConfig->getJsFormConfig();
+    }
+
+    /**
      * @return boolean
      */
     protected function hasAlternateSortOrder()

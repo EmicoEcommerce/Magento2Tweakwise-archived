@@ -9,6 +9,8 @@ declare(strict_types=1);
 namespace Emico\Tweakwise\Model\NavigationConfig;
 
 
+use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
+
 class FormFilterNavigationConfig implements NavigationConfigInterface
 {
     /**
@@ -26,6 +28,18 @@ class FormFilterNavigationConfig implements NavigationConfigInterface
     {
         return  [
             'tweakwiseNavigationForm' => []
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getJsSliderConfig(SliderRenderer $sliderRenderer)
+    {
+        return [
+            'tweakwiseNavigationSlider' => [
+                'formFilters' => true,
+            ]
         ];
     }
 }

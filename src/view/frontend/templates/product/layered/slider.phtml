@@ -28,7 +28,7 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
             <span class="postfix"><?=$block->getItemPostfix()?></span>
         </span>
     </div>
-    <div class="slider"></div>
+    <div class="slider" data-mage-init='<?=$block->getJsSliderConfig($block)?>'></div>
     <div class="labels">
         <span class="current-min-value">
             <span class="prefix"><?=$block->getItemPrefix()?></span>
@@ -42,52 +42,3 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
         </span>
     </div>
 </div>
-
-<script type="text/javascript">
-    require(['jquery', 'jquery/ui', 'domReady!'], function($, priceUtils, quote){
-        'use strict';
-
-        var filterUrl = '<?=$block->getPriceUrl()?>';
-        var prefix = '<span class="prefix">' + '<?=$block->getItemPrefix();?>' + '</span>';
-        var postfix = '<span class="postfix">' + '<?=$block->getItemPostfix();?>' + '</span>';
-        var container = $('#attribute-slider-<?=$block->getCssId()?>');
-        var currentMinValueContainer = container.find('.current-min-value');
-        var currentMaxValueContainer = container.find('.current-max-value');
-        var formFilters = <?=$block->getJsUseFormFilters()?>;
-        var maxFloat = <?=$block->getMaxFloatValue()?>;
-
-        function labelFormat(value, prefix, postfix) {
-            return prefix + value + postfix;
-        }
-
-        container.find('.slider').slider({
-            range: true,
-            min: <?=$block->getMinValue()?>,
-            max: <?=$block->getMaxValue()?>,
-            values: [ <?=$block->getCurrentMinValue()?>, <?=$block->getCurrentMaxValue()?> ],
-            slide: function(event, ui) {
-                var currentMinValue = labelFormat(ui.values[0], prefix, postfix);
-                currentMinValueContainer.html(currentMinValue);
-
-                var currentMaxValue = labelFormat(ui.values[1], prefix, postfix);
-                currentMaxValueContainer.html(currentMaxValue);
-            },
-            change: function(event, ui) {
-                var min = ui.values[0];
-                var max = ui.values[1] === Math.floor(maxFloat) ? maxFloat : ui.values[1];
-                if (formFilters) {
-                    let slider = jQuery(event.target).closest('.slider-attribute');
-                    slider.attr('data-min', min);
-                    slider.attr('data-max', max);
-                } else {
-                    var url = filterUrl;
-                    url = url.replace(encodeURI('{{from}}'), min);
-                    url = url.replace('{{from}}', min);
-                    url = url.replace(encodeURI('{{to}}'), max);
-                    url = url.replace('{{to}}', max);
-                    window.location.href = url;
-                }
-            },
-        });
-    });
-</script>

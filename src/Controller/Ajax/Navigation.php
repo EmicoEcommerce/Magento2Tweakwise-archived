@@ -37,14 +37,16 @@ class Navigation extends Action
      * @var ResultFactory
      */
     protected $resultFactory;
+
     /**
      * @var Registry
      */
-    private $registry;
+    protected $registry;
+
     /**
      * @var CategoryRepository
      */
-    private $categoryRepository;
+    protected $categoryRepository;
 
     /**
      * Navigation constructor.
@@ -75,18 +77,27 @@ class Navigation extends Action
      *
      * @return \Magento\Framework\Controller\ResultInterface|ResponseInterface
      * @throws \Magento\Framework\Exception\NotFoundException
+     * @throws NoSuchEntityException
      */
     public function execute()
     {
         if (!$this->config->isAjaxFiltering()) {
             throw new NotFoundException(__('Page not found.'));
         }
-        $categoryId = $this->getRequest()->getParam('category_id') ?: 2;
 
+        $params = $this->getRequest()->getParams();
+        $categoryId = $params['category_id'] ?: 2;
+
+        // Register the category, its needed while rendering filters and products
         if (!$this->registry->registry('current_category')) {
             $category = $this->categoryRepository->get((int)$categoryId);
             $this->registry->register('current_category', $category);
         }
+
+        // Remove category param as it would show up in filters if still present.
+        // category_id param is added by view/frontend/web/js/navigation-filter-ajax.js
+        unset($params['category_id']);
+        $this->getRequest()->setParams($params);
 
         return $this->resultFactory->create(ResultFactory::TYPE_LAYOUT);
     }

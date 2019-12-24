@@ -7,6 +7,7 @@
 
 define(['jquery', 'jquery/ui'], function($) {
     $.widget('tweakwise.navigationForm', {
+
         _hookEvents: function() {
             this.element.on('submit', this._handleFilterButtonClick.bind(this));
         },

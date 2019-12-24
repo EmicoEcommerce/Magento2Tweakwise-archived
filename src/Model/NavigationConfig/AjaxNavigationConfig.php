@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace Emico\Tweakwise\Model\NavigationConfig;
 
+use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
 use Emico\Tweakwise\Model\Config;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Registry;
@@ -28,11 +29,12 @@ class AjaxNavigationConfig implements NavigationConfigInterface
     /**
      * @var Registry
      */
-    private $registry;
+    protected $registry;
+
     /**
      * @var StoreManagerInterface
      */
-    private $storeManager;
+    protected $storeManager;
 
     /**
      * AjaxNavigationConfig constructor.
@@ -62,14 +64,7 @@ class AjaxNavigationConfig implements NavigationConfigInterface
             'tweakwiseNavigationSort' => [
                 'hasAlternateSortOrder' => $hasAlternateSortOrder
             ],
-            'tweakwiseNavigationFilterAjax' => [
-                'seoEnabled' => $this->config->isSeoEnabled(),
-                'categoryId' => $this->getCategoryId(),
-                'ajaxEndpoint' => $this->urlHelper->getUrl('tweakwise/ajax/navigation'),
-                'filterSelector' => '#layered-filter-block',
-                'productListSelector' => '.products.wrapper',
-                'toolbarSelector' => '.toolbar.toolbar-products'
-            ],
+
         ];
     }
 
@@ -94,6 +89,27 @@ class AjaxNavigationConfig implements NavigationConfigInterface
      */
     public function getJsFormConfig()
     {
-        return '';
+        return [
+            'tweakwiseNavigationFilterAjax' => [
+                'seoEnabled' => $this->config->isSeoEnabled(),
+                'categoryId' => $this->getCategoryId(),
+                'ajaxEndpoint' => $this->urlHelper->getUrl('tweakwise/ajax/navigation'),
+                'filterSelector' => '#layered-filter-block',
+                'productListSelector' => '.products.wrapper',
+                'toolbarSelector' => '.toolbar.toolbar-products'
+            ],
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getJsSliderConfig(SliderRenderer $sliderRenderer)
+    {
+        return [
+            'tweakwiseNavigationSlider' => [
+                'ajaxFilters' => true,
+            ]
+        ];
     }
 }

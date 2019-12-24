@@ -9,6 +9,8 @@ declare(strict_types=1);
 namespace Emico\Tweakwise\Model\NavigationConfig;
 
 
+use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
+
 interface NavigationConfigInterface
 {
     /**
@@ -21,4 +23,10 @@ interface NavigationConfigInterface
      * @return string
      */
     public function getJsFormConfig();
+
+    /**
+     * @param SliderRenderer $sliderRenderer
+     * @return string
+     */
+    public function getJsSliderConfig(SliderRenderer $sliderRenderer);
 }

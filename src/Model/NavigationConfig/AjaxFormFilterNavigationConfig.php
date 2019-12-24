@@ -8,6 +8,8 @@ declare(strict_types=1);
 
 namespace Emico\Tweakwise\Model\NavigationConfig;
 
+use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
+
 /**
  * Class AjaxFormFilterNavigationConfig
  * @package Emico\Tweakwise\Model\NavigationConfig
@@ -28,5 +30,13 @@ class AjaxFormFilterNavigationConfig implements NavigationConfigInterface
     public function getJsFormConfig()
     {
         return '';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getJsSliderConfig(SliderRenderer $sliderRenderer)
+    {
+        return [];
     }
 }

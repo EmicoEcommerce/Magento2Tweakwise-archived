@@ -19,8 +19,8 @@ if (!$block->canShowBlock()) return;
 <?php /** @var NavigationConfig $tweakwiseNavigationConfig */?>
 <?php $tweakwiseNavigationConfig = $block->getData('tweakwise_navigation_config');?>
 <?php $jsFormConfig = $tweakwiseNavigationConfig->getJsFormConfig(); ?>
-<?php $isAjax = $tweakwiseNavigationConfig->isAjaxNavigation();?>
-<?php $renderForm = $jsFormConfig || $isAjax;?>
+<?php $renderForm = (bool)$jsFormConfig;?>
+<?php $renderFilterButton = $tweakwiseNavigationConfig->getUseFormFilters();?>
 
 <?php $hasFilters = count($filters) > 0; ?>
 <div class="block filter<?=($hasFilters ? ' filter-no-options' : '')?>"
@@ -73,7 +73,7 @@ if (!$block->canShowBlock()) return;
                             </div>
                         </div>
                     <?php endif; ?>
-                    <?php if ($renderForm && $jsFormConfig): ?>
+                    <?php if ($renderForm && $renderFilterButton): ?>
                         <div class="show-items-link">
                             <button type="submit" class="btn btn-primary btn-block js-btn-filter"><?=__(sprintf('Show <span>%s</span> items', $this->getLayer()->getProductCount())); ?></button>
                         </div>

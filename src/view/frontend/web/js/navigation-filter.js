@@ -6,7 +6,13 @@
  */
 
 define(['jquery', 'jquery/ui'], function($) {
+
     $.widget('tweakwise.navigationFilter', {
+
+        options : {
+            seoEnabled: false,
+        },
+
         _hookEvents: function() {
             this.element.on('click', '.item input[type="checkbox"]', this._handleCheckboxClick.bind(this));
             this.element.on('click', '.js-swatch-link', this._handleSwatchClick.bind(this));
@@ -28,7 +34,7 @@ define(['jquery', 'jquery/ui'], function($) {
 
         _findHref: function (aElement) {
             var href = aElement.attr('href');
-            if (this.options.hasOwnProperty('seoEnabled') && this.options.seoEnabled) {
+            if (this.options.seoEnabled) {
                 var seoHref = aElement.data('seo-href');
                 return seoHref ? seoHref : href;
             }

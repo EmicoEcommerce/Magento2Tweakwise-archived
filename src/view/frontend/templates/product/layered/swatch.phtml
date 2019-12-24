@@ -10,6 +10,7 @@
 ?>
 <?php $swatchData = $block->getSwatchData(); ?>
 <?php $navigationConfig = $block->getJsFilterNavigationConfig();?>
+<?php $renderInput = $block->getJsFormConfig();?>
 <div class="swatch-attribute swatch-layered <?= /* @escapeNotVerified */ $swatchData['attribute_code'] ?>"
      attribute-code="<?= /* @escapeNotVerified */ $swatchData['attribute_code'] ?>"
      attribute-id="<?= /* @escapeNotVerified */ $swatchData['attribute_id'] ?>"
@@ -17,9 +18,10 @@
     <div class="swatch-attribute-options clearfix">
         <?php foreach ($swatchData['options'] as $option => $label): ?>
             <?php $item = $block->getItemForSwatch($option);?>
-            <?php if ($block->getUseFormFilters()):?>
+            <?php if ($renderInput):?>
                 <input id="inputCheckbox<?=$block->getCssItemId($item)?>" style="display: none"
                        name="<?=$item->getFilter()->getFacet()->getFacetSettings()->getUrlKey()?>[]"
+                       class="js-swatch-link"
                        type="checkbox" <?=($item->isSelected() ? 'checked="checked"' : '')?>
                        value="<?=$block->escapeHtmlAttr($item->getAttribute()->getTitle())?>"
                 >
@@ -82,7 +84,7 @@
                             <?php    break;
                     } ?>
                 <?php } ?>
-            <?php if ($block->getUseFormFilters()):?>
+            <?php if ($renderInput):?>
             </label>
             <?php else:?>
             </a>
