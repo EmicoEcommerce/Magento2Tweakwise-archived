@@ -17,10 +17,10 @@ define([
         },
 
         /** @inheritdoc */
-        _bind: function (element, paramName, defaultValue) {
-            this._super(element, paramName, defaultValue);
+        _create: function () {
+            this._super();
             if (this.options.ajaxFilters) {
-                $(this.options.pagerItemSelector).on('click', this.handlePagerClick.bind(this));
+                $(this.element).on('click', this.options.pagerItemSelector, this.handlePagerClick.bind(this));
             }
         },
 
@@ -34,6 +34,8 @@ define([
                 pageValue = pageValue[1];
                 this.changeUrl('p', pageValue, pageValue)
             }
+
+            return false;
         },
 
         /**
@@ -47,14 +49,14 @@ define([
             }
 
             var form = document.getElementById('facet-filter-form');
-
             var input = document.createElement('input');
+
             input.name = paramName;
             input.value = paramValue;
             input.class = 'hidden';
             form.appendChild(input);
 
-            //$(form).trigger('change');
+            $(form).trigger('change');
         }
 
     });
