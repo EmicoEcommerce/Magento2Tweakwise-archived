@@ -37,9 +37,7 @@ define([
         _handleCheckboxClick: function(event) {
             // TODO Add check if this is a proper url, otherwise navigate to filter link
             event.preventDefault();
-            if (this.options.isLoading) {
-                return;
-            }
+
             var url = this.options.ajaxEndpoint;
             var filters = filterHelper.getFilterParams(this.element);
             // Add category id
