@@ -53,8 +53,8 @@ define([
 
             input.name = paramName;
             input.value = paramValue;
-            input.class = 'hidden';
             form.appendChild(input);
+            $(input).hide();
 
             $(form).trigger('change');
         }
