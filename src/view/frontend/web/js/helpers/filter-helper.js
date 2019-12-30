@@ -6,7 +6,11 @@
  */
 
 define(['jquery', 'jquery/ui'], function($) {
-    $.widget('tweakwise.filterHelper', {
+
+    /**
+     * We just need methods
+     */
+    return {
 
         getFilterParams: function(formElement) {
 
@@ -55,7 +59,7 @@ define(['jquery', 'jquery/ui'], function($) {
 
         getSliderUrlParameters: function(formElement) {
             let query = {};
-            jQuery('.slider-attribute').each(function(i, slider) {
+            jQuery(formElement).find('.slider-attribute').each(function(i, slider) {
                 slider = jQuery(slider);
                 let key = slider.data('url-key');
                 let min = slider.data('min');
@@ -69,7 +73,5 @@ define(['jquery', 'jquery/ui'], function($) {
 
             return jQuery.param(query);
         },
-    });
-
-    return $.tweakwise.filterHelper;
+    };
 });

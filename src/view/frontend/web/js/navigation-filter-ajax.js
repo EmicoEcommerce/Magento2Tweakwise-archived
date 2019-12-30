@@ -37,7 +37,7 @@ define([
             // TODO Add check if this is a proper url, otherwise navigate to filter link
             event.preventDefault();
             var url = this.options.ajaxEndpoint;
-            var filters = filterHelper.prototype.getFilterParams(this.element);
+            var filters = filterHelper.getFilterParams(this.element);
             // Add category id
             filters = filters + '&category_id=' + this.options.categoryId;
 
