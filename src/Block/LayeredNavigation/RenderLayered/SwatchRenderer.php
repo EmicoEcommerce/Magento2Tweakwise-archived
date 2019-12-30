@@ -142,7 +142,7 @@ class SwatchRenderer extends RenderLayered
      */
     public function getJsFilterNavigationConfig()
     {
-        return $this->navigationConfig->getJsFilterNavigationConfig($this->hasAlternateSortOrder());
+        return $this->navigationConfig->getJsFilterNavigationConfig();
     }
 
     /**

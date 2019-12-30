@@ -9,7 +9,12 @@ define(['jquery', 'jquery/ui'], function($) {
     $.widget('tweakwise.navigationFilterAjax', {
 
         options: {
-            ajaxEndpoint: '',
+            seoEnabled: false,
+            categoryId: '2',
+            ajaxEndpoint: '/tweakwise/ajax/navigation',
+            filterSelector: '#layered-filter-block',
+            productListSelector: '.products.wrapper',
+            toolbarSelector: '.toolbar.toolbar-products',
         },
 
         _hookEvents: function() {

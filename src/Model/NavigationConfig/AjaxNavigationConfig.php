@@ -58,13 +58,10 @@ class AjaxNavigationConfig implements NavigationConfigInterface
     /**
      * @inheritDoc
      */
-    public function getJsFilterNavigationConfig(bool $hasAlternateSortOrder = false)
+    public function getJsFilterNavigationConfig()
     {
         return [
-            'tweakwiseNavigationSort' => [
-                'hasAlternateSortOrder' => $hasAlternateSortOrder
-            ],
-
+            'tweakwiseNavigationSort' => [],
         ];
     }
 

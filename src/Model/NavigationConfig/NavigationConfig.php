@@ -101,10 +101,10 @@ class NavigationConfig implements NavigationConfigInterface, ArgumentInterface
      * @param bool $hasAlternateSortOrder
      * @return string
      */
-    public function getJsFilterNavigationConfig(bool $hasAlternateSortOrder = false)
+    public function getJsFilterNavigationConfig()
     {
         $jsFilterNavigationConfig = $this->getInstance()
-            ->getJsFilterNavigationConfig($hasAlternateSortOrder);
+            ->getJsFilterNavigationConfig();
 
         return $jsFilterNavigationConfig ? $this->jsonSerializer->serialize($jsFilterNavigationConfig) : '';
     }

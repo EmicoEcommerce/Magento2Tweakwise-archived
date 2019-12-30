@@ -16,9 +16,11 @@ class FormFilterNavigationConfig implements NavigationConfigInterface
     /**
      * @inheritDoc
      */
-    public function getJsFilterNavigationConfig(bool $hasAlternateSortOrder = false)
+    public function getJsFilterNavigationConfig()
     {
-        return '';
+        return [
+            'tweakwiseNavigationSort' => [],
+        ];
     }
 
     /**

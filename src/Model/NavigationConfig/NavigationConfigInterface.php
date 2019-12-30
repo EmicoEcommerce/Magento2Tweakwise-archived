@@ -14,10 +14,9 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
 interface NavigationConfigInterface
 {
     /**
-     * @param bool $hasAlternateSortOrder
      * @return string|array
      */
-    public function getJsFilterNavigationConfig(bool $hasAlternateSortOrder = false);
+    public function getJsFilterNavigationConfig();
 
     /**
      * @return string

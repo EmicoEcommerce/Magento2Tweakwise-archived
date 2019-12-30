@@ -9,7 +9,7 @@ define(['jquery', 'jquery/ui'], function($) {
     $.widget('tweakwise.navigationSort', {
 
         options: {
-            hasAlternateSort: false,
+            hasAlternateSort: null,
         },
 
         _hookEvents: function() {
@@ -34,7 +34,7 @@ define(['jquery', 'jquery/ui'], function($) {
         },
 
         _sortItems: function (type) {
-            if (!this.options.hasAlternateSort) {
+            if (!this._hasAlternateSort()) {
                 return;
             }
 
@@ -42,6 +42,16 @@ define(['jquery', 'jquery/ui'], function($) {
             list.children('.item').sort(function (a, b) {
                 return $(a).data(type) - $(b).data(type);
             }).appendTo(list);
+        },
+
+        _hasAlternateSort: function() {
+            if (this.options.hasAlternateSort !== null) {
+                let list = this.element.find('.items');
+                let firstItem = $(list).firstChild;
+                this.options.hasAlternateSort = firstItem.hasOwnProperty('data-alternate-sort');
+            }
+
+            return this.options.hasAlternateSort;
         },
 
         _create: function() {

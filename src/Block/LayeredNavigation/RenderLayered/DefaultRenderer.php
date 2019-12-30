@@ -222,9 +222,9 @@ class DefaultRenderer extends Template
     /**
      * @return string
      */
-    public function getJsFilterNavigationConfig(): string
+    public function getJsFilterNavigationConfig()
     {
-        return $this->navigationConfig->getJsFilterNavigationConfig($this->hasAlternateSortOrder());
+        return $this->navigationConfig->getJsFilterNavigationConfig();
     }
 
     /**
