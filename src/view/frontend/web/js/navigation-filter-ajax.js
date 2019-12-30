@@ -5,7 +5,11 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-define(['jquery', 'jquery/ui'], function($) {
+define([
+    'jquery',
+    'jquery/ui',
+    'tweakwiseFilterHelper'
+], function($, jQueryUi, filterHelper) {
     $.widget('tweakwise.navigationFilterAjax', {
 
         options: {
@@ -20,6 +24,7 @@ define(['jquery', 'jquery/ui'], function($) {
         _hookEvents: function() {
             this.element.on('click', '.item input[type="checkbox"]', this._handleCheckboxClick.bind(this));
             this.element.on('click', '.js-swatch-link', this._handleSwatchClick.bind(this));
+            this.element.on('change', this._handleCheckboxClick.bind(this));
         },
 
         /**
@@ -30,9 +35,10 @@ define(['jquery', 'jquery/ui'], function($) {
          */
         _handleCheckboxClick: function(event) {
             // TODO Add check if this is a proper url, otherwise navigate to filter link
+            event.preventDefault();
             var url = this.options.ajaxEndpoint;
-            var form = this.element.closest('form');
-            var filters = jQuery(form).serialize();
+            var filters = filterHelper.prototype.getFilterParams(this.element);
+            // Add category id
             filters = filters + '&category_id=' + this.options.categoryId;
 
             this._startLoader();
@@ -43,7 +49,7 @@ define(['jquery', 'jquery/ui'], function($) {
                     this._updateBlocks(response);
                 }.bind(this),
                 error: function(response) {
-                    // TODO implement, perhaps navigate to page?
+                    // TODO Error handling
                 }.bind(this),
                 complete: function() {
                     this._stopLoader();
@@ -62,6 +68,15 @@ define(['jquery', 'jquery/ui'], function($) {
         },
 
         /**
+         *
+         * @param event
+         * @private
+         */
+        _handleSliderEvent: function(event) {
+            event.preventDefault();
+        },
+
+        /**
          * Update all relevant html with response data, trigger contentUpdated to 'trigger' data-mage-init
          * @param htmlResponse
          * @private
@@ -75,9 +90,10 @@ define(['jquery', 'jquery/ui'], function($) {
             var parsedHtml = jQuery(jQuery.parseHTML(htmlResponse));
             var newFiltersHtml = parsedHtml.filter(filterSelector);
             var newProductListHtml = parsedHtml.filter(productListSelector);
+            var newToolbarHtml =  parsedHtml.filter(toolbarSelector);
             // Toolbar is included twice in the response
-            var newToolbarFirstHtml = parsedHtml.filter(toolbarSelector).first();
-            var newToolbarLastHtml = parsedHtml.filter(toolbarSelector).last();
+            var newToolbarFirstHtml = newToolbarHtml.first();
+            var newToolbarLastHtml = newToolbarHtml.last();
 
             jQuery(filterSelector)
                 .html(newFiltersHtml)

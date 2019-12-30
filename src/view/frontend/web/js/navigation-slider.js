@@ -41,8 +41,8 @@ define(['jquery', 'jquery/ui', 'domReady!'], function($) {
         },
 
         _getChangeHandler: function () {
-            if (!this.options.formFilters && !this.options.ajaxFilters) {
-                return this.defaultChange.bind(this);
+            if (this.options.formFilters && this.options.ajaxFilters) {
+                return this.ajaxFormFilterChange.bind(this);
             }
 
             if (this.options.formFilters) {
@@ -69,9 +69,8 @@ define(['jquery', 'jquery/ui', 'domReady!'], function($) {
         },
 
         ajaxChange: function (event, ui) {
-            var min = ui.values[0];
-            var max = ui.values[1];
-
+            this.formFilterChange(event, ui);
+            $(this.element).closest('form').trigger('change');
             // Do something with values
         },
 
@@ -81,6 +80,13 @@ define(['jquery', 'jquery/ui', 'domReady!'], function($) {
             var slider = jQuery(event.target).closest('.slider-attribute');
             slider.attr('data-min', min);
             slider.attr('data-max', max);
+        },
+
+        ajaxFormFilterChange: function (event, ui) {
+            var min = ui.values[0];
+            var max = ui.values[1];
+
+            // Do something with values
         },
 
         _createSlider: function() {

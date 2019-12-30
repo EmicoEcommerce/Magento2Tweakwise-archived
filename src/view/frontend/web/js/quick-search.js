@@ -39,9 +39,7 @@ define([
                 return this._superApply(arguments);
             }
 
-            if (url !== null) {
-                window.location.href = url;
-            }
+            window.location.href = url;
         },
 
         _onPropertyChange: function () {

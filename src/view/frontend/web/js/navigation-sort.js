@@ -45,9 +45,9 @@ define(['jquery', 'jquery/ui'], function($) {
         },
 
         _hasAlternateSort: function() {
-            if (this.options.hasAlternateSort !== null) {
+            if (this.options.hasAlternateSort === null) {
                 let list = this.element.find('.items');
-                let firstItem = $(list).firstChild;
+                let firstItem = $(list).children().first();
                 this.options.hasAlternateSort = firstItem.hasOwnProperty('data-alternate-sort');
             }
 

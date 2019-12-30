@@ -7,6 +7,7 @@ var config = {
             tweakwiseNavigationSort: 'Emico_Tweakwise/js/navigation-sort',
             tweakwiseNavigationForm: 'Emico_Tweakwise/js/navigation-form',
             tweakwiseNavigationSlider: 'Emico_Tweakwise/js/navigation-slider',
+            tweakwiseFilterHelper: 'Emico_Tweakwise/js/helpers/filter-helper',
         }
     }
 };
