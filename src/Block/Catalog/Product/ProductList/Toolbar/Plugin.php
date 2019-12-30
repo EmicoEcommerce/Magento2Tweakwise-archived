@@ -59,4 +59,20 @@ class Plugin
         }
         return $result;
     }
+
+    /**
+     * @param Toolbar $subject
+     * @param string $result
+     */
+    public function afterGetWidgetOptionsJson(Toolbar $subject, string $result)
+    {
+        if (!$this->config->isAjaxFiltering()) {
+            return $result;
+        }
+
+        $options = json_decode($result, true);
+        $options['productListToolbarForm']['ajaxFilters'] = true;
+
+        return json_encode($options);
+    }
 }

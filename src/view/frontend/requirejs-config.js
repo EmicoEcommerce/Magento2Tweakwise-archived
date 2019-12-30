@@ -8,6 +8,7 @@ var config = {
             tweakwiseNavigationForm: 'Emico_Tweakwise/js/navigation-form',
             tweakwiseNavigationSlider: 'Emico_Tweakwise/js/navigation-slider',
             tweakwiseFilterHelper: 'Emico_Tweakwise/js/helpers/filter-helper',
+            productListToolbarForm: 'Emico_Tweakwise/js/toolbar',
         }
     }
 };

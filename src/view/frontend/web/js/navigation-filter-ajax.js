@@ -19,6 +19,7 @@ define([
             filterSelector: '#layered-filter-block',
             productListSelector: '.products.wrapper',
             toolbarSelector: '.toolbar.toolbar-products',
+            isLoading: false,
         },
 
         _hookEvents: function() {
@@ -36,6 +37,9 @@ define([
         _handleCheckboxClick: function(event) {
             // TODO Add check if this is a proper url, otherwise navigate to filter link
             event.preventDefault();
+            if (this.options.isLoading) {
+                return;
+            }
             var url = this.options.ajaxEndpoint;
             var filters = filterHelper.getFilterParams(this.element);
             // Add category id
@@ -117,6 +121,7 @@ define([
          */
         _startLoader: function() {
             jQuery('body').trigger('processStart');
+            this.options.isLoading = true;
         },
 
         /**
@@ -125,6 +130,7 @@ define([
          */
         _stopLoader: function() {
             jQuery('body').trigger('processStop');
+            this.options.isLoading = false;
         },
 
         _create: function() {
