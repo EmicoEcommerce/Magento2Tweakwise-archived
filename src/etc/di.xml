@@ -43,12 +43,14 @@
     <type name="Magento\Swatches\Block\LayeredNavigation\RenderLayered">
         <plugin name="emico-tweakwise" type="Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\Plugin" sortOrder="0" />
     </type>
+    <!-- Commerce only -->
     <type name="Magento\TargetRule\Block\Catalog\Product\ProductList\Upsell">
         <plugin name="emico-tweakwise" type="Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList\UpsellPlugin" sortOrder="0" />
     </type>
     <type name="Magento\TargetRule\Block\Catalog\Product\ProductList\Related">
         <plugin name="emico-tweakwise" type="Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList\RelatedPlugin" sortOrder="0" />
     </type>
+    <!-- End of Commerce only-->
     <type name="Magento\Catalog\Block\Product\ProductList\Upsell">
         <plugin name="emico-tweakwise" type="Emico\Tweakwise\Block\Catalog\Product\ProductList\Upsell\Plugin" sortOrder="0" />
     </type>
