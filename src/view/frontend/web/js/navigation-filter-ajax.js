@@ -89,10 +89,13 @@ define([
             var productListSelector = this.options.productListSelector;
             var toolbarSelector = this.options.toolbarSelector;
 
-            var parsedHtml = jQuery(jQuery.parseHTML(htmlResponse));
-            var newFiltersHtml = parsedHtml.filter(filterSelector);
-            var newProductListHtml = parsedHtml.filter(productListSelector);
-            var newToolbarHtml =  parsedHtml.filter(toolbarSelector);
+            var wrapper = document.createElement('div');
+            wrapper.innerHTML = htmlResponse;
+            var parsedHtml = jQuery(wrapper);
+
+            var newFiltersHtml = parsedHtml.find(filterSelector);
+            var newProductListHtml = parsedHtml.find(productListSelector);
+            var newToolbarHtml =  parsedHtml.find(toolbarSelector);
             // Toolbar is included twice in the response
             var newToolbarFirstHtml = newToolbarHtml.first();
             var newToolbarLastHtml = newToolbarHtml.last();

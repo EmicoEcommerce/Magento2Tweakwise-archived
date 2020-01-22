@@ -8,6 +8,8 @@ declare(strict_types=1);
 namespace Emico\Tweakwise\Model\NavigationConfig;
 
 use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
+use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
+use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
 use Emico\Tweakwise\Model\Config;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Registry;
@@ -37,22 +39,30 @@ class AjaxNavigationConfig implements NavigationConfigInterface
     protected $storeManager;
 
     /**
+     * @var CurrentContext
+     */
+    private $currentNavigationContext;
+
+    /**
      * AjaxNavigationConfig constructor.
      * @param Config $config
      * @param UrlInterface $url
      * @param Registry $registry
      * @param StoreManagerInterface $storeManager
+     * @param CurrentContext $currentNavigationContext
      */
     public function __construct(
         Config $config,
         UrlInterface $url,
         Registry $registry,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        CurrentContext $currentNavigationContext
     ) {
         $this->config = $config;
         $this->urlHelper = $url;
         $this->registry = $registry;
         $this->storeManager = $storeManager;
+        $this->currentNavigationContext = $currentNavigationContext;
     }
 
     /**
@@ -90,7 +100,7 @@ class AjaxNavigationConfig implements NavigationConfigInterface
             'tweakwiseNavigationFilterAjax' => [
                 'seoEnabled' => $this->config->isSeoEnabled(),
                 'categoryId' => $this->getCategoryId(),
-                'ajaxEndpoint' => $this->urlHelper->getUrl('tweakwise/ajax/navigation'),
+                'ajaxEndpoint' => $this->getAjaxEndPoint(),
                 'filterSelector' => '#layered-filter-block',
                 'productListSelector' => '.products.wrapper',
                 'toolbarSelector' => '.toolbar.toolbar-products'
@@ -108,5 +118,17 @@ class AjaxNavigationConfig implements NavigationConfigInterface
                 'ajaxFilters' => true,
             ]
         ];
+    }
+
+    /**
+     * @return string
+     */
+    protected function getAjaxEndPoint()
+    {
+        if ($this->currentNavigationContext->getRequest() instanceof ProductSearchRequest) {
+            return $this->urlHelper->getUrl('tweakwise/ajax/search');
+        }
+
+        return $this->urlHelper->getUrl('tweakwise/ajax/navigation');
     }
 }

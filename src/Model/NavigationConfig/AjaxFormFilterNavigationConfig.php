@@ -39,6 +39,11 @@ class AjaxFormFilterNavigationConfig implements NavigationConfigInterface
      */
     public function getJsSliderConfig(SliderRenderer $sliderRenderer)
     {
-        return [];
+        return [
+            'tweakwiseNavigationSlider' => [
+                'ajaxFilters' => true,
+                'formFilters' => true,
+            ]
+        ];
     }
 }

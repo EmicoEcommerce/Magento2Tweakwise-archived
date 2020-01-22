@@ -7,21 +7,20 @@
 namespace Emico\Tweakwise\Controller\Ajax;
 
 use Emico\Tweakwise\Model\Config;
-use Magento\Catalog\Model\CategoryRepository;
+use Magento\Catalog\Model\Layer\Resolver;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
-use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\NotFoundException;
 use Magento\Framework\Controller\ResultFactory;
-use Magento\Framework\Registry;
 
 /**
  * Class Navigation
  * Handles ajax filtering requests
  * @package Emico\Tweakwise\Controller\Ajax
  */
-class Navigation extends Action
+class Search extends Action
 {
     /**
      * @var Config
@@ -34,35 +33,27 @@ class Navigation extends Action
     protected $resultFactory;
 
     /**
-     * @var Registry
+     * @var Resolver
      */
-    protected $registry;
-
-    /**
-     * @var CategoryRepository
-     */
-    protected $categoryRepository;
+    private $layerResolver;
 
     /**
      * Navigation constructor.
      * @param Context $context Request context
      * @param Config $config Tweakwise configuration provider
+     * @param Resolver $layerResolver
      * @param ResultFactory $resultFactory
-     * @param Registry $registry
-     * @param CategoryRepository $categoryRepository
      */
     public function __construct(
         Context $context,
         Config $config,
-        ResultFactory $resultFactory,
-        Registry $registry,
-        CategoryRepository $categoryRepository
+        Resolver $layerResolver,
+        ResultFactory $resultFactory
     ) {
         parent::__construct($context);
         $this->config = $config;
+        $this->layerResolver = $layerResolver;
         $this->resultFactory = $resultFactory;
-        $this->registry = $registry;
-        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -70,9 +61,8 @@ class Navigation extends Action
      *
      * Note: Request will be added as operation argument in future
      *
-     * @return \Magento\Framework\Controller\ResultInterface|ResponseInterface
-     * @throws \Magento\Framework\Exception\NotFoundException
-     * @throws NoSuchEntityException
+     * @return ResultInterface|ResponseInterface
+     * @throws NotFoundException
      */
     public function execute()
     {
@@ -80,20 +70,7 @@ class Navigation extends Action
             throw new NotFoundException(__('Page not found.'));
         }
 
-        $params = $this->getRequest()->getParams();
-        $categoryId = $params['category_id'] ?: 2;
-
-        // Register the category, its needed while rendering filters and products
-        if (!$this->registry->registry('current_category')) {
-            $category = $this->categoryRepository->get((int)$categoryId);
-            $this->registry->register('current_category', $category);
-        }
-
-        // Remove category param as it would show up in filters if still present.
-        // category_id param is added by view/frontend/web/js/navigation-filter-ajax.js
-        unset($params['category_id']);
-        $this->getRequest()->setParams($params);
-
+        $this->layerResolver->create(Resolver::CATALOG_LAYER_SEARCH);
         return $this->resultFactory->create(ResultFactory::TYPE_LAYOUT);
     }
 }

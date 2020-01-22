@@ -26,8 +26,7 @@ define([
                 }
             }.bind(this));
 
-            var templateId = '#autocomplete-item-template';
-            this.options.template = templateId;
+            this.options.template = '#autocomplete-item-template';
             this.options.url = $(templateId).data('url');
 
             return this._superApply(arguments);
