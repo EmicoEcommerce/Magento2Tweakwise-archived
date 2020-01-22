@@ -6,6 +6,7 @@
 
 namespace Emico\Tweakwise\Model\Config\Source;
 
+use Emico\Tweakwise\Exception\ApiException;
 use Emico\Tweakwise\Model\Client;
 use Emico\Tweakwise\Model\Client\RequestFactory;
 use Emico\Tweakwise\Model\Client\Response\Catalog\LanguageResponse;
@@ -43,11 +44,6 @@ class Language implements OptionSourceInterface
      */
     public function toOptionArray()
     {
-        $request = $this->requestFactory->create();
-        /** @var LanguageResponse $response */
-        $response = $this->client->request($request);
-
-        $languages = $response->getLanguages();
         $options = [
             [
                 'label' => 'Don\'t use language in search',
@@ -55,12 +51,20 @@ class Language implements OptionSourceInterface
             ]
         ];
 
-        foreach ($languages as $language) {
-            $options[] = [
-                'label' => $language['name'],
-                'value' => $language['key']
-            ];
-        }
+        try {
+            $request = $this->requestFactory->create();
+            /** @var LanguageResponse $response */
+            $response = $this->client->request($request);
+
+            $languages = $response->getLanguages();
+
+            foreach ($languages as $language) {
+                $options[] = [
+                    'label' => $language['name'],
+                    'value' => $language['key']
+                ];
+            }
+        } catch (ApiException $e) { }
 
         return $options;
     }

@@ -14,7 +14,7 @@ use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
 use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Model\Layer;
 use Magento\Catalog\Model\Layer\Filter\FilterInterface;
-use Magento\Catalog\Model\Entity\AttributeFactory;
+use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
 use Magento\Eav\Model\Entity\Attribute;
 use Emico\Tweakwise\Model\Client\Type\FacetType;
 
