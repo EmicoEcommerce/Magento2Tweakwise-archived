@@ -14,7 +14,7 @@ define([
 
         options: {
             seoEnabled: false,
-            categoryId: '2',
+            categoryId: null,
             ajaxEndpoint: '/tweakwise/ajax/navigation',
             filterSelector: '#layered-filter-block',
             productListSelector: '.products.wrapper',
@@ -41,7 +41,9 @@ define([
             var url = this.options.ajaxEndpoint;
             var filters = filterHelper.getFilterParams(this.element);
             // Add category id
-            filters = filters + '&category_id=' + this.options.categoryId;
+            if (this.options.categoryId) {
+                filters = filters + '&category_id=' + this.options.categoryId;
+            }
 
             this._startLoader();
             jQuery.ajax({
