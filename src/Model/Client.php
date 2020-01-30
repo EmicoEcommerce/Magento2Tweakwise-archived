@@ -36,14 +36,14 @@ class Client
     protected $log;
 
     /**
-     * @var ResponseFactory
-     */
-    protected $requestFactory;
-
-    /**
      * @var string
      */
     protected $userAgentString;
+
+    /**
+     * @var ResponseFactory
+     */
+    protected $responseFactory;
 
     /**
      * Client constructor.
@@ -83,7 +83,7 @@ class Client
         $client = new HttpClient();
         $options = ['timeout' => $this->config->getTimeout()];
 
-        if ($userAgent = $this->getUserAgentString()) {
+        if ($userAgent = $this->config->getUserAgentString()) {
             $options['useragent'] = $userAgent;
         }
 
@@ -179,19 +179,6 @@ class Client
         }
 
         return (string) $value;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getUserAgentString()
-    {
-        if ($this->userAgentString) {
-            return $this->userAgentString;
-        }
-
-        $this->userAgentString = $this->config->getUserAgentString();
-        return $this->userAgentString;
     }
 
     /**
