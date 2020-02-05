@@ -307,7 +307,8 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         if ($categoryUrlSuffix !== '/') {
             return $url;
         }
-        // Replace all occurrences of double slashes with a single slash except those in scheme. This can happen when $categoryUrlSuffix === '/'
+        // Replace all occurrences of double slashes with a single slash except those in scheme.
+        // This can happen when $categoryUrlSuffix === '/'
         return preg_replace('/(?<!:)\/\//', '/', $url);
     }
 
