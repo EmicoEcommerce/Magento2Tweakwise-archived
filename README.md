@@ -46,8 +46,11 @@ Below is a rundown of all configuration options
 1) Enabled: use Seo options yes or no.
 2) Filter whitelist: A list of filters which should be indexable. If a filter is marked as not indexable then its href attribute will be set to "#" its original url will be set in a data-seo-href attribute which will be used by javascript to navigate.
     Note that the category filter is always marked as indexable.
-3) Max allowed facets: This combines with the Filter whitelist setting, if Max allowed facets is set to 1 then after the user selects a filter on the result page all filter urls will be marked as not indexable.
-    However if one of the filters on the result page is in the filter whitelist it will still be indexable.
+3) Max allowed facets: This combines with the Filter whitelist setting. Filters are indexable if and only if they are in the whitelist and the selected filter count does not go above max_allowed_facets.
+    The reason this is an AND check is because otherwise indexation will still happen on the whitelisted filters and it is unclear which url is present (an arbitrary amount of filters could be selected).
+    Suppose max allowed facet is 1 and only "size" is in the whitelist. Then filter "color" with value "red" is not indexable (since "color" is not in the whitelist).
+    If we now allow the size filter to still be indexable then url example.com/category/color/red/size/M would be indexable whereas example.com/category/color/red is not which is incorrect.
+    This would lead to infinite crawling on filter urls which is undesirable 
     
 #### Autocomplete (All settings depend on Enabled having value yes)
 1) Enabled: Use tweakwise autocomplete results or not.
