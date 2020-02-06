@@ -38,12 +38,7 @@ class Client
     /**
      * @var ResponseFactory
      */
-    protected $requestFactory;
-
-    /**
-     * @var string
-     */
-    protected $userAgentString;
+    protected $responseFactory;
 
     /**
      * Client constructor.
@@ -70,7 +65,7 @@ class Client
      * @param string $pathSuffix
      * @return HttpClient
      */
-    protected function createClient($path, array $parameters = null, $pathSuffix)
+    protected function createClient($path, $pathSuffix, array $parameters = null)
     {
         $url = sprintf(
             '%s/%s/%s%s',
@@ -83,7 +78,7 @@ class Client
         $client = new HttpClient();
         $options = ['timeout' => $this->config->getTimeout()];
 
-        if ($userAgent = $this->getUserAgentString()) {
+        if ($userAgent = $this->config->getUserAgentString()) {
             $options['useragent'] = $userAgent;
         }
 
@@ -102,7 +97,7 @@ class Client
      */
     protected function doRequest(Request $request)
     {
-        $client = $this->createClient($request->getPath(), $request->getParameters(), $request->getPathSuffix());
+        $client = $this->createClient($request->getPath(), $request->getPathSuffix(), $request->getParameters());
 
         $start = microtime(true);
         try {
@@ -182,23 +177,11 @@ class Client
     }
 
     /**
-     * @return string
-     */
-    protected function getUserAgentString()
-    {
-        if ($this->userAgentString) {
-            return $this->userAgentString;
-        }
-
-        $this->userAgentString = $this->config->getUserAgentString();
-        return $this->userAgentString;
-    }
-
-    /**
      * Public request method to TW api. Used to disable TW on exceptions.
      *
      * @param Request $request
      * @return Response
+     * @throws \Exception
      */
     public function request(Request $request)
     {

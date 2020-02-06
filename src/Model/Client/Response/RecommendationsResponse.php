@@ -21,25 +21,12 @@ use Emico\TweakwiseExport\Model\Helper;
 class RecommendationsResponse extends Response
 {
     /**
-     * RecommendationsResponse constructor.
-     * @param Helper $helper
-     * @param Request $request
-     * @param array|null $data
-     */
-    public function __construct(
-        Helper $helper,
-        Request $request,
-        array $data = null
-    ) {
-        parent::__construct($helper, $request, $data);
-    }
-
-    /**
      * @param array $recommendation
      */
     public function setRecommendation(array $recommendation)
     {
         if (!empty($recommendation) && !isset($recommendation['items'])) {
+            // In this case multiple recommendations are given (group code)
             $recommendations = $recommendation;
             foreach ($recommendations as $recommendationEntry) {
                 $this->setData($recommendationEntry);
@@ -56,12 +43,7 @@ class RecommendationsResponse extends Response
      */
     public function getItems(): array
     {
-        $data = $this->getDataValue('items');
-        if (!$data) {
-            return [];
-        }
-
-        return $data;
+        return $this->getDataValue('items') ?: [];
     }
 
     /**
@@ -72,16 +54,14 @@ class RecommendationsResponse extends Response
     {
         $items = $this->normalizeArray($items, 'item');
 
-        $values = [];
         foreach ($items as $value) {
             if (!$value instanceof ItemType) {
                 $value = new ItemType($value);
             }
 
-            $values[] = $value;
+            $this->data['items'][] = $value;
         }
 
-        $this->data['items'] = $values;
         return $this;
     }
 
