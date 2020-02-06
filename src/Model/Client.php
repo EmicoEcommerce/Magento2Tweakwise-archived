@@ -36,11 +36,6 @@ class Client
     protected $log;
 
     /**
-     * @var string
-     */
-    protected $userAgentString;
-
-    /**
      * @var ResponseFactory
      */
     protected $responseFactory;
@@ -70,7 +65,7 @@ class Client
      * @param string $pathSuffix
      * @return HttpClient
      */
-    protected function createClient($path, array $parameters = null, $pathSuffix)
+    protected function createClient($path, $pathSuffix, array $parameters = null)
     {
         $url = sprintf(
             '%s/%s/%s%s',
@@ -102,7 +97,7 @@ class Client
      */
     protected function doRequest(Request $request)
     {
-        $client = $this->createClient($request->getPath(), $request->getParameters(), $request->getPathSuffix());
+        $client = $this->createClient($request->getPath(), $request->getPathSuffix(), $request->getParameters());
 
         $start = microtime(true);
         try {
