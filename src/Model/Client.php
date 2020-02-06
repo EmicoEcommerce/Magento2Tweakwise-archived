@@ -181,6 +181,7 @@ class Client
      *
      * @param Request $request
      * @return Response
+     * @throws \Exception
      */
     public function request(Request $request)
     {
