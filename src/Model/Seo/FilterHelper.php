@@ -115,7 +115,7 @@ class FilterHelper
         }
 
         $maxAllowedFacetsCount = (int) $maxAllowedFacetsCount;
-        $selectedFilterCount = \count($this->getActiveFilterItems());
+        $selectedFilterCount = \count($this->getActiveFilterItems(false));
 
         return $selectedFilterCount > $maxAllowedFacetsCount;
     }
@@ -131,13 +131,24 @@ class FilterHelper
 
         return \in_array($attributeCode, $filterWhiteList, true);
     }
-    
+
     /**
+     * @param bool $includeCategoryFilter
      * @return Item[]
      */
-    public function getActiveFilterItems(): array
+    protected function getActiveFilterItems(bool $includeCategoryFilter = true): array
     {
         $layer = $this->layerResolver->get();
-        return $layer->getState()->getFilters();
+        $filters = $layer->getState()->getFilters();
+        if ($includeCategoryFilter) {
+            return $filters;
+        }
+
+        return array_filter(
+            $filters,
+            function (Item $filterItem) {
+                return !$this->isCategoryFilterItem($filterItem);
+            }
+        );
     }
 }
