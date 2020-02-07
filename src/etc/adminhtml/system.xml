@@ -110,10 +110,9 @@
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="filter_whitelist" translate="label" type="multiselect" sortOrder="20" showInStore="1" showInWebsite="1" showInDefault="1">
+                <field id="filter_whitelist" translate="label" type="textarea" sortOrder="20" showInStore="1" showInWebsite="1" showInDefault="1">
                     <label>Filter Whitelist</label>
-                    <comment>Attributes whose filters should be indexable</comment>
-                    <source_model>Emico\TweakwiseExport\Model\Config\Source\ProductAttributes</source_model>
+                    <comment>Attributes whose filters should be indexable, add the filter codes (as seen in navigator) comma separated</comment>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>

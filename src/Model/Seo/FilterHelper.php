@@ -18,7 +18,7 @@ class FilterHelper
     /**
      *
      */
-    const TWEAKWISE_CATEGORY_FILTER_NAME = 'Categorie';
+    const TWEAKWISE_CATEGORY_FILTER_NAME = 'categorie';
 
     /**
      * @var Resolver
@@ -101,7 +101,7 @@ class FilterHelper
         return $item->getFilter()
             ->getFacet()
             ->getFacetSettings()
-            ->getAttributename();
+            ->getUrlKey();
     }
 
     /**
