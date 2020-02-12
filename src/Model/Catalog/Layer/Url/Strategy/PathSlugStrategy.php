@@ -24,7 +24,9 @@ use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
 use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Model\Layer;
 use Magento\Catalog\Model\Layer\Resolver;
+use Magento\CatalogUrlRewrite\Model\CategoryUrlPathGenerator;
 use Magento\Framework\App\ActionInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\UrlRewrite\Model\UrlFinderInterface;
 use Magento\UrlRewrite\Service\V1\Data\UrlRewrite;
@@ -96,6 +98,11 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
     private $currentContext;
 
     /**
+     * @var ScopeConfigInterface
+     */
+    private $scopeConfig;
+
+    /**
      * Magento constructor.
      *
      * @param UrlModel $magentoUrl
@@ -107,6 +114,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      * @param StoreManagerInterface $storeManager
      * @param Config $config
      * @param CurrentContext $currentContext
+     * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
         UrlModel $magentoUrl,
@@ -117,7 +125,8 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         QueryParameterStrategy $queryParameterStrategy,
         StoreManagerInterface $storeManager,
         Config $config,
-        CurrentContext $currentContext
+        CurrentContext $currentContext,
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->magentoUrl = $magentoUrl;
         $this->layerResolver = $layerResolver;
@@ -128,6 +137,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         $this->storeManager = $storeManager;
         $this->config = $config;
         $this->currentContext = $currentContext;
+        $this->scopeConfig = $scopeConfig;
     }
 
     /**
@@ -289,11 +299,17 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
             if (isset($urlParts['query'])) {
                 $url .= '?' . $urlParts['query'];
             }
+        } else {
+            // Replace filter path in current URL with the new filter combination path
+             $url = str_replace($currentFilterPath, $newFilterPath, $currentUrl);
+        }
+        $categoryUrlSuffix = $this->scopeConfig->getValue(CategoryUrlPathGenerator::XML_PATH_CATEGORY_URL_SUFFIX, 'store');
+        if ($categoryUrlSuffix !== '/') {
             return $url;
         }
-
-        // Replace filter path in current URL with the new filter combination path
-        return str_replace($currentFilterPath, $newFilterPath, $currentUrl);
+        // Replace all occurrences of double slashes with a single slash except those in scheme.
+        // This can happen when $categoryUrlSuffix === '/'
+        return preg_replace('/(?<!:)\/\//', '/', $url);
     }
 
     /**
@@ -438,7 +454,24 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
             $lastPathPart .= '/' . $pathPart;
             $paths[] = $lastPathPart;
         }
-        return array_reverse($paths);
+        $paths = array_reverse($paths);
+
+        $categoryUrlSuffix = $this->scopeConfig->getValue(CategoryUrlPathGenerator::XML_PATH_CATEGORY_URL_SUFFIX, 'store');
+        if (!$categoryUrlSuffix) {
+            return $paths;
+        }
+
+        return array_map(
+            static function (string $path) use ($categoryUrlSuffix): string {
+                // Check if path ends with category url suffix, if not add it.
+                if (substr($path, -strlen($categoryUrlSuffix)) !== $categoryUrlSuffix) {
+                    return $path . $categoryUrlSuffix;
+                }
+
+                return $path;
+            },
+            $paths
+        );
     }
 
     /**

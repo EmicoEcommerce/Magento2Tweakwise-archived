@@ -80,7 +80,7 @@ class Type
      */
     public function setData(array $data)
     {
-        $this->data = [];
+        //$this->data = [];
         foreach ($data as $key => $value) {
             $this->setValue($key, $value);
         }
