@@ -44,8 +44,9 @@ Below is a rundown of all configuration options
 
 #### Seo (All settings depend on Enabled having value yes)
 1) Enabled: use Seo options yes or no.
-2) Filter whitelist: A list of filters which should be indexable. If a filter is marked as not indexable then its href attribute will be set to "#" its original url will be set in a data-seo-href attribute which will be used by javascript to navigate.
-    Note that the category filter is always marked as indexable.
+2) Filter whitelist: A list of filters which should be indexable (all filters not selected here are not indexable). If a filter is marked as not indexable then its href attribute will be set to "#" its original url will be set in a data-seo-href attribute which will be used by javascript to navigate.
+    Note that the category filter is always marked as indexable. This used to be a multiselect field containing magento attributes however tweakwise facilitates derived properties, these properties are not related to magento attributes and as such these filters would be not indexable.
+    The field has changed to a comma separated text field so that these derived properties can be properly whitelisted.
 3) Max allowed facets: This combines with the Filter whitelist setting. Filters are indexable if and only if they are in the whitelist and the selected filter count does not go above max_allowed_facets.
     The reason this is an AND check is because otherwise indexation will still happen on the non whitelisted filters and it is unclear which url is present (an arbitrary amount of filters could be selected).
     Suppose max allowed facet is 1 and only "size" is in the whitelist. Then filter "color" with value "red" is not indexable (since "color" is not in the whitelist).
