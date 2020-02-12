@@ -47,14 +47,13 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
     require(['jquery', 'jquery/ui', 'domReady!'], function($, priceUtils, quote){
         'use strict';
 
-        var filterUrl = '<?=$block->getPriceUrl()?>';
-        var prefix = '<span class="prefix">' + '<?=$block->getItemPrefix();?>' + '</span>'
-        var postfix = '<span class="postfix">' + '<?=$block->getItemPostfix();?>' + '</span>'
+        var filterUrl = '<?=$block->getFilterUrl()?>';
+        var prefix = '<span class="prefix">' + '<?=$block->getItemPrefix();?>' + '</span>';
+        var postfix = '<span class="postfix">' + '<?=$block->getItemPostfix();?>' + '</span>';
         var container = $('#attribute-slider-<?=$block->getCssId()?>');
         var currentMinValueContainer = container.find('.current-min-value');
         var currentMaxValueContainer = container.find('.current-max-value');
         var formFilters = <?=$block->getJsUseFormFilters()?>;
-        var maxFloat = <?=$block->getMaxFloatValue()?>;
 
         function labelFormat(value, prefix, postfix) {
             return prefix + value + postfix;
@@ -74,7 +73,7 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
             },
             change: function(event, ui) {
                 var min = ui.values[0];
-                var max = ui.values[1] === Math.floor(maxFloat) ? maxFloat : ui.values[1];
+                var max = ui.values[1];
                 if (formFilters) {
                     let slider = jQuery(event.target).closest('.slider-attribute');
                     slider.attr('data-min', min);

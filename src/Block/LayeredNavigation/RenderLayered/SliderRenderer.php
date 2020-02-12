@@ -59,26 +59,6 @@ class SliderRenderer extends DefaultRenderer
 
     /**
      * @param int $index
-     * @param int $default
-     * @return int
-     */
-    protected function getItemIntValue($index, $default = 0)
-    {
-        return (int) $this->getItemValue($index, $default);
-    }
-
-    /**
-     * @param int $index
-     * @param float $default
-     * @return float
-     */
-    protected function getItemFloatValue($index, $default = 0.0)
-    {
-        return (float) $this->getItemValue($index, $default);
-    }
-
-    /**
-     * @param int $index
      * @param int|float $default
      * @return int|float|string
      */
@@ -89,7 +69,7 @@ class SliderRenderer extends DefaultRenderer
             return $default;
         }
 
-        return $items[$index]->getLabel();
+        return (float) $items[$index]->getLabel();
     }
 
     /**
@@ -97,7 +77,7 @@ class SliderRenderer extends DefaultRenderer
      */
     public function getMinValue()
     {
-        return $this->getItemIntValue(2, $this->getCurrentMinValue());
+        return floor($this->getItemValue(2, $this->getCurrentMinValue()));
     }
 
     /**
@@ -105,15 +85,7 @@ class SliderRenderer extends DefaultRenderer
      */
     public function getMaxValue()
     {
-        return $this->getItemIntValue(3, $this->getCurrentMaxValue());
-    }
-
-    /**
-     * @return float
-     */
-    public function getMaxFloatValue()
-    {
-        return $this->getItemFloatValue(3, $this->getCurrentMaxFloatValue());
+        return ceil($this->getItemValue(3, $this->getCurrentMaxValue()));
     }
 
     /**
@@ -121,7 +93,7 @@ class SliderRenderer extends DefaultRenderer
      */
     public function getCurrentMinValue()
     {
-        return $this->getItemIntValue(0);
+        return floor($this->getItemValue(0));
     }
 
     /**
@@ -129,15 +101,7 @@ class SliderRenderer extends DefaultRenderer
      */
     public function getCurrentMaxValue()
     {
-        return $this->getItemIntValue(1, 99999);
-    }
-
-    /**
-     * @return float
-     */
-    public function getCurrentMaxFloatValue()
-    {
-        return $this->getItemFloatValue(1, 99999);
+        return ceil($this->getItemValue(1, 99999));
     }
 
     /**

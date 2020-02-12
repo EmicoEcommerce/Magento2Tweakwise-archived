@@ -56,6 +56,14 @@ class Item extends MagentoItem
     }
 
     /**
+     *
+     */
+    public function __clone()
+    {
+        $this->attributeType = clone $this->attributeType;
+    }
+
+    /**
      * @return Filter
      */
     public function getFilter()
