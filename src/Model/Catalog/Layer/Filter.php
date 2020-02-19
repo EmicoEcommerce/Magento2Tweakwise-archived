@@ -468,9 +468,11 @@ class Filter extends AbstractFilter implements FilterInterface
             return $activeItems;
         }
 
-        $firstAttribute = $activeItems[0]->getAttribute();
-        $firstAttribute->setValue('title', $firstAttribute->getTitle() . '-' . $activeItems[1]->getLabel());
+        $selectedMin = $activeItems[0]->getAttribute()->getTitle();
+        $selectedMax = $activeItems[1]->getAttribute()->getTitle();
+        $mockedActiveItem = clone($activeItems[0]);
+        $mockedActiveItem->getAttribute()->setValue('title', "$selectedMin-$selectedMax");
 
-        return [$activeItems[0]];
+        return [$mockedActiveItem];
     }
 }
