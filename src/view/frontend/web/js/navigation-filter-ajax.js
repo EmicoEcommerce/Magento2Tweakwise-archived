@@ -47,7 +47,7 @@ define([
             }
             // Add original url, this will be used to construct the new filter urls
             if (this.options.originalUrl) {
-                filters = filters + '&original_url=' + this.options.originalUrl;
+                filters = filters + '&__tw_original_url=' + this.options.originalUrl;
             }
 
             this._startLoader();

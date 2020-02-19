@@ -100,6 +100,10 @@ class AjaxNavigationConfig implements NavigationConfigInterface
      */
     protected function getCategoryId(): ?int
     {
+        if ($this->isSearch()) {
+            return null;
+        }
+
         return ($this->getCategory()->getId()) ? (int)$this->getCategory()->getId() : null;
     }
 
@@ -110,7 +114,9 @@ class AjaxNavigationConfig implements NavigationConfigInterface
      */
     public function getOriginalUrl(): ?string
     {
-        return (!$this->isSearch()) ? $this->getCategory()->getUrl() : null;
+        return $this->isSearch()
+            ? 'catalogsearch/result/index'
+            : $this->getCategory()->getUrl();
     }
 
     /**

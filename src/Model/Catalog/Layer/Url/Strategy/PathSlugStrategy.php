@@ -268,7 +268,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      */
     public function getOriginalUrl(MagentoHttpRequest $request): string
     {
-        return $request->getParam('original_url') ?: $this->getCurrentUrl();
+        return $request->getParam('__tw_original_url') ?: $this->getCurrentUrl();
     }
 
     /**
