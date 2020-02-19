@@ -44,7 +44,7 @@ class Router implements RouterInterface
     }
 
     /**
-     *
+     * @return RouteMatchingInterface
      */
     protected function getRouteMatchingStrategy(): RouteMatchingInterface
     {

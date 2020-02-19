@@ -71,7 +71,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      * @var Item[]
      */
     private $activeFilters;
-    
+
     /**
      * @var QueryParameterStrategy
      */
@@ -263,6 +263,15 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
     }
 
     /**
+     * @param MagentoHttpRequest $request
+     * @return string
+     */
+    public function getOriginalUrl(MagentoHttpRequest $request): string
+    {
+        return $request->getParam('original_url') ?: $this->getCurrentUrl();
+    }
+
+    /**
      * @return string
      */
     public function getCurrentUrl(): string
@@ -288,7 +297,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      */
     public function buildFilterUrl(MagentoHttpRequest $request, array $filters = []): string
     {
-        $currentUrl = $this->getCurrentUrl();
+        $currentUrl = $this->getOriginalUrl($request);
 
         $currentFilterPath = $request->getParam(self::REQUEST_FILTER_PATH);
         $newFilterPath = $this->buildFilterSlugPath($filters);

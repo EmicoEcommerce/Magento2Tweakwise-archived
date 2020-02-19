@@ -7,7 +7,7 @@
 namespace Emico\Tweakwise\Controller\Ajax;
 
 use Emico\Tweakwise\Model\Config;
-use Magento\Catalog\Model\CategoryRepository;
+use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
@@ -39,7 +39,7 @@ class Navigation extends Action
     protected $registry;
 
     /**
-     * @var CategoryRepository
+     * @var CategoryRepositoryInterface
      */
     protected $categoryRepository;
 
@@ -49,14 +49,14 @@ class Navigation extends Action
      * @param Config $config Tweakwise configuration provider
      * @param ResultFactory $resultFactory
      * @param Registry $registry
-     * @param CategoryRepository $categoryRepository
+     * @param CategoryRepositoryInterface $categoryRepository
      */
     public function __construct(
         Context $context,
         Config $config,
         ResultFactory $resultFactory,
         Registry $registry,
-        CategoryRepository $categoryRepository
+        CategoryRepositoryInterface $categoryRepository
     ) {
         parent::__construct($context);
         $this->config = $config;

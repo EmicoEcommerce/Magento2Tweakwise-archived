@@ -15,6 +15,7 @@ define([
         options: {
             seoEnabled: false,
             categoryId: null,
+            originalUrl: null,
             ajaxEndpoint: '/tweakwise/ajax/navigation',
             filterSelector: '#layered-filter-block',
             productListSelector: '.products.wrapper',
@@ -43,6 +44,10 @@ define([
             // Add category id
             if (this.options.categoryId) {
                 filters = filters + '&category_id=' + this.options.categoryId;
+            }
+            // Add original url, this will be used to construct the new filter urls
+            if (this.options.originalUrl) {
+                filters = filters + '&original_url=' + this.options.originalUrl;
             }
 
             this._startLoader();
