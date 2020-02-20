@@ -80,19 +80,13 @@ class Navigation extends Action
             throw new NotFoundException(__('Page not found.'));
         }
 
-        $params = $this->getRequest()->getParams();
-        $categoryId = $params['category_id'] ?: 2;
+        $categoryId = (int)$this->getRequest()->getParam('__tw_category_id') ?: 2;
 
         // Register the category, its needed while rendering filters and products
         if (!$this->registry->registry('current_category')) {
-            $category = $this->categoryRepository->get((int)$categoryId);
+            $category = $this->categoryRepository->get($categoryId);
             $this->registry->register('current_category', $category);
         }
-
-        // Remove category param as it would show up in filters if still present.
-        // category_id param is added by view/frontend/web/js/navigation-filter-ajax.js
-        unset($params['category_id']);
-        $this->getRequest()->setParams($params);
 
         return $this->resultFactory->create(ResultFactory::TYPE_LAYOUT);
     }

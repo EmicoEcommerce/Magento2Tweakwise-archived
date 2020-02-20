@@ -108,8 +108,9 @@
 
     <type name="Emico\Tweakwise\Model\Catalog\Layer\Url\UrlModel">
         <arguments>
-            <argument name="data" xsi:type="array">
-                <item name="tw_config" xsi:type="object">Emico\Tweakwise\Model\Config</item>
+            <argument name="tweakwiseSystemParams" xsi:type="array">
+                <item name="category_id" xsi:type="string">__tw_category_id</item>
+                <item name="original_url" xsi:type="string">__tw_original_url</item>
             </argument>
         </arguments>
     </type>
