@@ -18,7 +18,7 @@ use Magento\Framework\Registry;
 
 /**
  * Class Navigation
- * Handles ajax filtering requests
+ * Handles ajax filtering requests for category pages
  * @package Emico\Tweakwise\Controller\Ajax
  */
 class Navigation extends Action

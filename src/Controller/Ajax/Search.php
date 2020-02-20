@@ -16,8 +16,8 @@ use Magento\Framework\Exception\NotFoundException;
 use Magento\Framework\Controller\ResultFactory;
 
 /**
- * Class Navigation
- * Handles ajax filtering requests
+ * Class Search
+ * Handles ajax filtering requests for the search result pages
  * @package Emico\Tweakwise\Controller\Ajax
  */
 class Search extends Action
