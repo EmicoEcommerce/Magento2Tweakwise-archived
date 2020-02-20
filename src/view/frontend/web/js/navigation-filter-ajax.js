@@ -110,7 +110,14 @@ define([
             jQuery(filterSelector)
                 .html(newFiltersHtml)
                 .trigger('contentUpdated');
-            jQuery(productListSelector)
+
+            /*
+            The product list comes after the toolbar
+            We use this construction as there could be more product lists on the page
+            and we dont want to replace them all
+            */
+            jQuery(toolbarSelector)
+                .next(productListSelector)
                 .html(newProductListHtml)
                 .trigger('contentUpdated');
             jQuery(toolbarSelector)

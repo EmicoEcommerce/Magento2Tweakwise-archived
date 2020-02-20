@@ -8,11 +8,14 @@
  */
 -->
 <layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <update handle="empty"/>
     <container name="root">
         <container name="content"/>
         <container name="sidebar.main"/>
     </container>
     <update handle="catalog_category_view_type_layered"/>
     <update handle="catalog_category_view"/>
-    <update handle="empty"/>
+
+    <!-- Remove featured products from content as it would be rendered again in ajax call which is not needed -->
+    <referenceBlock name="tweakwise.catalog.product.featured.before" remove="true"/>
 </layout>
