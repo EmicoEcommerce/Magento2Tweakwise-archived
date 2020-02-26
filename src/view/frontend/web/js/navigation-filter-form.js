@@ -17,7 +17,7 @@ define(['jquery',
 
         _handleFilterButtonClick: function(event) {
             event.preventDefault();
-            var formElement = $(event.target()).closest('form');
+            var formElement = $(event.target).closest('form');
             var url = filterHelper.getFilterParams(formElement);
 
             if (url !== '') {

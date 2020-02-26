@@ -200,10 +200,10 @@
     <type name="Emico\Tweakwise\Model\NavigationConfig\NavigationConfig">
         <arguments>
             <argument name="navigationConfigProviders" xsi:type="array">
-                <item name="default" xsi:type="object">Emico\Tweakwise\Model\NavigationConfig\DefaultNavigationConfig</item>
-                <item name="ajax" xsi:type="object">Emico\Tweakwise\Model\NavigationConfig\AjaxNavigationConfig</item>
-                <item name="form_filter" xsi:type="object">Emico\Tweakwise\Model\NavigationConfig\FormFilterNavigationConfig</item>
-                <item name="ajax_form_filter" xsi:type="object">Emico\Tweakwise\Model\NavigationConfig\AjaxFormFilterNavigationConfig</item>
+                <item name="default" xsi:type="object">Emico\Tweakwise\Model\NavigationConfig\DefaultFilter</item>
+                <item name="form" xsi:type="object">Emico\Tweakwise\Model\NavigationConfig\FormFilter</item>
+                <item name="ajax" xsi:type="object">Emico\Tweakwise\Model\NavigationConfig\AjaxFilter</item>
+                <item name="ajax_form" xsi:type="object">Emico\Tweakwise\Model\NavigationConfig\AjaxFormFilter</item>
             </argument>
         </arguments>
     </type>

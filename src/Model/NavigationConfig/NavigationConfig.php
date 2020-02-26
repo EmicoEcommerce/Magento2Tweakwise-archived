@@ -82,7 +82,7 @@ class NavigationConfig implements NavigationConfigInterface, ArgumentInterface
         $formFiltersEnabled = $this->config->getUseFormFilters();
 
         if ($ajaxEnabled && $formFiltersEnabled) {
-            return $this->navigationConfigProviders['ajax_form_filter'];
+            return $this->navigationConfigProviders['ajax_form'];
         }
 
         if ($ajaxEnabled) {
@@ -90,7 +90,7 @@ class NavigationConfig implements NavigationConfigInterface, ArgumentInterface
         }
 
         if ($formFiltersEnabled) {
-            return $this->navigationConfigProviders['form_filter'];
+            return $this->navigationConfigProviders['form'];
         }
 
         return $this->navigationConfigProviders['default'];

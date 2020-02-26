@@ -19,7 +19,7 @@ use Magento\Store\Model\StoreManagerInterface;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\Data\CategoryInterfaceFactory;
 
-class AjaxNavigationConfig implements NavigationConfigInterface
+class AjaxFilter implements NavigationConfigInterface
 {
     /**
      * @var Config
@@ -111,7 +111,7 @@ class AjaxNavigationConfig implements NavigationConfigInterface
      *
      * @return string
      */
-    public function getOriginalUrl(): ?string
+    protected function getOriginalUrl(): ?string
     {
         return $this->isSearch()
             ? 'catalogsearch/result/index'
@@ -170,6 +170,9 @@ class AjaxNavigationConfig implements NavigationConfigInterface
         ];
     }
 
+    /**
+     * @return bool
+     */
     protected function isSearch()
     {
         return $this->currentNavigationContext->getRequest() instanceof ProductSearchRequest;

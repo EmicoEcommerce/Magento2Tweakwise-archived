@@ -71,7 +71,6 @@ define(['jquery', 'jquery/ui', 'domReady!'], function($) {
         ajaxChange: function (event, ui) {
             this.formFilterChange(event, ui);
             $(this.element).closest('form').trigger('change');
-            // Do something with values
         },
 
         formFilterChange: function (event, ui) {

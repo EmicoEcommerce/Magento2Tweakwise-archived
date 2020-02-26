@@ -8,7 +8,11 @@ namespace Emico\Tweakwise\Model\NavigationConfig;
 
 use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
 
-class FormFilterNavigationConfig implements NavigationConfigInterface
+/**
+ * Class AjaxFormFilterNavigationConfig
+ * @package Emico\Tweakwise\Model\NavigationConfig
+ */
+class AjaxFormFilter implements NavigationConfigInterface
 {
     /**
      * @inheritDoc
@@ -25,9 +29,7 @@ class FormFilterNavigationConfig implements NavigationConfigInterface
      */
     public function getJsFormConfig()
     {
-        return  [
-            'tweakwiseNavigationForm' => []
-        ];
+        return '';
     }
 
     /**
@@ -37,6 +39,7 @@ class FormFilterNavigationConfig implements NavigationConfigInterface
     {
         return [
             'tweakwiseNavigationSlider' => [
+                'ajaxFilters' => true,
                 'formFilters' => true,
             ]
         ];

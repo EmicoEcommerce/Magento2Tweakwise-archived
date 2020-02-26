@@ -58,7 +58,7 @@ define([
                     this._updateBlocks(response);
                 }.bind(this),
                 error: function(response) {
-                    // TODO Error handling
+                    // Todo Error handling, navigate to filter url maybe?
                 }.bind(this),
                 complete: function() {
                     this._stopLoader();

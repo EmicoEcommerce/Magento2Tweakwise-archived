@@ -9,7 +9,7 @@ namespace Emico\Tweakwise\Model\NavigationConfig;
 use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
 use Emico\Tweakwise\Model\Config;
 
-class DefaultNavigationConfig implements NavigationConfigInterface
+class DefaultFilter implements NavigationConfigInterface
 {
 
     /**
