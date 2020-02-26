@@ -103,7 +103,7 @@ class AjaxFilter implements NavigationConfigInterface
             return null;
         }
 
-        return ($this->getCategory()->getId()) ? (int)$this->getCategory()->getId() : null;
+        return (int)$this->getCategory()->getId() ?: null;
     }
 
     /**

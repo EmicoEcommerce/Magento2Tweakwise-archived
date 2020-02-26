@@ -29,7 +29,9 @@ class AjaxFormFilter implements NavigationConfigInterface
      */
     public function getJsFormConfig()
     {
-        return '';
+        return  [
+            'tweakwiseNavigationFilterForm' => []
+        ];
     }
 
     /**

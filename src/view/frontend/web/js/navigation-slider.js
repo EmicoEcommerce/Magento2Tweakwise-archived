@@ -82,10 +82,7 @@ define(['jquery', 'jquery/ui', 'domReady!'], function($) {
         },
 
         ajaxFormFilterChange: function (event, ui) {
-            var min = ui.values[0];
-            var max = ui.values[1];
-
-            // Do something with values
+            this.formFilterChange(event, ui);
         },
 
         _createSlider: function() {
