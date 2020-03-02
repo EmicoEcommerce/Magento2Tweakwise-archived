@@ -54,7 +54,7 @@ class AjaxFilter implements NavigationConfigInterface
     /**
      * @var CategoryInterfaceFactory
      */
-    private $categoryFactory;
+    protected $categoryFactory;
 
     /**
      * AjaxNavigationConfig constructor.
