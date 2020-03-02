@@ -19,7 +19,6 @@ if (!$block->canShowBlock()) return;
 <?php /** @var NavigationConfig $tweakwiseNavigationConfig */?>
 <?php $tweakwiseNavigationConfig = $block->getData('tweakwise_navigation_config');?>
 <?php $jsFormConfig = $tweakwiseNavigationConfig->getJsFormConfig(); ?>
-<?php $renderForm = (bool)$jsFormConfig;?>
 <?php $renderFilterButton = $tweakwiseNavigationConfig->getUseFormFilters();?>
 
 <?php $hasFilters = count($filters) > 0; ?>
@@ -42,9 +41,7 @@ if (!$block->canShowBlock()) return;
         <?php if ($filters): ?>
             <strong role="heading" aria-level="2" class="block-subtitle filter-subtitle"><?=__('Shopping Options') ?></strong>
             <div class="filter-options" id="narrow-by-list" data-role="content">
-                <?php if ($renderForm): ?>
-                    <form id="facet-filter-form" <?=($jsFormConfig ? sprintf('data-mage-init=\'%s\'', $jsFormConfig) : '')?>>
-                <?php endif;?>
+                <form id="facet-filter-form" <?=($jsFormConfig ? sprintf('data-mage-init=\'%s\'', $jsFormConfig) : '')?>>
                 <?php foreach ($filters as $filter): ?>
                     <?php if ($filter->isCollapsible()): ?>
                         <?php $filterActive = $filter->isDefaultCollapsed() ? 'false' : '[0]'; ?>
@@ -53,7 +50,6 @@ if (!$block->canShowBlock()) return;
                             <div data-role="collapsible" class="filter-options-item">
                                 <div data-role="title" class="filter-options-title">
                                     <?=__($filter->getName())?>
-
                                     <?php $tooltip = $filter->getTooltip(); ?>
                                     <?php if ($tooltip): ?>
                                         <?php $tooltip = htmlentities($tooltip); ?>
@@ -73,15 +69,13 @@ if (!$block->canShowBlock()) return;
                             </div>
                         </div>
                     <?php endif; ?>
-                    <?php if ($renderForm && $renderFilterButton): ?>
+                    <?php if ($renderFilterButton): ?>
                         <div class="show-items-link">
                             <button type="submit" class="btn btn-primary btn-block js-btn-filter"><?=__(sprintf('Show <span>%s</span> items', $this->getLayer()->getProductCount())); ?></button>
                         </div>
                     <?php endif;?>
                 <?php endforeach; ?>
-                <?php if ($renderForm): ?>
-                    </form>
-                <?php endif;?>
+                </form>
             </div>
         <?php endif; ?>
     </div>
