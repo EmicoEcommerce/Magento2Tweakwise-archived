@@ -12,11 +12,27 @@ define(['jquery', 'jquery/ui'], function($) {
             hasAlternateSort: null,
         },
 
+        _create: function() {
+            this._hookEvents();
+            return this._superApply(arguments);
+        },
+
+        /**
+         * Bind more and less items click handlers
+         *
+         * @private
+         */
         _hookEvents: function() {
             this.element.on('click', '.more-items', this._handleMoreItemsLink.bind(this));
             this.element.on('click', '.less-items', this._handleLessItemsLink.bind(this));
         },
 
+        /**
+         * Sort items depending on alternate sort (this comes from tweakwise api) and expand filter list
+         *
+         * @returns {boolean}
+         * @private
+         */
         _handleMoreItemsLink: function() {
             this._sortItems('alternate-sort');
             this.element.find('.default-hidden').show();
@@ -25,6 +41,12 @@ define(['jquery', 'jquery/ui'], function($) {
             return false;
         },
 
+        /**
+         * Sort items depending on alternate sort (this comes from tweakwise api) and abbreviate filter list
+         *
+         * @returns {boolean}
+         * @private
+         */
         _handleLessItemsLink: function() {
             this._sortItems('original-sort');
             this.element.find('.default-hidden').hide();
@@ -33,6 +55,12 @@ define(['jquery', 'jquery/ui'], function($) {
             return false;
         },
 
+        /**
+         * Sort items based on alternate sort (if available)
+         *
+         * @param type
+         * @private
+         */
         _sortItems: function (type) {
             if (!this._hasAlternateSort()) {
                 return;
@@ -44,6 +72,12 @@ define(['jquery', 'jquery/ui'], function($) {
             }).appendTo(list);
         },
 
+        /**
+         * Check if alternate sort is available as data property on filters
+         *
+         * @returns {null}
+         * @private
+         */
         _hasAlternateSort: function() {
             if (this.options.hasAlternateSort === null) {
                 let list = this.element.find('.items');
@@ -52,11 +86,6 @@ define(['jquery', 'jquery/ui'], function($) {
             }
 
             return this.options.hasAlternateSort;
-        },
-
-        _create: function() {
-            this._hookEvents();
-            return this._superApply(arguments);
         }
     });
 

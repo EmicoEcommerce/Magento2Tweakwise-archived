@@ -21,6 +21,29 @@ define(['jquery', 'jquery/ui', 'domReady!'], function($) {
             ajaxFilters: false,
         },
 
+        /**
+         *
+         * @returns {*}
+         * @private
+         */
+        _create: function() {
+            this._createSlider();
+            return this._superApply(arguments);
+        },
+
+        /**
+         * Register the correct handler depending on configuration
+         * @private
+         */
+        _createSlider: function() {
+            $(this.options.container).find('.slider').slider(this._getSliderConfig());
+        },
+
+        /**
+         *
+         * @returns {{min: number, max: number, slide: *, values: [tweakwise.navigationSlider._getSliderConfig.options.currentMin, tweakwise.navigationSlider._getSliderConfig.options.currentMax], change: *, range: boolean}}
+         * @private
+         */
         _getSliderConfig: function() {
             return {
                 range: true,
@@ -40,6 +63,12 @@ define(['jquery', 'jquery/ui', 'domReady!'], function($) {
             }
         },
 
+        /**
+         * This determines the "slide" handler depending on configuration
+         *
+         * @returns {*}
+         * @private
+         */
         _getChangeHandler: function () {
             if (this.options.formFilters && this.options.ajaxFilters) {
                 return this.ajaxFormFilterChange.bind(this);
@@ -56,6 +85,12 @@ define(['jquery', 'jquery/ui', 'domReady!'], function($) {
             return this.defaultChange.bind(this);
         },
 
+        /**
+         * Standard navigation, i.e. no ajax or formfilter options
+         *
+         * @param event
+         * @param ui
+         */
         defaultChange: function (event, ui) {
             var min = ui.values[0];
             var max = ui.values[1];
@@ -68,11 +103,23 @@ define(['jquery', 'jquery/ui', 'domReady!'], function($) {
             window.location.href = url;
         },
 
+        /**
+         * Ajax navigation, no formfilters
+         *
+         * @param event
+         * @param ui
+         */
         ajaxChange: function (event, ui) {
             this.formFilterChange(event, ui);
             $(this.element).closest('form').trigger('change');
         },
 
+        /**
+         * Used when form filters is set to true, just update the values, navigation is handled by the filter button
+         *
+         * @param event
+         * @param ui
+         */
         formFilterChange: function (event, ui) {
             var min = ui.values[0];
             var max = ui.values[1];
@@ -81,21 +128,26 @@ define(['jquery', 'jquery/ui', 'domReady!'], function($) {
             slider.attr('data-max', max);
         },
 
+        /**
+         * Wrapper for formFilterChange (naming consistency)
+         *
+         * @param event
+         * @param ui
+         */
         ajaxFormFilterChange: function (event, ui) {
+            // Just call the form filter change, navigation is handled by the filter button click
             this.formFilterChange(event, ui);
         },
 
-        _createSlider: function() {
-            $(this.options.container).find('.slider').slider(this._getSliderConfig());
-        },
-
+        /**
+         * Format slider label
+         *
+         * @param value
+         * @returns {string}
+         * @private
+         */
         _labelFormat: function (value) {
             return this.options.prefix + value + this.options.postfix;
-        },
-
-        _create: function() {
-            this._createSlider();
-            return this._superApply(arguments);
         }
     });
 
