@@ -77,15 +77,6 @@ define([
         },
 
         /**
-         *
-         * @param event
-         * @private
-         */
-        _handleSliderEvent: function(event) {
-            event.preventDefault();
-        },
-
-        /**
          * Update all relevant html with response data, trigger contentUpdated to 'trigger' data-mage-init
          * @param htmlResponse
          * @private
