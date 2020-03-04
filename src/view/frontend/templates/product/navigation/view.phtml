@@ -31,7 +31,8 @@ if (!$block->canShowBlock()) return;
         <strong data-role="title"><?=__('Shop By')?></strong>
     </div>
     <div class="block-content filter-content">
-        <?=$block->getChildHtml('state')?>
+        <form id="facet-filter-form" <?=($jsFormConfig ? sprintf('data-mage-init=\'%s\'', $jsFormConfig) : '')?>>
+        <?=$block->getChildHtml('state');?>
 
         <?php if ($block->getLayer()->getState()->getFilters()): ?>
             <div class="block-actions filter-actions">
@@ -42,48 +43,47 @@ if (!$block->canShowBlock()) return;
         <?php if ($hasFilters): ?>
             <strong role="heading" aria-level="2" class="block-subtitle filter-subtitle"><?=__('Shopping Options') ?></strong>
             <div class="filter-options" id="narrow-by-list" data-role="content">
-                <form id="facet-filter-form" <?=($jsFormConfig ? sprintf('data-mage-init=\'%s\'', $jsFormConfig) : '')?>>
-                    <?php if ($isAjaxFilters):?>
-                        <input type="hidden" name="__tw_original_url" value="<?=$tweakwiseNavigationConfig->getOriginalUrl()?>">
-                        <input type="hidden" name="__tw_category_id" value="<?=$tweakwiseNavigationConfig->getCategoryId()?>">
-                    <?php endif;?>
-                    <?php foreach ($filters as $filter): ?>
-                        <?php if ($filter->isCollapsible()): ?>
-                            <?php $filterActive = $filter->isDefaultCollapsed() ? 'false' : '[0]'; ?>
-                            <div class="collapsible-container <?=$filter->getCssClass()?>"
-                                 data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": <?=$filterActive?>}}'
-                            >
-                                <div data-role="collapsible" class="filter-options-item">
-                                    <div data-role="title" class="filter-options-title">
-                                        <?=__($filter->getName())?>
-                                        <?php $tooltip = $filter->getTooltip(); ?>
-                                        <?php if ($tooltip): ?>
-                                            <?php $tooltip = htmlentities($tooltip); ?>
-                                            <span class="tooltip" data-tooltip="<?=$tooltip?>">I</span>
-                                        <?php endif; ?>
-                                    </div>
-                                        <?php $filterContentStyle = $filter->isDefaultCollapsed() ? ' style="display: none;"' : ''?>
-                                    <div data-role="content" class="filter-options-content"<?=$filterContentStyle?>>
-                                        <?=$block->getChildBlock('renderer')->render($filter) ?>
-                                    </div>
+                <?php if ($isAjaxFilters):?>
+                    <input type="hidden" name="__tw_original_url" value="<?=$tweakwiseNavigationConfig->getOriginalUrl()?>">
+                    <input type="hidden" name="__tw_category_id" value="<?=$tweakwiseNavigationConfig->getCategoryId()?>">
+                <?php endif;?>
+                <?php foreach ($filters as $filter): ?>
+                    <?php if ($filter->isCollapsible()): ?>
+                        <?php $filterActive = $filter->isDefaultCollapsed() ? 'false' : '[0]'; ?>
+                        <div class="collapsible-container <?=$filter->getCssClass()?>"
+                             data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": <?=$filterActive?>}}'
+                        >
+                            <div data-role="collapsible" class="filter-options-item">
+                                <div data-role="title" class="filter-options-title">
+                                    <?=__($filter->getName())?>
+                                    <?php $tooltip = $filter->getTooltip(); ?>
+                                    <?php if ($tooltip): ?>
+                                        <?php $tooltip = htmlentities($tooltip); ?>
+                                        <span class="tooltip" data-tooltip="<?=$tooltip?>">I</span>
+                                    <?php endif; ?>
                                 </div>
-                            </div>
-                        <?php else: ?>
-                            <div class="filter-options-item">
-                                <div class="filter-options-title filter-options-title-non-collapsible"><?=__($filter->getName())?></div>
-                                <div class="filter-options-content">
+                                <?php $filterContentStyle = $filter->isDefaultCollapsed() ? ' style="display: none;"' : ''?>
+                                <div data-role="content" class="filter-options-content"<?=$filterContentStyle?>>
                                     <?=$block->getChildBlock('renderer')->render($filter) ?>
                                 </div>
                             </div>
-                        <?php endif; ?>
-                        <?php if ($renderFilterButton): ?>
-                            <div class="show-items-link">
-                                <button type="submit" class="btn btn-primary btn-block js-btn-filter"><?=__(sprintf('Show <span>%s</span> items', $this->getLayer()->getProductCount())); ?></button>
+                        </div>
+                    <?php else: ?>
+                        <div class="filter-options-item">
+                            <div class="filter-options-title filter-options-title-non-collapsible"><?=__($filter->getName())?></div>
+                            <div class="filter-options-content">
+                                <?=$block->getChildBlock('renderer')->render($filter) ?>
                             </div>
-                        <?php endif;?>
-                    <?php endforeach; ?>
-                </form>
+                        </div>
+                    <?php endif; ?>
+                    <?php if ($renderFilterButton): ?>
+                        <div class="show-items-link">
+                            <button type="submit" class="btn btn-primary btn-block js-btn-filter"><?=__(sprintf('Show <span>%s</span> items', $this->getLayer()->getProductCount())); ?></button>
+                        </div>
+                    <?php endif;?>
+                <?php endforeach; ?>
             </div>
         <?php endif; ?>
+        </form>
     </div>
 </div>
