@@ -107,17 +107,6 @@ class SliderRenderer extends DefaultRenderer
     }
 
     /**
-     * @deprecated 1.5.0 use renderValue()
-     * @see SliderRenderer::renderValue()
-     * @param string $value
-     * @return string
-     */
-    public function renderPrice($value)
-    {
-        return $this->renderValue($value);
-    }
-
-    /**
      * @param string $value
      * @return float|string
      */
@@ -136,16 +125,6 @@ class SliderRenderer extends DefaultRenderer
     public function getPriceFormatJson()
     {
         return $this->taxHelper->getPriceFormat();
-    }
-
-    /**
-     * @deprecated 1.5.0 use getFilterUrl()
-     * @see SliderRenderer::getFilterUrl()
-     * @return string
-     */
-    public function getPriceUrl()
-    {
-        return $this->getFilterUrl();
     }
 
     /**
