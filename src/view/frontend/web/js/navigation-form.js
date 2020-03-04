@@ -7,9 +7,8 @@
 
 define([
     'jquery',
-    'jquery/ui',
     'tweakwiseFilterHelper'
-], function($, jQueryUi, filterHelper) {
+], function($, filterHelper) {
     $.widget('tweakwise.navigationForm', {
 
         options: {
@@ -97,24 +96,12 @@ define([
          * @private
          */
         _ajaxHandler: function(event) {
-            // TODO Add check if this is a proper url, otherwise navigate to filter link
             event.preventDefault();
-
-            var url = this.options.ajaxEndpoint;
-            var filters = filterHelper.getFilterParams(this.element);
-            // Add category id
-            if (this.options.categoryId) {
-                filters = filters + '&__tw_category_id=' + this.options.categoryId;
-            }
-            // Add original url, this will be used to construct the new filter urls
-            if (this.options.originalUrl) {
-                filters = filters + '&__tw_original_url=' + this.options.originalUrl;
-            }
-
             this._startLoader();
+
             jQuery.ajax({
-                url: url,
-                data: filters,
+                url: this.options.ajaxEndpoint,
+                data: filterHelper.getFilterParams(this.element),
                 success: function(response) {
                     this._updateBlocks(response);
                 }.bind(this),
