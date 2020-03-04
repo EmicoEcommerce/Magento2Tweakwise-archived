@@ -104,17 +104,6 @@ class SliderRenderer extends DefaultRenderer
     }
 
     /**
-     * @deprecated 1.5.0 use renderValue()
-     * @see SliderRenderer::renderValue()
-     * @param string $value
-     * @return string
-     */
-    public function renderPrice($value)
-    {
-        return $this->renderValue($value);
-    }
-
-    /**
      * @param string $value
      * @return float|string
      */
@@ -136,16 +125,6 @@ class SliderRenderer extends DefaultRenderer
     }
 
     /**
-     * @deprecated 1.5.0 use getFilterUrl()
-     * @see SliderRenderer::getFilterUrl()
-     * @return string
-     */
-    public function getPriceUrl()
-    {
-        return $this->getFilterUrl();
-    }
-
-    /**
      * @return string
      */
     public function getFilterUrl()
@@ -156,5 +135,44 @@ class SliderRenderer extends DefaultRenderer
         }
 
         return $items[0]->getUrl();
+    }
+
+    /**
+     * @deprecated v2.1.8
+     * @return float
+     */
+    public function getMaxFloatValue()
+    {
+        return $this->getItemValue(3, $this->getCurrentMaxValue());
+    }
+
+    /**
+     * @deprecated v2.1.8
+     * @return float
+     */
+    public function getCurrentMaxFloatValue()
+    {
+        return $this->getItemValue(1, 99999);
+    }
+
+    /**
+     * @deprecated v1.5.0 use getFilterUrl()
+     * @see SliderRenderer::getFilterUrl()
+     * @return string
+     */
+    public function getPriceUrl()
+    {
+        return $this->getFilterUrl();
+    }
+
+    /**
+     * @deprecated 1.5.0 use renderValue()
+     * @see SliderRenderer::renderValue()
+     * @param string $value
+     * @return string
+     */
+    public function renderPrice($value)
+    {
+        return $this->renderValue($value);
     }
 }
