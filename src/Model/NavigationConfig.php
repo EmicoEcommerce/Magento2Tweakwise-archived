@@ -136,7 +136,7 @@ class NavigationConfig implements ArgumentInterface
                     'formFilters' => $this->config->getUseFormFilters(),
                     'filterUrl' => $sliderRenderer->getFilterUrl(),
                     'prefix' => "<span class=\"prefix\">{$sliderRenderer->getItemPrefix()}</span>",
-                    'postfix' => "<span class=\"prefix\">{$sliderRenderer->getItemPostfix()}</span>",
+                    'postfix' => "<span class=\"postfix\">{$sliderRenderer->getItemPostfix()}</span>",
                     'container' => "#attribute-slider-{$sliderRenderer->getCssId()}",
                     'min' => $sliderRenderer->getMinValue(),
                     'max' => $sliderRenderer->getMaxValue(),
