@@ -10,7 +10,7 @@ define([
     'jquery/ui',
     'tweakwiseFilterHelper'
 ], function($, jQueryUi, filterHelper) {
-    $.widget('tweakwise.navigationFilterAjax', {
+    $.widget('tweakwise.navigationForm', {
 
         options: {
             ajaxEnabled: false,
@@ -38,7 +38,7 @@ define([
             this.element.on('click', '.item input[type="checkbox"]', this._getFilterHandler().bind(this));
             this.element.on('click', '.js-swatch-link', this._getFilterHandler().bind(this));
             // The change event is triggered by the slider
-            this.element.on('change', this._handleCheckboxClick.bind(this));
+            this.element.on('change', this._getFilterHandler.bind(this));
         },
 
         /**
@@ -56,7 +56,7 @@ define([
             return this._defaultHandler
         },
 
-        // ------- Default filter handling (i.e. navigation)
+        // ------- Default filter handling (i.e. no ajax and no filter form)
         /**
          * Navigate to the selected filter url
          *
@@ -89,9 +89,9 @@ define([
 
             return href;
         },
-        // ------- End of default filter handling (i.e. navigation)
+        // ------- End of default filter handling
 
-        // ------- Handling for ajax filtering
+        // ------- Handling for ajax filtering (i.e. only ajax filtering)
         /**
          * Handle Ajax request for new content
          *
@@ -195,5 +195,5 @@ define([
         }
     });
 
-    return $.tweakwise.navigationFilterAjax;
+    return $.tweakwise.navigationForm;
 });
