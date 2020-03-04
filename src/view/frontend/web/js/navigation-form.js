@@ -12,7 +12,8 @@ define([
     $.widget('tweakwise.navigationForm', {
 
         options: {
-            ajaxEnabled: false,
+            ajaxFilters: false,
+            formFilters: false,
             seoEnabled: false,
             ajaxEndpoint: '/tweakwise/ajax/navigation',
             filterSelector: '#layered-filter-block',
@@ -32,22 +33,31 @@ define([
          * @private
          */
         _hookEvents: function() {
-            this.element.on('click', '.item input[type="checkbox"]', this._getFilterHandler().bind(this));
-            this.element.on('click', '.js-swatch-link', this._getFilterHandler().bind(this));
-            // The change event is triggered by the slider
-            this.element.on('change', this._getFilterHandler().bind(this));
+            if (!this.options.formFilters) {
+                this.element.on('click', '.item input[type="checkbox"]', this._getFilterHandler().bind(this));
+                this.element.on('click', '.js-swatch-link', this._getFilterHandler().bind(this));
+                // The change event is triggered by the slider
+                this.element.on('change', this._getFilterHandler().bind(this));
+            } else {
+                this.element.on('click', '.js-btn-filter', this._getFilterHandler().bind(this));
+            }
         },
 
         /**
          * Should return the handler for the filter event, depends on config options.
-         * Supported options are ajax filtering and form filters and any combination of those options
+         * Supported options are ajax filtering and form filters and any combination of those options.
+         * Note that the ajaxHandler also handles the case ajax enabled AND form filters enabled
          *
          * @returns {tweakwise.navigationFilterAjax._ajaxHandler|tweakwise.navigationFilterAjax._defaultHandler}
          * @private
          */
         _getFilterHandler: function () {
-            if (this.options.ajaxEnabled) {
+            if (this.options.ajaxFilters) {
                 return this._ajaxHandler;
+            }
+
+            if (this.options.formFilters) {
+                return this._formFilterHandler;
             }
 
             return this._defaultHandler
@@ -142,7 +152,7 @@ define([
                 .trigger('contentUpdated');
 
             /*
-            The product list comes after the toolbar
+            The product list comes after the toolbar.
             We use this construction as there could be more product lists on the page
             and we dont want to replace them all
             */
@@ -160,6 +170,23 @@ define([
                 .trigger('contentUpdated');
         },
         // ------- End of handling for ajax filtering
+
+        // ------- Handling for form filters.
+        // ------- Note that is only used when ajax is not enabled and form filters is enabled
+        /**
+         * This just handles the filter button click
+         *
+         * @param event
+         * @private
+         */
+        _formFilterHandler: function (event) {
+            event.preventDefault();
+            let filterUrl = filterHelper.getFilterParams(this.element);
+            if (filterUrl) {
+                window.location = filterUrl;
+            }
+        },
+        // ------- End of handling for form filters
 
         /**
          * Start loader targeting body relevant for ajax filtering

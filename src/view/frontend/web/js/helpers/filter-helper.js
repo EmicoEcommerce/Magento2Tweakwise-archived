@@ -5,7 +5,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-define(['jquery', 'jquery/ui'], function($) {
+define(['jquery'], function($) {
 
     /**
      * We just need methods
@@ -14,7 +14,7 @@ define(['jquery', 'jquery/ui'], function($) {
 
         getFilterParams: function(formElement) {
 
-            let values = jQuery(formElement).serialize();
+            let values = $(formElement).serialize();
             let sliderValues = this.getSliderUrlParameters(formElement);
             let searchValue = this.getSearchParam();
 
@@ -35,7 +35,7 @@ define(['jquery', 'jquery/ui'], function($) {
             let searchParam = {};
             if (q) {
                 searchParam['q'] = q;
-                return jQuery.param(searchParam);
+                return $.param(searchParam);
             }
 
             return '';
@@ -71,7 +71,7 @@ define(['jquery', 'jquery/ui'], function($) {
                 }
             });
 
-            return jQuery.param(query);
+            return $.param(query);
         },
     };
 });

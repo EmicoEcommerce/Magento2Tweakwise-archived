@@ -76,7 +76,7 @@ class Navigation extends Action
      */
     public function execute()
     {
-        if (!$this->config->isAjaxFiltering()) {
+        if (!$this->config->isAjaxFilters()) {
             throw new NotFoundException(__('Page not found.'));
         }
 

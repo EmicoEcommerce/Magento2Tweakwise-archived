@@ -521,6 +521,6 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         }
 
         return !$context->getRequest() instanceof ProductSearchRequest
-            && !$this->config->getUseFormFilters();
+            && !$this->config->isFormFilters();
     }
 }

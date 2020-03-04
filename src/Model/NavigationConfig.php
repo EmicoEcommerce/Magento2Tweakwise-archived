@@ -110,7 +110,8 @@ class NavigationConfig implements ArgumentInterface
         return $this->jsonSerializer->serialize(
             [
                 'tweakwiseNavigationForm' => [
-                    'ajaxEnabled' => $this->config->isAjaxFiltering(),
+                    'formFilters' => $this->isFormFilters(),
+                    'ajaxFilters' => $this->isAjaxFilters(),
                     'seoEnabled' => $this->config->isSeoEnabled(),
                     'ajaxEndpoint' => $this->getAjaxEndPoint(),
                     'filterSelector' => '#layered-filter-block',
@@ -130,8 +131,8 @@ class NavigationConfig implements ArgumentInterface
         return $this->jsonSerializer->serialize(
             [
                 'tweakwiseNavigationSlider' => [
-                    'ajaxFilters' => $this->config->isAjaxFiltering(),
-                    'formFilters' => $this->config->getUseFormFilters(),
+                    'ajaxFilters' => $this->isAjaxFilters(),
+                    'formFilters' => $this->isFormFilters(),
                     'filterUrl' => $sliderRenderer->getFilterUrl(),
                     'prefix' => "<span class=\"prefix\">{$sliderRenderer->getItemPrefix()}</span>",
                     'postfix' => "<span class=\"postfix\">{$sliderRenderer->getItemPostfix()}</span>",
@@ -167,6 +168,22 @@ class NavigationConfig implements ArgumentInterface
         return $this->isSearch()
             ? 'catalogsearch/result/index'
             : $this->getCategory()->getUrl();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFormFilters()
+    {
+        return $this->config->isFormFilters();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAjaxFilters()
+    {
+        return $this->config->isAjaxFilters();
     }
 
     /**
@@ -209,13 +226,5 @@ class NavigationConfig implements ArgumentInterface
         } catch (NoSuchEntityException $exception) {
             return $this->categoryFactory->create();
         }
-    }
-
-    /**
-     * @return bool
-     */
-    public function isRenderFilterButton()
-    {
-        return $this->config->getUseFormFilters();
     }
 }

@@ -66,7 +66,7 @@ class Plugin
      */
     public function afterGetWidgetOptionsJson(Toolbar $subject, string $result)
     {
-        if (!$this->config->isAjaxFiltering()) {
+        if (!$this->config->isAjaxFilters()) {
             return $result;
         }
 

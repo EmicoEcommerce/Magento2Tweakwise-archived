@@ -19,7 +19,8 @@ if (!$block->canShowBlock()) return;
 <?php /** @var NavigationConfig $tweakwiseNavigationConfig */?>
 <?php $tweakwiseNavigationConfig = $block->getData('tweakwise_navigation_config');?>
 <?php $jsFormConfig = $tweakwiseNavigationConfig->getJsFormConfig(); ?>
-<?php $renderFilterButton = $tweakwiseNavigationConfig->isRenderFilterButton();?>
+<?php $renderFilterButton = $tweakwiseNavigationConfig->isFormFilters();?>
+<?php $isAjaxFilters = $tweakwiseNavigationConfig->isAjaxFilters();?>
 
 <?php $hasFilters = count($filters) > 0; ?>
 <div class="block filter<?=($hasFilters ? ' filter-no-options' : '')?>"
@@ -42,8 +43,10 @@ if (!$block->canShowBlock()) return;
             <strong role="heading" aria-level="2" class="block-subtitle filter-subtitle"><?=__('Shopping Options') ?></strong>
             <div class="filter-options" id="narrow-by-list" data-role="content">
                 <form id="facet-filter-form" <?=($jsFormConfig ? sprintf('data-mage-init=\'%s\'', $jsFormConfig) : '')?>>
-                    <input type="hidden" name="__tw_original_url" value="<?=$tweakwiseNavigationConfig->getOriginalUrl()?>">
-                    <input type="hidden" name="__tw_category_id" value="<?=$tweakwiseNavigationConfig->getCategoryId()?>">
+                    <?php if ($isAjaxFilters):?>
+                        <input type="hidden" name="__tw_original_url" value="<?=$tweakwiseNavigationConfig->getOriginalUrl()?>">
+                        <input type="hidden" name="__tw_category_id" value="<?=$tweakwiseNavigationConfig->getCategoryId()?>">
+                    <?php endif;?>
                     <?php foreach ($filters as $filter): ?>
                         <?php if ($filter->isCollapsible()): ?>
                             <?php $filterActive = $filter->isDefaultCollapsed() ? 'false' : '[0]'; ?>

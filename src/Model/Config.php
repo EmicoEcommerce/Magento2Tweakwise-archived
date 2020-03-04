@@ -118,7 +118,7 @@ class Config
      * @param Store|null $store
      * @return bool
      */
-    public function isAjaxFiltering(Store $store = null)
+    public function isAjaxFilters(Store $store = null)
     {
         return (bool)$this->getStoreConfig('tweakwise/layered/ajax_filters', $store);
     }
@@ -154,7 +154,7 @@ class Config
      * @param Store|null $store
      * @return bool
      */
-    public function getUseFormFilters(Store $store = null)
+    public function isFormFilters(Store $store = null)
     {
         return (bool)$this->getStoreConfig('tweakwise/layered/form_filters', $store);
     }
