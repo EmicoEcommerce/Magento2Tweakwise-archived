@@ -7,8 +7,7 @@
 
 define([
     'jquery',
-    'tweakwiseFilterHelper'
-], function($, filterHelper) {
+], function($) {
     $.widget('tweakwise.navigationForm', {
 
         options: {
