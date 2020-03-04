@@ -14,11 +14,11 @@ define(['jquery'], function($) {
 
         getFilterParams: function(formElement) {
 
-            let values = $(formElement).serialize();
-            let sliderValues = this.getSliderUrlParameters(formElement);
-            let searchValue = this.getSearchParam();
+            var values = $(formElement).serialize();
+            var sliderValues = this.getSliderUrlParameters(formElement);
+            var searchValue = this.getSearchParam();
 
-            let url = values;
+            var url = values;
             if (searchValue) {
                 url = url + '&' + searchValue;
             }
@@ -31,8 +31,8 @@ define(['jquery'], function($) {
         },
 
         getSearchParam: function() {
-            let q = this._getQParam();
-            let searchParam = {};
+            var q = this._getQParam();
+            var searchParam = {};
             if (q) {
                 searchParam['q'] = q;
                 return $.param(searchParam);
@@ -42,9 +42,9 @@ define(['jquery'], function($) {
         },
 
         _getQParam: function() {
-            let matches = window.location.search.match(/(\?|&)q\=([^&]*)/);
+            var matches = window.location.search.match(/(\?|&)q\=([^&]*)/);
             if (matches && matches[2]) {
-                let trimmedMatch = matches[2].replace(/\+/g, ' '),
+                var trimmedMatch = matches[2].replace(/\+/g, ' '),
                     searchVal    = jQuery('#search').val();
 
                 if (searchVal === trimmedMatch) {
@@ -58,14 +58,14 @@ define(['jquery'], function($) {
         },
 
         getSliderUrlParameters: function(formElement) {
-            let query = {};
+            var query = {};
             jQuery(formElement).find('.slider-attribute').each(function(i, slider) {
                 slider = jQuery(slider);
-                let key = slider.data('url-key');
-                let min = slider.data('min');
-                let max = slider.data('max');
-                let rangeMin = slider.data('range-min');
-                let rangeMax = slider.data('range-max');
+                var key = slider.data('url-key');
+                var min = slider.data('min');
+                var max = slider.data('max');
+                var rangeMin = slider.data('range-min');
+                var rangeMax = slider.data('range-max');
                 if ((min && max) && (rangeMin !== min || rangeMax !== max)) {
                     query[key] = min + '-' + max;
                 }

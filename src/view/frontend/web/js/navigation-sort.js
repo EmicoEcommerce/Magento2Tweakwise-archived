@@ -66,7 +66,7 @@ define(['jquery', 'jquery/ui'], function($) {
                 return;
             }
 
-            let list = this.element.find('.items');
+            var list = this.element.find('.items');
             list.children('.item').sort(function (a, b) {
                 return $(a).data(type) - $(b).data(type);
             }).appendTo(list);
@@ -80,8 +80,8 @@ define(['jquery', 'jquery/ui'], function($) {
          */
         _hasAlternateSort: function() {
             if (this.options.hasAlternateSort === null) {
-                let list = this.element.find('.items');
-                let firstItem = $(list).children().first();
+                var list = this.element.find('.items');
+                var firstItem = $(list).children().first();
                 this.options.hasAlternateSort = firstItem.hasOwnProperty('data-alternate-sort');
             }
 

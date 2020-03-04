@@ -169,24 +169,6 @@ define([
                 .html(newToolbarLastHtml)
                 .trigger('contentUpdated');
         },
-        // ------- End of handling for ajax filtering
-
-        // ------- Handling for form filters.
-        // ------- Note that is only used when ajax is not enabled and form filters is enabled
-        /**
-         * This just handles the filter button click
-         *
-         * @param event
-         * @private
-         */
-        _formFilterHandler: function (event) {
-            event.preventDefault();
-            let filterUrl = filterHelper.getFilterParams(this.element);
-            if (filterUrl) {
-                window.location = filterUrl;
-            }
-        },
-        // ------- End of handling for form filters
 
         /**
          * Start loader targeting body relevant for ajax filtering
@@ -204,7 +186,25 @@ define([
         _stopLoader: function() {
             jQuery('body').trigger('processStop');
             this.options.isLoading = false;
+        },
+        // ------- End of handling for ajax filtering
+
+        // ------- Handling for form filters.
+        // ------- Note that is only used when ajax is not enabled and form filters is enabled
+        /**
+         * This just handles the filter button click
+         *
+         * @param event
+         * @private
+         */
+        _formFilterHandler: function (event) {
+            event.preventDefault();
+            var filterUrl = filterHelper.getFilterParams(this.element);
+            if (filterUrl) {
+                window.location = filterUrl;
+            }
         }
+        // ------- End of handling for form filters
     });
 
     return $.tweakwise.navigationForm;
