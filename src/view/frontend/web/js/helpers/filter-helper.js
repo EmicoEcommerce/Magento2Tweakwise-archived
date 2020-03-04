@@ -14,17 +14,12 @@ define(['jquery'], function($) {
 
         getFilterParams: function(formElement) {
 
-            var values = $(formElement).serialize();
-            var sliderValues = this.getSliderUrlParameters(formElement);
+            var values = $(formElement).find(':not(.js-skip-submit)').serialize();
             var searchValue = this.getSearchParam();
 
             var url = values;
             if (searchValue) {
                 url = url + '&' + searchValue;
-            }
-
-            if (sliderValues) {
-                url = url + '&' + sliderValues;
             }
 
             return url;
@@ -55,23 +50,6 @@ define(['jquery'], function($) {
             }
 
             return '';
-        },
-
-        getSliderUrlParameters: function(formElement) {
-            var query = {};
-            jQuery(formElement).find('.slider-attribute').each(function(i, slider) {
-                slider = jQuery(slider);
-                var key = slider.data('url-key');
-                var min = slider.data('min');
-                var max = slider.data('max');
-                var rangeMin = slider.data('range-min');
-                var rangeMax = slider.data('range-max');
-                if ((min && max) && (rangeMin !== min || rangeMax !== max)) {
-                    query[key] = min + '-' + max;
-                }
-            });
-
-            return $.param(query);
-        },
+        }
     };
 });

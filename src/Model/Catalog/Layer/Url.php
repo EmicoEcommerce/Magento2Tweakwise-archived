@@ -124,7 +124,6 @@ class Url
     /**
      * @param Item $item
      * @return string
-     * @throws NoSuchEntityException
      */
     public function getSelectFilter(Item $item): string
     {

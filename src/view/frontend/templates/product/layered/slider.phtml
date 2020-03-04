@@ -41,4 +41,23 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
             <span class="postfix"><?=$block->getItemPostfix()?></span>
         </span>
     </div>
+    <div class="slider-inputs">
+        <input type="text"
+               class="slider-min js-skip-submit"
+               id="<?=$block->getUrlKey()?>-min"
+               name="<?=$block->getUrlKey()?>-min"
+               value="<?=$block->getCurrentMinValue()?>"
+        >
+        <input type="text"
+               class="slider-max js-skip-submit"
+               id="<?=$block->getUrlKey()?>-max"
+               name="<?=$block->getUrlKey()?>-max"
+               value="<?=$block->getCurrentMaxValue()?>"
+        >
+        <input type="hidden"
+               class="slider-url-value"
+               name="<?=$block->getUrlKey()?>"
+               value="<?=sprintf('%s-%s', $block->getCurrentMinValue(), $block->getCurrentMaxValue())?>"
+        >
+    </div>
 </div>

@@ -35,7 +35,7 @@ class Plugin
     /**
      * @param State $subject
      * @param Closure $proceed
-     * @return array
+     * @return string
      */
     public function aroundGetClearUrl(State $subject, Closure $proceed)
     {
@@ -46,4 +46,8 @@ class Plugin
         return $this->url->getClearUrl($subject->getActiveFilters());
     }
 
+    public function afterGetTemplate()
+    {
+
+    }
 }

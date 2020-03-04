@@ -28,18 +28,40 @@ define([
         },
 
         /**
-         * Bind filter click events
+         * Bind filter events, these are filter click and filter remove
          *
          * @private
          */
         _hookEvents: function() {
-            if (!this.options.formFilters) {
-                this.element.on('click', '.item input[type="checkbox"]', this._getFilterHandler().bind(this));
-                this.element.on('click', '.js-swatch-link', this._getFilterHandler().bind(this));
-                // The change event is triggered by the slider
-                this.element.on('change', this._getFilterHandler().bind(this));
+            this._bindFilterClickEvents();
+            this._bindFilterRemoveEvents();
+        },
+
+        /**
+         * Bind filter click events
+         *
+         * @private
+         */
+        _bindFilterClickEvents: function() {
+            if (this.options.formFilters) {
+                this.element.on('click', '.js-btn-filter', this._getFilterClickHandler().bind(this));
             } else {
-                this.element.on('click', '.js-btn-filter', this._getFilterHandler().bind(this));
+                this.element.on('click', '.item input[type="checkbox"]', this._getFilterClickHandler().bind(this));
+                this.element.on('click', '.js-swatch-link', this._getFilterClickHandler().bind(this));
+                // The change event is triggered by the slider
+                this.element.on('change', this._getFilterClickHandler().bind(this));
+            }
+        },
+
+        /**
+         * Filter remove events are only relevant for ajax filtering. If ajaxFilters is false then we just navigate
+         * to the url specified in the a.
+         *
+         * @private
+         */
+        _bindFilterRemoveEvents: function() {
+            if (this.options.ajaxFilters) {
+                this.element.on('click', 'a .remove', this._ajaxClearHandler.bind(this));
             }
         },
 
@@ -51,7 +73,7 @@ define([
          * @returns {tweakwise.navigationFilterAjax._ajaxHandler|tweakwise.navigationFilterAjax._defaultHandler}
          * @private
          */
-        _getFilterHandler: function () {
+        _getFilterClickHandler: function () {
             if (this.options.ajaxFilters) {
                 return this._ajaxHandler;
             }
@@ -123,6 +145,10 @@ define([
                     this._stopLoader();
                 }.bind(this)
             });
+        },
+
+        _ajaxClearHandler: function(event) {
+
         },
 
         /**

@@ -32,6 +32,7 @@ define([
          */
         _create: function() {
             this._createSlider();
+            this._bindInputChangeEvents();
             return this._superApply(arguments);
         },
 
@@ -59,12 +60,69 @@ define([
 
                 slide: function (event, ui) {
                     var container = $(this.options.container);
-                    container.find('.current-min-value').html(this._labelFormat(ui.values[0]));
-                    container.find('.current-max-value').html(this._labelFormat(ui.values[1]));
+                    var minValue = ui.values[0];
+                    var maxValue = ui.values[1];
+                    container.find('.current-min-value').html(this._labelFormat(minValue));
+                    container.find('.current-max-value').html(this._labelFormat(maxValue));
+                    container.find('input.slider-min').val(minValue);
+                    container.find('input.slider-max').val(maxValue);
+                    container.find('input.slider-url-value').val(minValue + '-' + maxValue);
                 }.bind(this),
 
                 change: this._getChangeHandler()
             }
+        },
+
+        /**
+         * Bind handling for manual input
+         *
+         * @private
+         */
+        _bindInputChangeEvents: function() {
+            var sliderContainer = $(this.options.container);
+            sliderContainer.on('change', '.slider-min', this._triggerSliderMinChange.bind(this));
+            sliderContainer.on('change', '.slider-max', this._triggerSliderMaxChange.bind(this));
+        },
+
+        /**
+         * Fire slider change event
+         *
+         * @private
+         */
+        _triggerSliderMinChange: function (event) {
+            var minValue = $(event.target).val();
+            if (isNaN(minValue)) {
+                minValue = this.options.min;
+            }
+            $(this.options.container).data('min', minValue);
+            this._updateSliderUrlInput();
+            this.element.trigger('change')
+        },
+
+        /**
+         * Fire slider change event
+         *
+         * @private
+         */
+        _triggerSliderMaxChange: function (event) {
+            var maxValue = $(event.target).val();
+            if (isNaN(maxValue)) {
+                maxValue = this.options.max;
+            }
+            this._updateSliderUrlInput();
+            $(this.options.container).data('max', maxValue);
+            this.element.trigger('change')
+        },
+
+        /**
+         *
+         * @private
+         */
+        _updateSliderUrlInput: function () {
+            var sliderContainer = $(this.options.container);
+            var minValue = sliderContainer.find('.slider-min').val();
+            var maxValue = sliderContainer.find('.slider-max').val();
+            sliderContainer.find('.slider-url-value').val(minValue + '-' + maxValue);
         },
 
         /**
@@ -74,10 +132,6 @@ define([
          * @private
          */
         _getChangeHandler: function () {
-            if (this.options.formFilters && this.options.ajaxFilters) {
-                return this.ajaxFormFilterChange.bind(this);
-            }
-
             if (this.options.formFilters) {
                 return this.formFilterChange.bind(this);
             }
@@ -127,20 +181,9 @@ define([
         formFilterChange: function (event, ui) {
             var min = ui.values[0];
             var max = ui.values[1];
-            var slider = jQuery(event.target).closest('.slider-attribute');
-            slider.attr('data-min', min);
-            slider.attr('data-max', max);
-        },
-
-        /**
-         * Wrapper for formFilterChange (naming consistency)
-         *
-         * @param event
-         * @param ui
-         */
-        ajaxFormFilterChange: function (event, ui) {
-            // Just call the form filter change, navigation is handled by the filter button click
-            this.formFilterChange(event, ui);
+            var sliderContainer = $(this.options.container);
+            sliderContainer.data('min', min);
+            sliderContainer.data('max', max);
         },
 
         /**
