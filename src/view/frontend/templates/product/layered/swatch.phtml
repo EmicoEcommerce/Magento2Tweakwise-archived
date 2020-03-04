@@ -18,11 +18,10 @@
             <?php $item = $block->getItemForSwatch($option);?>
             <a <?=$block->renderAnchorHtmlTagAttributes($item);?>
                 aria-label="<?= /* @escapeNotVerified */ $label['label'] ?>"
-                class="swatch-option-link-layered js-swatch-link"
+                class="swatch-option-link-layered"
             >
                 <input id="inputCheckbox<?=$block->getCssItemId($item)?>" style="display: none"
                        name="<?=$item->getFilter()->getFacet()->getFacetSettings()->getUrlKey()?>[]"
-                       class="js-swatch-link"
                        type="checkbox" <?=($item->isSelected() ? 'checked="checked"' : '')?>
                        value="<?=$block->escapeHtmlAttr($item->getAttribute()->getTitle())?>"
                 >

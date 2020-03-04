@@ -47,7 +47,6 @@ define([
                 this.element.on('click', '.js-btn-filter', this._getFilterClickHandler().bind(this));
             } else {
                 this.element.on('click', '.item input[type="checkbox"]', this._getFilterClickHandler().bind(this));
-                this.element.on('click', '.js-swatch-link', this._getFilterClickHandler().bind(this));
                 // The change event is triggered by the slider
                 this.element.on('change', this._getFilterClickHandler().bind(this));
             }
