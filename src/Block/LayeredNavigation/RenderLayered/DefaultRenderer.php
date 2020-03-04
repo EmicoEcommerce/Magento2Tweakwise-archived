@@ -12,7 +12,7 @@ use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
 use Emico\Tweakwise\Model\Config;
-use Emico\Tweakwise\Model\NavigationConfig\NavigationConfig;
+use Emico\Tweakwise\Model\NavigationConfig;
 use Emico\Tweakwise\Model\Seo\FilterHelper;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\Serialize\Serializer\Json;

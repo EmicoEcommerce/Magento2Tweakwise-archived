@@ -9,7 +9,7 @@
     <body>
         <referenceBlock name="catalogsearch.leftnav">
             <arguments>
-                <argument name="tweakwise_navigation_config" xsi:type="object">Emico\Tweakwise\Model\NavigationConfig\NavigationConfig</argument>
+                <argument name="tweakwise_navigation_config" xsi:type="object">Emico\Tweakwise\Model\NavigationConfig</argument>
             </arguments>
         </referenceBlock>
     </body>

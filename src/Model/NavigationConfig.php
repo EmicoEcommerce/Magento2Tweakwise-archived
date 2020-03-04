@@ -4,12 +4,11 @@
  * @copyright : Copyright Emico B.V. 2019.
  */
 
-namespace Emico\Tweakwise\Model\NavigationConfig;
+namespace Emico\Tweakwise\Model;
 
 use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
 use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
-use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\Data\CategoryInterfaceFactory;
 use Magento\Framework\Registry;
@@ -30,7 +29,7 @@ use Magento\Store\Model\StoreManagerInterface;
  * @see \Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer
  * @package Emico\Tweakwise\Model
  */
-class NavigationConfig implements NavigationConfigInterface, ArgumentInterface
+class NavigationConfig implements ArgumentInterface
 {
     /**
      * @var Config
