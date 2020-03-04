@@ -47,6 +47,8 @@ class Item extends MagentoItem
      * @param Filter $filter
      * @param AttributeType $attributeType
      * @param Url $url
+     * @noinspection MagicMethodsValidityInspection
+     * @noinspection PhpMissingParentConstructorInspection
      */
     public function __construct(Filter $filter, AttributeType $attributeType, Url $url)
     {

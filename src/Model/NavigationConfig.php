@@ -112,8 +112,6 @@ class NavigationConfig implements ArgumentInterface
                 'tweakwiseNavigationForm' => [
                     'ajaxEnabled' => $this->config->isAjaxFiltering(),
                     'seoEnabled' => $this->config->isSeoEnabled(),
-                    'originalUrl' => $this->getOriginalUrl(),
-                    'categoryId' => $this->getCategoryId(),
                     'ajaxEndpoint' => $this->getAjaxEndPoint(),
                     'filterSelector' => '#layered-filter-block',
                     'productListSelector' => '.products.wrapper',
@@ -150,7 +148,7 @@ class NavigationConfig implements ArgumentInterface
     /**
      * @return int|null
      */
-    protected function getCategoryId(): ?int
+    public function getCategoryId(): ?int
     {
         if ($this->isSearch()) {
             return null;
@@ -164,7 +162,7 @@ class NavigationConfig implements ArgumentInterface
      *
      * @return string
      */
-    protected function getOriginalUrl(): ?string
+    public function getOriginalUrl(): ?string
     {
         return $this->isSearch()
             ? 'catalogsearch/result/index'

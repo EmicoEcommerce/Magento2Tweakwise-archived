@@ -15,8 +15,6 @@ define([
         options: {
             ajaxEnabled: false,
             seoEnabled: false,
-            categoryId: null,
-            originalUrl: null,
             ajaxEndpoint: '/tweakwise/ajax/navigation',
             filterSelector: '#layered-filter-block',
             productListSelector: '.products.wrapper',
@@ -38,7 +36,7 @@ define([
             this.element.on('click', '.item input[type="checkbox"]', this._getFilterHandler().bind(this));
             this.element.on('click', '.js-swatch-link', this._getFilterHandler().bind(this));
             // The change event is triggered by the slider
-            this.element.on('change', this._getFilterHandler.bind(this));
+            this.element.on('change', this._getFilterHandler().bind(this));
         },
 
         /**
