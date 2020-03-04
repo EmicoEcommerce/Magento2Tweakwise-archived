@@ -11,7 +11,7 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\DefaultRenderer;
 $hasHiddenItems = $block->hasHiddenItems();
 $hasAlternateSortOrder = $block->hasAlternateSortOrder();
 ?>
-<div data-mage-init='<?=$block->getJsFilterNavigationConfig()?>'>
+<div data-mage-init='{"tweakwiseNavigationSort":[]}'>
     <ol class="items">
         <?php foreach ($block->getItems() as $index => $item): ?>
             <li class="item<?=$block->itemDefaultHidden($item) ? ' default-hidden' : ''?>"

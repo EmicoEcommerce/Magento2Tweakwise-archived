@@ -19,7 +19,7 @@ if (!$block->canShowBlock()) return;
 <?php /** @var NavigationConfig $tweakwiseNavigationConfig */?>
 <?php $tweakwiseNavigationConfig = $block->getData('tweakwise_navigation_config');?>
 <?php $jsFormConfig = $tweakwiseNavigationConfig->getJsFormConfig(); ?>
-<?php $renderFilterButton = $tweakwiseNavigationConfig->getUseFormFilters();?>
+<?php $renderFilterButton = $tweakwiseNavigationConfig->isRenderFilterButton();?>
 
 <?php $hasFilters = count($filters) > 0; ?>
 <div class="block filter<?=($hasFilters ? ' filter-no-options' : '')?>"

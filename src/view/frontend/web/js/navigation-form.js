@@ -13,6 +13,7 @@ define([
     $.widget('tweakwise.navigationFilterAjax', {
 
         options: {
+            ajaxEnabled: false,
             seoEnabled: false,
             categoryId: null,
             originalUrl: null,
@@ -23,19 +24,81 @@ define([
             isLoading: false,
         },
 
+        _create: function() {
+            this._hookEvents();
+            return this._superApply(arguments);
+        },
+
+        /**
+         * Bind filter click events
+         *
+         * @private
+         */
         _hookEvents: function() {
-            this.element.on('click', '.item input[type="checkbox"]', this._handleCheckboxClick.bind(this));
-            this.element.on('click', '.js-swatch-link', this._handleSwatchClick.bind(this));
+            this.element.on('click', '.item input[type="checkbox"]', this._getFilterHandler().bind(this));
+            this.element.on('click', '.js-swatch-link', this._getFilterHandler().bind(this));
+            // The change event is triggered by the slider
             this.element.on('change', this._handleCheckboxClick.bind(this));
         },
 
+        /**
+         * Should return the handler for the filter event, depends on config options.
+         * Supported options are ajax filtering and form filters and any combination of those options
+         *
+         * @returns {tweakwise.navigationFilterAjax._ajaxHandler|tweakwise.navigationFilterAjax._defaultHandler}
+         * @private
+         */
+        _getFilterHandler: function () {
+            if (this.options.ajaxEnabled) {
+                return this._ajaxHandler;
+            }
+
+            return this._defaultHandler
+        },
+
+        // ------- Default filter handling (i.e. navigation)
+        /**
+         * Navigate to the selected filter url
+         *
+         * @param event
+         * @returns {boolean}
+         * @private
+         */
+        _defaultHandler: function (event) {
+            var a = $(event.currentTarget).closest('a');
+            var href = this._findHref(a);
+            if (href) {
+                window.location.href = href;
+                return false;
+            }
+        },
+
+        /**
+         * Should return the url to navigate to
+         *
+         * @param aElement
+         * @returns {*}
+         * @private
+         */
+        _findHref: function (aElement) {
+            var href = aElement.attr('href');
+            if (this.options.seoEnabled) {
+                var seoHref = aElement.data('seo-href');
+                return seoHref ? seoHref : href;
+            }
+
+            return href;
+        },
+        // ------- End of default filter handling (i.e. navigation)
+
+        // ------- Handling for ajax filtering
         /**
          * Handle Ajax request for new content
          *
          * @param event
          * @private
          */
-        _handleCheckboxClick: function(event) {
+        _ajaxHandler: function(event) {
             // TODO Add check if this is a proper url, otherwise navigate to filter link
             event.preventDefault();
 
@@ -58,22 +121,13 @@ define([
                     this._updateBlocks(response);
                 }.bind(this),
                 error: function(response) {
-                    // Todo Error handling, navigate to filter url maybe?
+                    // Something went wrong, try to navigate to the selected filter
+                    this._defaultHandler(event);
                 }.bind(this),
                 complete: function() {
                     this._stopLoader();
                 }.bind(this)
             });
-        },
-
-        /**
-         *
-         * @param event
-         * @private
-         */
-        _handleSwatchClick: function(event) {
-            event.preventDefault();
-            this._handleCheckboxClick(event);
         },
 
         /**
@@ -120,9 +174,10 @@ define([
                 .html(newToolbarLastHtml)
                 .trigger('contentUpdated');
         },
+        // ------- End of handling for ajax filtering
 
         /**
-         * Start loader targeting body
+         * Start loader targeting body relevant for ajax filtering
          * @private
          */
         _startLoader: function() {
@@ -131,17 +186,12 @@ define([
         },
 
         /**
-         * Stop Loader targeting body
+         * Stop Loader targeting body relevant for ajax filtering
          * @private
          */
         _stopLoader: function() {
             jQuery('body').trigger('processStop');
             this.options.isLoading = false;
-        },
-
-        _create: function() {
-            this._hookEvents();
-            return this._superApply(arguments);
         }
     });
 
