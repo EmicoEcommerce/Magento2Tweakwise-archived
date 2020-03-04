@@ -50,8 +50,7 @@ class SliderRenderer extends DefaultRenderer
         Template\Context $context,
         Json $jsonSerializer,
         array $data = []
-    )
-    {
+    ) {
         parent::__construct($context, $config, $filterHelper, $jsonSerializer, $data);
         $this->priceHelper = $priceHelper;
         $this->taxHelper = $taxHelper;
