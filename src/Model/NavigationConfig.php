@@ -201,9 +201,21 @@ class NavigationConfig implements ArgumentInterface
     /**
      * @return bool
      */
-    protected function isSearch()
+    public function isSearch()
     {
         return $this->currentNavigationContext->getRequest() instanceof ProductSearchRequest;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSearchTerm()
+    {
+        if (!$this->isSearch()) {
+            return null;
+        }
+
+        return $this->currentNavigationContext->getRequest()->getParameter('tn_q');
     }
 
     /**

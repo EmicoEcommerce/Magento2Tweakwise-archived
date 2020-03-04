@@ -47,6 +47,9 @@ if (!$block->canShowBlock()) return;
                     <input type="hidden" name="__tw_original_url" value="<?=$tweakwiseNavigationConfig->getOriginalUrl()?>">
                     <input type="hidden" name="__tw_category_id" value="<?=$tweakwiseNavigationConfig->getCategoryId()?>">
                 <?php endif;?>
+                <?php if ($tweakwiseNavigationConfig->isSearch() && $tweakwiseNavigationConfig->getSearchTerm()):?>
+                    <input type="hidden" name="q" value="<?=$tweakwiseNavigationConfig->getSearchTerm()?>">
+                <?php endif;?>
                 <?php foreach ($filters as $filter): ?>
                     <?php if ($filter->isCollapsible()): ?>
                         <?php $filterActive = $filter->isDefaultCollapsed() ? 'false' : '[0]'; ?>

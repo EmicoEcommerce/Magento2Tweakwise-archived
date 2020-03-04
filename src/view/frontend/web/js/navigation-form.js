@@ -132,7 +132,7 @@ define([
 
             jQuery.ajax({
                 url: this.options.ajaxEndpoint,
-                data: filterHelper.getFilterParams(this.element),
+                data: this._getFilterParameters(),
                 success: function(response) {
                     this._updateBlocks(response);
                 }.bind(this),
@@ -144,6 +144,16 @@ define([
                     this._stopLoader();
                 }.bind(this)
             });
+        },
+
+        /**
+         * Serialize the form element but skip unwanted inputs
+         *
+         * @returns {*}
+         * @private
+         */
+        _getFilterParameters: function() {
+            return this.element.find(':not(.js-skip-submit)').serialize();
         },
 
         _ajaxClearHandler: function(event) {
@@ -182,7 +192,7 @@ define([
             and we dont want to replace them all
             */
             jQuery(toolbarSelector)
-                .next(productListSelector)
+                .siblings(productListSelector)
                 .html(newProductListHtml)
                 .trigger('contentUpdated');
             jQuery(toolbarSelector)
@@ -224,7 +234,7 @@ define([
          */
         _formFilterHandler: function (event) {
             event.preventDefault();
-            var filterUrl = filterHelper.getFilterParams(this.element);
+            var filterUrl = this._getFilterParameters();
             if (filterUrl) {
                 window.location = filterUrl;
             }
