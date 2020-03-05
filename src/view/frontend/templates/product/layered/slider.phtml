@@ -9,13 +9,7 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
 
 /** @var $block SliderRenderer */
 ?>
-<div class="slider-attribute" id="attribute-slider-<?=$block->getCssId()?>"
-     data-url-key="<?=$block->getUrlKey()?>"
-     data-min="<?=$block->getCurrentMinValue()?>"
-     data-max="<?=$block->getCurrentMaxValue()?>"
-     data-range-min="<?=$block->getMinValue()?>"
-     data-range-max="<?=$block->getMaxValue()?>"
->
+<div class="slider-attribute" id="attribute-slider-<?=$block->getCssId()?>">
     <div class="labels">
         <span class="min-value">
             <span class="prefix"><?=$block->getItemPrefix()?></span>
@@ -42,17 +36,19 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
         </span>
     </div>
     <div class="slider-inputs">
+        <label for="<?=$block->getUrlKey()?>-min"><?=__('From')?></label>
         <input type="text"
                class="slider-min js-skip-submit"
                id="<?=$block->getUrlKey()?>-min"
                name="<?=$block->getUrlKey()?>-min"
                value="<?=$block->getCurrentMinValue()?>"
         >
+        <label for="<?= $block->getUrlKey()?>-max"><?=__('To')?></label>
         <input type="text"
                class="slider-max js-skip-submit"
-               id="<?=$block->getUrlKey()?>-max"
-               name="<?=$block->getUrlKey()?>-max"
-               value="<?=$block->getCurrentMaxValue()?>"
+               id="<?= $block->getUrlKey() ?>-max"
+               name="<?=$block->getUrlKey() ?>-max"
+               value="<?= $block->getCurrentMaxValue() ?>"
         >
         <input type="hidden"
                class="slider-url-value"

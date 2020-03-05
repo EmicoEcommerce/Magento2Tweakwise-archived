@@ -80,8 +80,8 @@ define([
          */
         _bindInputChangeEvents: function() {
             var sliderContainer = $(this.options.container);
-            sliderContainer.on('change', '.slider-min', this._triggerSliderMinChange.bind(this));
-            sliderContainer.on('change', '.slider-max', this._triggerSliderMaxChange.bind(this));
+            sliderContainer.on('change', '.slider-min', this._triggerSliderChange.bind(this));
+            sliderContainer.on('change', '.slider-max', this._triggerSliderChange.bind(this));
         },
 
         /**
@@ -89,28 +89,8 @@ define([
          *
          * @private
          */
-        _triggerSliderMinChange: function (event) {
-            var minValue = $(event.target).val();
-            if (isNaN(minValue)) {
-                minValue = this.options.min;
-            }
-            $(this.options.container).data('min', minValue);
+        _triggerSliderChange: function () {
             this._updateSliderUrlInput();
-            this.element.trigger('change')
-        },
-
-        /**
-         * Fire slider change event
-         *
-         * @private
-         */
-        _triggerSliderMaxChange: function (event) {
-            var maxValue = $(event.target).val();
-            if (isNaN(maxValue)) {
-                maxValue = this.options.max;
-            }
-            this._updateSliderUrlInput();
-            $(this.options.container).data('max', maxValue);
             this.element.trigger('change')
         },
 
