@@ -185,4 +185,12 @@ class Item extends MagentoItem
     {
         return $this->getAttribute()->getIsSelected();
     }
+
+    /**
+     * @return string
+     */
+    public function getCssId()
+    {
+        return spl_object_hash($this);
+    }
 }

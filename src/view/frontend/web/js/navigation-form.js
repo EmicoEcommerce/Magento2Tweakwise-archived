@@ -59,7 +59,7 @@ define([
          */
         _bindFilterRemoveEvents: function() {
             if (this.options.ajaxFilters) {
-                this.element.on('click', 'a .remove', this._ajaxClearHandler.bind(this));
+                this.element.on('click', 'a.remove', this._ajaxClearHandler.bind(this));
             }
         },
 
@@ -155,8 +155,21 @@ define([
             return this.element.find(':not(.js-skip-submit)').serialize();
         },
 
+        /**
+         *
+         * @param event
+         * @private
+         */
         _ajaxClearHandler: function(event) {
-
+            event.preventDefault();
+            var filterId = '#' + $(event.target).data('js-filter-id');
+            var filter = this.element.find(filterId);
+            if (filter) {
+                filter = $(filter);
+                // Set filter disabled so that it will not be submitted when change is triggered
+                filter.attr('disabled', true);
+                filter.trigger('change');
+            }
         },
 
         /**

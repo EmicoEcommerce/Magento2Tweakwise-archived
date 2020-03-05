@@ -10,6 +10,7 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\DefaultRenderer;
 /** @var $block DefaultRenderer */
 $hasHiddenItems = $block->hasHiddenItems();
 $hasAlternateSortOrder = $block->hasAlternateSortOrder();
+$cssId = $block->getCssItemId($item);
 ?>
 <div data-mage-init='{"tweakwiseNavigationSort":[]}'>
     <ol class="items">
@@ -22,13 +23,13 @@ $hasAlternateSortOrder = $block->hasAlternateSortOrder();
             >
                 <a <?=$block->renderAnchorHtmlTagAttributes($item);?>>
                     <?php if ($block->showCheckbox()): ?>
-                        <input id="inputCheckbox<?=$block->getCssItemId($item)?>"
+                        <input id="<?=$cssId?>"
                                name="<?=$item->getFilter()->getFacet()->getFacetSettings()->getUrlKey()?>[]"
                                type="checkbox" <?=($item->isSelected() ? 'checked="checked"' : '')?>
                                value="<?=$block->escapeHtmlAttr($item->getAttribute()->getTitle())?>"
                         >
 
-                        <label for="inputCheckbox<?=$block->getCssItemId($item)?>">
+                        <label for="<?=$cssId?>">
                             <?=$block->getItemPrefix()?>
                             <?=$item->getLabel()?>
                             <?=$block->getItemPostfix()?>

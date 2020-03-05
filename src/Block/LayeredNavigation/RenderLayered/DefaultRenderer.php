@@ -192,7 +192,7 @@ class DefaultRenderer extends Template
      */
     public function getCssItemId(Item $item)
     {
-        return spl_object_hash($item);
+        return $item->getCssId();
     }
 
     /**
