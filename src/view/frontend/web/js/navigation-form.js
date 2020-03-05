@@ -167,7 +167,8 @@ define([
                 // Set filter disabled so that it will not be submitted when change is triggered
                 filter.attr('disabled', true);
                 if (this.options.formFilters) {
-                    this._formFilterHandler();
+                    // Simulate click so that the form will be submitted
+                    this.element.find('.js-btn-filter').first().trigger('click');
                 } else {
                     filter.trigger('change');
                 }
