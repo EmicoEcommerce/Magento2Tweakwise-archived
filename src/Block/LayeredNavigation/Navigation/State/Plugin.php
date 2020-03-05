@@ -45,9 +45,4 @@ class Plugin
 
         return $this->url->getClearUrl($subject->getActiveFilters());
     }
-
-    public function afterGetTemplate()
-    {
-
-    }
 }

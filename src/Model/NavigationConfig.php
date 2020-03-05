@@ -161,7 +161,7 @@ class NavigationConfig implements ArgumentInterface
     /**
      * Public because of plugin options
      *
-     * @return string
+     * @return string|null
      */
     public function getOriginalUrl(): ?string
     {
