@@ -45,8 +45,6 @@ define([
             if (this.options.formFilters) {
                 this.element.on('click', '.js-btn-filter', this._getFilterClickHandler().bind(this));
             } else {
-                this.element.on('click', '.item input[type="checkbox"]', this._getFilterClickHandler().bind(this));
-                // The change event is triggered by the slider
                 this.element.on('change', this._getFilterClickHandler().bind(this));
             }
         },
@@ -81,6 +79,16 @@ define([
             }
 
             return this._defaultHandler
+        },
+
+        /**
+         * Serialize the form element but skip unwanted inputs
+         *
+         * @returns {*}
+         * @private
+         */
+        _getFilterParameters: function() {
+            return this.element.find(':not(.js-skip-submit)').serialize();
         },
 
         // ------- Default filter handling (i.e. no ajax and no filter form)
@@ -146,16 +154,6 @@ define([
         },
 
         /**
-         * Serialize the form element but skip unwanted inputs
-         *
-         * @returns {*}
-         * @private
-         */
-        _getFilterParameters: function() {
-            return this.element.find(':not(.js-skip-submit)').serialize();
-        },
-
-        /**
          *
          * @param event
          * @private
@@ -168,7 +166,11 @@ define([
                 filter = $(filter);
                 // Set filter disabled so that it will not be submitted when change is triggered
                 filter.attr('disabled', true);
-                filter.trigger('change');
+                if (this.options.formFilters) {
+                    this._formFilterHandler();
+                } else {
+                    filter.trigger('change');
+                }
             }
         },
 
@@ -241,14 +243,12 @@ define([
         /**
          * This just handles the filter button click
          *
-         * @param event
          * @private
          */
-        _formFilterHandler: function (event) {
-            event.preventDefault();
+        _formFilterHandler: function () {
             var filterUrl = this._getFilterParameters();
             if (filterUrl) {
-                window.location = filterUrl;
+                window.location = '?' + filterUrl;
             }
         }
         // ------- End of handling for form filters
