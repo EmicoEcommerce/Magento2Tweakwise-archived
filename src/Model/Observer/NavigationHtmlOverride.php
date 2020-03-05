@@ -15,6 +15,13 @@ use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\LayeredNavigation\Block\Navigation;
 
+/**
+ * Class NavigationHtmlOverride
+ * @package Emico\Tweakwise\Model\Observer
+ *
+ * Change template of the navigation block. This is done in an observer since the di definition is a virtualType.
+ * Changing the template depends on configuration so this could not be done in layout.
+ */
 class NavigationHtmlOverride implements ObserverInterface
 {
     /**
