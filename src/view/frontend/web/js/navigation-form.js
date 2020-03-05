@@ -154,6 +154,7 @@ define([
         },
 
         /**
+         * Handle filter clear events
          *
          * @param event
          * @private
