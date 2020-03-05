@@ -8,6 +8,8 @@
 
 namespace Emico\Tweakwise\Model\Observer;
 
+use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
+use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
 use Emico\Tweakwise\Model\Config;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
@@ -21,13 +23,22 @@ class NavigationHtmlOverride implements ObserverInterface
     private $config;
 
     /**
+     * @var CurrentContext
+     */
+    private $currentContext;
+
+    /**
      * NavigationHtmlOverride constructor.
      *
      * @param Config $config
+     * @param CurrentContext $currentContext
      */
-    public function __construct(Config $config)
-    {
+    public function __construct(
+        Config $config,
+        CurrentContext $currentContext
+    ) {
         $this->config = $config;
+        $this->currentContext = $currentContext;
     }
 
     /**
@@ -40,14 +51,22 @@ class NavigationHtmlOverride implements ObserverInterface
             return;
         }
 
-        if (!$this->config->isLayeredEnabled()) {
-            return;
-        }
-
         if ($this->config->getUseDefaultLinkRenderer()) {
             return;
         }
 
-        $block->setTemplate('Emico_Tweakwise::product/navigation/view.phtml');
+        $searchEnabled = $this->config->isSearchEnabled();
+        $navigationEnabled = $this->config->isLayeredEnabled();
+
+        $isSearch = $this->currentContext->getRequest() instanceof ProductSearchRequest;
+        $isNavigation = !$isSearch;
+
+        if ($isSearch && $searchEnabled) {
+            $block->setTemplate('Emico_Tweakwise::layer/view.phtml');
+        }
+
+        if ($isNavigation && $navigationEnabled) {
+            $block->setTemplate('Emico_Tweakwise::layer/view.phtml');
+        }
     }
 }
