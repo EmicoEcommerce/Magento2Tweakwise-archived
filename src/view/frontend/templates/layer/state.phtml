@@ -8,7 +8,7 @@
 /**
  * Category layered navigation state
  *
- * @var $block \Magento\LayeredNavigation\Block\Navigation\State
+ * @var $block \Emico\Tweakwise\Block\LayeredNavigation\Navigation\State
  */
 ?>
 <?php /** @var Emico\Tweakwise\Model\Catalog\Layer\Filter\Item[] $_filters */ ?>
@@ -24,25 +24,12 @@
             <li class="item">
                 <span class="filter-label"><?= $block->escapeHtml(__($_filter->getName())) ?></span>
                 <span class="filter-value"><?= $block->escapeHtml($block->stripTags($_filter->getLabel())) ?></span>
-                <?php $clearLinkUrl = $_filter->getClearLinkUrl(); ?>
                 <?php $currentFilterName = $block->escapeHtmlAttr(__($_filter->getName()) . " " . $block->stripTags($_filter->getLabel())); ?>
-                <?php if ($clearLinkUrl) :?>
-                    <a class="action previous" href="<?= $block->escapeUrl($_filter->getRemoveUrl()) ?>"
-                       title="<?= $block->escapeHtmlAttr(__('Previous')) ?>">
-                        <span><?= $block->escapeHtml(__('Previous')) ?></span>
-                    </a>
-                    <a class="action remove"
-                       title="<?= $block->escapeHtmlAttr($_filter->getFilter()->getClearLinkText()) ?>"
-                       href="<?= $block->escapeUrl($clearLinkUrl) ?>">
-                        <span><?= $block->escapeHtml($_filter->getFilter()->getClearLinkText()) ?></span>
-                    </a>
-                <?php else : ?>
-                    <a class="action remove" href="<?= $block->escapeUrl($_filter->getRemoveUrl()) ?>"
-                       data-js-filter-id="<?=spl_object_hash($_filter)?>"
-                       title="<?= /* @noEscape */ $block->escapeHtmlAttr(__('Remove')) . " " . $currentFilterName ?>">
-                        <span><?= $block->escapeHtml(__('Remove This Item')) ?></span>
-                    </a>
-                <?php endif; ?>
+                <a class="action remove" href="<?= $block->escapeUrl($_filter->getRemoveUrl()) ?>"
+                   data-js-filter-id="<?=$block->getActiveFilterCssId($_filter)?>"
+                   title="<?= /* @noEscape */ $block->escapeHtmlAttr(__('Remove')) . " " . $currentFilterName ?>">
+                    <span><?= $block->escapeHtml(__('Remove This Item')) ?></span>
+                </a>
             </li>
         <?php endforeach; ?>
     </ol>

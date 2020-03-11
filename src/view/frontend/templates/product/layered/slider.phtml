@@ -56,7 +56,7 @@ $currentMaxValue = $block->getCurrentMaxValue();
                value="<?= $currentMaxValue ?>"
         >
         <input type="hidden"
-               id="<?=$block->getCssItemId($block->getItems()[0])?>"
+               id="<?=$block->getCssId()?>"
                class="slider-url-value"
                name="<?= $urlKey ?>"
                value="<?=sprintf('%s-%s', $currentMinValue, $currentMaxValue)?>"

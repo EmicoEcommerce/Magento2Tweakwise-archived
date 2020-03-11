@@ -162,4 +162,18 @@ class SliderRenderer extends DefaultRenderer
     {
         return $this->navigationConfig->getJsSliderConfig($this);
     }
+
+    /**
+     * @return string
+     */
+    public function getCssId()
+    {
+        $anyItem = $this->getItems()[0];
+        $urlKey = $anyItem->getFilter()
+            ->getFacet()
+            ->getFacetSettings()
+            ->getUrlKey();
+
+        return 'slider-' . $urlKey;
+    }
 }
