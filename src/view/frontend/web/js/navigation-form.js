@@ -163,7 +163,7 @@ define([
             event.preventDefault();
             var filterId = '#' + $(event.target).data('js-filter-id');
             var filter = this.element.find(filterId);
-            if (filter) {
+            if (filter && filter.length) {
                 filter = $(filter);
                 // Set filter disabled so that it will not be submitted when change is triggered
                 filter.attr('disabled', true);
