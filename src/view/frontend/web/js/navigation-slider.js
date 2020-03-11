@@ -66,7 +66,12 @@ define([
                     container.find('.current-max-value').html(this._labelFormat(maxValue));
                     container.find('input.slider-min').val(minValue);
                     container.find('input.slider-max').val(maxValue);
-                    container.find('input.slider-url-value').val(minValue + '-' + maxValue);
+
+                    var sliderUrlValue = minValue + '-' + maxValue;
+                    var sliderUrlInput = container.find('input.slider-url-value');
+                    sliderUrlInput.val(sliderUrlValue);
+
+                    this._updateSliderDisabledAttribute(sliderUrlInput, sliderUrlValue);
                 }.bind(this),
 
                 change: this._getChangeHandler()
@@ -80,8 +85,8 @@ define([
          */
         _bindInputChangeEvents: function() {
             var sliderContainer = $(this.options.container);
-            sliderContainer.on('change', '.slider-min', this._triggerSliderChange.bind(this));
-            sliderContainer.on('change', '.slider-max', this._triggerSliderChange.bind(this));
+            sliderContainer.on('change', '.slider-min', this._updateSliderUrlInput.bind(this));
+            sliderContainer.on('change', '.slider-max', this._updateSliderUrlInput.bind(this));
         },
 
         /**
@@ -89,20 +94,28 @@ define([
          *
          * @private
          */
-        _triggerSliderChange: function () {
-            this._updateSliderUrlInput();
-            this.element.trigger('change')
+        _updateSliderUrlInput: function () {
+            var sliderContainer = $(this.options.container);
+            var sliderUrlInput = sliderContainer.find('.slider-url-value');
+            var minValue = sliderContainer.find('.slider-min').val();
+            var maxValue = sliderContainer.find('.slider-max').val();
+            var inputValue = minValue + '-' + maxValue;
+            sliderUrlInput.val(inputValue);
+            this._updateSliderDisabledAttribute(sliderUrlInput, inputValue)
         },
 
         /**
          *
+         * @param sliderUrlInput
+         * @param inputValue
          * @private
          */
-        _updateSliderUrlInput: function () {
-            var sliderContainer = $(this.options.container);
-            var minValue = sliderContainer.find('.slider-min').val();
-            var maxValue = sliderContainer.find('.slider-max').val();
-            sliderContainer.find('.slider-url-value').val(minValue + '-' + maxValue);
+        _updateSliderDisabledAttribute: function (sliderUrlInput, inputValue) {
+            if (inputValue === sliderUrlInput.data('disabled-input')) {
+                sliderUrlInput.attr('disabled', true);
+            } else {
+                sliderUrlInput.removeAttr('disabled');
+            }
         },
 
         /**

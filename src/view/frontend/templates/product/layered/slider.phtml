@@ -11,19 +11,23 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
 $itemPrefix = $block->getItemPrefix();
 $itemPostfix = $block->getItemPostfix();
 $urlKey = $block->getUrlKey();
+$minValue = $block->getMinValue();
+$maxValue = $block->getMaxValue();
 $currentMinValue = $block->getCurrentMinValue();
 $currentMaxValue = $block->getCurrentMaxValue();
+$sliderUrlInputValue = sprintf('%s-%s', $currentMinValue, $currentMaxValue);
+$disabledSliderUrlInputValue = sprintf('%s-%s', $minValue, $maxValue);
 ?>
 <div class="slider-attribute" id="attribute-slider-<?=$block->getCssId()?>">
     <div class="labels">
         <span class="min-value">
             <span class="prefix"><?= $itemPrefix ?></span>
-            <?=$block->renderValue($block->getMinValue())?>
+            <?=$block->renderValue($minValue)?>
             <span class="postfix"><?= $itemPostfix ?></span>
         </span>
         <span class="max-value">
             <span class="prefix"><?= $itemPrefix ?></span>
-            <?=$block->renderValue($block->getMaxValue())?>
+            <?=$block->renderValue($maxValue)?>
             <span class="postfix"><?= $itemPostfix ?></span>
         </span>
     </div>
@@ -56,10 +60,14 @@ $currentMaxValue = $block->getCurrentMaxValue();
                value="<?= $currentMaxValue ?>"
         >
         <input type="hidden"
+               data-disabled-input="<?=$disabledSliderUrlInputValue?>"
+               <?php if ($sliderUrlInputValue === $disabledSliderUrlInputValue):?>
+               disabled="disabled"
+               <?php endif;?>
                id="<?=$block->getCssId()?>"
                class="slider-url-value"
                name="<?= $urlKey ?>"
-               value="<?=sprintf('%s-%s', $currentMinValue, $currentMaxValue)?>"
+               value="<?=$sliderUrlInputValue?>"
         >
     </div>
 </div>
