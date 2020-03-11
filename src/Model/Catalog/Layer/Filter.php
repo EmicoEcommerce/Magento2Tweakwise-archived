@@ -95,6 +95,8 @@ class Filter extends AbstractFilter implements FilterInterface
      * @param ItemFactory $itemFactory
      * @param StoreManager $storeManager
      * @param Attribute|null $attribute
+     * @noinspection MagicMethodsValidityInspection
+     * @noinspection PhpMissingParentConstructorInspection
      */
     public function __construct(
         Layer $layer,
@@ -389,7 +391,7 @@ class Filter extends AbstractFilter implements FilterInterface
     public function getOptionIdByLabel($label)
     {
         $map = $this->getOptionLabelValueMap();
-        return isset($map[$label]) ? $map[$label] : null;
+        return $map[$label] ?? null;
     }
 
     /**
@@ -400,7 +402,7 @@ class Filter extends AbstractFilter implements FilterInterface
     {
         $map = $this->getOptionLabelValueMap();
         $map = array_flip($map);
-        return isset($map[$id]) ? $map[$id] : null;
+        return $map[$id] ?? null;
     }
 
     /**
@@ -415,7 +417,7 @@ class Filter extends AbstractFilter implements FilterInterface
         }
 
         $map = $this->getOptionLabelItemMap();
-        return isset($map[$label]) ? $map[$label] : null;
+        return $map[$label] ?? null;
     }
 
     /**

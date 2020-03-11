@@ -29,9 +29,7 @@
             <argument name="tweakwiseFilterList" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\FilterList\Tweakwise\Proxy</argument>
         </arguments>
     </type>
-    <type name="Magento\LayeredNavigation\Block\Navigation\State">
-        <plugin name="emico-tweakwise" type="Emico\Tweakwise\Block\LayeredNavigation\Navigation\State\Plugin" sortOrder="0" />
-    </type>
+
     <type name="Magento\Catalog\Block\Product\ProductList\Toolbar">
         <plugin name="emico-tweakwise" type="Emico\Tweakwise\Block\Catalog\Product\ProductList\Toolbar\Plugin" sortOrder="0" />
     </type>
