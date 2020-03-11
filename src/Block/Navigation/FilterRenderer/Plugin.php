@@ -101,7 +101,7 @@ class Plugin
             return $proceed($filter);
         }
 
-        $blockType = isset($this->blockTypes[$renderType]) ? $this->blockTypes[$renderType] : DefaultRenderer::class;
+        $blockType = $this->blockTypes[$renderType] ?? DefaultRenderer::class;
         $block = $this->layout->createBlock($blockType);
 
         if (!$block instanceof DefaultRenderer && !$block instanceof RenderLayered) {
