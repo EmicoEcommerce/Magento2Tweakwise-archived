@@ -112,15 +112,6 @@ class SwatchRenderer extends RenderLayered
     }
 
     /**
-     * @param Item $item
-     * @return string
-     */
-    public function getCssItemId(Item $item)
-    {
-        return spl_object_hash($item);
-    }
-
-    /**
      * @param int $id
      * @return Item
      */

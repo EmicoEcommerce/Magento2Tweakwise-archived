@@ -21,7 +21,7 @@ $hasAlternateSortOrder = $block->hasAlternateSortOrder();
                 <?php endif;?>
             >
                 <a <?=$block->renderAnchorHtmlTagAttributes($item);?>>
-                    <?php $cssId = $block->getCssItemId($item);?>
+                    <?php $cssId = $item->getCssId();?>
                     <?php if ($block->showCheckbox()): ?>
                         <input id="<?=$cssId?>"
                                name="<?=$item->getFilter()->getFacet()->getFacetSettings()->getUrlKey()?>[]"

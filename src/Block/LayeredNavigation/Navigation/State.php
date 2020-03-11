@@ -58,6 +58,7 @@ class State extends MagentoStateBlock
     }
 
     /**
+     * Use our template if applicable
      * If you want to change this behaviour use a plugin on afterGetTemplate
      *
      * @param CurrentContext $currentContext

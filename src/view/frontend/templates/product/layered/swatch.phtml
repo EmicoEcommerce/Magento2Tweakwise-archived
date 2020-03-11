@@ -20,12 +20,13 @@
                 aria-label="<?= /* @escapeNotVerified */ $label['label'] ?>"
                 class="swatch-option-link-layered"
             >
-                <input id="<?=$block->getCssItemId($item)?>" style="display: none"
+                <?php $cssId = $item->getCssId();?>
+                <input id="<?=$cssId?>" style="display: none"
                        name="<?=$item->getFilter()->getFacet()->getFacetSettings()->getUrlKey()?>[]"
                        type="checkbox" <?=($item->isSelected() ? 'checked="checked"' : '')?>
                        value="<?=$block->escapeHtmlAttr($item->getAttribute()->getTitle())?>"
                 >
-                <label for="<?=$block->getCssItemId($item)?>">
+                <label for="<?=$cssId?>">
                 <?php if (isset($swatchData['swatches'][$option]['type'])) { ?>
                     <?php switch ($swatchData['swatches'][$option]['type']) {
                         case '3':
