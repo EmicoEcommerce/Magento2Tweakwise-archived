@@ -15,7 +15,6 @@
     </container>
     <update handle="catalog_category_view_type_layered"/>
     <update handle="catalog_category_view"/>
-
     <!-- Remove featured products from content as it would be rendered again in ajax call which is not needed -->
     <referenceBlock name="tweakwise.catalog.product.featured.before" remove="true"/>
 </layout>

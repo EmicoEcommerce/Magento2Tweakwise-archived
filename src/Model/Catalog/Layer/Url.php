@@ -168,6 +168,16 @@ class Url
     }
 
     /**
+     * @param array $activeFilterItems
+     * @return string
+     */
+    public function getFilterUrl(array $activeFilterItems)
+    {
+        return $this->getUrlStrategy()
+            ->buildFilterUrl($this->request, $activeFilterItems);
+    }
+
+    /**
      * @param ProductNavigationRequest $navigationRequest
      */
     public function apply(ProductNavigationRequest $navigationRequest)

@@ -12,6 +12,7 @@ use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
 use Magento\Framework\Api\SortOrder;
+use Magento\Framework\App\Request\Http as MagentoHttpRequest;
 use Zend\Http\Request as HttpRequest;
 
 /**
@@ -54,6 +55,13 @@ interface UrlInterface
      * @return string
      */
     public function getClearUrl(HttpRequest $request, array $activeFilterItems): string;
+
+    /**
+     * @param MagentoHttpRequest $request
+     * @param array $filters
+     * @return string
+     */
+    public function buildFilterUrl(MagentoHttpRequest $request, array $filters = []): string;
 
     /**
      * Determine if this UrlInterface is allowed in the current context

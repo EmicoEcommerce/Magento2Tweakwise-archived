@@ -32,6 +32,9 @@ define([
          * @private
          */
         _hookEvents: function() {
+            if (this.options.ajaxFilters) {
+                this._bindPopChangeHandler()
+            }
             this._bindFilterClickEvents();
             this._bindFilterRemoveEvents();
         },
@@ -59,6 +62,18 @@ define([
             if (this.options.ajaxFilters) {
                 this.element.on('click', 'a.remove', this._ajaxClearHandler.bind(this));
             }
+        },
+
+        /**
+         *
+         * @private
+         */
+        _bindPopChangeHandler: function() {
+            window.onpopstate = function(e) {
+                if (e.state && e.state.html) {
+                    this._updateBlocks(e.state.html);
+                }
+            }.bind(this);
         },
 
         /**
@@ -141,7 +156,8 @@ define([
                 url: this.options.ajaxEndpoint,
                 data: this._getFilterParameters(),
                 success: function(response) {
-                    this._updateBlocks(response);
+                    this._updateBlocks(response.html);
+                    this._updateState(response);
                 }.bind(this),
                 error: function(response) {
                     // Something went wrong, try to navigate to the selected filter
@@ -219,6 +235,10 @@ define([
                 .last()
                 .html(newToolbarLastHtml)
                 .trigger('contentUpdated');
+        },
+
+        _updateState: function(response) {
+            window.history.pushState({html: response.html}, '', response.url);
         },
 
         /**

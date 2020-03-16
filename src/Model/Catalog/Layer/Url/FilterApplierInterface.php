@@ -8,10 +8,7 @@
 
 namespace Emico\Tweakwise\Model\Catalog\Layer\Url;
 
-use Emico\Tweakwise\Model\Catalog\Layer\Filter;
-use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
-use Magento\Framework\Api\SortOrder;
 use Zend\Http\Request as HttpRequest;
 
 /**

@@ -96,4 +96,12 @@ class NullStrategy implements RouteMatchingInterface, UrlInterface, FilterApplie
     {
         return true;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function buildFilterUrl(MagentoHttpRequest $request, array $filters = []): string
+    {
+        return '';
+    }
 }

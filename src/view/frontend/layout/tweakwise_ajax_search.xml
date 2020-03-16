@@ -8,10 +8,10 @@
  */
 -->
 <layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <update handle="empty"/>
     <container name="root">
         <container name="content"/>
         <container name="sidebar.main"/>
     </container>
     <update handle="catalogsearch_result_index"/>
-    <update handle="empty"/>
 </layout>

@@ -16,6 +16,7 @@ use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlModel;
 use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
 use Magento\Catalog\Api\Data\CategoryInterface;
+use Magento\Framework\App\Request\Http as MagentoHttpRequest;
 use Zend\Http\Request as HttpRequest;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Emico\TweakwiseExport\Model\Helper as ExportHelper;
@@ -211,6 +212,17 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
         }
 
         return $this->getCurrentQueryUrl($request, $query);
+    }
+
+    /**
+     * @param MagentoHttpRequest $request
+     * @param array $filters
+     * @return string
+     */
+    public function buildFilterUrl(MagentoHttpRequest $request, array $filters = []): string
+    {
+        $attributeFilters = $this->getAttributeFilters($request);
+        return $this->getCurrentQueryUrl($request, $attributeFilters);
     }
 
     /**
