@@ -73,14 +73,12 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     private $url;
 
     /**
-     * @var Resolver
-     */
-    private $layerResolver;
-
-    /**
      * Magento constructor.
      *
      * @param UrlModel $url
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param ExportHelper $exportHelper
+     * @param Resolver $layerResolver
      */
     public function __construct(
         UrlModel $url,
@@ -91,7 +89,6 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
         $this->url = $url;
         $this->categoryRepository = $categoryRepository;
         $this->exportHelper = $exportHelper;
-        $this->layerResolver = $layerResolver;
     }
 
     /**
