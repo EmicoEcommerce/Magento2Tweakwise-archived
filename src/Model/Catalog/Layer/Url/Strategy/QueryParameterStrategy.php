@@ -20,7 +20,6 @@ use Magento\Framework\App\Request\Http as MagentoHttpRequest;
 use Zend\Http\Request as HttpRequest;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Emico\TweakwiseExport\Model\Helper as ExportHelper;
-use Magento\Catalog\Model\Layer\Resolver;
 
 
 class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, CategoryUrlInterface
@@ -78,14 +77,12 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
      * @param UrlModel $url
      * @param CategoryRepositoryInterface $categoryRepository
      * @param ExportHelper $exportHelper
-     * @param Resolver $layerResolver
      */
     public function __construct(
         UrlModel $url,
         CategoryRepositoryInterface $categoryRepository,
-        ExportHelper $exportHelper,
-        Resolver $layerResolver)
-    {
+        ExportHelper $exportHelper
+    ) {
         $this->url = $url;
         $this->categoryRepository = $categoryRepository;
         $this->exportHelper = $exportHelper;
@@ -213,13 +210,13 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
 
     /**
      * @param MagentoHttpRequest $request
-     * @param array $filters
+     * @param Item[] $filters
      * @return string
      */
     public function buildFilterUrl(MagentoHttpRequest $request, array $filters = []): string
     {
         $attributeFilters = $this->getAttributeFilters($request);
-        return $this->getCurrentQueryUrl($request, $attributeFilters);
+        return str_replace($this->url->getBaseUrl(),'', $this->getCurrentQueryUrl($request, $attributeFilters));
     }
 
     /**

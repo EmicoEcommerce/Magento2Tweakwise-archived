@@ -16,6 +16,7 @@ use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface;
 use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
 use Magento\Catalog\Api\Data\CategoryInterface;
+use Magento\Framework\App\Request\Http as MagentoHttpRequest;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Zend\Http\Request as HttpRequest;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
@@ -54,7 +55,7 @@ class Url
     protected $exportHelper;
 
     /**
-     * @var HttpRequest
+     * @var MagentoHttpRequest
      */
     protected $request;
 

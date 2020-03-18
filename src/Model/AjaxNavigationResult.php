@@ -46,6 +46,7 @@ class AjaxNavigationResult extends Layout
      * @param View\Layout\GeneratorPool $generatorPool
      * @param Url $urlModel
      * @param Resolver $layerResolver
+     * @param Json $serializer
      * @param bool $isIsolated
      */
     public function __construct(
@@ -111,6 +112,6 @@ class AjaxNavigationResult extends Layout
     {
         $layer = $this->layerResolver->get();
         $activeFilters = $layer->getState()->getFilters();
-        return $this->urlModel->getFilterUrl($activeFilters);
+        return '/' . $this->urlModel->getFilterUrl($activeFilters);
     }
 }
