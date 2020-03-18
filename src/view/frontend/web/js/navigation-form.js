@@ -115,7 +115,7 @@ define([
          * @private
          */
         _defaultHandler: function (event) {
-            var a = $(event.currentTarget).closest('a');
+            var a = $(event.target).closest('a');
             var href = this._findHref(a);
             if (href) {
                 window.location.href = href;
