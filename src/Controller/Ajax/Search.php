@@ -6,6 +6,7 @@
 
 namespace Emico\Tweakwise\Controller\Ajax;
 
+use Emico\Tweakwise\Model\AjaxNavigationResult;
 use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Model\Layer\Resolver;
 use Magento\Framework\App\Action\Action;
@@ -13,7 +14,6 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\NotFoundException;
-use Magento\Framework\Controller\ResultFactory;
 
 /**
  * Class Search
@@ -28,9 +28,9 @@ class Search extends Action
     protected $config;
 
     /**
-     * @var ResultFactory
+     * @var AjaxNavigationResult
      */
-    protected $resultFactory;
+    protected $ajaxNavigationResult;
 
     /**
      * @var Resolver
@@ -42,18 +42,18 @@ class Search extends Action
      * @param Context $context Request context
      * @param Config $config Tweakwise configuration provider
      * @param Resolver $layerResolver
-     * @param ResultFactory $resultFactory
+     * @param AjaxNavigationResult $ajaxNavigationResult
      */
     public function __construct(
         Context $context,
         Config $config,
         Resolver $layerResolver,
-        ResultFactory $resultFactory
+        AjaxNavigationResult $ajaxNavigationResult
     ) {
         parent::__construct($context);
         $this->config = $config;
         $this->layerResolver = $layerResolver;
-        $this->resultFactory = $resultFactory;
+        $this->ajaxNavigationResult = $ajaxNavigationResult;
     }
 
     /**
@@ -71,6 +71,6 @@ class Search extends Action
         }
 
         $this->layerResolver->create(Resolver::CATALOG_LAYER_SEARCH);
-        return $this->resultFactory->create(ResultFactory::TYPE_LAYOUT);
+        return $this->ajaxNavigationResult;
     }
 }
