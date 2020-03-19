@@ -11,6 +11,7 @@ use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
 use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\Data\CategoryInterfaceFactory;
+use Magento\Framework\App\ProductMetadataInterface;
 use Magento\Framework\Registry;
 use Magento\Framework\UrlInterface;
 use Magento\Catalog\Api\Data\CategoryInterface;
@@ -72,6 +73,11 @@ class NavigationConfig implements ArgumentInterface
     protected $categoryFactory;
 
     /**
+     * @var ProductMetadataInterface
+     */
+    protected $productMetadata;
+
+    /**
      * NavigationConfig constructor.
      * @param Config $config
      * @param UrlInterface $url
@@ -80,6 +86,7 @@ class NavigationConfig implements ArgumentInterface
      * @param CurrentContext $currentNavigationContext
      * @param CategoryRepositoryInterface $categoryRepository
      * @param CategoryInterfaceFactory $categoryFactory
+     * @param ProductMetadataInterface $productMetadata
      * @param Json $jsonSerializer
      */
     public function __construct(
@@ -90,6 +97,7 @@ class NavigationConfig implements ArgumentInterface
         CurrentContext $currentNavigationContext,
         CategoryRepositoryInterface $categoryRepository,
         CategoryInterfaceFactory $categoryFactory,
+        ProductMetadataInterface $productMetadata,
         Json $jsonSerializer
     ) {
         $this->config = $config;
@@ -100,6 +108,7 @@ class NavigationConfig implements ArgumentInterface
         $this->currentNavigationContext = $currentNavigationContext;
         $this->categoryRepository = $categoryRepository;
         $this->categoryFactory = $categoryFactory;
+        $this->productMetadata = $productMetadata;
     }
 
     /**
@@ -128,9 +137,10 @@ class NavigationConfig implements ArgumentInterface
      */
     public function getJsSliderConfig(SliderRenderer $sliderRenderer)
     {
+        $slider = $this->getSliderReference();
         return $this->jsonSerializer->serialize(
             [
-                'tweakwiseNavigationSlider' => [
+                $slider => [
                     'ajaxFilters' => $this->isAjaxFilters(),
                     'formFilters' => $this->isFormFilters(),
                     'filterUrl' => $sliderRenderer->getFilterUrl(),
@@ -144,6 +154,22 @@ class NavigationConfig implements ArgumentInterface
                 ]
             ]
         );
+    }
+
+    /**
+     * Return which slider to use, the compat version has the full jquery/ui reference.
+     * The normal slider definition has jquery-ui-modules/slider, which is only available from 2.3.3 and onwards
+     *
+     * @return string
+     */
+    protected function getSliderReference()
+    {
+        $mVersion = $this->productMetadata->getVersion();
+        if (version_compare($mVersion, '2.3.3', '<')) {
+            return 'tweakwiseNavigationSliderCompat';
+        }
+
+        return 'tweakwiseNavigationSlider';
     }
 
     /**

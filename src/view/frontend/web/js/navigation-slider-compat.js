@@ -7,7 +7,7 @@
 
 define([
     'jquery',
-    'jquery-ui-modules/slider',
+    'jquery/ui',
     'domReady!'
 ], function($) {
     $.widget('tweakwise.navigationSlider', {
