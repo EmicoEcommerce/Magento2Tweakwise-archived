@@ -62,7 +62,7 @@ if (!$block->canShowBlock()) return;
                                     <?php $tooltip = $filter->getTooltip(); ?>
                                     <?php if ($tooltip): ?>
                                         <?php $tooltip = htmlentities($tooltip); ?>
-                                        <span class="tooltip" data-tooltip="<?=$tooltip?>">I</span>
+                                        <span class="tooltip" data-tooltip="<?=$tooltip?>"><span>i</span></span>
                                     <?php endif; ?>
                                 </div>
                                 <?php $filterContentStyle = $filter->isDefaultCollapsed() ? ' style="display: none;"' : ''?>

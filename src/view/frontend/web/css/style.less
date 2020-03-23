@@ -3,6 +3,42 @@
     .current-max-value {
         float: right;
     }
+
+    .ui-slider {
+        width: ~"calc(100% - 20px)";
+        margin-left: 4px;
+
+        &-handle {
+            &:hover {
+                background: #e67424;
+            }
+        }
+    }
+
+    .slider-inputs {
+        position: relative;
+        margin-top: 5px;
+        overflow: hidden;
+
+        .slider-min-wrapper,
+        .slider-max-wrapper {
+            width: 60px;
+            max-width: 48%;
+
+            label {
+                font-size: 11px;
+                font-style: italic;
+            }
+        }
+
+        .slider-min-wrapper {
+            float: left;
+        }
+
+        .slider-max-wrapper {
+            float: right;
+        }
+    }
 }
 
 .tree-attribute .child-items {
@@ -51,6 +87,8 @@
     .more-items,
     .less-items {
         cursor: pointer;
+        color: #006bb4;
+        text-decoration: underline;
     }
 
     .filter-options-title {
@@ -59,6 +97,19 @@
 
     .filter-options-title-non-collapsible.filter-options-title:after {
         content: '';
+    }
+
+    .items .item {
+        input[type="checkbox"] {
+            margin-top: 0;
+            top: -1px;
+        }
+
+        > a {
+            label {
+                cursor: pointer;
+            }
+        }
     }
 
     .swatch-attribute-options {
@@ -75,21 +126,37 @@
         position: relative;
         cursor: pointer;
 
+        > span {
+            display: block;
+            width: 18px;
+            height: 18px;
+            background: #006bb4;
+            color: white;
+            font-family: serif;
+            line-height: 19px;
+            text-align: center;
+            border-radius: 50%;
+            text-transform: lowercase;
+            font-style: italic;
+        }
+
         &:before {
             content: attr(data-tooltip);
             box-sizing: border-box;
             display: block;
             background: rgba(0, 0, 0, 0.7);
             color: white;
-            padding: 3px;
+            padding: 3px 10px;
             position: absolute;
             left: 50%;
             bottom: 100%;
-            margin-left: -100px;
             width: 200px;
+            text-align: center;
+            transform: translate(-50%, 0);
             opacity: 0;
             transition: 0.25s ease-in-out;
             text-transform: none;
+            font-weight: normal;
         }
 
         &:after {
@@ -111,7 +178,7 @@
         &:hover {
             &:before {
                 opacity: 1;
-                bottom: ~"calc(100% + 24px)";
+                bottom: ~"calc(100% + 16px)";
             }
 
             &:after {

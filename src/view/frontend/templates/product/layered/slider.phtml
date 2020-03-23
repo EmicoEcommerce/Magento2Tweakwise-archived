@@ -45,20 +45,24 @@ $disabledSliderUrlInputValue = sprintf('%s-%s', $minValue, $maxValue);
         </span>
     </div>
     <div class="slider-inputs">
-        <label for="<?= $urlKey ?>-min"><?=__('From')?></label>
-        <input type="text"
-               class="slider-min js-skip-submit"
-               id="<?= $urlKey ?>-min"
-               name="<?= $urlKey ?>-min"
-               value="<?= $currentMinValue ?>"
-        >
-        <label for="<?= $urlKey ?>-max"><?=__('To')?></label>
-        <input type="text"
-               class="slider-max js-skip-submit"
-               id="<?= $urlKey ?>-max"
-               name="<?= $urlKey ?>-max"
-               value="<?= $currentMaxValue ?>"
-        >
+        <div class="slider-min-wrapper">
+            <label for="<?= $urlKey ?>-min"><?=__('From')?></label>
+            <input type="text"
+                   class="slider-min js-skip-submit"
+                   id="<?= $urlKey ?>-min"
+                   name="<?= $urlKey ?>-min"
+                   value="<?= $currentMinValue ?>"
+            >
+        </div>
+        <div class="slider-max-wrapper">
+            <label for="<?= $urlKey ?>-max"><?=__('To')?></label>
+            <input type="text"
+                   class="slider-max js-skip-submit"
+                   id="<?= $urlKey ?>-max"
+                   name="<?= $urlKey ?>-max"
+                   value="<?= $currentMaxValue ?>"
+            >
+        </div>
         <input type="hidden"
                data-disabled-input="<?=$disabledSliderUrlInputValue?>"
                <?php if ($sliderUrlInputValue === $disabledSliderUrlInputValue):?>
