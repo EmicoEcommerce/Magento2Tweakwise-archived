@@ -67,6 +67,20 @@
         <plugin name="emico-tweakwise" type="Emico\Tweakwise\Model\Seo\Robots\Plugin" />
     </type>
 
+    <!-- If you need other layouts or possible even layer objects register them here -->
+    <type name="Emico\Tweakwise\Controller\Ajax\Navigation">
+        <arguments>
+            <argument name="layerMap" xsi:type="array">
+                <item name="category" xsi:type="string">category</item>
+                <item name="search" xsi:type="string">search</item>
+            </argument>
+            <argument name="layoutMap" xsi:type="array">
+                <item name="category" xsi:type="string">tweakwise_ajax_category</item>
+                <item name="search" xsi:type="string">tweakwise_ajax_search</item>
+            </argument>
+        </arguments>
+    </type>
+
     <type name="Magento\Search\Model\Autocomplete">
         <arguments>
             <argument name="dataProviders" xsi:type="array">
