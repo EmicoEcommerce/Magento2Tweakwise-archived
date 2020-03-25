@@ -9,17 +9,11 @@ namespace Emico\Tweakwise\Model;
 use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
 use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
-use Magento\Catalog\Api\CategoryRepositoryInterface;
-use Magento\Catalog\Api\Data\CategoryInterfaceFactory;
+use Emico\Tweakwise\Model\FilterFormParameterProvider\FilterFormParameterProviderInterface;
 use Magento\Framework\App\ProductMetadataInterface;
-use Magento\Framework\Registry;
 use Magento\Framework\UrlInterface;
-use Magento\Catalog\Api\Data\CategoryInterface;
-use Magento\Catalog\Model\Category;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
-use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class NavigationConfig
@@ -30,7 +24,7 @@ use Magento\Store\Model\StoreManagerInterface;
  * @see \Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer
  * @package Emico\Tweakwise\Model
  */
-class NavigationConfig implements ArgumentInterface
+class NavigationConfig implements ArgumentInterface, FilterFormParameterProviderInterface
 {
     /**
      * @var Config
@@ -48,29 +42,9 @@ class NavigationConfig implements ArgumentInterface
     protected $url;
 
     /**
-     * @var Registry
-     */
-    protected $registry;
-
-    /**
-     * @var StoreManagerInterface
-     */
-    protected $storeManager;
-
-    /**
      * @var CurrentContext
      */
     protected $currentNavigationContext;
-
-    /**
-     * @var CategoryRepositoryInterface
-     */
-    protected $categoryRepository;
-
-    /**
-     * @var CategoryInterfaceFactory
-     */
-    protected $categoryFactory;
 
     /**
      * @var ProductMetadataInterface
@@ -78,37 +52,41 @@ class NavigationConfig implements ArgumentInterface
     protected $productMetadata;
 
     /**
+     * @var FilterFormParameterProviderInterface
+     */
+    protected $filterFormParameterProvider;
+
+    /**
      * NavigationConfig constructor.
      * @param Config $config
      * @param UrlInterface $url
-     * @param Registry $registry
-     * @param StoreManagerInterface $storeManager
      * @param CurrentContext $currentNavigationContext
-     * @param CategoryRepositoryInterface $categoryRepository
-     * @param CategoryInterfaceFactory $categoryFactory
      * @param ProductMetadataInterface $productMetadata
+     * @param FilterFormParameterProviderInterface $filterFormParameterProvider
      * @param Json $jsonSerializer
      */
     public function __construct(
         Config $config,
         UrlInterface $url,
-        Registry $registry,
-        StoreManagerInterface $storeManager,
         CurrentContext $currentNavigationContext,
-        CategoryRepositoryInterface $categoryRepository,
-        CategoryInterfaceFactory $categoryFactory,
         ProductMetadataInterface $productMetadata,
+        FilterFormParameterProviderInterface $filterFormParameterProvider,
         Json $jsonSerializer
     ) {
         $this->config = $config;
         $this->jsonSerializer = $jsonSerializer;
         $this->url = $url;
-        $this->registry = $registry;
-        $this->storeManager = $storeManager;
         $this->currentNavigationContext = $currentNavigationContext;
-        $this->categoryRepository = $categoryRepository;
-        $this->categoryFactory = $categoryFactory;
         $this->productMetadata = $productMetadata;
+        $this->filterFormParameterProvider = $filterFormParameterProvider;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getFilterFormParameters(): array
+    {
+        return $this->filterFormParameterProvider->getFilterFormParameters();
     }
 
     /**
@@ -173,30 +151,6 @@ class NavigationConfig implements ArgumentInterface
     }
 
     /**
-     * @return int|null
-     */
-    public function getCategoryId(): ?int
-    {
-        if ($this->isSearch()) {
-            return null;
-        }
-
-        return (int)$this->getCategory()->getId() ?: null;
-    }
-
-    /**
-     * Public because of plugin options
-     *
-     * @return string|null
-     */
-    public function getOriginalUrl(): ?string
-    {
-        return $this->isSearch()
-            ? 'catalogsearch/result/index'
-            : str_replace($this->url->getBaseUrl(), '', $this->getCategory()->getUrl());
-    }
-
-    /**
      * @return bool
      */
     public function isFormFilters()
@@ -230,39 +184,5 @@ class NavigationConfig implements ArgumentInterface
     public function isSearch()
     {
         return $this->currentNavigationContext->getRequest() instanceof ProductSearchRequest;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getSearchTerm()
-    {
-        if (!$this->isSearch()) {
-            return null;
-        }
-
-        return $this->currentNavigationContext->getRequest()->getParameter('tn_q');
-    }
-
-    /**
-     * @return CategoryInterface|Category
-     */
-    protected function getCategory()
-    {
-        if ($currentCategory = $this->registry->registry('current_category')) {
-            return $currentCategory;
-        }
-
-        try {
-            $rootCategory = $this->storeManager->getStore()->getRootCategoryId();
-        } catch (NoSuchEntityException $exception) {
-            $rootCategory = 2;
-        }
-
-        try {
-            return $this->categoryRepository->get($rootCategory);
-        } catch (NoSuchEntityException $exception) {
-            return $this->categoryFactory->create();
-        }
     }
 }

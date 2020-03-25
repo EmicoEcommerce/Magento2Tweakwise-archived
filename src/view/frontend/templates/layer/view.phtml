@@ -20,7 +20,6 @@ if (!$block->canShowBlock()) return;
 <?php $tweakwiseNavigationConfig = $block->getData('tweakwise_navigation_config');?>
 <?php $jsFormConfig = $tweakwiseNavigationConfig->getJsFormConfig(); ?>
 <?php $renderFilterButton = $tweakwiseNavigationConfig->isFormFilters();?>
-<?php $isAjaxFilters = $tweakwiseNavigationConfig->isAjaxFilters();?>
 
 <?php $hasFilters = count($filters) > 0; ?>
 <div class="block filter<?=($hasFilters ? ' filter-no-options' : '')?>"
@@ -43,13 +42,10 @@ if (!$block->canShowBlock()) return;
         <?php if ($hasFilters): ?>
             <strong role="heading" aria-level="2" class="block-subtitle filter-subtitle"><?=__('Shopping Options') ?></strong>
             <div class="filter-options" id="narrow-by-list" data-role="content">
-                <?php if ($isAjaxFilters):?>
-                    <input type="hidden" name="__tw_original_url" value="<?=$tweakwiseNavigationConfig->getOriginalUrl()?>">
-                    <input type="hidden" name="__tw_category_id" value="<?=$tweakwiseNavigationConfig->getCategoryId()?>">
-                <?php endif;?>
-                <?php if ($tweakwiseNavigationConfig->isSearch() && $tweakwiseNavigationConfig->getSearchTerm()):?>
-                    <input type="hidden" name="q" value="<?=$tweakwiseNavigationConfig->getSearchTerm()?>">
-                <?php endif;?>
+                <?php foreach ($tweakwiseNavigationConfig->getFilterFormParameters() as $name => $value):?>
+                    <?php // These are tweakwise system parameters which are needed for ajax navigation ?>
+                    <input type="hidden" name="<?=$name?>" value="<?=$value?>">
+                <?php endforeach;?>
                 <?php foreach ($filters as $filter): ?>
                     <?php if ($filter->isCollapsible()): ?>
                         <?php $filterActive = $filter->isDefaultCollapsed() ? 'false' : '[0]'; ?>

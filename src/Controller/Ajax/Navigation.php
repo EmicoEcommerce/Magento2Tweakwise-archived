@@ -81,7 +81,7 @@ class Navigation extends Action
             throw new NotFoundException(__('Page not found.'));
         }
 
-        $categoryId = (int)$this->getRequest()->getParam('__tw_category_id') ?: 2;
+        $categoryId = (int)$this->getRequest()->getParam('__tw_object_id') ?: 2;
 
         // Register the category, its needed while rendering filters and products
         if (!$this->registry->registry('current_category')) {
