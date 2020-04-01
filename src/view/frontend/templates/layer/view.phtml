@@ -42,7 +42,7 @@ if (!$block->canShowBlock()) return;
         <?php if ($hasFilters): ?>
             <strong role="heading" aria-level="2" class="block-subtitle filter-subtitle"><?=__('Shopping Options') ?></strong>
             <div class="filter-options" id="narrow-by-list" data-role="content">
-                <?php foreach ($tweakwiseNavigationConfig->getFilterFormParameters() as $name => $value):?>
+                <?php foreach ($tweakwiseNavigationConfig->getFilterFormInput() as $name => $value):?>
                     <?php // These are tweakwise system parameters which are needed for ajax navigation ?>
                     <input type="hidden" name="<?=$name?>" value="<?=$value?>">
                 <?php endforeach;?>
