@@ -107,10 +107,15 @@ class ProductItem implements ItemInterface
         $version = $this->productMetadata->getVersion();
         if (version_compare($version, '2.3.0', '<')) {
             $imageResolver = $this->imageBuilder;
-        } else {
-            $imageResolver = $this->imageFactory;
+            $imageResolver->setProduct($this->product);
+            $imageResolver->setImageId('product_thumbnail_image');
+            return $imageResolver->create();
         }
 
+        $imageResolver = $this->imageFactory;
+
+        /** @noinspection PhpMethodParametersCountMismatchInspection */
+        /** @noinspection PhpParamsInspection */
         return $imageResolver->create(
             $this->product,
             'product_thumbnail_image',

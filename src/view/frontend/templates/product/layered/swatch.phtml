@@ -24,7 +24,7 @@
                 <input id="<?=$cssId?>" style="display: none"
                        name="<?=$item->getFilter()->getFacet()->getFacetSettings()->getUrlKey()?>[]"
                        type="checkbox" <?=($item->isSelected() ? 'checked="checked"' : '')?>
-                       value="<?=$block->escapeHtmlAttr($item->getAttribute()->getTitle())?>"
+                       value="<?=$block->escapeHtmlAttr($item->getLabel())?>"
                 >
                 <label for="<?=$cssId?>">
                 <?php if (isset($swatchData['swatches'][$option]['type'])) { ?>

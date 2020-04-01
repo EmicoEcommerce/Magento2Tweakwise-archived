@@ -13,7 +13,7 @@ $item = $block->getItem();
 <li class="item">
     <a href="<?=$block->escapeUrl($item->getUrl())?>">
         <?=$block->getItemPrefix()?>
-        <?=$item->getLabel()?>
+        <?=$block->escapeHtml($item->getLabel())?>
         <?=$block->getItemPostfix()?>
 
         <?php if ($block->shouldDisplayProductCountOnLayer()): ?>

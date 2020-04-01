@@ -26,17 +26,17 @@ $hasAlternateSortOrder = $block->hasAlternateSortOrder();
                         <input id="<?=$cssId?>"
                                name="<?=$item->getFilter()->getFacet()->getFacetSettings()->getUrlKey()?>[]"
                                type="checkbox" <?=($item->isSelected() ? 'checked="checked"' : '')?>
-                               value="<?=$block->escapeHtmlAttr($item->getAttribute()->getTitle())?>"
+                               value="<?=$block->escapeHtmlAttr($item->getLabel())?>"
                         >
 
                         <label for="<?=$cssId?>">
                             <?=$block->getItemPrefix()?>
-                            <?=$item->getLabel()?>
+                            <?=$block->escapeHtml($item->getLabel())?>
                             <?=$block->getItemPostfix()?>
                         </label>
                     <?php else: ?>
                         <?=$block->getItemPrefix()?>
-                        <?=$item->getLabel()?>
+                        <?=$block->escapeHtml($item->getLabel())?>
                         <?=$block->getItemPostfix()?>
                     <?php endif; ?>
 

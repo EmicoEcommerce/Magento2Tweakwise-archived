@@ -449,7 +449,8 @@ class Filter extends AbstractFilter implements FilterInterface
      */
     public function getTooltip()
     {
-        return $this->facet->getFacetSettings()->getInfoText();
+        $facetSettings = $this->facet->getFacetSettings();
+        return $facetSettings->getIsInfoVisible() ? $facetSettings->getInfoText() : '';
     }
 
     /**
