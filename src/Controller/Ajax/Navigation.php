@@ -7,16 +7,13 @@
 namespace Emico\Tweakwise\Controller\Ajax;
 
 use Emico\Tweakwise\Model\AjaxNavigationResult;
+use Emico\Tweakwise\Model\AjaxResultInitializer\InitializerInterface;
 use Emico\Tweakwise\Model\Config;
-use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\NotFoundException;
-use Magento\Framework\Registry;
-use Magento\Catalog\Model\Layer\Resolver;
 
 /**
  * Class Navigation
@@ -30,66 +27,33 @@ class Navigation extends Action
      */
     protected $config;
 
-
-    /**
-     * @var Registry
-     */
-    protected $registry;
-
-    /**
-     * @var CategoryRepositoryInterface
-     */
-    protected $categoryRepository;
-
     /**
      * @var AjaxNavigationResult
      */
     protected $ajaxNavigationResult;
 
     /**
-     * @var Resolver
+     * @var InitializerInterface[]
      */
-    protected $layerResolver;
-
-    /**
-     * @var string[]
-     */
-    protected $layerMap;
-
-    /**
-     * @var string[]
-     */
-    protected $layoutMap;
+    protected $initializerMap;
 
     /**
      * Navigation constructor.
      * @param Context $context Request context
      * @param Config $config Tweakwise configuration provider
-     * @param Registry $registry
-     * @param CategoryRepositoryInterface $categoryRepository
      * @param AjaxNavigationResult $ajaxNavigationResult
-     * @param Resolver $layerResolver
-     * @param string[] $layerMap
-     * @param string[] $layoutMap
+     * @param array $initializerMap
      */
     public function __construct(
         Context $context,
         Config $config,
-        Registry $registry,
-        CategoryRepositoryInterface $categoryRepository,
         AjaxNavigationResult $ajaxNavigationResult,
-        Resolver $layerResolver,
-        array $layerMap,
-        array $layoutMap
+        array $initializerMap
     ) {
         parent::__construct($context);
         $this->config = $config;
-        $this->registry = $registry;
-        $this->categoryRepository = $categoryRepository;
         $this->ajaxNavigationResult = $ajaxNavigationResult;
-        $this->layerResolver = $layerResolver;
-        $this->layerMap = $layerMap;
-        $this->layoutMap = $layoutMap;
+        $this->initializerMap = $initializerMap;
     }
 
     /**
@@ -99,7 +63,6 @@ class Navigation extends Action
      *
      * @return ResultInterface|ResponseInterface
      * @throws NotFoundException
-     * @throws NoSuchEntityException
      */
     public function execute()
     {
@@ -108,34 +71,15 @@ class Navigation extends Action
         }
 
         $type = $this->getRequest()->getParam('__tw_ajax_type');
-        $this->initializeLayer($type);
-        $categoryId = (int)$this->getRequest()->getParam('__tw_object_id') ?: 2;
-
-        // Register the category, its needed while rendering filters and products
-        if (!$this->registry->registry('current_category')) {
-            $category = $this->categoryRepository->get($categoryId);
-            $this->registry->register('current_category', $category);
+        if (!isset($this->initializerMap[$type])) {
+            throw new \InvalidArgumentException('No ajax navigation result handler found for ' . $type);
         }
 
-        $this->initializeLayout($type);
+        $this->initializerMap[$type]->initializeAjaxResult(
+            $this->ajaxNavigationResult,
+            $this->getRequest()
+        );
+
         return $this->ajaxNavigationResult;
-    }
-
-    /**
-     * @param string $type
-     */
-    protected function initializeLayer(string $type)
-    {
-        $layerType = $this->layerMap[$type] ?: 'category';
-        $this->layerResolver->create($layerType);
-    }
-
-    /**
-     * @param $type
-     */
-    protected function initializeLayout($type)
-    {
-        $handle = $this->layoutMap[$type];
-        $this->ajaxNavigationResult->addHandle($handle);
     }
 }

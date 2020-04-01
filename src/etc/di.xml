@@ -70,13 +70,9 @@
     <!-- If you need other layouts or possible even layer objects register them here -->
     <type name="Emico\Tweakwise\Controller\Ajax\Navigation">
         <arguments>
-            <argument name="layerMap" xsi:type="array">
-                <item name="category" xsi:type="string">category</item>
-                <item name="search" xsi:type="string">search</item>
-            </argument>
-            <argument name="layoutMap" xsi:type="array">
-                <item name="category" xsi:type="string">tweakwise_ajax_category</item>
-                <item name="search" xsi:type="string">tweakwise_ajax_search</item>
+            <argument name="initializerMap" xsi:type="array">
+                <item name="category" xsi:type="object">Emico\Tweakwise\Model\AjaxResultInitializer\CategoryInitializer</item>
+                <item name="search" xsi:type="object">Emico\Tweakwise\Model\AjaxResultInitializer\SearchInitializer</item>
             </argument>
         </arguments>
     </type>

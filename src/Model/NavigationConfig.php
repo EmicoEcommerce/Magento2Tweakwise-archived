@@ -8,7 +8,6 @@ namespace Emico\Tweakwise\Model;
 
 use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
-use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
 use Emico\Tweakwise\Model\FilterFormInputProvider\FilterFormInputProviderInterface;
 use Magento\Framework\App\ProductMetadataInterface;
 use Magento\Framework\UrlInterface;
@@ -171,18 +170,6 @@ class NavigationConfig implements ArgumentInterface, FilterFormInputProviderInte
      */
     protected function getAjaxEndPoint()
     {
-        if ($this->isSearch()) {
-            return $this->url->getUrl('tweakwise/ajax/search');
-        }
-
         return $this->url->getUrl('tweakwise/ajax/navigation');
-    }
-
-    /**
-     * @return bool
-     */
-    public function isSearch()
-    {
-        return $this->currentNavigationContext->getRequest() instanceof ProductSearchRequest;
     }
 }
