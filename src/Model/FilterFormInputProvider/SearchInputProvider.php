@@ -5,12 +5,12 @@
  * @copyright : Copyright Emico B.V. 2020.
  */
 
-namespace Emico\Tweakwise\Model\FilterFormParameterProvider;
+namespace Emico\Tweakwise\Model\FilterFormInputProvider;
 
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
 use Emico\Tweakwise\Model\Config;
 
-class SearchParameterProvider implements FilterFormParameterProviderInterface
+class SearchInputProvider implements FilterFormInputProviderInterface
 {
     /**
      *
@@ -43,7 +43,7 @@ class SearchParameterProvider implements FilterFormParameterProviderInterface
     /**
      * @inheritDoc
      */
-    public function getFilterFormParameters(): array
+    public function getFilterFormInput(): array
     {
         $parameters = [
             'q' => $this->getSearchTerm()

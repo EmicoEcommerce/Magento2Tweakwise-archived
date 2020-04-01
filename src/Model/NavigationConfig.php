@@ -9,7 +9,7 @@ namespace Emico\Tweakwise\Model;
 use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
 use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
-use Emico\Tweakwise\Model\FilterFormParameterProvider\FilterFormParameterProviderInterface;
+use Emico\Tweakwise\Model\FilterFormInputProvider\FilterFormInputProviderInterface;
 use Magento\Framework\App\ProductMetadataInterface;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\Serialize\Serializer\Json;
@@ -24,7 +24,7 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
  * @see \Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer
  * @package Emico\Tweakwise\Model
  */
-class NavigationConfig implements ArgumentInterface, FilterFormParameterProviderInterface
+class NavigationConfig implements ArgumentInterface, FilterFormInputProviderInterface
 {
     /**
      * @var Config
@@ -52,9 +52,9 @@ class NavigationConfig implements ArgumentInterface, FilterFormParameterProvider
     protected $productMetadata;
 
     /**
-     * @var FilterFormParameterProviderInterface
+     * @var FilterFormInputProviderInterface
      */
-    protected $filterFormParameterProvider;
+    protected $filterFormInputProvider;
 
     /**
      * NavigationConfig constructor.
@@ -62,7 +62,7 @@ class NavigationConfig implements ArgumentInterface, FilterFormParameterProvider
      * @param UrlInterface $url
      * @param CurrentContext $currentNavigationContext
      * @param ProductMetadataInterface $productMetadata
-     * @param FilterFormParameterProviderInterface $filterFormParameterProvider
+     * @param FilterFormInputProviderInterface $filterFormInputProvider
      * @param Json $jsonSerializer
      */
     public function __construct(
@@ -70,7 +70,7 @@ class NavigationConfig implements ArgumentInterface, FilterFormParameterProvider
         UrlInterface $url,
         CurrentContext $currentNavigationContext,
         ProductMetadataInterface $productMetadata,
-        FilterFormParameterProviderInterface $filterFormParameterProvider,
+        FilterFormInputProviderInterface $filterFormInputProvider,
         Json $jsonSerializer
     ) {
         $this->config = $config;
@@ -78,15 +78,15 @@ class NavigationConfig implements ArgumentInterface, FilterFormParameterProvider
         $this->url = $url;
         $this->currentNavigationContext = $currentNavigationContext;
         $this->productMetadata = $productMetadata;
-        $this->filterFormParameterProvider = $filterFormParameterProvider;
+        $this->filterFormInputProvider = $filterFormInputProvider;
     }
 
     /**
      * @inheritDoc
      */
-    public function getFilterFormParameters(): array
+    public function getFilterFormInput(): array
     {
-        return $this->filterFormParameterProvider->getFilterFormParameters();
+        return $this->filterFormParameterProvider->getFilterFormInput();
     }
 
     /**

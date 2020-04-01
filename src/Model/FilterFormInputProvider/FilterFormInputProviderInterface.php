@@ -5,9 +5,9 @@
  * @copyright : Copyright Emico B.V. 2020.
  */
 
-namespace Emico\Tweakwise\Model\FilterFormParameterProvider;
+namespace Emico\Tweakwise\Model\FilterFormInputProvider;
 
-interface FilterFormParameterProviderInterface
+interface FilterFormInputProviderInterface
 {
     /**
      * Should return an array of hidden parameters which are added to src/view/frontend/templates/layer/view.phtml
@@ -16,5 +16,5 @@ interface FilterFormParameterProviderInterface
      *
      * @return string[]
      */
-    public function getFilterFormParameters(): array;
+    public function getFilterFormInput(): array;
 }

@@ -5,7 +5,7 @@
  * @copyright : Copyright Emico B.V. 2020.
  */
 
-namespace Emico\Tweakwise\Model\FilterFormParameterProvider;
+namespace Emico\Tweakwise\Model\FilterFormInputProvider;
 
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\Data\CategoryInterface;
@@ -17,7 +17,7 @@ use Magento\Framework\UrlInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Emico\Tweakwise\Model\Config;
 
-class CategoryParameterProvider implements FilterFormParameterProviderInterface
+class CategoryInputProvider implements FilterFormInputProviderInterface
 {
     public const TYPE = 'category';
 
@@ -79,7 +79,7 @@ class CategoryParameterProvider implements FilterFormParameterProviderInterface
     /**
      * @inheritDoc
      */
-    public function getFilterFormParameters(): array
+    public function getFilterFormInput(): array
     {
         if (!$this->config->isAjaxFilters()) {
             return [];

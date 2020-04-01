@@ -19,7 +19,7 @@
     <preference for="Emico\Tweakwise\Model\Catalog\Layer\Url\CategoryUrlInterface" type="Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy" />
 
     <preference for="Magento\LayeredNavigation\Block\Navigation\State" type="Emico\Tweakwise\Block\LayeredNavigation\Navigation\State" />
-    <preference for="Emico\Tweakwise\Model\FilterFormParameterProvider\FilterFormParameterProviderInterface" type="Emico\Tweakwise\Model\FilterFormParameterProvider\EmptyParameterProvider" />
+    <preference for="Emico\Tweakwise\Model\FilterFormInputProvider\FilterFormInputProviderInterface" type="Emico\Tweakwise\Model\FilterFormInputProvider\EmptyInputProvider" />
 
     <!-- Frontend plugins -->
     <type name="Magento\Catalog\Model\Layer\FilterList">
@@ -161,12 +161,12 @@
     </virtualType>
     <virtualType name="Emico\Tweakwise\Model\NavigationConfig\Category" type="Emico\Tweakwise\Model\NavigationConfig">
         <arguments>
-            <argument name="filterFormParameterProvider" xsi:type="object">Emico\Tweakwise\Model\FilterFormParameterProvider\CategoryParameterProvider</argument>
+            <argument name="filterFormInputProvider" xsi:type="object">Emico\Tweakwise\Model\FilterFormInputProvider\CategoryInputProvider</argument>
         </arguments>
     </virtualType>
     <virtualType name="Emico\Tweakwise\Model\NavigationConfig\Search" type="Emico\Tweakwise\Model\NavigationConfig">
         <arguments>
-            <argument name="filterFormParameterProvider" xsi:type="object">Emico\Tweakwise\Model\FilterFormParameterProvider\SearchParameterProvider</argument>
+            <argument name="filterFormInputProvider" xsi:type="object">Emico\Tweakwise\Model\FilterFormInputProvider\SearchInputProvider</argument>
         </arguments>
     </virtualType>
 
