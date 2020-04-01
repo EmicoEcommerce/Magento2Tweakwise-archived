@@ -63,6 +63,7 @@ class Plugin
     /**
      * @param Toolbar $subject
      * @param string $result
+     * @return false|string
      */
     public function afterGetWidgetOptionsJson(Toolbar $subject, string $result)
     {

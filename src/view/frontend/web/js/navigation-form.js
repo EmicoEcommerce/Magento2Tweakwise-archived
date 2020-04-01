@@ -21,6 +21,8 @@ define([
             isLoading: false,
         },
 
+        currentXhr: null,
+
         _create: function() {
             this._hookEvents();
             return this._superApply(arguments);
@@ -150,9 +152,13 @@ define([
          */
         _ajaxHandler: function(event) {
             event.preventDefault();
-            this._startLoader();
 
-            jQuery.ajax({
+            if (this.currentXhr) {
+                this.currentXhr.abort();
+            }
+
+            this._startLoader();
+            this.currentXhr = jQuery.ajax({
                 url: this.options.ajaxEndpoint,
                 data: this._getFilterParameters(),
                 success: function(response) {
@@ -246,7 +252,7 @@ define([
          * @private
          */
         _startLoader: function() {
-            jQuery('body').trigger('processStart');
+            jQuery(this.options.productListSelector).trigger('processStart');
             this.options.isLoading = true;
         },
 
@@ -255,7 +261,7 @@ define([
          * @private
          */
         _stopLoader: function() {
-            jQuery('body').trigger('processStop');
+            jQuery(this.options.productListSelector).trigger('processStop');
             this.options.isLoading = false;
         },
         // ------- End of handling for ajax filtering
