@@ -103,6 +103,11 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
     private $scopeConfig;
 
     /**
+     * @var array
+     */
+    protected $rewriteEntities;
+
+    /**
      * Magento constructor.
      *
      * @param UrlModel $magentoUrl
@@ -115,6 +120,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      * @param Config $config
      * @param CurrentContext $currentContext
      * @param ScopeConfigInterface $scopeConfig
+     * @param array $rewriteEntities
      */
     public function __construct(
         UrlModel $magentoUrl,
@@ -126,7 +132,8 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         StoreManagerInterface $storeManager,
         Config $config,
         CurrentContext $currentContext,
-        ScopeConfigInterface $scopeConfig
+        ScopeConfigInterface $scopeConfig,
+        array $rewriteEntities
     ) {
         $this->magentoUrl = $magentoUrl;
         $this->layerResolver = $layerResolver;
@@ -138,6 +145,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         $this->config = $config;
         $this->currentContext = $currentContext;
         $this->scopeConfig = $scopeConfig;
+        $this->rewriteEntities = $rewriteEntities;
     }
 
     /**
@@ -414,7 +422,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         $pathsToCheck = $this->getPossibleCategoryPaths($path);
 
         $rewriteFilterData = [
-            UrlRewrite::ENTITY_TYPE => $this->getRewriteEntitiesToCheck(),
+            UrlRewrite::ENTITY_TYPE => $this->rewriteEntities,
             UrlRewrite::REQUEST_PATH => $pathsToCheck
         ];
         try {
@@ -446,14 +454,6 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
             $path
         );
         $request->setPathInfo('/' . $rewrite->getTargetPath());
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getRewriteEntitiesToCheck(): array
-    {
-        return ['category'];
     }
 
     /**
