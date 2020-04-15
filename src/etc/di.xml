@@ -120,7 +120,7 @@
         <arguments>
             <!-- The tweakwiseSystemParams will be ignored while building filter urls -->
             <argument name="tweakwiseSystemParams" xsi:type="array">
-                <item name="category_id" xsi:type="string">__tw_category_id</item>
+                <item name="object_id" xsi:type="string">__tw_object_id</item>
                 <item name="original_url" xsi:type="string">__tw_original_url</item>
                 <item name="ajax_type" xsi:type="string">__tw_ajax_type</item>
             </argument>

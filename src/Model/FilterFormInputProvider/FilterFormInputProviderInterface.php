@@ -16,5 +16,5 @@ interface FilterFormInputProviderInterface
      *
      * @return string[]
      */
-    public function getFilterFormInput(): array;
+    public function getFilterFormInput();
 }

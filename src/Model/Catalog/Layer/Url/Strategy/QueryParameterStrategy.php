@@ -216,7 +216,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     public function buildFilterUrl(MagentoHttpRequest $request, array $filters = []): string
     {
         $attributeFilters = $this->getAttributeFilters($request);
-        return str_replace($this->url->getBaseUrl(),'', $this->getCurrentQueryUrl($request, $attributeFilters));
+        return $this->getCurrentQueryUrl($request, $attributeFilters);
     }
 
     /**

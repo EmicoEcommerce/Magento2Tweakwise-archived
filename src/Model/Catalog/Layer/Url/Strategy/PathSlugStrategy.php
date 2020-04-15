@@ -268,13 +268,37 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      */
     public function getOriginalUrl(MagentoHttpRequest $request): string
     {
-        return $request->getParam('__tw_original_url') ?: $this->getCurrentUrl();
+        if ($twOriginalUrl = $request->getParam('__tw_original_url')) {
+            // This seems ugly, perhaps there is another way?
+            $query = [];
+            // Add page and sort
+            $page = $request->getParam('p');
+            $sort = $request->getParam('product_list_order');
+            $limit = $request->getParam('product_list_limit');
+            $mode = $request->getParam('product_list_mode');
+            if ($page && (int) $page > 1) {
+                $query['p'] = $page;
+            }
+            if ($sort) {
+                $query['product_list_order'] = $sort;
+            }
+            if ($limit) {
+                $query['product_list_limit'] = $limit;
+            }
+            if ($mode) {
+                $query['product_list_mode'] = $mode;
+            }
+            return $this->magentoUrl->getDirectUrl($twOriginalUrl, ['_query' => $query]);
+        }
+
+        return $this->getCurrentUrl();
     }
+
 
     /**
      * @return string
      */
-    public function getCurrentUrl(): string
+    protected function getCurrentUrl(): string
     {
         $params['_current'] = true;
         $params['_use_rewrite'] = true;
