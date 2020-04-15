@@ -133,11 +133,11 @@
                 <item name="category" xsi:type="string">category</item>
             </argument>
             <argument name="skipMatchExtensions" xsi:type="array">
-                <item name="jpg">.jpg</item>
-                <item name="jpeg">.jpeg</item>
-                <item name="png">.png</item>
-                <item name="webp">.webp</item>
-                <item name="gif">.gif</item>
+                <item name="jpg" xsi:type="string">.jpg</item>
+                <item name="jpeg" xsi:type="string">.jpeg</item>
+                <item name="png" xsi:type="string">.png</item>
+                <item name="webp" xsi:type="string">.webp</item>
+                <item name="gif" xsi:type="string">.gif</item>
             </argument>
         </arguments>
     </type>
