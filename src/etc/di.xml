@@ -132,6 +132,13 @@
             <argument name="rewriteEntities" xsi:type="array">
                 <item name="category" xsi:type="string">category</item>
             </argument>
+            <argument name="skipMatchExtensions" xsi:type="array">
+                <item name="jpg">.jpg</item>
+                <item name="jpeg">.jpeg</item>
+                <item name="png">.png</item>
+                <item name="webp">.webp</item>
+                <item name="gif">.gif</item>
+            </argument>
         </arguments>
     </type>
 
