@@ -82,8 +82,6 @@ class AjaxNavigationResult extends Layout
      */
     public function render(HttpResponseInterface $response)
     {
-        // Order matters here, getResponseHtml will construct layer and corresponding filters this is needed in the
-        // getResponseUrl method
         $html = $this->getLayout()->getOutput();
         $url = $this->getResponseUrl();
 

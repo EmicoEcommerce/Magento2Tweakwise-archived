@@ -165,9 +165,11 @@ define([
                     this._updateBlocks(response.html);
                     this._updateState(response);
                 }.bind(this),
-                error: function(response) {
-                    // Something went wrong, try to navigate to the selected filter
-                    this._defaultHandler(event);
+                error: function(jqXHR, errorStatus) {
+                    if (errorStatus !== 'abort') {
+                        // Something went wrong, try to navigate to the selected filter
+                        this._defaultHandler(event);
+                    }
                 }.bind(this),
                 complete: function() {
                     this._stopLoader();

@@ -18,7 +18,10 @@ define([
 
         /** @inheritdoc */
         _create: function () {
-            this._super();
+            this._bind(this.element.find(this.options.modeControl), this.options.mode, this.options.modeDefault);
+            this._bind(this.element.find(this.options.directionControl), this.options.direction, this.options.directionDefault);
+            this._bind(this.element.find(this.options.orderControl), this.options.order, this.options.orderDefault);
+            this._bind(this.element.find(this.options.limitControl), this.options.limit, this.options.limitDefault);
             if (this.options.ajaxFilters) {
                 $(this.element).on('click', this.options.pagerItemSelector, this.handlePagerClick.bind(this));
             }
@@ -55,7 +58,6 @@ define([
             input.value = paramValue;
             form.appendChild(input);
             $(input).hide();
-
             $(form).trigger('change');
         }
 
