@@ -20,7 +20,7 @@
                 <input id="inputCheckbox<?=$block->getCssItemId($item)?>" style="display: none"
                        name="<?=$item->getFilter()->getFacet()->getFacetSettings()->getUrlKey()?>[]"
                        type="checkbox" <?=($item->isSelected() ? 'checked="checked"' : '')?>
-                       value="<?=$block->escapeHtmlAttr($item->getAttribute()->getTitle())?>"
+                       value="<?=$block->escapeHtmlAttr($item->getLabel())?>"
                 >
                 <label for="inputCheckbox<?=$block->getCssItemId($item)?>">
             <?php else:?>
