@@ -115,14 +115,9 @@ class Featured extends ListProduct
                 $this->_productCollection = parent::_getProductCollection()
                     ->addFieldToFilter('entity_id', ['null' => true]);
             } else {
-                try {
-                    $this->configureRequest($this->recommendationsContext->getRequest());
-                    $this->_productCollection = $this->recommendationsContext
-                        ->getCollection();
-                } catch (ApiException $e) {
-                    $this->_productCollection = parent::_getProductCollection()
-                        ->addFieldToFilter('entity_id', ['null' => true]);
-                }
+                $this->configureRequest($this->recommendationsContext->getRequest());
+                $this->_productCollection = $this->recommendationsContext
+                    ->getCollection();
             }
         }
 
