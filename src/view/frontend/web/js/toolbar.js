@@ -13,7 +13,8 @@ define([
 
         options: {
             ajaxFilters: false,
-            pagerItemSelector: '.pages li.item'
+            pagerItemSelector: '.pages li.item',
+            filterFormSelector: '#facet-filter-form'
         },
 
         /** @inheritdoc */
@@ -51,14 +52,18 @@ define([
                 return this._super(paramName, paramValue, defaultValue);
             }
 
-            var form = document.getElementById('facet-filter-form');
-            var input = document.createElement('input');
+            var form = $(this.options.filterFormSelector);
+            var input = form.find('input[name=' + paramName +']');
+            if (!input.length) {
+                input = document.createElement('input');
+                input.name = paramName;
+                input = $(input);
+                form.append(input);
+                input.hide();
+            }
 
-            input.name = paramName;
-            input.value = paramValue;
-            form.appendChild(input);
-            $(input).hide();
-            $(form).trigger('change');
+            input.attr('value', paramValue);
+            form.trigger('change');
         }
 
     });

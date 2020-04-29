@@ -28,16 +28,24 @@ class SearchInputProvider implements FilterFormInputProviderInterface
     protected $config;
 
     /**
+     * @var ToolbarInputProvider
+     */
+    protected $toolbarInputProvider;
+
+    /**
      * SearchParameterProvider constructor.
      * @param Config $config
      * @param CurrentContext $currentNavigationContext
+     * @param ToolbarInputProvider $toolbarInputProvider
      */
     public function __construct(
         Config $config,
-        CurrentContext $currentNavigationContext
+        CurrentContext $currentNavigationContext,
+        ToolbarInputProvider $toolbarInputProvider
     ) {
         $this->config = $config;
         $this->currentNavigationContext = $currentNavigationContext;
+        $this->toolbarInputProvider = $toolbarInputProvider;
     }
 
     /**
@@ -57,7 +65,8 @@ class SearchInputProvider implements FilterFormInputProviderInterface
             [
                 '__tw_ajax_type' => self::TYPE,
                 '__tw_original_url' => 'catalogsearch/result/index',
-            ]
+            ],
+            $this->toolbarInputProvider->getFilterFormInput()
         );
     }
 

@@ -52,6 +52,11 @@ class CategoryInputProvider implements FilterFormInputProviderInterface
     protected $config;
 
     /**
+     * @var ToolbarInputProvider
+     */
+    protected $toolbarInputProvider;
+
+    /**
      * CategoryParameterProvider constructor.
      * @param UrlInterface $url
      * @param Registry $registry
@@ -66,7 +71,8 @@ class CategoryInputProvider implements FilterFormInputProviderInterface
         Config $config,
         StoreManagerInterface $storeManager,
         CategoryRepositoryInterface $categoryRepository,
-        CategoryInterfaceFactory $categoryFactory
+        CategoryInterfaceFactory $categoryFactory,
+        ToolbarInputProvider $toolbarInputProvider
     ) {
         $this->url = $url;
         $this->registry = $registry;
@@ -74,6 +80,7 @@ class CategoryInputProvider implements FilterFormInputProviderInterface
         $this->storeManager = $storeManager;
         $this->categoryRepository = $categoryRepository;
         $this->categoryFactory = $categoryFactory;
+        $this->toolbarInputProvider = $toolbarInputProvider;
     }
 
     /**
@@ -85,11 +92,13 @@ class CategoryInputProvider implements FilterFormInputProviderInterface
             return [];
         }
 
-        return [
+        $input = [
             '__tw_ajax_type' => self::TYPE,
             '__tw_original_url' => $this->getOriginalUrl(),
             '__tw_object_id' => $this->getCategoryId()
         ];
+
+        return array_merge($input, $this->toolbarInputProvider->getFilterFormInput());
     }
 
     /**
