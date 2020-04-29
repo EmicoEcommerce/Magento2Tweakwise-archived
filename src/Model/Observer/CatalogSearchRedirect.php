@@ -67,8 +67,14 @@ class CatalogSearchRedirect implements ObserverInterface
 
         $redirect = current($redirects);
         $url = $redirect->getUrl();
-        if (strpos($url, 'http') !== 0) {
-            $url = $this->actionContext->getUrl()->getUrl($url);
+
+        $isDirectUrl = strpos($url, 'http') === 0;
+        $isProtocolRelative = strpos($url, '//') === 0;
+        $isDomainRelative = !$isProtocolRelative && strpos($url, '/') === 0;
+
+        if (!$isDirectUrl && !$isProtocolRelative && !$isDomainRelative) {
+            // In this case we just assume it should be a relative url
+            $url = '/' . $url;
         }
 
         $response = $this->getHttpResponse();
