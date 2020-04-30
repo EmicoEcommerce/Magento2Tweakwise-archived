@@ -161,6 +161,7 @@ define([
             this.currentXhr = jQuery.ajax({
                 url: this.options.ajaxEndpoint,
                 data: this._getFilterParameters(),
+                cache: true,
                 success: function(response) {
                     this._updateBlocks(response.html);
                     this._updateState(response);
