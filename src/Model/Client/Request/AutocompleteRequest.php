@@ -70,17 +70,6 @@ class AutocompleteRequest extends Request
     }
 
     /**
-     * @param string $query
-     * @return $this
-     */
-    public function setQuery($query)
-    {
-        $this->setParameter('tn_q', (string) $query);
-
-        return $this;
-    }
-
-    /**
      * @param int $maxResult
      */
     public function setMaxResult($maxResult)

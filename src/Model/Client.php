@@ -13,18 +13,18 @@ use Emico\Tweakwise\Model\Client\Request;
 use Emico\Tweakwise\Model\Client\Response;
 use Emico\Tweakwise\Model\Client\ResponseFactory;
 use Emico\TweakwiseExport\Model\Logger;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Promise\PromiseInterface;
+use GuzzleHttp\Psr7\Request as HttpRequest;
+use GuzzleHttp\Psr7\Uri;
+use GuzzleHttp\RequestOptions;
 use Magento\Framework\Profiler;
+use Psr\Http\Message\ResponseInterface;
 use SimpleXMLElement;
-use Zend\Http\Client as HttpClient;
-use Zend\Http\Exception\ExceptionInterface as HttpException;
+use GuzzleHttp\Client as HttpClient;
 
 class Client
 {
-    /**
-     * Request path constants
-     */
-    const REQUEST_PATH_NAVIGATION = 'navigation';
-
     /**
      * @var Config
      */
@@ -34,6 +34,11 @@ class Client
      * @var Logger
      */
     protected $log;
+
+    /**
+     * @var HttpClient
+     */
+    protected $client;
 
     /**
      * @var ResponseFactory
@@ -58,15 +63,32 @@ class Client
     }
 
     /**
-     * Create new http client for specific uri with parameters to be requested.
-     *
-     * @param string $path
-     * @param array|null $parameters
-     * @param string $pathSuffix
      * @return HttpClient
      */
-    protected function createClient($path, $pathSuffix, array $parameters = null)
+    protected function getClient(): HttpClient
     {
+        if (!$this->client) {
+            $options = [
+                RequestOptions::TIMEOUT => $this->config->getTimeout(),
+                RequestOptions::HEADERS => [
+                    'user-agent' => $this->config->getUserAgentString()
+                ]
+            ];
+            $this->client = new HttpClient($options);
+        }
+
+        return $this->client;
+    }
+
+    /**
+     * @param Request $tweakwiseRequest
+     * @return HttpRequest
+     */
+    protected function createHttpRequest(Request $tweakwiseRequest): HttpRequest
+    {
+        $path = $tweakwiseRequest->getPath();
+        $pathSuffix = $tweakwiseRequest->getPathSuffix();
+
         $url = sprintf(
             '%s/%s/%s%s',
             rtrim($this->config->getGeneralServerUrl(), '/'),
@@ -75,76 +97,121 @@ class Client
             $pathSuffix
         );
 
-        $client = new HttpClient();
-        $options = ['timeout' => $this->config->getTimeout()];
-
-        if ($userAgent = $this->config->getUserAgentString()) {
-            $options['useragent'] = $userAgent;
+        if ($tweakwiseRequest->getParameters()) {
+            $query = http_build_query($tweakwiseRequest->getParameters());
+            $url = sprintf('%s?%s', $url, $query);
         }
 
-        $client->setOptions($options);
-        $client->setUri($url);
-        $client->getUri()->setQuery($parameters);
+        $uri = new Uri($url);
 
-        return $client;
+        return new HttpRequest('GET', $uri);
     }
 
     /**
      * Method performs request and normalize response from TW. Parsers XML result and throws API exception on TW errors.
      *
-     * @param Request $request
-     * @return Response
+     * @param Request $tweakwiseRequest
+     * @param bool $async
+     * @return Response|PromiseInterface
      */
-    protected function doRequest(Request $request)
+    protected function doRequest(Request $tweakwiseRequest, bool $async = false)
     {
-        $client = $this->createClient($request->getPath(), $request->getPathSuffix(), $request->getParameters());
-
+        $client = $this->getClient();
+        $httpRequest = $this->createHttpRequest($tweakwiseRequest);
         $start = microtime(true);
-        try {
-            $response = $client->send();
-        } catch (HttpException $e) {
-            throw new ApiException($e->getMessage(), $e->getCode(), $e);
-        } finally {
-            $time = microtime(true) - $start;
-            $this->log->debug(sprintf('[Request][%.5f] %s', $time, (string) $client->getUri()));
+
+        $responsePromise = $client
+            ->sendAsync($httpRequest)
+            ->then(
+                function (ResponseInterface $response) use ($tweakwiseRequest, $httpRequest, $start) {
+                    return $this->handleRequestSuccess(
+                        $response,
+                        $httpRequest,
+                        $tweakwiseRequest,
+                        $start
+                    );
+                },
+                static function (GuzzleException $e) {
+                    throw new ApiException($e->getMessage(), $e->getCode(), $e);
+                }
+            );
+
+        if ($async) {
+            return $responsePromise;
         }
 
-        // PHPStorm indicates: "Variable 'response' might have not been defined" however this is due to the fact it does not recognise the try -> catch -> throw structure.
-        if ($response->getStatusCode() != 200) {
+        return $responsePromise->wait(true);
+    }
+
+    /**
+     * @param ResponseInterface $httpResponse
+     * @param HttpRequest $httpRequest
+     * @param Request $tweakwiseRequest
+     * @param float $start
+     * @return Response
+     */
+    public function handleRequestSuccess(
+        ResponseInterface $httpResponse,
+        HttpRequest $httpRequest,
+        Request $tweakwiseRequest,
+        float $start
+    ): Response {
+        $time = microtime(true) - $start;
+        $requestUrl = (string)$httpRequest->getUri();
+        $statusCode = $httpResponse->getStatusCode();
+
+        $this->log->debug(
+            sprintf(
+                '[Request][%.5f] %s',
+                $time,
+                $requestUrl
+            )
+        );
+
+        if ($statusCode !== 200) {
             throw new ApiException(
-                sprintf('Invalid response received by Tweakwise server, response code is not 200. Request "%s"', $client->getUri()->toString()),
-                    $response->getStatusCode()
+                sprintf(
+                    'Invalid response received by Tweakwise server, response code is not 200. Request "%s"',
+                    $requestUrl
+                ),
+                $statusCode
             );
         }
 
         $xmlPreviousErrors = libxml_use_internal_errors(true);
         try {
-            $xmlElement = simplexml_load_string($response->getBody(), SimpleXMLElement::class, LIBXML_NOCDATA);
+            $xmlElement = simplexml_load_string($httpResponse->getBody(), SimpleXMLElement::class, LIBXML_NOCDATA);
             if ($xmlElement === false) {
                 $errors = libxml_get_errors();
-                throw new ApiException(sprintf('Invalid response received by Tweakwise server, xml load fails. Request "%s", XML Errors: %s', $client->getUri()->toString(), join(PHP_EOL, $errors)));
+                throw new ApiException(
+                    sprintf(
+                        'Invalid response received by Tweakwise server, xml load fails. Request "%s", XML Errors: %s',
+                        $requestUrl,
+                        implode(PHP_EOL, $errors)
+                    )
+                );
             }
         } finally {
             libxml_use_internal_errors($xmlPreviousErrors);
         }
 
         $result = $this->xmlToArray($xmlElement);
-        return $this->responseFactory->create($request, $result);
+        return $this->responseFactory->create($tweakwiseRequest, $result);
     }
 
     /**
      * @param SimpleXMLElement $element
      * @return array
      */
-    protected function xmlToArray(SimpleXMLElement $element)
+    protected function xmlToArray(SimpleXMLElement $element): array
     {
         $result = [];
         foreach ($element->attributes() as $attribute => $value) {
-            $result['@' . $attribute] = (string) $value;
+            $result['@' . $attribute] = (string)$value;
         }
 
         /** @var SimpleXMLElement $node */
-        foreach ((array) $element as $index => $node) {
+        foreach ((array)$element as $index => $node) {
             if ($index === '@attributes') {
                 continue;
             }
@@ -173,21 +240,22 @@ class Client
             return $values;
         }
 
-        return (string) $value;
+        return (string)$value;
     }
 
     /**
      * Public request method to TW api. Used to disable TW on exceptions.
      *
      * @param Request $request
-     * @return Response
+     * @param bool $async
+     * @return Response|PromiseInterface
      * @throws \Exception
      */
-    public function request(Request $request)
+    public function request(Request $request, bool $async = false)
     {
         Profiler::start('tweakwise::request::' . $request->getPath());
         try {
-            return $this->doRequest($request);
+            return $this->doRequest($request, $async);
         } catch (ApiException $e) {
             $this->log->throwException($e);
         } finally {
