@@ -72,6 +72,8 @@
         <arguments>
             <argument name="queryFactory" xsi:type="object">Magento\Search\Model\QueryFactory</argument>
             <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\AutocompleteRequest</argument>
+            <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Suggestions\SuggestionsRequest</argument>
+            <argument name="requestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Suggestions\ProductSuggestionsRequest</argument>
         </arguments>
     </type>
 
@@ -313,6 +315,16 @@
             <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\AutocompleteRequest</argument>
         </arguments>
     </virtualType>
+    <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\ProductSuggestionsRequest" type="Emico\Tweakwise\Model\Client\RequestFactory">
+        <arguments>
+            <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\Suggestions\ProductSuggestionsRequest</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\SuggestionsRequest" type="Emico\Tweakwise\Model\Client\RequestFactory">
+        <arguments>
+            <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\Suggestions\SuggestionsRequest</argument>
+        </arguments>
+    </virtualType>
     <virtualType name="Emico\Tweakwise\Model\Client\RequestFactory\Catalog\TemplateRequest" type="Emico\Tweakwise\Model\Client\RequestFactory">
         <arguments>
             <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\Catalog\TemplateRequest</argument>
@@ -348,7 +360,7 @@
             <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\Recommendations\FeaturedRequest</argument>
         </arguments>
     </virtualType>
-    
+
     <preference for="Emico\Tweakwise\Api\AttributeSlugRepositoryInterface" type="Emico\Tweakwise\Model\AttributeSlugRepository"/>
     <preference for="Emico\Tweakwise\Api\Data\AttributeSlugSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
     <preference for="Emico\Tweakwise\Api\Data\AttributeSlugInterface" type="Emico\Tweakwise\Model\AttributeSlug"/>
