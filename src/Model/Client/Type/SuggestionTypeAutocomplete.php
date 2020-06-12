@@ -10,8 +10,9 @@ namespace Emico\Tweakwise\Model\Client\Type;
 
 /**
  * @method string getTitle();
+ * @method setGroup(string $group)
  */
-class SuggestionType extends Type
+class SuggestionTypeAutocomplete extends Type
 {
 
 }

@@ -10,10 +10,12 @@ namespace Emico\Tweakwise\Model\Autocomplete;
 
 use Emico\Tweakwise\Model\Autocomplete\DataProvider\ProductItemFactory;
 use Emico\Tweakwise\Model\Autocomplete\DataProvider\SuggestionItemFactory;
+use Emico\Tweakwise\Model\Autocomplete\DataProvider\SuggestionGroupItemFactory;
 use Emico\Tweakwise\Model\Client;
 use Emico\Tweakwise\Model\Client\Request\AutocompleteRequest;
 use Emico\Tweakwise\Model\Client\RequestFactory;
 use Emico\Tweakwise\Model\Client\Response\AutocompleteResponse;
+use Emico\Tweakwise\Model\Client\Response\AutocompleteProductResponseInterface;
 use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\CategoryRepository;
@@ -28,6 +30,8 @@ use Magento\Search\Model\Query;
 use Magento\Search\Model\QueryFactory;
 use Magento\Store\Model\StoreManagerInterface;
 
+use function GuzzleHttp\Promise\unwrap;
+
 class DataProvider implements DataProviderInterface
 {
     /**
@@ -41,6 +45,11 @@ class DataProvider implements DataProviderInterface
     protected $suggestionItemFactory;
 
     /**
+     * @var SuggestionGroupItemFactory
+     */
+    protected $suggestionGroupItemFactory;
+
+    /**
      * @var QueryFactory
      */
     protected $queryFactory;
@@ -48,7 +57,17 @@ class DataProvider implements DataProviderInterface
     /**
      * @var RequestFactory
      */
-    protected $requestFactory;
+    protected $autocompleteRequestFactory;
+
+    /**
+     * @var RequestFactory
+     */
+    protected $suggestionRequestFactory;
+
+    /**
+     * @var RequestFactory
+     */
+    protected $productSuggestionRequestFactory;
 
     /**
      * @var Client
@@ -105,8 +124,11 @@ class DataProvider implements DataProviderInterface
      *
      * @param ProductItemFactory $productItemFactory
      * @param SuggestionItemFactory $suggestionItemFactory
+     * @param SuggestionGroupItemFactory $suggestionGroupItemFactory
      * @param QueryFactory $queryFactory
-     * @param RequestFactory $requestFactory
+     * @param RequestFactory $autocompleteRequestFactory
+     * @param RequestFactory $suggestionRequestFactory
+     * @param RequestFactory $productSuggestionRequestFactory
      * @param Client $client
      * @param ProductCollectionFactory $productCollectionFactory
      * @param StoreManagerInterface $storeManager
@@ -118,8 +140,11 @@ class DataProvider implements DataProviderInterface
     public function __construct(
         ProductItemFactory $productItemFactory,
         SuggestionItemFactory $suggestionItemFactory,
+        SuggestionGroupItemFactory $suggestionGroupItemFactory,
         QueryFactory $queryFactory,
-        RequestFactory $requestFactory,
+        RequestFactory $autocompleteRequestFactory,
+        RequestFactory $suggestionRequestFactory,
+        RequestFactory $productSuggestionRequestFactory,
         Client $client,
         ProductCollectionFactory $productCollectionFactory,
         StoreManagerInterface $storeManager,
@@ -131,7 +156,9 @@ class DataProvider implements DataProviderInterface
         $this->productItemFactory = $productItemFactory;
         $this->suggestionItemFactory = $suggestionItemFactory;
         $this->queryFactory = $queryFactory;
-        $this->requestFactory = $requestFactory;
+        $this->autocompleteRequestFactory = $autocompleteRequestFactory;
+        $this->suggestionRequestFactory = $suggestionRequestFactory;
+        $this->productSuggestionRequestFactory = $productSuggestionRequestFactory;
         $this->client = $client;
         $this->productCollectionFactory = $productCollectionFactory;
         $this->storeManager = $storeManager;
@@ -139,6 +166,7 @@ class DataProvider implements DataProviderInterface
         $this->categoryRepository = $categoryRepository;
         $this->config = $config;
         $this->request = $request;
+        $this->suggestionGroupItemFactory = $suggestionGroupItemFactory;
     }
 
     /**
@@ -170,13 +198,23 @@ class DataProvider implements DataProviderInterface
      */
     public function getItems()
     {
-        /** @var Query $query */
-        $query = $this->queryFactory->get();
-        $query = $this->queryText ?? $query->getQueryText();
+        if (!$this->config->isSuggestionsAutocomplete()) {
+            return $this->getAutocompleteItems();
+        }
+
+        return $this->getSuggestionItems();
+    }
+
+    /**
+     * @return ItemInterface[]
+     */
+    protected function getAutocompleteItems()
+    {
+        $query = $this->getQuery();
         $config = $this->config;
 
         /** @var AutocompleteRequest $request */
-        $request = $this->requestFactory->create();
+        $request = $this->autocompleteRequestFactory->create();
         $request->addCategoryFilter($this->getCategory());
         $request->setGetProducts($config->isAutocompleteProductsEnabled());
         $request->setGetSuggestions($config->isAutocompleteSuggestionsEnabled());
@@ -190,6 +228,66 @@ class DataProvider implements DataProviderInterface
         $suggestionResult = $this->getSuggestionResult($response);
 
         return array_merge($suggestionResult, $productResult);
+    }
+
+    /**
+     * @return ItemInterface[]
+     */
+    protected function getSuggestionItems()
+    {
+        $query = $this->getQuery();
+        $category = $this->getCategory();
+
+        $promises = [];
+        if ($this->config->isAutocompleteProductsEnabled()) {
+            /** @var Client\Request\Suggestions\ProductSuggestionsRequest $productSuggestionRequest */
+            $productSuggestionsRequest = $this->productSuggestionRequestFactory->create();
+            $productSuggestionsRequest->setSearch($query);
+            $productSuggestionsRequest->addCategoryFilter($category);
+            $promises['product_suggestions'] = $this->client->request(
+                $productSuggestionsRequest,
+                true
+            );
+        }
+
+        if ($this->config->isAutocompleteSuggestionsEnabled()) {
+            $suggestionsRequest = $this->suggestionRequestFactory->create();
+            $suggestionsRequest->setSearch($query);
+            $suggestionsRequest->addCategoryFilter($category);
+            $promises['suggestions'] = $this->client->request(
+                $suggestionsRequest,
+                true
+            );
+        }
+
+        if (empty($promises)) {
+            return [];
+        }
+
+        $results = [];
+        $responses = unwrap($promises);
+        foreach ($responses as $key => $response) {
+            if ($response instanceof AutocompleteProductResponseInterface) {
+                $results[] = $this->getProductItems($response);
+            }
+            if ($response instanceof Client\Response\Suggestions\SuggestionsResponse) {
+                $results[] = $this->getSuggestionGroups($response);
+            }
+        }
+
+        return (!empty($results)) ? array_merge(...$results) : [];
+    }
+
+    /**
+     * @return Query|mixed|string|null
+     */
+    protected function getQuery()
+    {
+        /** @var Query $query */
+        $query = $this->queryFactory->get();
+        $query = $this->queryText ?? $query->getQueryText();
+
+        return $query;
     }
 
     /**
@@ -212,11 +310,11 @@ class DataProvider implements DataProviderInterface
     }
 
     /**
-     * @param AutocompleteResponse $response
+     * @param AutocompleteProductResponseInterface $response
      * @return ItemInterface[]
      * @throws LocalizedException
      */
-    protected function getProductItems(AutocompleteResponse $response)
+    protected function getProductItems(AutocompleteProductResponseInterface $response)
     {
         $productCollection = $this->productCollectionFactory->create();
         $productCollection->setStore($this->storeManager->getStore());
@@ -251,5 +349,19 @@ class DataProvider implements DataProviderInterface
             $result[] = $this->suggestionItemFactory->create(['suggestion' => $suggestion]);
         }
         return $result;
+    }
+
+    /**
+     * @param Client\Response\Suggestions\SuggestionsResponse $response
+     * @return ItemInterface[]
+     */
+    protected function getSuggestionGroups(Client\Response\Suggestions\SuggestionsResponse $response)
+    {
+        $results = [];
+        foreach ($response->getGroups() as $suggestionGroup) {
+            $results[] = $this->suggestionGroupItemFactory->create(['group' => $suggestionGroup]);
+        }
+
+        return $results;
     }
 }

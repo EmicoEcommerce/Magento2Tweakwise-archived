@@ -4,7 +4,6 @@
  * @author : Edwin Jacobs, email: ejacobs@emico.nl.
  * @copyright : Copyright Emico B.V. 2020.
  */
-declare(strict_types=1);
 
 namespace Emico\Tweakwise\Model\Client\Type;
 
@@ -13,11 +12,12 @@ namespace Emico\Tweakwise\Model\Client\Type;
  * @package Emico\Tweakwise\Model\Client\Type
  *
  * @method string|null getName()
+ * @method SuggestionTypeSuggestion[] getSuggestions();
  */
 class SuggestionGroupType extends Type
 {
     /**
-     * @param SuggestionType[]|array[] $suggestions
+     * @param SuggestionTypeSuggestion[]|array[] $suggestions
      * @return $this
      */
     public function setSuggestions(array $suggestions)
@@ -26,8 +26,8 @@ class SuggestionGroupType extends Type
 
         $values = [];
         foreach ($suggestions as $value) {
-            if (!$value instanceof SuggestionType) {
-                $value = new SuggestionType($value);
+            if (!$value instanceof SuggestionTypeSuggestion) {
+                $value = new SuggestionTypeSuggestion($value);
             }
 
             $values[] = $value;

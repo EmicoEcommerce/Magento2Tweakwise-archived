@@ -8,22 +8,22 @@
 
 namespace Emico\Tweakwise\Model\Autocomplete\DataProvider;
 
-use Emico\Tweakwise\Model\Client\Type\SuggestionType;
+use Emico\Tweakwise\Model\Client\Type\SuggestionTypeAutocomplete;
 use Magento\Search\Model\Autocomplete\ItemInterface;
 
 class SuggestionItem implements ItemInterface
 {
     /**
-     * @var SuggestionType
+     * @var SuggestionTypeAutocomplete
      */
     protected $suggestion;
 
     /**
      * SuggestionItem constructor.
      *
-     * @param SuggestionType $suggestion
+     * @param SuggestionTypeAutocomplete $suggestion
      */
-    public function __construct(SuggestionType $suggestion)
+    public function __construct(SuggestionTypeAutocomplete $suggestion)
     {
         $this->suggestion = $suggestion;
     }

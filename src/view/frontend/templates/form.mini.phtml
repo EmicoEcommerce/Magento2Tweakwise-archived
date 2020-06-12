@@ -47,11 +47,17 @@
                 </div>
             </div>
         </li>
-    <% } else { %>
+    <% } else if (data.type === 'suggestion') { %>
         <li class="<%- data.row_class %>" id="qs-option-<%- data.index %>" role="option">
             <span class="qs-option-name"><%= data.title %></span>
             <span aria-hidden="true" class="amount"><%- data.num_results %></span>
         </li>
+    <% } else if (data.type === 'suggestion_group') { %>
+        <ul>
+            <li class="<%- data.row_class %>" id="qs-option-<%- data.index %>" role="option">
+                <span class="qs-option-name"><%= data.title %></span>
+            </li>
+        </ul>
     <% } %>
 </script>
 <script type="text/javascript">

@@ -8,8 +8,6 @@
 namespace Emico\Tweakwise\Model\Client\Request\Suggestions;
 
 use Emico\Tweakwise\Model\Client\Request;
-use Emico\Tweakwise\Model\Client\Request\SearchRequestInterface;
-use Emico\Tweakwise\Model\Client\Request\SearchRequestTrait;
 use Emico\Tweakwise\Model\Config;
 use Emico\TweakwiseExport\Model\Helper;
 use Magento\Store\Model\StoreManager;
@@ -35,6 +33,16 @@ class ProductSuggestionsRequest extends Request
     ) {
         parent::__construct($helper, $storeManager);
         $this->config = $config;
+    }
+
+    /**
+     * @param string $query
+     * @return $this
+     */
+    public function setSearch($query)
+    {
+        $this->setParameter('tn_q', $query);
+        return $this;
     }
 
     /**

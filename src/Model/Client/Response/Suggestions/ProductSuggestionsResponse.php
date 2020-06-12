@@ -7,10 +7,9 @@
 
 namespace Emico\Tweakwise\Model\Client\Response\Suggestions;
 
-use Emico\Tweakwise\Model\Client\Request;
 use Emico\Tweakwise\Model\Client\Response;
+use Emico\Tweakwise\Model\Client\Response\AutocompleteProductResponseInterface;
 use Emico\Tweakwise\Model\Client\Type\ItemType;
-use Emico\TweakwiseExport\Model\Helper;
 
 /**
  * Class ProductSuggestionsResponse
@@ -18,7 +17,7 @@ use Emico\TweakwiseExport\Model\Helper;
  *
  * @method ItemType[] getItems();
  */
-class ProductSuggestionsResponse extends Response
+class ProductSuggestionsResponse extends Response implements AutocompleteProductResponseInterface
 {
     /**
      * @param ItemType[]|array[] $items
@@ -39,5 +38,17 @@ class ProductSuggestionsResponse extends Response
 
         $this->data['items'] = $values;
         return $this;
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getProductIds()
+    {
+        $ids = [];
+        foreach ($this->getItems() as $item) {
+            $ids[] = $this->helper->getStoreId($item->getId());
+        }
+        return $ids;
     }
 }

@@ -10,6 +10,12 @@ namespace Emico\Tweakwise\Model\Client\Response\Suggestions;
 use Emico\Tweakwise\Model\Client\Response;
 use Emico\Tweakwise\Model\Client\Type\SuggestionGroupType;
 
+/**
+ * Class SuggestionsResponse
+ * @package Emico\Tweakwise\Model\Client\Response\Suggestions
+ *
+ * @method SuggestionGroupType[] getGroups();
+ */
 class SuggestionsResponse extends Response
 {
     /**

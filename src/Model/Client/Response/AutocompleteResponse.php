@@ -9,34 +9,31 @@
 namespace Emico\Tweakwise\Model\Client\Response;
 
 use Emico\Tweakwise\Model\Client\Response;
-use Emico\Tweakwise\Model\Client\Type\FacetType;
 use Emico\Tweakwise\Model\Client\Type\InstantSearchType;
 use Emico\Tweakwise\Model\Client\Type\ItemType;
-use Emico\Tweakwise\Model\Client\Type\PropertiesType;
-use Emico\Tweakwise\Model\Client\Type\RedirectType;
-use Emico\Tweakwise\Model\Client\Type\SuggestionType;
+use Emico\Tweakwise\Model\Client\Type\SuggestionTypeAutocomplete;
 
 /**
  * Class ProductNavigationResponse
  *
  * @method ItemType[] getItems();
- * @method SuggestionType[] getSuggestions();
+ * @method SuggestionTypeAutocomplete[] getSuggestions();
  * @method InstantSearchType getInstantSearch();
  */
-class AutocompleteResponse extends Response
+class AutocompleteResponse extends Response implements AutocompleteProductResponseInterface
 {
     /**
-     * @param SuggestionType[]|array[] $suggestions
+     * @param SuggestionTypeAutocomplete[]|array[] $suggestions
      * @return $this
      */
     public function setSuggestions(array $suggestions)
     {
-        $facets = $this->normalizeArray($suggestions, 'suggestion');
+        $suggestions = $this->normalizeArray($suggestions, 'suggestion');
 
         $values = [];
-        foreach ($facets as $value) {
-            if (!$value instanceof SuggestionType) {
-                $value = new SuggestionType($value);
+        foreach ($suggestions as $value) {
+            if (!$value instanceof SuggestionTypeAutocomplete) {
+                $value = new SuggestionTypeAutocomplete($value);
             }
 
             $values[] = $value;
