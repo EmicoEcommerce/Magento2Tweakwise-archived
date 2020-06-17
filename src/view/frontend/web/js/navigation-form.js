@@ -216,12 +216,12 @@ define([
             wrapper.innerHTML = htmlResponse;
             var parsedHtml = $(wrapper);
 
-            var newFiltersHtml = parsedHtml.find(filterSelector);
-            var newProductListHtml = parsedHtml.find(productListSelector);
+            var newFiltersHtml = parsedHtml.find(filterSelector).html();
+            var newProductListHtml = parsedHtml.find(productListSelector).html();
             var newToolbarHtml = parsedHtml.find(toolbarSelector);
             // Toolbar is included twice in the response
-            var newToolbarFirstHtml = newToolbarHtml.first();
-            var newToolbarLastHtml = newToolbarHtml.last();
+            var newToolbarFirstHtml = newToolbarHtml.first().html();
+            var newToolbarLastHtml = newToolbarHtml.last().html();
 
             $(filterSelector)
                 .html(newFiltersHtml)
