@@ -193,3 +193,10 @@
 .filter-title strong {
     cursor: pointer;
 }
+
+// Fix for swatch tooltip
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .swatch-option-tooltip {
+        display: none !important;
+    }
+}
