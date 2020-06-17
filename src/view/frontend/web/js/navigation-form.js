@@ -7,7 +7,7 @@
 
 define([
     'jquery',
-], function($) {
+], function ($) {
     $.widget('tweakwise.navigationForm', {
 
         options: {
@@ -23,7 +23,7 @@ define([
 
         currentXhr: null,
 
-        _create: function() {
+        _create: function () {
             this._hookEvents();
             return this._superApply(arguments);
         },
@@ -33,7 +33,7 @@ define([
          *
          * @private
          */
-        _hookEvents: function() {
+        _hookEvents: function () {
             if (this.options.ajaxFilters) {
                 this._bindPopChangeHandler()
             }
@@ -46,7 +46,7 @@ define([
          *
          * @private
          */
-        _bindFilterClickEvents: function() {
+        _bindFilterClickEvents: function () {
             if (this.options.formFilters) {
                 this.element.on('click', '.js-btn-filter', this._getFilterClickHandler().bind(this));
             } else {
@@ -60,7 +60,7 @@ define([
          *
          * @private
          */
-        _bindFilterRemoveEvents: function() {
+        _bindFilterRemoveEvents: function () {
             if (this.options.ajaxFilters) {
                 this.element.on('click', 'a.remove', this._ajaxClearHandler.bind(this));
             }
@@ -70,10 +70,10 @@ define([
          *
          * @private
          */
-        _bindPopChangeHandler: function() {
-            window.onpopstate = function(e) {
-                if (e.state && e.state.html) {
-                    this._updateBlocks(e.state.html);
+        _bindPopChangeHandler: function () {
+            window.onpopstate = function (event) {
+                if (event.state && event.state.html) {
+                    this._updateBlocks(event.state.html);
                 }
             }.bind(this);
         },
@@ -104,7 +104,7 @@ define([
          * @returns {*}
          * @private
          */
-        _getFilterParameters: function() {
+        _getFilterParameters: function () {
             return this.element.find(':not(.js-skip-submit)').serialize();
         },
 
@@ -150,7 +150,7 @@ define([
          * @param event
          * @private
          */
-        _ajaxHandler: function(event) {
+        _ajaxHandler: function (event) {
             event.preventDefault();
 
             if (this.currentXhr) {
@@ -158,21 +158,21 @@ define([
             }
 
             this._startLoader();
-            this.currentXhr = jQuery.ajax({
+            this.currentXhr = $.ajax({
                 url: this.options.ajaxEndpoint,
                 data: this._getFilterParameters(),
                 cache: true,
-                success: function(response) {
+                success: function (response) {
                     this._updateBlocks(response.html);
                     this._updateState(response);
                 }.bind(this),
-                error: function(jqXHR, errorStatus) {
+                error: function (jqXHR, errorStatus) {
                     if (errorStatus !== 'abort') {
                         // Something went wrong, try to navigate to the selected filter
                         this._defaultHandler(event);
                     }
                 }.bind(this),
-                complete: function() {
+                complete: function () {
                     this._stopLoader();
                 }.bind(this)
             });
@@ -184,7 +184,7 @@ define([
          * @param event
          * @private
          */
-        _ajaxClearHandler: function(event) {
+        _ajaxClearHandler: function (event) {
             event.preventDefault();
             var filterId = '#' + $(event.target).data('js-filter-id');
             var filter = this.element.find(filterId);
@@ -206,24 +206,24 @@ define([
          * @param htmlResponse
          * @private
          */
-        _updateBlocks: function (htmlResponse)
-        {
+        _updateBlocks: function (htmlResponse) {
             var filterSelector = this.options.filterSelector;
             var productListSelector = this.options.productListSelector;
             var toolbarSelector = this.options.toolbarSelector;
+            var toolbar = $(toolbarSelector);
 
             var wrapper = document.createElement('div');
             wrapper.innerHTML = htmlResponse;
-            var parsedHtml = jQuery(wrapper);
+            var parsedHtml = $(wrapper);
 
             var newFiltersHtml = parsedHtml.find(filterSelector);
             var newProductListHtml = parsedHtml.find(productListSelector);
-            var newToolbarHtml =  parsedHtml.find(toolbarSelector);
+            var newToolbarHtml = parsedHtml.find(toolbarSelector);
             // Toolbar is included twice in the response
             var newToolbarFirstHtml = newToolbarHtml.first();
             var newToolbarLastHtml = newToolbarHtml.last();
 
-            jQuery(filterSelector)
+            $(filterSelector)
                 .html(newFiltersHtml)
                 .trigger('contentUpdated');
 
@@ -232,21 +232,21 @@ define([
             We use this construction as there could be more product lists on the page
             and we dont want to replace them all
             */
-            jQuery(toolbarSelector)
+            toolbar
                 .siblings(productListSelector)
                 .html(newProductListHtml)
                 .trigger('contentUpdated');
-            jQuery(toolbarSelector)
+            toolbar
                 .first()
                 .html(newToolbarFirstHtml)
                 .trigger('contentUpdated');
-            jQuery(toolbarSelector)
+            toolbar
                 .last()
                 .html(newToolbarLastHtml)
                 .trigger('contentUpdated');
         },
 
-        _updateState: function(response) {
+        _updateState: function (response) {
             window.history.pushState({html: response.html}, '', response.url);
         },
 
@@ -254,8 +254,8 @@ define([
          * Start loader targeting body relevant for ajax filtering
          * @private
          */
-        _startLoader: function() {
-            jQuery(this.options.productListSelector).trigger('processStart');
+        _startLoader: function () {
+            $(this.options.productListSelector).trigger('processStart');
             this.options.isLoading = true;
         },
 
@@ -263,8 +263,8 @@ define([
          * Stop Loader targeting body relevant for ajax filtering
          * @private
          */
-        _stopLoader: function() {
-            jQuery(this.options.productListSelector).trigger('processStop');
+        _stopLoader: function () {
+            $(this.options.productListSelector).trigger('processStop');
             this.options.isLoading = false;
         },
         // ------- End of handling for ajax filtering

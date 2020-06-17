@@ -19,12 +19,14 @@ define([
 
         /** @inheritdoc */
         _create: function () {
-            this._bind(this.element.find(this.options.modeControl), this.options.mode, this.options.modeDefault);
-            this._bind(this.element.find(this.options.directionControl), this.options.direction, this.options.directionDefault);
-            this._bind(this.element.find(this.options.orderControl), this.options.order, this.options.orderDefault);
-            this._bind(this.element.find(this.options.limitControl), this.options.limit, this.options.limitDefault);
-            if (this.options.ajaxFilters) {
-                $(this.element).on('click', this.options.pagerItemSelector, this.handlePagerClick.bind(this));
+            var options = this.options;
+            var element = this.element;
+            this._bind(element.find(options.modeControl), options.mode, options.modeDefault);
+            this._bind(element.find(options.directionControl), options.direction, options.directionDefault);
+            this._bind(element.find(options.orderControl), options.order, options.orderDefault);
+            this._bind(element.find(options.limitControl), options.limit, options.limitDefault);
+            if (options.ajaxFilters) {
+                $(element).on('click', options.pagerItemSelector, this.handlePagerClick.bind(this));
             }
         },
 
@@ -53,7 +55,7 @@ define([
             }
 
             var form = $(this.options.filterFormSelector);
-            var input = form.find('input[name=' + paramName +']');
+            var input = form.find('input[name=' + paramName + ']');
             if (!input.length) {
                 input = document.createElement('input');
                 input.name = paramName;

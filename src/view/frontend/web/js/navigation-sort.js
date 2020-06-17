@@ -7,14 +7,14 @@
 
 define([
     'jquery'
-], function($) {
+], function ($) {
     $.widget('tweakwise.navigationSort', {
 
         options: {
             hasAlternateSort: null,
         },
 
-        _create: function() {
+        _create: function () {
             this._hookEvents();
             return this._superApply(arguments);
         },
@@ -24,7 +24,7 @@ define([
          *
          * @private
          */
-        _hookEvents: function() {
+        _hookEvents: function () {
             this.element.on('click', '.more-items', this._handleMoreItemsLink.bind(this));
             this.element.on('click', '.less-items', this._handleLessItemsLink.bind(this));
         },
@@ -35,7 +35,7 @@ define([
          * @returns {boolean}
          * @private
          */
-        _handleMoreItemsLink: function() {
+        _handleMoreItemsLink: function () {
             this._sortItems('alternate-sort');
             this.element.find('.default-hidden').show();
             this.element.find('.more-items').hide();
@@ -49,7 +49,7 @@ define([
          * @returns {boolean}
          * @private
          */
-        _handleLessItemsLink: function() {
+        _handleLessItemsLink: function () {
             this._sortItems('original-sort');
             this.element.find('.default-hidden').hide();
             this.element.find('.more-items').show();
@@ -80,7 +80,7 @@ define([
          * @returns {null}
          * @private
          */
-        _hasAlternateSort: function() {
+        _hasAlternateSort: function () {
             if (this.options.hasAlternateSort === null) {
                 var list = this.element.find('.items');
                 var firstItem = $(list).children().first();

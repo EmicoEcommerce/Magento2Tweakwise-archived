@@ -9,7 +9,7 @@ define([
     'jquery',
     'jquery-ui-modules/slider',
     'domReady!'
-], function($) {
+], function ($) {
     $.widget('tweakwise.navigationSlider', {
 
         options: {
@@ -30,7 +30,7 @@ define([
          * @returns {*}
          * @private
          */
-        _create: function() {
+        _create: function () {
             this._createSlider();
             this._bindInputChangeEvents();
             return this._superApply(arguments);
@@ -40,7 +40,7 @@ define([
          * Register the correct handler depending on configuration
          * @private
          */
-        _createSlider: function() {
+        _createSlider: function () {
             $(this.options.container).find('.slider').slider(this._getSliderConfig());
         },
 
@@ -49,7 +49,7 @@ define([
          * @returns {{min: number, max: number, slide: *, values: [tweakwise.navigationSlider._getSliderConfig.options.currentMin, tweakwise.navigationSlider._getSliderConfig.options.currentMax], change: *, range: boolean}}
          * @private
          */
-        _getSliderConfig: function() {
+        _getSliderConfig: function () {
             return {
                 range: true,
                 min: this.options.min,
@@ -83,7 +83,7 @@ define([
          *
          * @private
          */
-        _bindInputChangeEvents: function() {
+        _bindInputChangeEvents: function () {
             var sliderContainer = $(this.options.container);
             sliderContainer.on('change', '.slider-min', this._updateSliderUrlInput.bind(this));
             sliderContainer.on('change', '.slider-max', this._updateSliderUrlInput.bind(this));
