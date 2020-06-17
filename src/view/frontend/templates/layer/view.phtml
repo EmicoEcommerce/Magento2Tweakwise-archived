@@ -22,7 +22,7 @@ if (!$block->canShowBlock()) return;
 <?php $renderFilterButton = $tweakwiseNavigationConfig->isFormFilters();?>
 
 <?php $hasFilters = count($filters) > 0; ?>
-<div class="block filter<?=($hasFilters ? ' filter-no-options' : '')?>"
+<div class="block filter<?=(!$hasFilters ? ' filter-no-options' : '')?>"
      id="layered-filter-block"
      data-mage-init='{"collapsible":{"openedState": "active", "collapsible": true, "active": false, "collateral": { "openedState": "filter-active", "element": "body" } }}'>
     <?php $filtered = count($block->getLayer()->getState()->getFilters()) ?>

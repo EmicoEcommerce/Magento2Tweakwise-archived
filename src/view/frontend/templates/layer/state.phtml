@@ -14,10 +14,11 @@
 <?php /** @var Emico\Tweakwise\Model\Catalog\Layer\Filter\Item[] $_filters */ ?>
 <?php $_filters = $block->getActiveFilters() ?>
 <?php if (!empty($_filters)) : ?>
-<div class="filter-current">
+<div class="filter-current" data-mage-init='{"collapsible":{"openedState": "active", "collapsible": true, "active": false }}'>
     <strong class="block-subtitle filter-current-subtitle"
             role="heading"
             aria-level="2"
+            data-role="title"
             data-count="<?= /* @noEscape */ count($_filters) ?>"><?= $block->escapeHtml(__('Now Shopping by')) ?></strong>
     <ol class="items">
         <?php foreach ($_filters as $_filter) : ?>
