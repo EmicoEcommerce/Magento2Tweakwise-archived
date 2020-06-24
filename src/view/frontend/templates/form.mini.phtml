@@ -53,11 +53,17 @@
             <span aria-hidden="true" class="amount"><%- data.num_results %></span>
         </li>
     <% } else if (data.type === 'suggestion_group') { %>
-        <ul>
+        <% if (data.title) { %>
             <li class="<%- data.row_class %>" id="qs-option-<%- data.index %>" role="option">
                 <span class="qs-option-name"><%= data.title %></span>
+                <span aria-hidden="true" class="amount"><%- data.num_results %></span>
             </li>
-        </ul>
+        <% } %>
+        <% _.each (data.suggestions, function (suggestion, index) { debugger; %>
+            <li class="<%- suggestion.row_class %>" id="qs-option-<%- index %>" role="option">
+                <span class="qs-option-name"><%= suggestion.title %></span>
+            </li>
+        <% }); %>
     <% } %>
 </script>
 <script type="text/javascript">

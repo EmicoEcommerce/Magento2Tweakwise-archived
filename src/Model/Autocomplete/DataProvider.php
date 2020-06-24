@@ -358,7 +358,8 @@ class DataProvider implements DataProviderInterface
     protected function getSuggestionGroups(Client\Response\Suggestions\SuggestionsResponse $response)
     {
         $results = [];
-        foreach ($response->getGroups() as $suggestionGroup) {
+        $groups = $response->getGroups() ?: [];
+        foreach ($groups as $suggestionGroup) {
             $results[] = $this->suggestionGroupItemFactory->create(['group' => $suggestionGroup]);
         }
 

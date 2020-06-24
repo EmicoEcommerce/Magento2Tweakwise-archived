@@ -42,11 +42,11 @@ class SuggestionGroupItem implements ItemInterface
     {
         $result = [
             'type' => 'suggestion_group',
-            'name' => $this->group->getName()
+            'title' => $this->group->getName()
         ];
         foreach ($this->group->getSuggestions() as $suggestion) {
             $result['suggestions'][] = [
-                'name' => $suggestion->getMatch(),
+                'title' => $suggestion->getMatch(),
             ];
         }
 
