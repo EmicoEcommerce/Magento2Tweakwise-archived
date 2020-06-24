@@ -150,6 +150,20 @@ class NavigationConfig implements ArgumentInterface, FilterFormInputProviderInte
     }
 
     /**
+     * @param bool $hasAlternateSort
+     */
+    public function getJsSortConfig($hasAlternateSort = null)
+    {
+        return $this->jsonSerializer->serialize(
+            [
+                'tweakwiseNavigationSort' => [
+                    'hasAlternateSort' => (bool)$hasAlternateSort
+                ]
+            ]
+        );
+    }
+
+    /**
      * @return bool
      */
     public function isFormFilters()

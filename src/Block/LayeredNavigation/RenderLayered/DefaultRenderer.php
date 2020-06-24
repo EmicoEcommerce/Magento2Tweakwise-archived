@@ -105,6 +105,14 @@ class DefaultRenderer extends Template
     }
 
     /**
+     * @return string
+     */
+    public function getJsSortConfig()
+    {
+        return $this->navigationConfig->getJsSortConfig($this->hasAlternateSortOrder());
+    }
+
+    /**
      * @return boolean
      */
     public function hasAlternateSortOrder()

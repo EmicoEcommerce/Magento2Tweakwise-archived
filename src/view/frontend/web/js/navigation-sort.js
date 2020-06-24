@@ -64,7 +64,7 @@ define([
          * @private
          */
         _sortItems: function (type) {
-            if (!this._hasAlternateSort()) {
+            if (!this.options.hasAlternateSort) {
                 return;
             }
 
@@ -73,22 +73,6 @@ define([
                 return $(a).data(type) - $(b).data(type);
             }).appendTo(list);
         },
-
-        /**
-         * Check if alternate sort is available as data property on filters
-         *
-         * @returns {null}
-         * @private
-         */
-        _hasAlternateSort: function () {
-            if (this.options.hasAlternateSort === null) {
-                var list = this.element.find('.items');
-                var firstItem = $(list).children().first();
-                this.options.hasAlternateSort = firstItem.hasOwnProperty('data-alternate-sort');
-            }
-
-            return this.options.hasAlternateSort;
-        }
     });
 
     return $.tweakwise.navigationSort;
