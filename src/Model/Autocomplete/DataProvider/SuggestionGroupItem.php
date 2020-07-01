@@ -7,22 +7,22 @@
 
 namespace Emico\Tweakwise\Model\Autocomplete\DataProvider;
 
-use Emico\Tweakwise\Model\Client\Type\SuggestionGroupType;
+use Emico\Tweakwise\Model\Client\Type\SuggestionTypeGroup;
 use Magento\Search\Model\Autocomplete\ItemInterface;
 
 class SuggestionGroupItem implements ItemInterface
 {
 
     /**
-     * @var SuggestionGroupType
+     * @var SuggestionTypeGroup
      */
     protected $group;
 
     /**
      * SuggestionGroupItem constructor.
-     * @param SuggestionGroupType $group
+     * @param SuggestionTypeGroup $group
      */
-    public function __construct(SuggestionGroupType $group)
+    public function __construct(SuggestionTypeGroup $group)
     {
         $this->group = $group;
     }
@@ -46,7 +46,8 @@ class SuggestionGroupItem implements ItemInterface
         ];
         foreach ($this->group->getSuggestions() as $suggestion) {
             $result['suggestions'][] = [
-                'title' => $suggestion->getMatch(),
+                'title' => $suggestion->getName(),
+                'url' => $suggestion->getUrl()
             ];
         }
 

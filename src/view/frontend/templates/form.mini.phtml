@@ -60,7 +60,7 @@
             </li>
         <% } %>
         <% _.each (data.suggestions, function (suggestion, index) { debugger; %>
-            <li class="<%- suggestion.row_class %>" id="qs-option-<%- index %>" role="option">
+            <li class="<%- suggestion.row_class %>" id="qs-option-<%- data.index %>-<%- index %>" data-url="<%- suggestion.url %>" role="option">
                 <span class="qs-option-name"><%= suggestion.title %></span>
             </li>
         <% }); %>
