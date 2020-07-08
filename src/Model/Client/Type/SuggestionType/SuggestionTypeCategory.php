@@ -11,6 +11,9 @@ use Emico\TweakwiseExport\Model\Helper;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\CategoryRepository;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Model\Store;
+use Magento\Store\Model\StoreManagerInterface;
 
 class SuggestionTypeCategory extends SuggestionTypeAbstract
 {
@@ -25,19 +28,27 @@ class SuggestionTypeCategory extends SuggestionTypeAbstract
     protected $categoryRepository;
 
     /**
+     * @var StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
      * SuggestionTypeCategory constructor.
      * @param CategoryRepository $categoryRepository Empty category model used to resolve urls
      * @param Helper $exportHelper
+     * @param StoreManagerInterface $storeManager
      * @param array $data
      */
     public function __construct(
         CategoryRepository $categoryRepository,
         Helper $exportHelper,
+        StoreManagerInterface $storeManager,
         array $data = []
     ) {
         parent::__construct($data);
         $this->categoryRepository = $categoryRepository;
         $this->exportHelper = $exportHelper;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -46,10 +57,11 @@ class SuggestionTypeCategory extends SuggestionTypeAbstract
     public function getUrl(): string
     {
         $categoryId = $this->getCategoryId();
-        if (!$categoryId) {
-            return '';
-        }
         try {
+            // Skip root categories
+            if (!$categoryId || in_array($categoryId, [1, $this->getStoreRootCategory()], true)) {
+                return '';
+            }
             /** @var Category $category */
             $category = $this->categoryRepository->get($categoryId);
             return $category->getUrl();
@@ -71,5 +83,16 @@ class SuggestionTypeCategory extends SuggestionTypeAbstract
         $twCategoryId = end($path);
 
         return $this->exportHelper->getStoreId((int)$twCategoryId);
+    }
+
+    /**
+     * @return int
+     * @throws NoSuchEntityException
+     */
+    protected function getStoreRootCategory()
+    {
+        /** @var Store|StoreInterface $store */
+        $store = $this->storeManager->getStore();
+        return (int) $store->getRootCategoryId();
     }
 }

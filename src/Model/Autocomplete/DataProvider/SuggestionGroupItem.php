@@ -45,10 +45,15 @@ class SuggestionGroupItem implements ItemInterface
             'title' => $this->group->getName()
         ];
         foreach ($this->group->getSuggestions() as $suggestion) {
-            $result['suggestions'][] = [
+            $suggestionUrl = $suggestion->getUrl();
+            
+            $suggestionResult = [
                 'title' => $suggestion->getName(),
-                'url' => $suggestion->getUrl()
             ];
+            if ($suggestionUrl) {
+                $suggestionResult['url'] = $suggestionUrl;
+            }
+            $result['suggestions'][] = $suggestionResult;
         }
 
         return $result;
