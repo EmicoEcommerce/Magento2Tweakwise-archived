@@ -25,6 +25,10 @@ class SuggestionTypeFactory
         $this->objectManager = $objectManager;
     }
 
+    /**
+     * @param array $suggestion
+     * @return SuggestionTypeAbstract
+     */
     public function createSuggestion(array $suggestion): SuggestionTypeAbstract
     {
         $type = $this->getSuggestionType($suggestion);
@@ -43,7 +47,7 @@ class SuggestionTypeFactory
             return SuggestionTypeSearch::class;
         }
         // First check for hit on facetFilters as it is more specific
-        if (isset($suggestion['navigationLink']['context']['category']['facetFilters'])) {
+        if (isset($suggestion['navigationLink']['context']['facetFilters'])) {
             return SuggestionTypeFacet::class;
         }
 

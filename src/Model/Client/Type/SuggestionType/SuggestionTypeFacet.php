@@ -7,11 +7,18 @@
 
 namespace Emico\Tweakwise\Model\Client\Type\SuggestionType;
 
-class SuggestionTypeFacet extends SuggestionTypeAbstract
+class SuggestionTypeFacet extends SuggestionTypeCategory
 {
-
-    public function getUrl()
+    /**
+     * @return string
+     */
+    public function getUrl(): string
     {
-        return '';
+        $categoryUrl = parent::getUrl();
+        if (!$categoryUrl) {
+            return '';
+        }
+
+        return $categoryUrl;
     }
 }
