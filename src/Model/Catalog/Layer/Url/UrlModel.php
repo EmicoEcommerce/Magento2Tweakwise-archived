@@ -15,6 +15,9 @@ use Magento\Framework\Url as MagentoUrl;
 class UrlModel extends MagentoUrl
 {
     /**
+     * This is wired via di but not in the constructer to remain compatible with 2.1.
+     * We might remove this in the future
+     *
      * @return Config
      */
     protected function getConfig(): Config
