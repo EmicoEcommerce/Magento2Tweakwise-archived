@@ -80,13 +80,16 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
      * Magento constructor.
      *
      * @param UrlModel $url
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param ExportHelper $exportHelper
+     * @param Resolver $layerResolver
      */
     public function __construct(
         UrlModel $url,
         CategoryRepositoryInterface $categoryRepository,
         ExportHelper $exportHelper,
-        Resolver $layerResolver)
-    {
+        Resolver $layerResolver
+    ) {
         $this->url = $url;
         $this->categoryRepository = $categoryRepository;
         $this->exportHelper = $exportHelper;
@@ -143,9 +146,9 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
         if (!$data) {
             if ($settings->getIsMultipleSelect()) {
                 return [];
-            } else {
-                return null;
             }
+
+            return null;
         }
 
         if ($settings->getIsMultipleSelect()) {
@@ -153,9 +156,9 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
                 $data = [$data];
             }
             return array_map('strval', $data);
-        } else {
-            return (string) $data;
         }
+
+        return (string) $data;
     }
 
     /**
@@ -241,7 +244,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     /**
      * {@inheritdoc}
      */
-    protected function getCategoryFilters()
+    protected function getDefaultCategoryFilters()
     {
         $currentCategory = $this->layerResolver->get()->getCurrentCategory();
         $currentCategoryId = (int)$currentCategory->getId();
@@ -259,6 +262,20 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
             $parentCategoryId,
             $currentCategoryId
         ];
+    }
+
+    /**
+     * @param HttpRequest $request
+     * @return int[]
+     */
+    protected function getRequestCategoryFilters(HttpRequest $request)
+    {
+        $categories = $request->getQuery(self::PARAM_CATEGORY);
+        if (empty($categories)) {
+            return [];
+        }
+
+        return array_map('intval', explode('-', $categories));
     }
 
     /**
@@ -322,7 +339,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
         // Do not check for category paths in case of search request.
         // This will throw an exception on layer resolver.
         if (!$isSearchRequest) {
-            $categories = $this->getCategoryFilters();
+            $categories = $this->getDefaultCategoryFilters();
 
             if ($categories) {
                 $navigationRequest->addCategoryPathFilter($categories);
@@ -331,9 +348,14 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
 
         $search = $this->getSearch($request);
         if ($search && $isSearchRequest) {
+            $categoryFilters = $this->getRequestCategoryFilters($request);
             /** @var ProductSearchRequest $navigationRequest */
             $navigationRequest->setSearch($search);
+            if ($categoryFilters) {
+                $navigationRequest->addCategoryPathFilter($categoryFilters);
+            }
         }
+        
         return $this;
     }
 

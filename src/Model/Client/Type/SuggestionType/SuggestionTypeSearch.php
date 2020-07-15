@@ -7,6 +7,7 @@
 
 namespace Emico\Tweakwise\Model\Client\Type\SuggestionType;
 
+use Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy;
 use Emico\TweakwiseExport\Model\Helper;
 use Magento\Framework\UrlInterface;
 
@@ -51,10 +52,10 @@ class SuggestionTypeSearch extends SuggestionTypeAbstract
             'q' => $this->getSearchTerm()
         ];
 
-        $categoryPath = $this->getCategoryPath();
+        $categoryIds = $this->getCategoryIds();
 
-        if ($categoryPath) {
-            $query['cat'] = $categoryPath;
+        if ($categoryIds) {
+            $query[QueryParameterStrategy::PARAM_CATEGORY] = implode($categoryIds);
         }
 
         return $this->url->getUrl(
@@ -71,14 +72,5 @@ class SuggestionTypeSearch extends SuggestionTypeAbstract
     protected function getSearchTerm()
     {
         return $this->data['navigationLink']['context']['searchterm'];
-    }
-
-    /**
-     * @return int
-     */
-    protected function getCategoryPath()
-    {
-        $path = $this->data['navigationLink']['context']['category']['path'] ?? null;
-        return $path ? $this->exportHelper->getStoreId((int) $path) : null;
     }
 }
