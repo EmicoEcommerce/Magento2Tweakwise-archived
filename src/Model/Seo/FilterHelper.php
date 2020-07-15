@@ -16,11 +16,6 @@ use Magento\Catalog\Model\Layer\Resolver;
 class FilterHelper
 {
     /**
-     *
-     */
-    const TWEAKWISE_CATEGORY_FILTER_NAME = 'categorie';
-
-    /**
      * @var Resolver
      */
     protected $layerResolver;
@@ -89,7 +84,7 @@ class FilterHelper
      */
     protected function isCategoryFilterItem(Item $item): bool
     {
-        return $this->getAttributeCodeFromFilterItem($item) === self::TWEAKWISE_CATEGORY_FILTER_NAME;
+        return $item->getFilter()->getFacet()->getFacetSettings()->getSource() === SettingsType::SOURCE_CATEGORY;
     }
 
     /**
