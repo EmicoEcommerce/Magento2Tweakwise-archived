@@ -23,11 +23,6 @@ class SuggestionTypeSearch extends SuggestionTypeAbstract
     protected $url;
 
     /**
-     * @var Helper
-     */
-    protected $exportHelper;
-
-    /**
      * SuggestionTypeSearch constructor.
      * @param UrlInterface $url
      * @param Helper $exportHelper
@@ -38,9 +33,12 @@ class SuggestionTypeSearch extends SuggestionTypeAbstract
         Helper $exportHelper,
         array $data = []
     ) {
-        parent::__construct($data);
+        parent::__construct(
+            $exportHelper,
+            $data
+        );
+
         $this->url = $url;
-        $this->exportHelper = $exportHelper;
     }
 
     /**
