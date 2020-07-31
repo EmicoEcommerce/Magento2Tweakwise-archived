@@ -322,7 +322,7 @@ class Filter extends AbstractFilter implements FilterInterface
 
         $children = [];
         foreach ($attributeType->getChildren() as $childAttributeType) {
-            $children[] = $this->itemFactory->create(['filter' => $this, 'attributeType' => $childAttributeType]);
+            $children[] = $this->createItem($childAttributeType);
         }
         $item->setChildren($children);
 
