@@ -71,10 +71,6 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
      * @var UrlModel
      */
     private $url;
-    /**
-     * @var Config
-     */
-    private $config;
 
     /**
      * Magento constructor.
@@ -82,18 +78,15 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
      * @param UrlModel $url
      * @param CategoryRepositoryInterface $categoryRepository
      * @param ExportHelper $exportHelper
-     * @param Config $config
      */
     public function __construct(
         UrlModel $url,
         CategoryRepositoryInterface $categoryRepository,
-        ExportHelper $exportHelper,
-        Config $config
+        ExportHelper $exportHelper
     ) {
         $this->url = $url;
         $this->categoryRepository = $categoryRepository;
         $this->exportHelper = $exportHelper;
-        $this->config = $config;
     }
 
     /**
