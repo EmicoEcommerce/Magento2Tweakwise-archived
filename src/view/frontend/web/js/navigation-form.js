@@ -210,7 +210,6 @@ define([
             var filterSelector = this.options.filterSelector;
             var productListSelector = this.options.productListSelector;
             var toolbarSelector = this.options.toolbarSelector;
-            var toolbar = $(toolbarSelector);
 
             var wrapper = document.createElement('div');
             wrapper.innerHTML = htmlResponse;
@@ -220,13 +219,17 @@ define([
             var newProductListHtml = parsedHtml.find(productListSelector).html();
             var newToolbarHtml = parsedHtml.find(toolbarSelector);
             // Toolbar is included twice in the response
-            var newToolbarFirstHtml = newToolbarHtml.first().html();
-            var newToolbarLastHtml = newToolbarHtml.last().html();
+            // We use this first().get(0) construction to access outerHTML
+            // The reason for this is that we need to replace the entire toolbar because otherwise
+            // the data-mage-init attribute is no longer available on the toolbar and hence the toolbar
+            // would not be initialized when $('body').trigger('contentUpdated'); is called
+            var newToolbarFirstHtml = newToolbarHtml.first().get(0).outerHTML;
+            var newToolbarLastHtml = newToolbarHtml.last().get(0).outerHTML;
 
             $(filterSelector)
-                .html(newFiltersHtml)
-                .trigger('contentUpdated');
+                .html(newFiltersHtml);
 
+            var toolbar = $(toolbarSelector);
             /*
             The product list comes after the toolbar.
             We use this construction as there could be more product lists on the page
@@ -234,18 +237,24 @@ define([
             */
             toolbar
                 .siblings(productListSelector)
-                .html(newProductListHtml)
-                .trigger('contentUpdated');
+                .html(newProductListHtml);
+
             toolbar
                 .first()
-                .html(newToolbarFirstHtml)
-                .trigger('contentUpdated');
+                .replaceWith(newToolbarFirstHtml);
+
             toolbar
                 .last()
-                .html(newToolbarLastHtml)
-                .trigger('contentUpdated');
+                .replaceWith(newToolbarLastHtml);
+
+            $('body').trigger('contentUpdated');
         },
 
+        /**
+         *
+         * @param response
+         * @private
+         */
         _updateState: function (response) {
             window.history.pushState({html: response.html}, '', response.url);
         },
