@@ -84,7 +84,9 @@ class Tweakwise
     protected function initFilters(Layer $layer)
     {
         $request = $this->context->getRequest();
-        $request->addCategoryFilter($layer->getCurrentCategory());
+        if (!$request->hasParameter('tn_cid')) {
+            $request->addCategoryFilter($layer->getCurrentCategory());
+        }
 
         $facets = $this->context->getResponse()->getFacets();
 

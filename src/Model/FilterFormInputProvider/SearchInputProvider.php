@@ -9,6 +9,8 @@ namespace Emico\Tweakwise\Model\FilterFormInputProvider;
 
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
 use Emico\Tweakwise\Model\Config;
+use Emico\Tweakwise\Model\Seo\FilterHelper;
+use Emico\TweakwiseExport\Model\Helper;
 
 class SearchInputProvider implements FilterFormInputProviderInterface
 {
@@ -56,6 +58,11 @@ class SearchInputProvider implements FilterFormInputProviderInterface
         $parameters = [
             'q' => $this->getSearchTerm()
         ];
+
+        if ($categoryFilter = $this->getCategoryFilter()) {
+            $parameters['categorie'] = $categoryFilter;
+        }
+
         if (!$this->config->isAjaxFilters()) {
             return $parameters;
         }
@@ -78,5 +85,15 @@ class SearchInputProvider implements FilterFormInputProviderInterface
         return $this->currentNavigationContext
             ->getRequest()
             ->getParameter('tn_q');
+    }
+
+    /**
+     * @return string|null
+     */
+    protected function getCategoryFilter()
+    {
+        return $this->currentNavigationContext
+            ->getRequest()
+            ->getCategoryPathFilter();
     }
 }
