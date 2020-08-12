@@ -209,8 +209,15 @@ class Filter extends AbstractFilter implements FilterInterface
     {
         $result = [];
         foreach ($this->getItems() as $item) {
-            if ($item->isActive()) {
+            if (!$item->isActive()) {
+                continue;
+            }
+            $hasChildren = $item->getChildren();
+            if (!$hasChildren) {
                 $result[] = $item;
+            } else {
+                $deepestActiveChild = $this->findDeepestActiveChildItem($item) ?: $item;
+                $result[] = $deepestActiveChild;
             }
         }
 
@@ -327,6 +334,24 @@ class Filter extends AbstractFilter implements FilterInterface
         $item->setChildren($children);
 
         return $item;
+    }
+
+    /**
+     * @param Item $item
+     */
+    private function findDeepestActiveChildItem(Item $item)
+    {
+        if (!$item->hasChildren()) {
+            return $item->isActive() ? $item : null;
+        }
+
+        foreach ($item->getChildren() as $child) {
+            if ($child->isActive()) {
+                return $this->findDeepestActiveChildItem($child);
+            }
+        }
+
+        return $item->isActive() ? $item : null;
     }
 
     /**
