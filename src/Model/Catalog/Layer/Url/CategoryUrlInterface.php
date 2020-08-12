@@ -13,9 +13,7 @@ use Magento\Catalog\Api\Data\CategoryInterface;
 use Zend\Http\Request as HttpRequest;
 
 /**
- * Interface UrlInterface implementation should handle both category url's and
- *
- *
+ * Interface UrlInterface implementation should handle both category url's.
  */
 interface CategoryUrlInterface
 {

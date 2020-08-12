@@ -15,6 +15,7 @@ use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface;
 use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlModel;
 use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
+use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Framework\App\Request\Http as MagentoHttpRequest;
 use Zend\Http\Request as HttpRequest;
@@ -162,7 +163,27 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
      */
     public function getCategoryFilterSelectUrl(HttpRequest $request, Item $item): string
     {
-        return $this->getCategoryFromItem($item)->getUrl();
+        $category = $this->getCategoryFromItem($item);
+        if (!$this->getSearch($request)) {
+            return $category->getUrl();
+        }
+
+        $urlKey = $item
+            ->getFilter()
+            ->getUrlKey();
+
+
+        $value[] = $category->getId();
+        /** @var \Magento\Catalog\Model\Category|CategoryInterface $category */
+        while ((int)$category->getParentId() !== 1) {
+            $value[] = $category->getParentId();
+            $category = $category->getParentCategory();
+        }
+
+        $value = implode(self::CATEGORY_TREE_SEPARATOR, array_reverse($value));
+
+        $query = [$urlKey => $value];
+        return $this->getCurrentQueryUrl($query);
     }
 
     /**
@@ -170,14 +191,11 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
      */
     public function getCategoryFilterRemoveUrl(HttpRequest $request, Item $item): string
     {
-        /** @var \Magento\Catalog\Model\Category $category */
-        $category = $this->getCategoryFromItem($item);
-        /** @var \Magento\Catalog\Model\Category $parentCategory */
-        $parentCategory = $category->getParentCategory();
-        if (!$parentCategory || !$parentCategory->getId() || \in_array($parentCategory->getId(), [1,2], false)) {
-            return $category->getUrl();
-        }
-        return $parentCategory->getUrl();
+        $filter = $item->getFilter();
+        $urlKey = $filter->getUrlKey();
+
+        $query = [$urlKey => $filter->getCleanValue()];
+        return $this->getCurrentQueryUrl($query);
     }
 
     /**
@@ -251,6 +269,20 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     /**
      * {@inheritdoc}
      */
+    protected function getCategoryFilters(HttpRequest $request)
+    {
+        $categories = $request->getQuery(self::PARAM_CATEGORY);
+        $categories = explode(self::CATEGORY_TREE_SEPARATOR, $categories);
+        $categories = array_map('intval', $categories);
+        $categories = array_filter($categories);
+        $categories = array_unique($categories);
+
+        return $categories;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function getAttributeFilters(HttpRequest $request)
     {
         $result = [];
@@ -305,9 +337,14 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
             $navigationRequest->setLimit($limit);
         }
 
-        $isSearchRequest = $navigationRequest instanceof ProductSearchRequest;
+        $categories = $this->getCategoryFilters($request);
+
+        if ($categories) {
+            $navigationRequest->addCategoryPathFilter($categories);
+        }
+
         $search = $this->getSearch($request);
-        if ($search && $isSearchRequest) {
+        if ($navigationRequest instanceof ProductSearchRequest && $search) {
             /** @var ProductSearchRequest $navigationRequest */
             $navigationRequest->setSearch($search);
         }

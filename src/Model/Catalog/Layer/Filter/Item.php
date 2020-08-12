@@ -126,7 +126,7 @@ class Item extends MagentoItem
             return $this->url->getSliderUrl($this);
         }
 
-        if ($this->isSelected()) {
+        if ($this->isSelected() && !$settings->getSelectionType() === SettingsType::SOURCE_CATEGORY) {
             return $this->url->getRemoveFilter($this);
         }
 
