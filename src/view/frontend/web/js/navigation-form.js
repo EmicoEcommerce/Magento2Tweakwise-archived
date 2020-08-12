@@ -141,6 +141,20 @@ define([
 
             return href;
         },
+
+        /**
+         * This provides a means to disable ajax filtering.
+         * If you dont want ajax filtering for certain filters add a data-no-ajax attribute.
+         *
+         * @param event
+         * @returns {boolean}
+         * @private
+         */
+        _allowAjax: function (event) {
+            var a = $(event.target).closest('a');
+            return !a.data('no-ajax');
+        },
+
         // ------- End of default filter handling
 
         // ------- Handling for ajax filtering (i.e. only ajax filtering)
@@ -155,6 +169,11 @@ define([
 
             if (this.currentXhr) {
                 this.currentXhr.abort();
+            }
+
+            if (!this._allowAjax(event)) {
+                this._defaultHandler(event);
+                return;
             }
 
             this._startLoader();
