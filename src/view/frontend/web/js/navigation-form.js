@@ -185,10 +185,10 @@ define([
          * @private
          */
         _ajaxClearHandler: function (event) {
-            event.preventDefault();
             var filterId = '#' + $(event.target).data('js-filter-id');
             var filter = this.element.find(filterId);
             if (filter && filter.length) {
+                event.preventDefault();
                 filter = $(filter);
                 // Set filter disabled so that it will not be submitted when change is triggered
                 filter.attr('disabled', true);
