@@ -19,6 +19,7 @@ define(['jquery', 'jquery/ui'], function($) {
             let values = jQuery(this.element).serialize();
             let sliderValues = this._getSliderUrlParameters();
             let searchValue = this._getSearchParam();
+            let catValue = this._getCatParam();
 
             let url = '?';
             if (searchValue) {
@@ -29,6 +30,12 @@ define(['jquery', 'jquery/ui'], function($) {
                 url = url + '&' + values;
             } else if (values) {
                 url = url + values;
+            }
+
+            if (catValue && url !== '?') {
+                url = url + '&' + catValue;
+            } else if (catValue) {
+                url = url + catValue;
             }
 
             if (sliderValues && url !== '?') {
@@ -64,6 +71,16 @@ define(['jquery', 'jquery/ui'], function($) {
                 }
 
                 return decodeURIComponent(matches[2]);
+            }
+
+            return '';
+        },
+
+        _getCatParam: function () {
+            let matches = window.location.search.match(/(\?|&)categorie\=([^&]*)/);
+            if (matches && matches[2]) {
+                let catParam = {categorie: matches[2]};
+                return jQuery.param(catParam);
             }
 
             return '';
