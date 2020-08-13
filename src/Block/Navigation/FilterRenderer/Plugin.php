@@ -101,7 +101,7 @@ class Plugin
             return $proceed($filter);
         }
 
-        $blockType = $this->blockTypes[$renderType] ?? DefaultRenderer::class;
+        $blockType = $this->getBlockType($settings);
         $block = $this->layout->createBlock($blockType);
 
         if (!$block instanceof DefaultRenderer && !$block instanceof RenderLayered) {
@@ -111,5 +111,19 @@ class Plugin
 
         $block->setFilter($filter);
         return $block->toHtml();
+    }
+
+    /**
+     * @param SettingsType $settings
+     * @return string
+     */
+    protected function getBlockType(SettingsType $settings)
+    {
+        if ($settings->getSource() === SettingsType::SOURCE_CATEGORY) {
+            return TreeRenderer::class;
+        }
+
+        $renderType = $settings->getSelectionType();
+        return $this->blockTypes[$renderType] ?? DefaultRenderer::class;
     }
 }

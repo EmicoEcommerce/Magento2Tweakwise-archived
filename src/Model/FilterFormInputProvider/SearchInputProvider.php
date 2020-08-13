@@ -60,7 +60,7 @@ class SearchInputProvider implements FilterFormInputProviderInterface
         ];
 
         if ($categoryFilter = $this->getCategoryFilter()) {
-            $parameters['categorie'] = $categoryFilter;
+            $parameters[FilterHelper::TWEAKWISE_CATEGORY_FILTER_NAME] = $categoryFilter;
         }
 
         if (!$this->config->isAjaxFilters()) {

@@ -18,6 +18,7 @@ use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
 use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Framework\App\Request\Http as MagentoHttpRequest;
+use Magento\Catalog\Model\Category;
 use Zend\Http\Request as HttpRequest;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Emico\TweakwiseExport\Model\Helper as ExportHelper;
@@ -143,9 +144,9 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
         if (!$data) {
             if ($settings->getIsMultipleSelect()) {
                 return [];
-            } else {
-                return null;
             }
+
+            return null;
         }
 
         if ($settings->getIsMultipleSelect()) {
@@ -153,9 +154,9 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
                 $data = [$data];
             }
             return array_map('strval', $data);
-        } else {
-            return (string) $data;
         }
+
+        return (string) $data;
     }
 
     /**
@@ -174,7 +175,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
 
 
         $value[] = $category->getId();
-        /** @var \Magento\Catalog\Model\Category|CategoryInterface $category */
+        /** @var Category|CategoryInterface $category */
         while ((int)$category->getParentId() !== 1) {
             $value[] = $category->getParentId();
             $category = $category->getParentCategory();
