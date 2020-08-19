@@ -8,8 +8,6 @@
 
 namespace Emico\Tweakwise\Model\Client\Type;
 
-use function GuzzleHttp\Psr7\parse_query;
-
 class SortFieldType extends Type
 {
     /**
