@@ -41,7 +41,7 @@ class SortFieldType extends Type
      */
     public function getIsSelected()
     {
-        return $this->getBoolValue('isdirectsearch');
+        return $this->getBoolValue('isselected');
     }
 
     /**
