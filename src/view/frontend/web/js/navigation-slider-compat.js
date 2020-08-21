@@ -8,6 +8,7 @@
 define([
     'jquery',
     'jquery/ui',
+    'jQueryTouchPunch',
     'domReady!'
 ], function($) {
     $.widget('tweakwise.navigationSlider', {
