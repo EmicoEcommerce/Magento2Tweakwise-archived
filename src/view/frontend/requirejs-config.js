@@ -7,6 +7,7 @@ var config = {
             tweakwiseNavigationSlider: 'Emico_Tweakwise/js/navigation-slider',
             tweakwiseNavigationSliderCompat: 'Emico_Tweakwise/js/navigation-slider-compat',
             productListToolbarForm: 'Emico_Tweakwise/js/toolbar',
+            jQueryTouchPunch: 'Emico_Tweakwise/js/lib/jquery.ui.touch-punch.min'
         }
     }
 };
