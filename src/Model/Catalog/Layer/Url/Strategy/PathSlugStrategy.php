@@ -381,7 +381,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
         foreach ($this->rewriteResolvers as $rewriteResolver) {
             $rewrites[] = $rewriteResolver->getRewrites($request);
         }
-        $rewrites = array_merge(...$rewrites);
+        $rewrites = array_merge([], ...$rewrites);
 
         if (empty($rewrites)) {
             return false;
