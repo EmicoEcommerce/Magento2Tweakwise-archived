@@ -114,6 +114,14 @@
         </arguments>
     </type>
 
+    <type name="Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\PathSlugStrategy">
+        <arguments>
+            <argument name="rewriteResolvers" xsi:type="array">
+                <item name="category" xsi:type="object">Emico\Tweakwise\Model\Catalog\Layer\Url\RewriteResolver\CategoryResolver</item>
+            </argument>
+        </arguments>
+    </type>
+
     <!-- TW models -->
     <virtualType name="Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\Category" type="Emico\Tweakwise\Model\Catalog\Layer\NavigationContext">
         <arguments>
@@ -348,7 +356,7 @@
             <argument name="type" xsi:type="string">Emico\Tweakwise\Model\Client\Request\Recommendations\FeaturedRequest</argument>
         </arguments>
     </virtualType>
-    
+
     <preference for="Emico\Tweakwise\Api\AttributeSlugRepositoryInterface" type="Emico\Tweakwise\Model\AttributeSlugRepository"/>
     <preference for="Emico\Tweakwise\Api\Data\AttributeSlugSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
     <preference for="Emico\Tweakwise\Api\Data\AttributeSlugInterface" type="Emico\Tweakwise\Model\AttributeSlug"/>
