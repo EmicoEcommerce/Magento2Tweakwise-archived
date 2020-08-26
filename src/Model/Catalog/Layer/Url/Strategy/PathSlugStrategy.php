@@ -106,6 +106,7 @@ class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterAp
      * @param Config $config
      * @param CurrentContext $currentContext
      * @param ScopeConfigInterface $scopeConfig
+     * @param RewriteResolverInterface[] $rewriteResolvers
      */
     public function __construct(
         UrlModel $magentoUrl,
