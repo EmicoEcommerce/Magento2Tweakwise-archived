@@ -8,8 +8,6 @@
 
 namespace Emico\Tweakwise\Model\Client\Type;
 
-use function GuzzleHttp\Psr7\parse_query;
-
 class SortFieldType extends Type
 {
     /**
@@ -41,7 +39,7 @@ class SortFieldType extends Type
      */
     public function getIsSelected()
     {
-        return $this->getBoolValue('isdirectsearch');
+        return $this->getBoolValue('isselected');
     }
 
     /**
