@@ -114,7 +114,7 @@ class Featured extends ListProduct
          * Unfortunately class \Magento\Catalog\ViewModel\Product\Listing\PreparePostData
          * does not exist in magento 2.3 but is used in magento 2.4.
          * Magento_Catalog::product/list/items.phtml line 265 wants a PreparePostData from the block rendering the template
-         * PreparePostDataResolver tries to get an instance of that class if it is available, if it is
+         * PreparePostDataFactory tries to get an instance of that class if it is available, if it is
          * we add it as a view model so that we remain compatible with magento 2.3 and lower.
          *
          * We dont add it if some view model is already registered
