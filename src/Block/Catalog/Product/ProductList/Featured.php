@@ -9,6 +9,7 @@
 namespace Emico\Tweakwise\Block\Catalog\Product\ProductList;
 
 use Emico\Tweakwise\Exception\ApiException;
+use Emico\Tweakwise\MagentoCompat\PreparePostDataFactory;
 use Emico\Tweakwise\Model\Catalog\Product\Recommendation\Collection;
 use Emico\Tweakwise\Model\Catalog\Product\Recommendation\Context as RecommendationsContext;
 use Emico\Tweakwise\Model\Client\Request\Recommendations\FeaturedRequest;
@@ -47,12 +48,23 @@ class Featured extends ListProduct
     private $templateFinder;
 
     /**
+     * @var PreparePostDataFactory
+     */
+    private $preparePostDataFactory;
+
+    /**
      * Featured constructor.
      *
      * @param ProductContext $productContext
      * @param PostHelper $postDataHelper
      * @param Resolver $layerResolver
      * @param TemplateFinder $templateFinder
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param Data $urlHelper
+     * @param RecommendationsContext $recommendationsContext
+     * @param Config $config
+     * @param PreparePostDataFactory $preparePostDataFactory
+     * @param array $data
      * @internal param CategoryRepositoryInterface $categoryRepository
      * @internal param Data $urlHelper
      * @internal param RecommendationsContext $recommendationsContext
@@ -68,6 +80,7 @@ class Featured extends ListProduct
         Data $urlHelper,
         RecommendationsContext $recommendationsContext,
         Config $config,
+        PreparePostDataFactory $preparePostDataFactory,
         array $data = []
     ) {
         parent::__construct(
@@ -81,6 +94,7 @@ class Featured extends ListProduct
         $this->recommendationsContext = $recommendationsContext;
         $this->config = $config;
         $this->templateFinder = $templateFinder;
+        $this->preparePostDataFactory = $preparePostDataFactory;
     }
 
     /**
@@ -96,6 +110,18 @@ class Featured extends ListProduct
      */
     public function toHtml()
     {
+        /*
+         * Unfortunately class \Magento\Catalog\ViewModel\Product\Listing\PreparePostData
+         * does not exist in magento 2.3 but is used in magento 2.4.
+         * Magento_Catalog::product/list/items.phtml line 265 wants a PreparePostData from the block rendering the template
+         * PreparePostDataFactory tries to get an instance of that class if it is available, if it is
+         * we add it as a view model so that we remain compatible with magento 2.3 and lower.
+         *
+         * We dont add it if some view model is already registered
+         */
+        if (!$this->getData('view_model') && $this->preparePostDataFactory->getPreparePostData()) {
+            $this->setData('view_model', $this->preparePostDataFactory->getPreparePostData());
+        }
         try {
             $this->_getProductCollection();
         } catch (ApiException $e) {
