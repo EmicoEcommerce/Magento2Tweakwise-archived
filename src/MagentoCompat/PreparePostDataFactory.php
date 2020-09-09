@@ -1,5 +1,4 @@
 <?php
-declare(strict_types = 1);
 /**
  * @author : Edwin Jacobs, email: ejacobs@emico.nl.
  * @copyright : Copyright Emico B.V. 2020.
