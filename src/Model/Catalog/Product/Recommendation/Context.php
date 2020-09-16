@@ -21,42 +21,42 @@ class Context
     /**
      * @var Client
      */
-    private $client;
+    protected $client;
 
     /**
      * @var RequestFactory
      */
-    private $requestFactory;
+    protected $requestFactory;
 
     /**
      * @var CollectionFactory
      */
-    private $collectionFactory;
+    protected $collectionFactory;
 
     /**
      * @var CatalogConfig
      */
-    private $catalogConfig;
+    protected $catalogConfig;
 
     /**
      * @var Visibility
      */
-    private $visibility;
+    protected $visibility;
 
     /**
      * @var FeaturedRequest
      */
-    private $request;
+    protected $request;
 
     /**
      * @var RecommendationsResponse
      */
-    private $response;
+    protected $response;
 
     /**
      * @var Collection
      */
-    private $collection;
+    protected $collection;
 
     /**
      * Context constructor.
@@ -120,7 +120,7 @@ class Context
     /**
      * @param Collection $collection
      */
-    private function prepareCollection(Collection $collection)
+    protected function prepareCollection(Collection $collection)
     {
         $collection->addMinimalPrice()
             ->addFinalPrice()

@@ -119,7 +119,7 @@ class UrlModel extends MagentoUrl
      * @param string $param
      * @return bool
      */
-    private function shouldFilter($param): bool
+    protected function shouldFilter($param): bool
     {
         // First check for our system parameters, which need to be filtered regardless of settings.
         if (in_array($param, $this->tweakwiseSystemParams, true)) {

@@ -80,7 +80,7 @@ class CategoryInitializer implements InitializerInterface
      * @param RequestInterface $request
      * @throws NoSuchEntityException
      */
-    private function initializeRegistry(RequestInterface $request)
+    protected function initializeRegistry(RequestInterface $request)
     {
         // Register the category, its needed while rendering filters and products
         if (!$this->registry->registry('current_category')) {

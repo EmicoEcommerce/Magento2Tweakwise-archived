@@ -30,7 +30,7 @@ class CatalogLastPageRedirect implements ObserverInterface
     /**
      * @var Context
      */
-    private $actionContext;
+    protected $actionContext;
 
     /**
      * CatalogSearchRedirect constructor.

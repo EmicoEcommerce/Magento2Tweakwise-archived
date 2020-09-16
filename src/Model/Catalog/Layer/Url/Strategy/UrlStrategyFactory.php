@@ -24,12 +24,12 @@ class UrlStrategyFactory
     /**
      * @var ObjectManager
      */
-    private $objectManager;
+    protected $objectManager;
 
     /**
      * @var Config
      */
-    private $config;
+    protected $config;
 
     /**
      * @param ObjectManagerInterface $objectManager

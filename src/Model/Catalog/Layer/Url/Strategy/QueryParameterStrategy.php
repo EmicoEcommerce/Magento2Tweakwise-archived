@@ -60,17 +60,17 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     /**
      * @var CategoryRepositoryInterface
      */
-    private $categoryRepository;
+    protected $categoryRepository;
 
     /**
      * @var ExportHelper
      */
-    private $exportHelper;
+    protected $exportHelper;
 
     /**
      * @var UrlModel
      */
-    private $url;
+    protected $url;
 
     /**
      * Magento constructor.
