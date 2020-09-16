@@ -20,18 +20,18 @@ class Config
     /**
      * Recommendation types
      */
-    const RECOMMENDATION_TYPE_UPSELL = 'upsell';
-    const RECOMMENDATION_TYPE_CROSSSELL = 'crosssell';
-    const RECOMMENDATION_TYPE_FEATURED = 'featured';
+    public const RECOMMENDATION_TYPE_UPSELL = 'upsell';
+    public const RECOMMENDATION_TYPE_CROSSSELL = 'crosssell';
+    public const RECOMMENDATION_TYPE_FEATURED = 'featured';
 
     /**
      * Attribute names
      */
-    const ATTRIBUTE_FEATURED_TEMPLATE = 'tweakwise_featured_template';
-    const ATTRIBUTE_UPSELL_TEMPLATE = 'tweakwise_upsell_template';
-    const ATTRIBUTE_UPSELL_GROUP_CODE = 'tweakwise_upsell_group_code';
-    const ATTRIBUTE_CROSSSELL_TEMPLATE = 'tweakwise_crosssell_template';
-    const ATTRIBUTE_CROSSSELL_GROUP_CODE = 'tweakwise_crosssell_group_code';
+    public const ATTRIBUTE_FEATURED_TEMPLATE = 'tweakwise_featured_template';
+    public const ATTRIBUTE_UPSELL_TEMPLATE = 'tweakwise_upsell_template';
+    public const ATTRIBUTE_UPSELL_GROUP_CODE = 'tweakwise_upsell_group_code';
+    public const ATTRIBUTE_CROSSSELL_TEMPLATE = 'tweakwise_crosssell_template';
+    public const ATTRIBUTE_CROSSSELL_GROUP_CODE = 'tweakwise_crosssell_group_code';
 
     /**
      * @var ScopeConfigInterface

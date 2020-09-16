@@ -17,8 +17,8 @@ class UrlStrategy implements OptionSourceInterface
     /**
      * Possible filter types
      */
-    const STRATEGY_QUERY_PARAM = QueryParameterStrategy::class;
-    const STRATEGY_PATH_SLUGS = PathSlugStrategy::class;
+    public const STRATEGY_QUERY_PARAM = QueryParameterStrategy::class;
+    public const STRATEGY_PATH_SLUGS = PathSlugStrategy::class;
 
     /**
      * @var array[]

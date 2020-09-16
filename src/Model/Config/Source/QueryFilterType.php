@@ -15,9 +15,9 @@ class QueryFilterType implements OptionSourceInterface
     /**
      * Possible filter types
      */
-    const TYPE_SPECIFIC = 'specific';
-    const TYPE_REGEX = 'regex';
-    const TYPE_NONE = 'none';
+    public const TYPE_SPECIFIC = 'specific';
+    public const TYPE_REGEX = 'regex';
+    public const TYPE_NONE = 'none';
 
     /**
      * @var array[]

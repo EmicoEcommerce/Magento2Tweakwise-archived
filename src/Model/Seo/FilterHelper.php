@@ -18,7 +18,7 @@ class FilterHelper
     /**
      *
      */
-    const TWEAKWISE_CATEGORY_FILTER_NAME = 'categorie';
+    public const TWEAKWISE_CATEGORY_FILTER_NAME = 'categorie';
 
     /**
      * @var Resolver

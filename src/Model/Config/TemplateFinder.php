@@ -16,7 +16,7 @@ class TemplateFinder
     /**
      * @var Config
      */
-    private $config;
+    protected $config;
 
     /**
      * TemplateFinder constructor.

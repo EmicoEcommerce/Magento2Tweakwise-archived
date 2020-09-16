@@ -91,7 +91,7 @@ class Tweakwise
         $facets = $this->context->getResponse()->getFacets();
 
         $facetAttributeNames = array_map(
-            function (FacetType $facet) {
+            static function (FacetType $facet) {
                 return $facet->getFacetSettings()->getAttributename();
             },
             $facets
