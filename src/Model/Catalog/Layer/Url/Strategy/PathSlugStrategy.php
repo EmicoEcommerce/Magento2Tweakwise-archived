@@ -31,9 +31,12 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Request\Http as MagentoHttpRequest;
 use Magento\Framework\UrlInterface as MagentoUrlInterface;
 use Magento\UrlRewrite\Service\V1\Data\UrlRewrite;
-use Zend\Http\Request as HttpRequest;
 
-class PathSlugStrategy implements UrlInterface, RouteMatchingInterface, FilterApplierInterface, CategoryUrlInterface
+class PathSlugStrategy implements
+    UrlInterface,
+    RouteMatchingInterface,
+    FilterApplierInterface,
+    CategoryUrlInterface
 {
     public const REQUEST_FILTER_PATH = 'filter_path';
 

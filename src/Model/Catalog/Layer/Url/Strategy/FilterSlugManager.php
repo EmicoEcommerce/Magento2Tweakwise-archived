@@ -106,7 +106,7 @@ class FilterSlugManager
     /**
      * @param string $slug
      * @return string
-     * @throws \Emico\Tweakwise\Exception\UnexpectedValueException
+     * @throws UnexpectedValueException
      */
     public function getAttributeBySlug(string $slug): string
     {

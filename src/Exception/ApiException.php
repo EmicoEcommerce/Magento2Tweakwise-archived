@@ -8,7 +8,7 @@
 
 namespace Emico\Tweakwise\Exception;
 
-class ApiException extends RuntimeException implements TweakwiseException
+class ApiException extends RuntimeException
 {
 
 }

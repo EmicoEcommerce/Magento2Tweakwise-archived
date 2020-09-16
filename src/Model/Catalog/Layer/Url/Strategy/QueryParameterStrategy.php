@@ -19,7 +19,6 @@ use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Framework\App\Request\Http as MagentoHttpRequest;
 use Magento\Catalog\Model\Category;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Zend\Http\Request as HttpRequest;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Emico\TweakwiseExport\Model\Helper as ExportHelper;
 
