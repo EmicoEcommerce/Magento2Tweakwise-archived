@@ -9,8 +9,8 @@ namespace Emico\Tweakwise\Controller\Ajax;
 use Emico\Tweakwise\Model\AjaxNavigationResult;
 use Emico\Tweakwise\Model\AjaxResultInitializer\InitializerInterface;
 use Emico\Tweakwise\Model\Config;
+use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
-use Magento\Framework\App\ActionInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\NotFoundException;
@@ -20,13 +20,8 @@ use Magento\Framework\Exception\NotFoundException;
  * Handles ajax filtering requests for category pages
  * @package Emico\Tweakwise\Controller\Ajax
  */
-class Navigation implements ActionInterface
+class Navigation extends Action
 {
-    /**
-     * @var Context
-     */
-    protected $context;
-
     /**
      * @var Config
      */
@@ -55,7 +50,7 @@ class Navigation implements ActionInterface
         AjaxNavigationResult $ajaxNavigationResult,
         array $initializerMap
     ) {
-        $this->context = $context;
+        parent::__construct($context);
         $this->config = $config;
         $this->ajaxNavigationResult = $ajaxNavigationResult;
         $this->initializerMap = $initializerMap;
@@ -74,7 +69,8 @@ class Navigation implements ActionInterface
         if (!$this->config->isAjaxFilters()) {
             throw new NotFoundException(__('Page not found.'));
         }
-        $request = $this->context->getRequest();
+
+        $request = $this->getRequest();
         $type = $request->getParam('__tw_ajax_type');
         if (!isset($this->initializerMap[$type])) {
             throw new \InvalidArgumentException('No ajax navigation result handler found for ' . $type);
