@@ -236,17 +236,18 @@ define([
 
             var newFiltersHtml = parsedHtml.find(filterSelector).html();
             var newProductListHtml = parsedHtml.find(productListSelector).html();
-            var newToolbarHtml = parsedHtml.find(toolbarSelector);
+            var newToolbar = parsedHtml.find(toolbarSelector);
             // Toolbar is included twice in the response
             // We use this first().get(0) construction to access outerHTML
             // The reason for this is that we need to replace the entire toolbar because otherwise
             // the data-mage-init attribute is no longer available on the toolbar and hence the toolbar
             // would not be initialized when $('body').trigger('contentUpdated'); is called
-            var newToolbarFirstHtml = newToolbarHtml.first().get(0).outerHTML;
-            var newToolbarLastHtml = newToolbarHtml.last().get(0).outerHTML;
+            var newToolbarFirst = newToolbar.first().get(0);
+            var newToolbarLast = newToolbar.last().get(0);
 
-            $(filterSelector)
-                .html(newFiltersHtml);
+            if (newFiltersHtml) {
+                $(filterSelector).html(newFiltersHtml);
+            }
 
             var toolbar = $(toolbarSelector);
             /*
@@ -254,17 +255,21 @@ define([
             We use this construction as there could be more product lists on the page
             and we dont want to replace them all
             */
-            toolbar
-                .siblings(productListSelector)
-                .html(newProductListHtml);
-
-            toolbar
-                .first()
-                .replaceWith(newToolbarFirstHtml);
-
-            toolbar
-                .last()
-                .replaceWith(newToolbarLastHtml);
+            if (newProductListHtml) {
+                toolbar
+                    .siblings(productListSelector)
+                    .html(newProductListHtml);
+            }
+            if (newToolbarFirst) {
+                toolbar
+                    .first()
+                    .replaceWith(newToolbarFirst.outerHTML);
+            }
+            if (newToolbarLast) {
+                toolbar
+                    .last()
+                    .replaceWith(newToolbarLast.outerHTML);
+            }
 
             $('body').trigger('contentUpdated');
         },
