@@ -9,9 +9,7 @@
 namespace Emico\Tweakwise\Model\Client\Request\Recommendations;
 
 use Emico\Tweakwise\Exception\ApiException;
-use Emico\TweakwiseExport\Model\Helper;
 use Magento\Catalog\Model\Product;
-use Magento\Store\Model\StoreManager;
 
 class ProductRequest extends FeaturedRequest
 {
@@ -19,14 +17,6 @@ class ProductRequest extends FeaturedRequest
      * @var Product
      */
     protected $product;
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __construct(Helper $helper, StoreManager $storeManager)
-    {
-        parent::__construct($helper, $storeManager);
-    }
 
     /**
      * @return Product

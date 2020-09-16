@@ -20,17 +20,17 @@ class Router implements RouterInterface
     /**
      * @var ActionFactory
      */
-    private $actionFactory;
+    protected $actionFactory;
 
     /**
      * @var RouteMatchingInterface
      */
-    private $routeMatchingStrategy;
+    protected $routeMatchingStrategy;
 
     /**
      * @var UrlStrategyFactory
      */
-    private $urlStrategyFactory;
+    protected $urlStrategyFactory;
 
     /**
      * Router constructor.
@@ -77,9 +77,6 @@ class Router implements RouterInterface
             return $result;
         }
 
-        return $this->actionFactory->create(
-            Forward::class,
-            ['request' => $request]
-        );
+        return $this->actionFactory->create(Forward::class);
     }
 }

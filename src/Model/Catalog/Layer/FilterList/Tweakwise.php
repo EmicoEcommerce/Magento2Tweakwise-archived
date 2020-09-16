@@ -23,27 +23,27 @@ class Tweakwise
     /**
      * @var FilterInterface[]
      */
-    private $filters;
+    protected $filters;
 
     /**
      * @var FilterFactory
      */
-    private $filterFactory;
+    protected $filterFactory;
 
     /**
      * @var CurrentContext
      */
-    private $context;
+    protected $context;
 
     /**
      * @var Config
      */
-    private $config;
+    protected $config;
 
     /**
      * @var AttributeFactory
      */
-    private $attributeFactory;
+    protected $attributeFactory;
 
     /**
      * Tweakwise constructor.
@@ -91,7 +91,7 @@ class Tweakwise
         $facets = $this->context->getResponse()->getFacets();
 
         $facetAttributeNames = array_map(
-            function (FacetType $facet) {
+            static function (FacetType $facet) {
                 return $facet->getFacetSettings()->getAttributename();
             },
             $facets

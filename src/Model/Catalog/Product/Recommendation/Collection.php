@@ -36,7 +36,7 @@ class Collection extends AbstractCollection
     /**
      * @var RecommendationsResponse
      */
-    private $response;
+    protected $response;
 
     /**
      * {@inheritdoc}

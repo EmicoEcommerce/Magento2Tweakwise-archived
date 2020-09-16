@@ -64,6 +64,7 @@ class CategoryInputProvider implements FilterFormInputProviderInterface
      * @param StoreManagerInterface $storeManager
      * @param CategoryRepositoryInterface $categoryRepository
      * @param CategoryInterfaceFactory $categoryFactory
+     * @param ToolbarInputProvider $toolbarInputProvider
      */
     public function __construct(
         UrlInterface $url,

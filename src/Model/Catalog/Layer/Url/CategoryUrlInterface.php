@@ -9,8 +9,7 @@
 namespace Emico\Tweakwise\Model\Catalog\Layer\Url;
 
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
-use Magento\Catalog\Api\Data\CategoryInterface;
-use Zend\Http\Request as HttpRequest;
+use Magento\Framework\App\Request\Http as MagentoHttpRequest;
 
 /**
  * Interface UrlInterface implementation should handle both category url's.
@@ -18,18 +17,16 @@ use Zend\Http\Request as HttpRequest;
 interface CategoryUrlInterface
 {
     /**
-     * @param HttpRequest $request
+     * @param MagentoHttpRequest $request
      * @param Item $item
-     * @param CategoryInterface $category
      * @return mixed
      */
-    public function getCategoryFilterSelectUrl(HttpRequest $request, Item $item): string;
+    public function getCategoryFilterSelectUrl(MagentoHttpRequest $request, Item $item): string;
 
     /**
-     * @param HttpRequest $request
+     * @param MagentoHttpRequest $request
      * @param Item $item
-     * @param CategoryInterface $category
      * @return mixed
      */
-    public function getCategoryFilterRemoveUrl(HttpRequest $request, Item $item): string;
+    public function getCategoryFilterRemoveUrl(MagentoHttpRequest $request, Item $item): string;
 }

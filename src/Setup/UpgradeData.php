@@ -23,7 +23,7 @@ class UpgradeData implements UpgradeDataInterface
     /**
      * @var EavSetupFactory
      */
-    private $eavSetupFactory;
+    protected $eavSetupFactory;
 
     /**
      * UpgradeData constructor.
@@ -50,7 +50,7 @@ class UpgradeData implements UpgradeDataInterface
         $setup->endSetup();
     }
 
-    private function ensureCrosssellTemplateAttribute(EavSetup $eavSetup)
+    protected function ensureCrosssellTemplateAttribute(EavSetup $eavSetup)
     {
         foreach ([Category::ENTITY, Product::ENTITY] as $entityType) {
             $eavSetup->addAttribute($entityType, Config::ATTRIBUTE_CROSSSELL_TEMPLATE, [
@@ -76,7 +76,7 @@ class UpgradeData implements UpgradeDataInterface
         }
     }
 
-    private function ensureUpsellTemplateAttribute(EavSetup $eavSetup)
+    protected function ensureUpsellTemplateAttribute(EavSetup $eavSetup)
     {
         foreach ([Category::ENTITY, Product::ENTITY] as $entityType) {
             $eavSetup->addAttribute($entityType, Config::ATTRIBUTE_UPSELL_TEMPLATE, [
@@ -102,7 +102,7 @@ class UpgradeData implements UpgradeDataInterface
         }
     }
 
-    private function ensureFeaturedTemplateAttribute(EavSetup $eavSetup)
+    protected function ensureFeaturedTemplateAttribute(EavSetup $eavSetup)
     {
         $eavSetup->addAttribute(Category::ENTITY, Config::ATTRIBUTE_FEATURED_TEMPLATE, [
             'type' => 'int',

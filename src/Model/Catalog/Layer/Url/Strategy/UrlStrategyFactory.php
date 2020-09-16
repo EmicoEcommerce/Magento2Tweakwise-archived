@@ -8,7 +8,6 @@
 
 namespace Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy;
 
-
 use Emico\Tweakwise\Model\Catalog\Layer\Url\FilterApplierInterface;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\RouteMatchingInterface;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface;
@@ -25,12 +24,12 @@ class UrlStrategyFactory
     /**
      * @var ObjectManager
      */
-    private $objectManager;
+    protected $objectManager;
 
     /**
      * @var Config
      */
-    private $config;
+    protected $config;
 
     /**
      * @param ObjectManagerInterface $objectManager

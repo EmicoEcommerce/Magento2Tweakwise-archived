@@ -15,12 +15,12 @@ class Plugin
     /**
      * @var FilterHelper
      */
-    private $filterHelper;
+    protected $filterHelper;
 
     /**
      * @var TweakwiseConfig
      */
-    private $tweakwiseConfig;
+    protected $tweakwiseConfig;
 
     /**
      * Plugin constructor.
@@ -57,7 +57,7 @@ class Plugin
     /**
      * @param string $result
      */
-    private function isAlreadyNoIndex(string $result): bool
+    protected function isAlreadyNoIndex(string $result): bool
     {
         return stripos(strtolower($result), 'noindex') !== false;
     }
@@ -65,7 +65,7 @@ class Plugin
     /**
      * @param string $oldRobots
      */
-    private function getNewRobots(string $oldRobots): string
+    protected function getNewRobots(string $oldRobots): string
     {
         $follow = explode(',', $oldRobots);
         $follow = end($follow);
@@ -75,7 +75,7 @@ class Plugin
     /**
      * @return bool
      */
-    private function shouldApplyNoindex(): bool
+    protected function shouldApplyNoindex(): bool
     {
         return !$this->filterHelper->shouldPageBeIndexable();
     }

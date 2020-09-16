@@ -28,12 +28,12 @@ class NavigationHtmlOverride implements ObserverInterface
     /**
      * @var Config
      */
-    private $config;
+    protected $config;
 
     /**
      * @var CurrentContext
      */
-    private $currentContext;
+    protected $currentContext;
 
     /**
      * NavigationHtmlOverride constructor.

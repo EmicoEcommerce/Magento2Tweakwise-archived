@@ -10,17 +10,16 @@ namespace Emico\Tweakwise\Model\Catalog\Layer;
 
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\CategoryUrlInterface;
-use Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\UrlStrategyFactory;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\FilterApplierInterface;
+use Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\UrlStrategyFactory;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface;
 use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
+use Emico\TweakwiseExport\Model\Helper as ExportHelper;
+use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Framework\App\Request\Http as MagentoHttpRequest;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Zend\Http\Request as HttpRequest;
-use Magento\Catalog\Api\CategoryRepositoryInterface;
-use Emico\TweakwiseExport\Model\Helper as ExportHelper;
 
 /**
  * Class Url will later implement logic to use implementation selected in configuration.
@@ -68,13 +67,13 @@ class Url
      * Builder constructor.
      *
      * @param UrlStrategyFactory $urlStrategyFactory
-     * @param HttpRequest $request
+     * @param MagentoHttpRequest $request
      * @param CategoryRepositoryInterface $categoryRepository
      * @param ExportHelper $exportHelper
      */
     public function __construct(
         UrlStrategyFactory $urlStrategyFactory,
-        HttpRequest $request,
+        MagentoHttpRequest $request,
         CategoryRepositoryInterface $categoryRepository,
         ExportHelper $exportHelper
     ) {

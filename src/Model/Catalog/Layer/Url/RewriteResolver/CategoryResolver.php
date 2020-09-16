@@ -65,7 +65,7 @@ class CategoryResolver implements RewriteResolverInterface
             $storeId = $this->storeManager->getStore()->getId();
             $rewriteFilterData[UrlRewrite::STORE_ID] = $storeId;
         } catch (NoSuchEntityException $e) {
-            // No implementation
+            return [];
         }
 
         return $this->urlFinder->findAllByData($rewriteFilterData);

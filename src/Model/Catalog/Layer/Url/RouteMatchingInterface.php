@@ -8,7 +8,6 @@
 
 namespace Emico\Tweakwise\Model\Catalog\Layer\Url;
 
-
 use Magento\Framework\App\ActionInterface;
 use Magento\Framework\App\Request\Http as MagentoHttpRequest;
 
