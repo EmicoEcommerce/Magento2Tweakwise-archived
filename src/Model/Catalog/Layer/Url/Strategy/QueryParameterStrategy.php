@@ -184,7 +184,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
         $value = implode(self::CATEGORY_TREE_SEPARATOR, array_reverse($value));
 
         $query = [$urlKey => $value];
-        return $this->getCurrentQueryUrl($query);
+        return $this->getCurrentQueryUrl($request, $query);
     }
 
     /**
@@ -196,7 +196,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
         $urlKey = $filter->getUrlKey();
 
         $query = [$urlKey => $filter->getCleanValue()];
-        return $this->getCurrentQueryUrl($query);
+        return $this->getCurrentQueryUrl($request, $query);
     }
 
     /**
