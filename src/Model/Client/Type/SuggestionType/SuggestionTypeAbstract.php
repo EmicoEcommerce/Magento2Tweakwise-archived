@@ -84,7 +84,7 @@ abstract class SuggestionTypeAbstract extends Type implements SuggestionTypeInte
      */
     protected function getSearchTerm(): string
     {
-        return $this->data['navigationLink']['context']['searchterm'];
+        return $this->data['navigationLink']['context']['searchterm'] ?? $this->data['match'];
     }
 
     /**

@@ -4,11 +4,11 @@
  * @author : Edwin Jacobs, email: ejacobs@emico.nl.
  * @copyright : Copyright Emico B.V. 2020.
  */
-
 namespace Emico\Tweakwise\Model\Client\Type\SuggestionType;
 
+use Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\PathSlugStrategy;
+use Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\UrlStrategyFactory;
-use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface as TweakwiseUrlInterface;
 use Emico\TweakwiseExport\Model\Helper;
 use Magento\Catalog\Model\CategoryRepository;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -57,10 +57,16 @@ class SuggestionTypeFacet extends SuggestionTypeCategory
      */
     public function getUrl(): string
     {
+        $isSearch = false;
         try {
-            $categoryUrl = $this->getCategoryUrl() ?: '';
+            $categoryUrl = $this->getCategoryUrl();
+            if (!$categoryUrl) {
+                $isSearch = true;
+                $categoryUrl = $this->getSearchUrl();
+            }
         } catch (NoSuchEntityException $e) {
-            return $this->getSearchUrl();
+            $isSearch = true;
+            $categoryUrl = $this->getSearchUrl();
         }
 
         $facets = $this->getFacets();
@@ -70,6 +76,29 @@ class SuggestionTypeFacet extends SuggestionTypeCategory
          * @see \Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface
          */
         $strategy = $this->urlStrategyFactory->create();
+        if ($isSearch || $strategy instanceof QueryParameterStrategy) {
+            $query = http_build_query($facets);
+            $queryJoin = strpos($categoryUrl, '?') === false ? '?' : '&';
+            return $categoryUrl . $queryJoin . $query;
+        }
+
+        if ($strategy instanceof PathSlugStrategy) {
+            ksort($facets);
+            $path = '';
+            foreach ($facets as $urlKey => $facetValues) {
+                sort($facetValues);
+                $facetValues = array_map(
+                    static function ($facetValue) use ($urlKey) {
+                        return $urlKey . '/' . $facetValue;
+                    },
+                    $facetValues
+                );
+
+                $path .= implode('/', $facetValues);
+            }
+
+            return $categoryUrl . $path;
+        }
 
         // Add facets here
         return $categoryUrl;
@@ -80,13 +109,14 @@ class SuggestionTypeFacet extends SuggestionTypeCategory
      */
     protected function getFacets(): array
     {
-        $facets = $this->data['navigationLink']['context']['facetFilters'] ?: [];
+        $facets = $this->data['navigationLink']['context']['facetFilters'] ?? [];
         if (empty($facets)) {
             return [];
         }
 
         $keys = array_column($facets, 'key');
         $values = array_column($facets, 'values');
+        $values = array_map('array_values', $values);
 
         return array_combine($keys, $values);
     }

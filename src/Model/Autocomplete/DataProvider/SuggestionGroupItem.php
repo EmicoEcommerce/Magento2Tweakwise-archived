@@ -50,6 +50,7 @@ class SuggestionGroupItem implements ItemInterface
 
             $suggestionResult = [
                 'title' => $suggestion->getName(),
+                'url' => $suggestionUrl
             ];
             $result['suggestions'][] = $suggestionResult;
         }
