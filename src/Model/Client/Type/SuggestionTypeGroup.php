@@ -4,7 +4,6 @@
  * @author : Edwin Jacobs, email: ejacobs@emico.nl.
  * @copyright : Copyright Emico B.V. 2020.
  */
-
 namespace Emico\Tweakwise\Model\Client\Type;
 
 use Emico\Tweakwise\Model\Client\Type\SuggestionType\SuggestionTypeAbstract;
@@ -26,6 +25,11 @@ class SuggestionTypeGroup extends Type
     protected $suggestionTypeFactory;
 
     /**
+     * @var string
+     */
+    protected $type;
+
+    /**
      * SuggestionTypeGroup constructor.
      * @param SuggestionTypeFactory $suggestionTypeFactory
      * @param array $data
@@ -39,6 +43,14 @@ class SuggestionTypeGroup extends Type
     }
 
     /**
+     * @param string $type
+     */
+    public function setType(string $type)
+    {
+        $this->type = $type;
+    }
+
+    /**
      * @param SuggestionTypeAbstract[]|array[] $suggestions
      * @return $this
      */
@@ -49,7 +61,7 @@ class SuggestionTypeGroup extends Type
         $values = [];
         foreach ($suggestions as $suggestion) {
             if (!$suggestion instanceof SuggestionTypeAbstract) {
-                $suggestion = $this->suggestionTypeFactory->createSuggestion($suggestion);
+                $suggestion = $this->suggestionTypeFactory->createSuggestion($suggestion, $this->type);
             }
 
             $values[] = $suggestion;

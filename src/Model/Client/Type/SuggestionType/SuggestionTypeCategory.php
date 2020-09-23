@@ -4,7 +4,6 @@
  * @author : Edwin Jacobs, email: ejacobs@emico.nl.
  * @copyright : Copyright Emico B.V. 2020.
  */
-
 namespace Emico\Tweakwise\Model\Client\Type\SuggestionType;
 
 use Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy;
@@ -19,6 +18,8 @@ use Magento\Store\Model\StoreManagerInterface;
 
 class SuggestionTypeCategory extends SuggestionTypeAbstract
 {
+    public const TYPE = 'Category';
+
     /**
      * @var CategoryRepository
      */
@@ -36,21 +37,24 @@ class SuggestionTypeCategory extends SuggestionTypeAbstract
 
     /**
      * SuggestionTypeCategory constructor.
-     * @param UrlInterface $urlInstance
      * @param CategoryRepository $categoryRepository Empty category model used to resolve urls
      * @param StoreManagerInterface $storeManager
+     * @param UrlInterface $url
      * @param Helper $exportHelper
      * @param array $data
      */
     public function __construct(
-        UrlInterface $urlInstance,
         CategoryRepository $categoryRepository,
         StoreManagerInterface $storeManager,
+        UrlInterface $url,
         Helper $exportHelper,
         array $data = []
     ) {
-        parent::__construct($exportHelper, $data);
-        $this->urlInstance = $urlInstance;
+        parent::__construct(
+            $url,
+            $exportHelper,
+            $data
+        );
         $this->categoryRepository = $categoryRepository;
         $this->storeManager = $storeManager;
     }
@@ -61,22 +65,9 @@ class SuggestionTypeCategory extends SuggestionTypeAbstract
     public function getUrl()
     {
         try {
-            $categoryUrl = $this->getCategoryUrl();
-            if (!$categoryUrl) {
-                return '';
-            }
-
-            $categoryIds = $this->getCategoryIds();
-            return $this->urlInstance->getDirectUrl(
-                $categoryUrl,
-                [
-                    '_query' => [
-                        QueryParameterStrategy::PARAM_CATEGORY => implode('-', $categoryIds)
-                    ]
-                ]
-            );
+            return $this->getCategoryUrl() ?: '';
         } catch (NoSuchEntityException $e) {
-            return '';
+            return $this->getSearchUrl();
         }
     }
 

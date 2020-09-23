@@ -68,12 +68,30 @@
             </argument>
         </arguments>
     </type>
+
     <type name="Emico\Tweakwise\Model\Autocomplete\DataProvider">
         <arguments>
+            <argument name="dataProviders" xsi:type="array">
+                <item name="autocomplete" xsi:type="object">Emico\Tweakwise\Model\Autocomplete\DataProvider\AutocompleteDataProvider</item>
+                <item name="suggestion" xsi:type="object">Emico\Tweakwise\Model\Autocomplete\DataProvider\SuggestionDataProvider</item>
+            </argument>
+
             <argument name="queryFactory" xsi:type="object">Magento\Search\Model\QueryFactory</argument>
             <argument name="autocompleteRequestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\AutocompleteRequest</argument>
             <argument name="suggestionRequestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Suggestions\SuggestionsRequest</argument>
             <argument name="productSuggestionRequestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Suggestions\ProductSuggestionsRequest</argument>
+        </arguments>
+    </type>
+
+    <type name="Emico\Tweakwise\Model\Autocomplete\DataProvider\AutocompleteDataProvider">
+        <arguments>
+            <argument name="autocompleteRequestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\AutocompleteRequest</argument>
+        </arguments>
+    </type>
+    <type name="Emico\Tweakwise\Model\Autocomplete\DataProvider\SuggestionDataProvider">
+        <arguments>
+            <argument name="productSuggestionRequestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Suggestions\ProductSuggestionsRequest</argument>
+            <argument name="suggestionRequestFactory" xsi:type="object">Emico\Tweakwise\Model\Client\RequestFactory\Suggestions\SuggestionsRequest</argument>
         </arguments>
     </type>
 

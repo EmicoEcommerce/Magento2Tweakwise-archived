@@ -7,15 +7,18 @@
 
 namespace Emico\Tweakwise\Model\Client\Type\SuggestionType;
 
-use Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\UrlStrategyFactory;
+use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface as TweakwiseUrlInterface;
 use Emico\TweakwiseExport\Model\Helper;
 use Magento\Catalog\Model\CategoryRepository;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\UrlInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
 class SuggestionTypeFacet extends SuggestionTypeCategory
 {
+    public const TYPE = 'FacetFilter';
+
     /**
      * @var UrlStrategyFactory
      */
@@ -24,7 +27,7 @@ class SuggestionTypeFacet extends SuggestionTypeCategory
     /**
      * SuggestionTypeFacet constructor.
      * @param UrlStrategyFactory $urlStrategyFactory
-     * @param UrlInterface $urlInstance
+     * @param UrlInterface $url
      * @param CategoryRepository $categoryRepository
      * @param StoreManagerInterface $storeManager
      * @param Helper $exportHelper
@@ -32,16 +35,16 @@ class SuggestionTypeFacet extends SuggestionTypeCategory
      */
     public function __construct(
         UrlStrategyFactory $urlStrategyFactory,
-        UrlInterface $urlInstance,
+        UrlInterface $url,
         CategoryRepository $categoryRepository,
         StoreManagerInterface $storeManager,
         Helper $exportHelper,
         array $data = []
     ) {
         parent::__construct(
-            $urlInstance,
             $categoryRepository,
             $storeManager,
+            $url,
             $exportHelper,
             $data
         );
@@ -54,49 +57,33 @@ class SuggestionTypeFacet extends SuggestionTypeCategory
      */
     public function getUrl(): string
     {
-        $categoryUrl = $this->getCategoryUrl();
-        if (!$categoryUrl) {
-            // This can happen when category id is equal to the root category.
-            // in this case we need to forward to the search page with the facet preselected
-            return '';
+        try {
+            $categoryUrl = $this->getCategoryUrl() ?: '';
+        } catch (NoSuchEntityException $e) {
+            return $this->getSearchUrl();
         }
 
-        $categoryIds = $this->getCategoryIds();
-        $categoryIds = implode('-', $categoryIds);
         $facets = $this->getFacets();
 
         /**
-         * This should be handled by whatever implements
+         * This should be handled by whatever implements The tweakwise url interface
          * @see \Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface
          */
         $strategy = $this->urlStrategyFactory->create();
-        if ($strategy instanceof QueryParameterStrategy) {
-            $query = array_merge(
-                $facets,
-                [
-                    QueryParameterStrategy::PARAM_CATEGORY => $categoryIds
-                ]
-            );
-            return $this->urlInstance->getDirectUrl(
-                $categoryUrl,
-                [
-                    '_query' => $query
-                ]
-            );
-        }
 
         // Add facets here
         return $categoryUrl;
     }
 
-
-
     /**
-     *
+     * @return array
      */
-    protected function getFacets()
+    protected function getFacets(): array
     {
         $facets = $this->data['navigationLink']['context']['facetFilters'] ?: [];
+        if (empty($facets)) {
+            return [];
+        }
 
         $keys = array_column($facets, 'key');
         $values = array_column($facets, 'values');

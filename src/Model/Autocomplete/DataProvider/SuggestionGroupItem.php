@@ -4,7 +4,6 @@
  * @author : Edwin Jacobs, email: ejacobs@emico.nl.
  * @copyright : Copyright Emico B.V. 2020.
  */
-
 namespace Emico\Tweakwise\Model\Autocomplete\DataProvider;
 
 use Emico\Tweakwise\Model\Client\Type\SuggestionTypeGroup;
@@ -12,7 +11,6 @@ use Magento\Search\Model\Autocomplete\ItemInterface;
 
 class SuggestionGroupItem implements ItemInterface
 {
-
     /**
      * @var SuggestionTypeGroup
      */
@@ -46,13 +44,13 @@ class SuggestionGroupItem implements ItemInterface
         ];
         foreach ($this->group->getSuggestions() as $suggestion) {
             $suggestionUrl = $suggestion->getUrl();
-            
+            if (!$suggestionUrl) {
+                continue;
+            }
+
             $suggestionResult = [
                 'title' => $suggestion->getName(),
             ];
-            if ($suggestionUrl) {
-                $suggestionResult['url'] = $suggestionUrl;
-            }
             $result['suggestions'][] = $suggestionResult;
         }
 

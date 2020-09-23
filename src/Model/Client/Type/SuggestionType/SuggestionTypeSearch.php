@@ -17,58 +17,13 @@ use Magento\Framework\UrlInterface;
  */
 class SuggestionTypeSearch extends SuggestionTypeAbstract
 {
-    /**
-     * @var UrlInterface
-     */
-    protected $url;
-
-    /**
-     * SuggestionTypeSearch constructor.
-     * @param UrlInterface $url
-     * @param Helper $exportHelper
-     * @param array $data
-     */
-    public function __construct(
-        UrlInterface $url,
-        Helper $exportHelper,
-        array $data = []
-    ) {
-        parent::__construct(
-            $exportHelper,
-            $data
-        );
-
-        $this->url = $url;
-    }
+    public const TYPE = 'SearchPhrase';
 
     /**
      * @return string
      */
     public function getUrl()
     {
-        $query = [
-            'q' => $this->getSearchTerm()
-        ];
-
-        $categoryIds = $this->getCategoryIds();
-
-        if ($categoryIds) {
-            $query[QueryParameterStrategy::PARAM_CATEGORY] = implode($categoryIds);
-        }
-
-        return $this->url->getUrl(
-            'catalogsearch/result',
-            [
-                '_query' => $query
-            ]
-        );
-    }
-
-    /**
-     * @return string
-     */
-    protected function getSearchTerm()
-    {
-        return $this->data['navigationLink']['context']['searchterm'];
+        return $this->getSearchUrl();
     }
 }

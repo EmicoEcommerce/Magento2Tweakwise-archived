@@ -114,8 +114,6 @@ class ProductItem implements ItemInterface
 
         $imageResolver = $this->imageFactory;
 
-        /** @noinspection PhpMethodParametersCountMismatchInspection */
-        /** @noinspection PhpParamsInspection */
         return $imageResolver->create(
             $this->product,
             'product_thumbnail_image',

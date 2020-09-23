@@ -4,7 +4,6 @@
  * @author : Edwin Jacobs, email: ejacobs@emico.nl.
  * @copyright : Copyright Emico B.V. 2020.
  */
-
 namespace Emico\Tweakwise\Model\Client\Type\SuggestionType;
 
 use Magento\Framework\ObjectManagerInterface;
@@ -27,32 +26,33 @@ class SuggestionTypeFactory
 
     /**
      * @param array $suggestion
+     * @param string|null $type
      * @return SuggestionTypeAbstract
      */
-    public function createSuggestion(array $suggestion): SuggestionTypeAbstract
+    public function createSuggestion(array $suggestion, string $type = null): SuggestionTypeAbstract
     {
-        $type = $this->getSuggestionType($suggestion);
+        $type = $this->resolveClass($type);
         /** @var SuggestionTypeAbstract $suggestionType */
         $suggestionType = $this->objectManager->create($type);
         return $suggestionType->setData($suggestion);
     }
 
     /**
-     * @param array $suggestion
+     * @param string $suggestionType
      * @return string
      */
-    protected function getSuggestionType(array $suggestion)
+    protected function resolveClass(string $suggestionType): string
     {
-        if (isset($suggestion['navigationLink']['context']['searchterm'])) {
+        if ($suggestionType === SuggestionTypeSearch::TYPE) {
             return SuggestionTypeSearch::class;
         }
-        // First check for hit on facetFilters as it is more specific
-        if (isset($suggestion['navigationLink']['context']['facetFilters'])) {
-            return SuggestionTypeFacet::class;
+
+        if ($suggestionType === SuggestionTypeCategory::TYPE) {
+            return SuggestionTypeCategory::class;
         }
 
-        if (isset($suggestion['navigationLink']['context']['category'])) {
-            return SuggestionTypeCategory::class;
+        if ($suggestionType === SuggestionTypeFacet::TYPE) {
+            return SuggestionTypeFacet::class;
         }
 
         return SuggestionTypeSearch::class;

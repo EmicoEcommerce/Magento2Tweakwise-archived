@@ -7,8 +7,10 @@
 
 namespace Emico\Tweakwise\Model\Client\Type\SuggestionType;
 
+use Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy;
 use Emico\Tweakwise\Model\Client\Type\Type;
 use Emico\TweakwiseExport\Model\Helper;
+use Magento\Framework\UrlInterface;
 
 /**
  * Class SuggestionTypeAbstract
@@ -17,39 +19,72 @@ use Emico\TweakwiseExport\Model\Helper;
 abstract class SuggestionTypeAbstract extends Type implements SuggestionTypeInterface
 {
     /**
+     * @var UrlInterface
+     */
+    protected $url;
+
+    /**
      * @var Helper
      */
     protected $exportHelper;
 
     /**
      * SuggestionTypeAbstract constructor.
+     * @param UrlInterface $url
      * @param Helper $exportHelper
      * @param array $data
      */
     public function __construct(
+        UrlInterface $url,
         Helper $exportHelper,
         array $data = []
     ) {
         parent::__construct($data);
         $this->exportHelper = $exportHelper;
+        $this->url = $url;
     }
-
-    /**
-     * @return string
-     */
-    abstract public function getUrl();
 
     /**
      * @return string
      */
     public function getName()
     {
-        /** @var string $searchTerm */
         $match = $this->getMatch();
         /** @var string $category */
         $categoryName = $this->getCategoryName();
 
         return ($categoryName) ? "$match $categoryName" : $match;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getSearchUrl()
+    {
+        $query = [
+            'q' => $this->getSearchTerm()
+        ];
+
+        $categoryIds = $this->getCategoryIds();
+
+        if ($categoryIds) {
+            $query[QueryParameterStrategy::PARAM_CATEGORY] = implode($categoryIds);
+        }
+
+        return $this->url->getUrl(
+            'catalogsearch/result',
+            [
+                '_query' => $query
+            ]
+        );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getSearchTerm(): string
+    {
+        return $this->data['navigationLink']['context']['searchterm'];
     }
 
     /**
