@@ -73,6 +73,7 @@ class SuggestionTypeFacet extends SuggestionTypeCategory
 
         /**
          * This should be handled by whatever implements The tweakwise url interface
+         * However that is not available for this data structure, as such it is sort of copied from the relevant classes.
          * @see \Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface
          */
         $strategy = $this->urlStrategyFactory->create();
