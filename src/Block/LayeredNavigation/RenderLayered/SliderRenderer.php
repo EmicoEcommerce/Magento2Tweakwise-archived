@@ -148,14 +148,6 @@ class SliderRenderer extends DefaultRenderer
     }
 
     /**
-     * @return bool|string
-     */
-    public function getJsUseFormFilters()
-    {
-        return $this->jsonSerializer->serialize($this->config->isFormFilters());
-    }
-
-    /**
      * @return string
      */
     public function getJsSliderConfig(): string

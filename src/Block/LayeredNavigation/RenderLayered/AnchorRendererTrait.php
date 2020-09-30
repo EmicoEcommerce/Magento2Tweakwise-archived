@@ -6,8 +6,8 @@
 
 namespace Emico\Tweakwise\Block\LayeredNavigation\RenderLayered;
 
-use Emico\Tweakwise\Model\Seo\FilterHelper;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
+use Emico\Tweakwise\Model\Seo\FilterHelper;
 
 trait AnchorRendererTrait
 {

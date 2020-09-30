@@ -8,20 +8,19 @@
 
 namespace Emico\Tweakwise\Block\LayeredNavigation\RenderLayered;
 
-use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
-use Emico\Tweakwise\Model\NavigationConfig;
-use Magento\Catalog\Model\Product;
-use Magento\Catalog\Model\ResourceModel\Layer\Filter\AttributeFactory;
-use Magento\Eav\Model\Entity\Attribute;
-use Magento\Framework\View\Element\Template\Context;
-use Magento\Swatches\Block\LayeredNavigation\RenderLayered;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter;
-use Magento\Swatches\Helper\Data;
-use Magento\Swatches\Helper\Media;
+use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Config;
 use Emico\Tweakwise\Model\Seo\FilterHelper;
-use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory as EavAttributeFactory;
+use Magento\Catalog\Model\ResourceModel\Layer\Filter\AttributeFactory;
+use Magento\Eav\Model\Entity\Attribute;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\View\Element\Template\Context;
+use Magento\Swatches\Block\LayeredNavigation\RenderLayered;
+use Magento\Swatches\Helper\Data;
+use Magento\Swatches\Helper\Media;
 
 class SwatchRenderer extends RenderLayered
 {
@@ -50,16 +49,6 @@ class SwatchRenderer extends RenderLayered
     protected $eavAttributeFactory;
 
     /**
-     * @var Json
-     */
-    protected $jsonSerializer;
-
-    /**
-     * @var NavigationConfig
-     */
-    protected $navigationConfig;
-
-    /**
      * SwatchRenderer constructor.
      * @param Context $context
      * @param Attribute $eavAttribute
@@ -67,10 +56,8 @@ class SwatchRenderer extends RenderLayered
      * @param Data $swatchHelper
      * @param Media $mediaHelper
      * @param Config $config
-     * @param NavigationConfig $navigationConfig
      * @param EavAttributeFactory $eavAttributeFactory
      * @param FilterHelper $filterHelper
-     * @param Json $jsonSerializer
      * @param array $data
      */
     public function __construct(
@@ -81,22 +68,18 @@ class SwatchRenderer extends RenderLayered
         Media $mediaHelper,
         Config $config,
         EavAttributeFactory $eavAttributeFactory,
-        NavigationConfig $navigationConfig,
         FilterHelper $filterHelper,
-        Json $jsonSerializer,
         array $data = []
     ) {
         parent::__construct($context, $eavAttribute, $layerAttribute, $swatchHelper, $mediaHelper, $data);
         $this->config = $config;
         $this->eavAttributeFactory = $eavAttributeFactory;
         $this->filterHelper = $filterHelper;
-        $this->jsonSerializer = $jsonSerializer;
-        $this->navigationConfig = $navigationConfig;
     }
 
     /**
      * @param Filter $filter
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function setFilter(Filter $filter)
     {
@@ -118,28 +101,5 @@ class SwatchRenderer extends RenderLayered
     public function getItemForSwatch($id)
     {
         return $this->filter->getItemByOptionId($id);
-    }
-
-    /**
-     * @return string
-     */
-    public function getJsFormConfig()
-    {
-        return $this->navigationConfig->getJsFormConfig();
-    }
-
-    /**
-     * @return boolean
-     */
-    protected function hasAlternateSortOrder()
-    {
-        $filter = static function (Item $item) {
-            return $item->getAlternateSortOrder() !== null;
-        };
-
-        $items = $this->filter->getItems();
-        $itemsWithAlternateSortOrder = array_filter($items, $filter);
-
-        return count($items) === count($itemsWithAlternateSortOrder);
     }
 }
