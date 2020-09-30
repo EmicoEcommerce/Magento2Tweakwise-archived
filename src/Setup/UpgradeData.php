@@ -14,6 +14,7 @@ use Magento\Catalog\Model\Product;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Setup\EavSetup;
 use Magento\Eav\Setup\EavSetupFactory;
+use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\UpgradeDataInterface;
@@ -23,16 +24,25 @@ class UpgradeData implements UpgradeDataInterface
     /**
      * @var EavSetupFactory
      */
-    private $eavSetupFactory;
+    protected $eavSetupFactory;
+
+    /**
+     * @var WriterInterface
+     */
+    protected $writer;
 
     /**
      * UpgradeData constructor.
      *
      * @param EavSetupFactory $eavSetupFactory
+     * @param WriterInterface $writer
      */
-    public function __construct(EavSetupFactory $eavSetupFactory)
-    {
+    public function __construct(
+        EavSetupFactory $eavSetupFactory,
+        WriterInterface $writer
+    ) {
         $this->eavSetupFactory = $eavSetupFactory;
+        $this->writer = $writer;
     }
 
     /**
@@ -42,15 +52,21 @@ class UpgradeData implements UpgradeDataInterface
     {
         $setup->startSetup();
 
-        $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
-        $this->ensureCrosssellTemplateAttribute($eavSetup);
-        $this->ensureUpsellTemplateAttribute($eavSetup);
-        $this->ensureFeaturedTemplateAttribute($eavSetup);
+        if (version_compare($context->getVersion(), '2.0.0', '=<')) {
+            $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
+            $this->ensureCrosssellTemplateAttribute($eavSetup);
+            $this->ensureUpsellTemplateAttribute($eavSetup);
+            $this->ensureFeaturedTemplateAttribute($eavSetup);
+        }
+
+        if (version_compare($context->getVersion(), '2.0.1', '<=')) {
+            $this->updateNavigatorBaseUrl();
+        }
 
         $setup->endSetup();
     }
 
-    private function ensureCrosssellTemplateAttribute(EavSetup $eavSetup)
+    protected function ensureCrosssellTemplateAttribute(EavSetup $eavSetup)
     {
         foreach ([Category::ENTITY, Product::ENTITY] as $entityType) {
             $eavSetup->addAttribute($entityType, Config::ATTRIBUTE_CROSSSELL_TEMPLATE, [
@@ -76,7 +92,7 @@ class UpgradeData implements UpgradeDataInterface
         }
     }
 
-    private function ensureUpsellTemplateAttribute(EavSetup $eavSetup)
+    protected function ensureUpsellTemplateAttribute(EavSetup $eavSetup)
     {
         foreach ([Category::ENTITY, Product::ENTITY] as $entityType) {
             $eavSetup->addAttribute($entityType, Config::ATTRIBUTE_UPSELL_TEMPLATE, [
@@ -102,7 +118,7 @@ class UpgradeData implements UpgradeDataInterface
         }
     }
 
-    private function ensureFeaturedTemplateAttribute(EavSetup $eavSetup)
+    protected function ensureFeaturedTemplateAttribute(EavSetup $eavSetup)
     {
         $eavSetup->addAttribute(Category::ENTITY, Config::ATTRIBUTE_FEATURED_TEMPLATE, [
             'type' => 'int',
@@ -114,5 +130,13 @@ class UpgradeData implements UpgradeDataInterface
             'group' => 'Tweakwise',
             'source' => 'Emico\Tweakwise\Model\Config\Source\RecommendationOption\Featured',
         ]);
+    }
+
+    /**
+     * Update tw server url as the old url will be retired
+     */
+    protected function updateNavigatorBaseUrl()
+    {
+        $this->writer->save('tweakwise/general/server_url', 'https://gateway.tweakwisenavigator.com/');
     }
 }
