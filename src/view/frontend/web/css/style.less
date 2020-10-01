@@ -14,17 +14,33 @@
     ul {
         li.qs-option-product {
             padding: 5px;
+
+            .qs-option-image {
+                float: left;
+                width: 50px;
+                margin-right: 10px;
+            }
+
+            .qs-option-info-container {
+                float: left;
+                max-width: ~"calc(100% - 70px)";
+            }
+
+            .price-box {
+                margin: 5px 0 0;
+            }
         }
 
-        li.qs-option-product .qs-option-image {
-            float: left;
-            width: 50px;
-            margin-right: 10px;
+        li.qs-suggestion-heading {
+            border-bottom: 0;
+            text-align: right;
+            color: #949494;
+            pointer-events: none;
+
         }
 
-        li.qs-option-product .qs-option-info-container {
-            float: left;
-            max-width: ~"calc(100% - 70px)";
+        li.qs-suggestion-item {
+            border: 0;
         }
     }
 

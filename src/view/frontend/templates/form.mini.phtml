@@ -53,12 +53,12 @@
             <span aria-hidden="true" class="amount"><%- data.num_results %></span>
         </li>
     <% } else if (data.type === 'suggestion_group') { %>
-        <li class="<%- data.row_class %>" id="qs-option-<%- data.index %>" role="option">
+        <li class="<%- data.row_class %> qs-suggestion-heading" id="qs-option-<%- data.index %>" role="option">
             <span class="qs-option-name"><%= data.title %></span>
             <span aria-hidden="true" class="amount"><%- data.num_results %></span>
         </li>
         <% _.each (data.suggestions, function (suggestion, index) { %>
-            <li class="<%- suggestion.row_class %>"
+            <li class="<%- suggestion.row_class %> qs-suggestion-item"
                 id="qs-option-<%- data.index %>-<%- index %>"
                 <% if (suggestion.url) { %>
                     data-url="<%- suggestion.url %>"
