@@ -37,14 +37,6 @@
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="ajax_filters" translate="label" type="select" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Ajax filtering</label>
-                    <comment>When enabled non category filter results will be fetched via ajax instead of navigation</comment>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <depends>
-                        <field id="enabled">1</field>
-                    </depends>
-                </field>
                 <field id="category_links" translate="label,comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Category filters as link</label>
                     <comment>When category filter is not of type tree in Tweakwise use links to child categories instead of filter values.</comment>
@@ -62,13 +54,22 @@
                 </field>
                 <field id="default_link_renderer" translate="label,comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Use default magento filter renderer</label>
-                    <comment>When filter type is link, checkbox or color (swatches) the default Magento renderer can be used. Filter display settings like: collapsed / collapsible, more / less text, css class and show product count are then ignored.</comment>
+                    <comment>use this only when you are not planning to use ajax filtering, filter forms or seo options. When filter type is link, checkbox or color (swatches) the default Magento renderer can be used. Filter display settings like: collapsed / collapsible, more / less text, css class and show product count are then ignored.</comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
                 </field>
-                <field id="form_filters" translate="label,comment" type="select" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="ajax_filters" translate="label" type="select" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Ajax filtering</label>
+                    <comment>When enabled non category filter results will be fetched via ajax instead of navigation</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                        <field id="default_link_renderer">0</field>
+                    </depends>
+                </field>
+                <field id="form_filters" translate="label,comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Filter form</label>
                     <comment>Renders filter links in a form and renders a button with the filters. When this button is clicked all selected filters are applied</comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -76,7 +77,7 @@
                         <field id="default_link_renderer">0</field>
                     </depends>
                 </field>
-                <field id="query_filter_type" translate="label,comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="query_filter_type" translate="label,comment" type="select" sortOrder="55" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Filter url query arguments</label>
                     <comment>Url's rendered by tweakwise for filter contain all the arguments in the request url. These query arguments can be filtered out with this setting.</comment>
                     <source_model>Emico\Tweakwise\Model\Config\Source\QueryFilterType</source_model>
@@ -84,7 +85,7 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
-                <field id="query_filter_arguments" translate="label,comment" type="textarea" sortOrder="51" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="query_filter_arguments" translate="label,comment" type="textarea" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Filter url query arguments</label>
                     <comment>Specific query arguments to filter out. One argument per line</comment>
                     <depends>
@@ -92,7 +93,7 @@
                         <field id="query_filter_type">specific</field>
                     </depends>
                 </field>
-                <field id="query_filter_regex" translate="label,comment" type="text" sortOrder="52" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="query_filter_regex" translate="label,comment" type="text" sortOrder="65" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Filter url query regex</label>
                     <comment>Arguments matching regex will be filtered</comment>
                     <depends>
@@ -100,7 +101,7 @@
                         <field id="query_filter_type">regex</field>
                     </depends>
                 </field>
-                <field id="url_strategy" translate="label,comment" type="select" sortOrder="53" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="url_strategy" translate="label,comment" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>URL strategy</label>
                     <comment>Specify how you want the filter URL's to be build</comment>
                     <source_model>Emico\Tweakwise\Model\Config\Source\UrlStrategy</source_model>
