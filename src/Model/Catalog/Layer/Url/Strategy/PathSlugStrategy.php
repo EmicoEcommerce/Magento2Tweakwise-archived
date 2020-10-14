@@ -507,7 +507,6 @@ class PathSlugStrategy implements
             return true;
         }
 
-        return !$context->getRequest() instanceof ProductSearchRequest
-            && !$this->config->isFormFilters();
+        return !$context->getRequest() instanceof ProductSearchRequest;
     }
 }
