@@ -12,7 +12,7 @@
         <tweakwise>
             <general>
                 <authentication_key/>
-                <server_url>http://navigator-group1.tweakwise.com/</server_url>
+                <server_url>https://gateway.tweakwisenavigator.com/</server_url>
                 <log>0</log>
                 <log_developer>1</log_developer>
                 <timeout>10</timeout>

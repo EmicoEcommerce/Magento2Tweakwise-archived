@@ -19,7 +19,7 @@
                 </field>
                 <field id="server_url" translate="label,comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Server Url</label>
-                    <comment>Default: http://navigator-group1.tweakwise.com/</comment>
+                    <comment>Default: https://gateway.tweakwisenavigator.com/</comment>
                     <validate>required-entry validate-url</validate>
                 </field>
                 <field id="timeout" translate="label,comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
