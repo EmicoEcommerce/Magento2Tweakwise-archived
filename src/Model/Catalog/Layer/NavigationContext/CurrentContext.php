@@ -8,7 +8,6 @@
 
 namespace Emico\Tweakwise\Model\Catalog\Layer\NavigationContext;
 
-
 use Emico\Tweakwise\Exception\RuntimeException;
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext;
 use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;

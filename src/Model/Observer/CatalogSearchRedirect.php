@@ -32,7 +32,7 @@ class CatalogSearchRedirect implements ObserverInterface
     /**
      * @var Context
      */
-    private $actionContext;
+    protected $actionContext;
 
     /**
      * CatalogSearchRedirect constructor.

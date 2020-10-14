@@ -78,7 +78,7 @@ class SettingsType extends Type
      */
     public function isPrice()
     {
-        return $this->getUrlKey() == 'price';
+        return $this->getUrlKey() === 'price';
     }
 
     /**

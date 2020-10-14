@@ -8,10 +8,10 @@
 define([
     'jquery',
     'Magento_Search/form-mini'
-], function($, quickSearch){
+], function ($, quickSearch) {
     $.widget('tweakwise.quickSearch', quickSearch, {
 
-        getSelectedProductUrl: function() {
+        getSelectedProductUrl: function () {
             if (!this.responseList.selected) {
                 return null;
             }
@@ -19,29 +19,26 @@ define([
             return this.responseList.selected.data('url');
         },
 
-        _create: function() {
-            $(this.options.formSelector).on('submit', function(event) {
+        _create: function () {
+            $(this.options.formSelector).on('submit', function (event) {
                 if (this.getSelectedProductUrl()) {
                     event.preventDefault();
                 }
             }.bind(this));
 
             var templateId = '#autocomplete-item-template';
-            this.options.template = templateId;
             this.options.url = $(templateId).data('url');
 
             return this._superApply(arguments);
         },
 
-        _onSubmit: function (e) {
+        _onSubmit: function () {
             var url = this.getSelectedProductUrl();
             if (!url) {
                 return this._superApply(arguments);
             }
 
-            if (url !== null) {
-                window.location.href = url;
-            }
+            window.location.href = url;
         },
 
         _onPropertyChange: function () {
@@ -49,7 +46,7 @@ define([
                 clearTimeout(this.searchDelayTimeout);
             }
 
-            this.searchDelayTimeout = setTimeout(function() {
+            this.searchDelayTimeout = setTimeout(function () {
                 quickSearch.prototype._onPropertyChange.apply(this);
             }.bind(this), 200);
         }

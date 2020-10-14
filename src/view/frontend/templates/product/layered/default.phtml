@@ -11,7 +11,7 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\DefaultRenderer;
 $hasHiddenItems = $block->hasHiddenItems();
 $hasAlternateSortOrder = $block->hasAlternateSortOrder();
 ?>
-<div data-mage-init='<?=$block->getJsNavigationConfig()?>'>
+<div data-mage-init='<?=$block->getJsSortConfig()?>'>
     <ol class="items">
         <?php foreach ($block->getItems() as $index => $item): ?>
             <li class="item<?=$block->itemDefaultHidden($item) ? ' default-hidden' : ''?>"
@@ -21,14 +21,15 @@ $hasAlternateSortOrder = $block->hasAlternateSortOrder();
                 <?php endif;?>
             >
                 <a <?=$block->renderAnchorHtmlTagAttributes($item);?>>
+                    <?php $cssId = $item->getCssId();?>
                     <?php if ($block->showCheckbox()): ?>
-                        <input id="inputCheckbox<?=$block->getCssItemId($item)?>"
+                        <input id="<?=$cssId?>"
                                name="<?=$item->getFilter()->getFacet()->getFacetSettings()->getUrlKey()?>[]"
                                type="checkbox" <?=($item->isSelected() ? 'checked="checked"' : '')?>
                                value="<?=$block->escapeHtmlAttr($item->getLabel())?>"
                         >
 
-                        <label for="inputCheckbox<?=$block->getCssItemId($item)?>">
+                        <label for="<?=$cssId?>">
                             <?=$block->getItemPrefix()?>
                             <?=$block->escapeHtml($item->getLabel())?>
                             <?=$block->getItemPostfix()?>
@@ -43,7 +44,7 @@ $hasAlternateSortOrder = $block->hasAlternateSortOrder();
                         <span class="count">
                             <?=htmlentities($item->getCount())?>
                             <span class="filter-count-label">
-                                <?php if ($item->getCount() == 1):?>
+                                <?php if ($item->getCount() === 1):?>
                                     <?=__('item')?>
                                 <?php else:?>
                                     <?=__('items')?>

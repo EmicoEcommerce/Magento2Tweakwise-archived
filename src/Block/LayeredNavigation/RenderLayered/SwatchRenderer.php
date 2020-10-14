@@ -8,18 +8,19 @@
 
 namespace Emico\Tweakwise\Block\LayeredNavigation\RenderLayered;
 
-use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
-use Magento\Catalog\Model\Product;
-use Magento\Catalog\Model\ResourceModel\Layer\Filter\AttributeFactory;
-use Magento\Eav\Model\Entity\Attribute;
-use Magento\Framework\View\Element\Template\Context;
-use Magento\Swatches\Block\LayeredNavigation\RenderLayered;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter;
-use Magento\Swatches\Helper\Data;
-use Magento\Swatches\Helper\Media;
+use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Config;
 use Emico\Tweakwise\Model\Seo\FilterHelper;
+use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory as EavAttributeFactory;
+use Magento\Catalog\Model\ResourceModel\Layer\Filter\AttributeFactory;
+use Magento\Eav\Model\Entity\Attribute;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\View\Element\Template\Context;
+use Magento\Swatches\Block\LayeredNavigation\RenderLayered;
+use Magento\Swatches\Helper\Data;
+use Magento\Swatches\Helper\Media;
 
 class SwatchRenderer extends RenderLayered
 {
@@ -55,7 +56,8 @@ class SwatchRenderer extends RenderLayered
      * @param Data $swatchHelper
      * @param Media $mediaHelper
      * @param Config $config
-     * @param EavAttributeFactory $attributeFactory
+     * @param EavAttributeFactory $eavAttributeFactory
+     * @param FilterHelper $filterHelper
      * @param array $data
      */
     public function __construct(
@@ -68,8 +70,7 @@ class SwatchRenderer extends RenderLayered
         EavAttributeFactory $eavAttributeFactory,
         FilterHelper $filterHelper,
         array $data = []
-    )
-    {
+    ) {
         parent::__construct($context, $eavAttribute, $layerAttribute, $swatchHelper, $mediaHelper, $data);
         $this->config = $config;
         $this->eavAttributeFactory = $eavAttributeFactory;
@@ -78,7 +79,7 @@ class SwatchRenderer extends RenderLayered
 
     /**
      * @param Filter $filter
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function setFilter(Filter $filter)
     {
@@ -94,36 +95,11 @@ class SwatchRenderer extends RenderLayered
     }
 
     /**
-     * @return bool
-     */
-    public function getUseFormFilters()
-    {
-        return $this->config->getUseFormFilters();
-    }
-
-    /**
-     * @param Item $item
-     * @return string
-     */
-    public function getCssItemId(Item $item)
-    {
-        return spl_object_hash($item);
-    }
-
-    /**
      * @param int $id
      * @return Item
      */
     public function getItemForSwatch($id)
     {
         return $this->filter->getItemByOptionId($id);
-    }
-
-    /**
-     * @return string
-     */
-    public function getJsNavigationConfig()
-    {
-        return $this->config->getJsNavigationConfig();
     }
 }

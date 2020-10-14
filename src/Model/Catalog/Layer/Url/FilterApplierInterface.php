@@ -8,25 +8,20 @@
 
 namespace Emico\Tweakwise\Model\Catalog\Layer\Url;
 
-use Emico\Tweakwise\Model\Catalog\Layer\Filter;
-use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
-use Magento\Framework\Api\SortOrder;
-use Zend\Http\Request as HttpRequest;
+use Magento\Framework\App\Request\Http as MagentoHttpRequest;
 
 /**
  * Interface UrlInterface implementation should handle both category url's and
- *
- *
  */
 interface FilterApplierInterface
 {
     /**
      * Apply all attribute filters, category filters, sort order, page limit request parameters to navigation request
      *
-     * @param HttpRequest $request
+     * @param MagentoHttpRequest $request
      * @param ProductNavigationRequest $navigationRequest
      * @return $this
      */
-    public function apply(HttpRequest $request, ProductNavigationRequest $navigationRequest): FilterApplierInterface;
+    public function apply(MagentoHttpRequest $request, ProductNavigationRequest $navigationRequest): FilterApplierInterface;
 }

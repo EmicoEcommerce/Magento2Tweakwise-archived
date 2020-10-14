@@ -8,6 +8,7 @@ namespace Emico\Tweakwise\Model\CatalogSearch\Controller\Result\Index;
 
 use Emico\Tweakwise\Model\Config;
 use Magento\CatalogSearch\Controller\Result\Index;
+use Magento\Search\Model\Query;
 use Magento\Search\Model\QueryFactory;
 
 /**
@@ -50,7 +51,7 @@ class Plugin
     public function beforeExecute(Index $subject)
     {
         if ($this->config->isSearchEnabled()) {
-            /* @var $query \Magento\Search\Model\Query */
+            /* @var Query $query */
             $query = $this->queryFactory->get();
             // Set redirect to '', so that it does not get executed
             $query->setRedirect('');

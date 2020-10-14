@@ -16,7 +16,7 @@ class TemplateFinder
     /**
      * @var Config
      */
-    private $config;
+    protected $config;
 
     /**
      * TemplateFinder constructor.
@@ -97,7 +97,7 @@ class TemplateFinder
      * @param string $type
      * @return string
      */
-    private function getAttribute($type)
+    protected function getAttribute($type)
     {
         return sprintf('tweakwise_%s_template', $type);
     }
@@ -106,7 +106,7 @@ class TemplateFinder
      * @param string $type
      * @return string
      */
-    private function getGroupCodeAttribute($type)
+    protected function getGroupCodeAttribute($type)
     {
         return sprintf('tweakwise_%s_group_code', $type);
     }

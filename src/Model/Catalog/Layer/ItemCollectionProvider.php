@@ -9,13 +9,11 @@
 namespace Emico\Tweakwise\Model\Catalog\Layer;
 
 use Emico\Tweakwise\Exception\TweakwiseException;
-use Emico\Tweakwise\Model\Catalog\Product\Collection;
 use Emico\Tweakwise\Model\Catalog\Product\CollectionFactory;
 use Emico\Tweakwise\Model\Config;
 use Emico\TweakwiseExport\Model\Logger;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Layer\ItemCollectionProviderInterface;
-use Magento\Catalog\Model\ResourceModel\Product\Collection as ProductCollection;
 
 class ItemCollectionProvider implements ItemCollectionProviderInterface
 {
@@ -53,8 +51,13 @@ class ItemCollectionProvider implements ItemCollectionProviderInterface
      * @param CollectionFactory $collectionFactory
      * @param NavigationContext $navigationContext
      */
-    public function __construct(Config $config, Logger $log, ItemCollectionProviderInterface $originalProvider, CollectionFactory $collectionFactory, NavigationContext $navigationContext)
-    {
+    public function __construct(
+        Config $config,
+        Logger $log,
+        ItemCollectionProviderInterface $originalProvider,
+        CollectionFactory $collectionFactory,
+        NavigationContext $navigationContext
+    ) {
         $this->config = $config;
         $this->log = $log;
         $this->collectionFactory = $collectionFactory;

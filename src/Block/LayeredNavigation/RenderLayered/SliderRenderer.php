@@ -9,6 +9,7 @@
 namespace Emico\Tweakwise\Block\LayeredNavigation\RenderLayered;
 
 use Emico\Tweakwise\Model\Config;
+use Emico\Tweakwise\Model\NavigationConfig;
 use Emico\Tweakwise\Model\Seo\FilterHelper;
 use Magento\Tax\Helper\Data as TaxHelper;
 use Magento\Framework\Pricing\Helper\Data as PriceHelper;
@@ -37,6 +38,7 @@ class SliderRenderer extends DefaultRenderer
      * @param PriceHelper $priceHelper
      * @param TaxHelper $taxHelper
      * @param Config $config
+     * @param NavigationConfig $navigationConfig
      * @param FilterHelper $filterHelper
      * @param Template\Context $context
      * @param Json $jsonSerializer
@@ -46,12 +48,20 @@ class SliderRenderer extends DefaultRenderer
         PriceHelper $priceHelper,
         TaxHelper $taxHelper,
         Config $config,
+        NavigationConfig $navigationConfig,
         FilterHelper $filterHelper,
         Template\Context $context,
         Json $jsonSerializer,
         array $data = []
     ) {
-        parent::__construct($context, $config, $filterHelper, $jsonSerializer, $data);
+        parent::__construct(
+            $context,
+            $config,
+            $navigationConfig,
+            $filterHelper,
+            $jsonSerializer,
+            $data
+        );
         $this->priceHelper = $priceHelper;
         $this->taxHelper = $taxHelper;
     }
@@ -138,41 +148,24 @@ class SliderRenderer extends DefaultRenderer
     }
 
     /**
-     * @deprecated v2.1.8
-     * @return float
-     */
-    public function getMaxFloatValue()
-    {
-        return $this->getItemValue(3, $this->getCurrentMaxValue());
-    }
-
-    /**
-     * @deprecated v2.1.8
-     * @return float
-     */
-    public function getCurrentMaxFloatValue()
-    {
-        return $this->getItemValue(1, 99999);
-    }
-
-    /**
-     * @deprecated v1.5.0 use getFilterUrl()
-     * @see SliderRenderer::getFilterUrl()
      * @return string
      */
-    public function getPriceUrl()
+    public function getJsSliderConfig(): string
     {
-        return $this->getFilterUrl();
+        return $this->navigationConfig->getJsSliderConfig($this);
     }
 
     /**
-     * @deprecated 1.5.0 use renderValue()
-     * @see SliderRenderer::renderValue()
-     * @param string $value
      * @return string
      */
-    public function renderPrice($value)
+    public function getCssId()
     {
-        return $this->renderValue($value);
+        $anyItem = $this->getItems()[0];
+        $urlKey = $anyItem->getFilter()
+            ->getFacet()
+            ->getFacetSettings()
+            ->getUrlKey();
+
+        return 'slider-' . $urlKey;
     }
 }
