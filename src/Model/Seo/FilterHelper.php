@@ -16,6 +16,11 @@ use Magento\Catalog\Model\Layer\Resolver;
 class FilterHelper
 {
     /**
+     *
+     */
+    public const TWEAKWISE_CATEGORY_FILTER_NAME = 'categorie';
+
+    /**
      * @var Resolver
      */
     protected $layerResolver;

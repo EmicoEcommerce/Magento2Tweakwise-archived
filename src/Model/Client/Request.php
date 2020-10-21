@@ -197,6 +197,27 @@ class Request
     }
 
     /**
+     * @return string|null
+     */
+    public function getCategoryPathFilter()
+    {
+        if (!$categoryPath = $this->getParameter('tn_cid')) {
+            return null;
+        }
+
+        if (!is_string($categoryPath)) {
+            return null;
+        }
+
+        $magentoIdMapper = function (int $tweakwiseCategoryId) {
+            return $this->helper->getStoreId($tweakwiseCategoryId);
+        };
+
+        $categoryPath = array_map($magentoIdMapper, explode('-', $categoryPath));
+        return implode('-', $categoryPath);
+    }
+
+    /**
      * @return StoreManagerInterface
      */
     protected function getStore()

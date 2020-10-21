@@ -35,57 +35,57 @@ class Filter extends AbstractFilter implements FilterInterface
     /**
      * @var string
      */
-    private $requestVar;
+    protected $requestVar;
 
     /**
      * @var
      */
-    private $items;
+    protected $items;
 
     /**
      * @var Layer
      */
-    private $layer;
+    protected $layer;
 
     /**
      * @var Attribute
      */
-    private $attributeModel;
+    protected $attributeModel;
 
     /**
      * @var int
      */
-    private $storeId;
+    protected $storeId;
 
     /**
      * @var int
      */
-    private $websiteId;
+    protected $websiteId;
 
     /**
      * @var FacetType
      */
-    private $facet;
+    protected $facet;
 
     /**
      * @var ItemFactory
      */
-    private $itemFactory;
+    protected $itemFactory;
 
     /**
      * @var StoreManager
      */
-    private $storeManager;
+    protected $storeManager;
 
     /**
      * @var int[]
      */
-    private $optionLabelValueMap;
+    protected $optionLabelValueMap;
 
     /**
      * @var Item[]
      */
-    private $optionLabelItemMap;
+    protected $optionLabelItemMap;
 
     /**
      * Filter constructor.
@@ -95,6 +95,8 @@ class Filter extends AbstractFilter implements FilterInterface
      * @param ItemFactory $itemFactory
      * @param StoreManager $storeManager
      * @param Attribute|null $attribute
+     * @noinspection MagicMethodsValidityInspection
+     * @noinspection PhpMissingParentConstructorInspection
      */
     public function __construct(
         Layer $layer,
@@ -235,6 +237,8 @@ class Filter extends AbstractFilter implements FilterInterface
     public function setAttributeModel($attribute)
     {
         $this->attributeModel = $attribute;
+        $this->optionLabelValueMap = null;
+        $this->optionLabelItemMap = null;
         return $this;
     }
 
@@ -323,7 +327,7 @@ class Filter extends AbstractFilter implements FilterInterface
      * @param AttributeType $attributeType
      * @return Item
      */
-    private function createItem(AttributeType $attributeType)
+    protected function createItem(AttributeType $attributeType)
     {
         $item = $this->itemFactory->create(['filter' => $this, 'attributeType' => $attributeType]);
 
@@ -339,7 +343,7 @@ class Filter extends AbstractFilter implements FilterInterface
     /**
      * @param Item $item
      */
-    private function findDeepestActiveChildItem(Item $item)
+    protected function findDeepestActiveChildItem(Item $item)
     {
         if (!$item->hasChildren()) {
             return $item->isActive() ? $item : null;
@@ -357,7 +361,7 @@ class Filter extends AbstractFilter implements FilterInterface
     /**
      * @return $this
      */
-    private function initItems()
+    protected function initItems()
     {
         foreach ($this->facet->getAttributes() as $attribute) {
             $this->addItem($attribute);
@@ -368,7 +372,7 @@ class Filter extends AbstractFilter implements FilterInterface
     /**
      * @return int[]
      */
-    private function getOptionLabelValueMap()
+    protected function getOptionLabelValueMap()
     {
         if (!$this->hasAttributeModel()) {
             return [];
@@ -389,7 +393,7 @@ class Filter extends AbstractFilter implements FilterInterface
     /**
      * @return Item[]
      */
-    private function getOptionLabelItemMap()
+    protected function getOptionLabelItemMap()
     {
         if (!$this->hasAttributeModel()) {
             return [];
@@ -414,7 +418,7 @@ class Filter extends AbstractFilter implements FilterInterface
     public function getOptionIdByLabel($label)
     {
         $map = $this->getOptionLabelValueMap();
-        return isset($map[$label]) ? $map[$label] : null;
+        return $map[$label] ?? null;
     }
 
     /**
@@ -425,7 +429,7 @@ class Filter extends AbstractFilter implements FilterInterface
     {
         $map = $this->getOptionLabelValueMap();
         $map = array_flip($map);
-        return isset($map[$id]) ? $map[$id] : null;
+        return $map[$id] ?? null;
     }
 
     /**
@@ -440,7 +444,7 @@ class Filter extends AbstractFilter implements FilterInterface
         }
 
         $map = $this->getOptionLabelItemMap();
-        return isset($map[$label]) ? $map[$label] : null;
+        return $map[$label] ?? null;
     }
 
     /**
@@ -488,7 +492,7 @@ class Filter extends AbstractFilter implements FilterInterface
      * @param Item[] $activeItems
      * @return Item[]
      */
-    private function combineActiveSliderItems(array $activeItems)
+    protected function combineActiveSliderItems(array $activeItems)
     {
         if (count($activeItems) !== 2) {
             return $activeItems;

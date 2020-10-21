@@ -8,85 +8,70 @@
 use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
 
 /** @var $block SliderRenderer */
+$itemPrefix = $block->getItemPrefix();
+$itemPostfix = $block->getItemPostfix();
+$urlKey = $block->getUrlKey();
+$minValue = $block->getMinValue();
+$maxValue = $block->getMaxValue();
+$currentMinValue = $block->getCurrentMinValue();
+$currentMaxValue = $block->getCurrentMaxValue();
+$sliderUrlInputValue = sprintf('%s-%s', $currentMinValue, $currentMaxValue);
+$disabledSliderUrlInputValue = sprintf('%s-%s', $minValue, $maxValue);
 ?>
-<div class="slider-attribute" id="attribute-slider-<?=$block->getCssId()?>"
-     data-url-key="<?=$block->getUrlKey()?>"
-     data-min="<?=$block->getCurrentMinValue()?>"
-     data-max="<?=$block->getCurrentMaxValue()?>"
-     data-range-min="<?=$block->getMinValue()?>"
-     data-range-max="<?=$block->getMaxValue()?>"
->
+<div class="slider-attribute" id="attribute-slider-<?=$block->getCssId()?>">
     <div class="labels">
         <span class="min-value">
-            <span class="prefix"><?=$block->getItemPrefix()?></span>
-            <?=$block->renderValue($block->getMinValue())?>
-            <span class="postfix"><?=$block->getItemPostfix()?></span>
+            <span class="prefix"><?= $itemPrefix ?></span>
+            <?=$block->renderValue($minValue)?>
+            <span class="postfix"><?= $itemPostfix ?></span>
         </span>
         <span class="max-value">
-            <span class="prefix"><?=$block->getItemPrefix()?></span>
-            <?=$block->renderValue($block->getMaxValue())?>
-            <span class="postfix"><?=$block->getItemPostfix()?></span>
+            <span class="prefix"><?= $itemPrefix ?></span>
+            <?=$block->renderValue($maxValue)?>
+            <span class="postfix"><?= $itemPostfix ?></span>
         </span>
     </div>
-    <div class="slider"></div>
+    <div class="slider" data-mage-init='<?=$block->getJsSliderConfig()?>'></div>
     <div class="labels">
         <span class="current-min-value">
-            <span class="prefix"><?=$block->getItemPrefix()?></span>
-            <?=$block->renderValue($block->getCurrentMinValue())?>
-            <span class="postfix"><?=$block->getItemPostfix()?></span>
+            <span class="prefix"><?= $itemPrefix ?></span>
+            <?= $block->renderValue($currentMinValue)?>
+            <span class="postfix"><?= $itemPostfix ?></span>
         </span>
         <span class="current-max-value">
-            <span class="prefix"><?=$block->getItemPrefix()?></span>
-            <?=$block->renderValue($block->getCurrentMaxValue())?>
-            <span class="postfix"><?=$block->getItemPostfix()?></span>
+            <span class="prefix"><?= $itemPrefix ?></span>
+            <?=$block->renderValue($currentMaxValue)?>
+            <span class="postfix"><?= $itemPostfix ?></span>
         </span>
     </div>
+    <div class="slider-inputs">
+        <div class="slider-min-wrapper">
+            <label for="<?= $urlKey ?>-min"><?=__('From')?></label>
+            <input type="text"
+                   class="slider-min js-skip-submit"
+                   id="<?= $urlKey ?>-min"
+                   name="<?= $urlKey ?>-min"
+                   value="<?= $currentMinValue ?>"
+            >
+        </div>
+        <div class="slider-max-wrapper">
+            <label for="<?= $urlKey ?>-max"><?=__('To')?></label>
+            <input type="text"
+                   class="slider-max js-skip-submit"
+                   id="<?= $urlKey ?>-max"
+                   name="<?= $urlKey ?>-max"
+                   value="<?= $currentMaxValue ?>"
+            >
+        </div>
+        <input type="hidden"
+               data-disabled-input="<?=$disabledSliderUrlInputValue?>"
+               <?php if ($sliderUrlInputValue === $disabledSliderUrlInputValue):?>
+               disabled="disabled"
+               <?php endif;?>
+               id="<?=$block->getCssId()?>"
+               class="slider-url-value"
+               name="<?= $urlKey ?>"
+               value="<?=$sliderUrlInputValue?>"
+        >
+    </div>
 </div>
-
-<script type="text/javascript">
-    require(['jquery', 'jquery/ui', 'domReady!'], function($, priceUtils, quote){
-        'use strict';
-
-        var filterUrl = '<?=$block->getFilterUrl()?>';
-        var prefix = '<span class="prefix">' + '<?=$block->getItemPrefix();?>' + '</span>';
-        var postfix = '<span class="postfix">' + '<?=$block->getItemPostfix();?>' + '</span>';
-        var container = $('#attribute-slider-<?=$block->getCssId()?>');
-        var currentMinValueContainer = container.find('.current-min-value');
-        var currentMaxValueContainer = container.find('.current-max-value');
-        var formFilters = <?=$block->getJsUseFormFilters()?>;
-
-        function labelFormat(value, prefix, postfix) {
-            return prefix + value + postfix;
-        }
-
-        container.find('.slider').slider({
-            range: true,
-            min: <?=$block->getMinValue()?>,
-            max: <?=$block->getMaxValue()?>,
-            values: [ <?=$block->getCurrentMinValue()?>, <?=$block->getCurrentMaxValue()?> ],
-            slide: function(event, ui) {
-                var currentMinValue = labelFormat(ui.values[0], prefix, postfix);
-                currentMinValueContainer.html(currentMinValue);
-
-                var currentMaxValue = labelFormat(ui.values[1], prefix, postfix);
-                currentMaxValueContainer.html(currentMaxValue);
-            },
-            change: function(event, ui) {
-                var min = ui.values[0];
-                var max = ui.values[1];
-                if (formFilters) {
-                    let slider = jQuery(event.target).closest('.slider-attribute');
-                    slider.attr('data-min', min);
-                    slider.attr('data-max', max);
-                } else {
-                    var url = filterUrl;
-                    url = url.replace(encodeURI('{{from}}'), min);
-                    url = url.replace('{{from}}', min);
-                    url = url.replace(encodeURI('{{to}}'), max);
-                    url = url.replace('{{to}}', max);
-                    window.location.href = url;
-                }
-            },
-        });
-    });
-</script>

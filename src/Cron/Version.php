@@ -5,8 +5,8 @@
  */
 namespace Emico\Tweakwise\Cron;
 
-use Magento\Framework\Composer\ComposerInformation;
 use Magento\Framework\App\Config\Storage\WriterInterface;
+use Magento\Framework\Composer\ComposerInformation;
 
 /**
  * Class Version
@@ -55,7 +55,7 @@ class Version
             '%s(%s)',
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36 Magento2Tweakwise',
             $version
-            );
+        );
         $this->configWriter->save('tweakwise/general/version', $userAgentString);
     }
 }

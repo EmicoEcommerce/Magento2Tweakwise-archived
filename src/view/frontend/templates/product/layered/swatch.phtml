@@ -12,22 +12,21 @@
 <div class="swatch-attribute swatch-layered <?= /* @escapeNotVerified */ $swatchData['attribute_code'] ?>"
      attribute-code="<?= /* @escapeNotVerified */ $swatchData['attribute_code'] ?>"
      attribute-id="<?= /* @escapeNotVerified */ $swatchData['attribute_id'] ?>"
-     data-mage-init='<?=$block->getJsNavigationConfig()?>'>
+     data-mage-init='{"tweakwiseNavigationSort":[]}'>
     <div class="swatch-attribute-options clearfix">
         <?php foreach ($swatchData['options'] as $option => $label): ?>
             <?php $item = $block->getItemForSwatch($option);?>
-            <?php if ($block->getUseFormFilters()):?>
-                <input id="inputCheckbox<?=$block->getCssItemId($item)?>" style="display: none"
+            <a <?=$block->renderAnchorHtmlTagAttributes($item);?>
+                aria-label="<?= /* @escapeNotVerified */ $label['label'] ?>"
+                class="swatch-option-link-layered"
+            >
+                <?php $cssId = $item->getCssId();?>
+                <input id="<?=$cssId?>" style="display: none"
                        name="<?=$item->getFilter()->getFacet()->getFacetSettings()->getUrlKey()?>[]"
                        type="checkbox" <?=($item->isSelected() ? 'checked="checked"' : '')?>
                        value="<?=$block->escapeHtmlAttr($item->getLabel())?>"
                 >
-                <label for="inputCheckbox<?=$block->getCssItemId($item)?>">
-            <?php else:?>
-                <a <?=$block->renderAnchorHtmlTagAttributes($item);?>
-                aria-label="<?= /* @escapeNotVerified */ $label['label'] ?>"
-                class="swatch-option-link-layered js-swatch-link">
-            <?php endif;?>
+                <label for="<?=$cssId?>">
                 <?php if (isset($swatchData['swatches'][$option]['type'])) { ?>
                     <?php switch ($swatchData['swatches'][$option]['type']) {
                         case '3':
@@ -81,11 +80,8 @@
                             <?php    break;
                     } ?>
                 <?php } ?>
-            <?php if ($block->getUseFormFilters()):?>
-            </label>
-            <?php else:?>
+                </label>
             </a>
-            <?php endif;?>
         <?php endforeach; ?>
     </div>
 </div>

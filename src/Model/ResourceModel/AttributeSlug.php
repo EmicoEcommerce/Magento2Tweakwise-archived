@@ -13,11 +13,14 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 class AttributeSlug extends AbstractDb
 {
-
+    /**
+     * Resource initialization
+     *
+     * @return void
+     */
     protected function _construct()
     {
         $this->_init('tweakwise_attribute_slug', AttributeSlugInterface::ATTRIBUTE);
         $this->_isPkAutoIncrement = false;
     }
-
 }

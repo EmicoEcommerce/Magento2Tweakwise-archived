@@ -16,8 +16,9 @@ use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlModel;
 use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
 use Magento\Catalog\Api\Data\CategoryInterface;
+use Magento\Framework\App\Request\Http as MagentoHttpRequest;
 use Magento\Catalog\Model\Category;
-use Zend\Http\Request as HttpRequest;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Emico\TweakwiseExport\Model\Helper as ExportHelper;
 
@@ -58,17 +59,17 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     /**
      * @var CategoryRepositoryInterface
      */
-    private $categoryRepository;
+    protected $categoryRepository;
 
     /**
      * @var ExportHelper
      */
-    private $exportHelper;
+    protected $exportHelper;
 
     /**
      * @var UrlModel
      */
-    private $url;
+    protected $url;
 
     /**
      * Magento constructor.
@@ -90,7 +91,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     /**
      * {@inheritdoc}
      */
-    public function getClearUrl(HttpRequest $request, array $activeFilterItems): string
+    public function getClearUrl(MagentoHttpRequest $request, array $activeFilterItems): string
     {
         $query = [];
         /** @var Item $item */
@@ -101,30 +102,35 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
             $query[$urlKey] = $filter->getCleanValue();
         }
 
-        return $this->getCurrentQueryUrl($query);
+        return $this->getCurrentQueryUrl($request, $query);
     }
 
     /**
+     * @param MagentoHttpRequest $request
      * @param array $query
      * @return string
      */
-    protected function getCurrentQueryUrl(array $query)
+    protected function getCurrentQueryUrl(MagentoHttpRequest $request, array $query)
     {
         $params['_current'] = true;
         $params['_use_rewrite'] = true;
         $params['_query'] = $query;
         $params['_escape'] = false;
+
+        if ($originalUrl = $request->getQuery('__tw_original_url')) {
+            return $this->url->getDirectUrl($originalUrl, $params);
+        }
         return $this->url->getUrl('*/*/*', $params);
     }
 
     /**
      * Fetch current selected values
      *
-     * @param HttpRequest $request
+     * @param MagentoHttpRequest $request
      * @param Item $item
      * @return string[]|string|null
      */
-    protected function getRequestValues(HttpRequest $request, Item $item)
+    protected function getRequestValues(MagentoHttpRequest $request, Item $item)
     {
         $filter = $item->getFilter();
         $settings = $filter
@@ -155,7 +161,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     /**
      * {@inheritdoc}
      */
-    public function getCategoryFilterSelectUrl(HttpRequest $request, Item $item): string
+    public function getCategoryFilterSelectUrl(MagentoHttpRequest $request, Item $item): string
     {
         $category = $this->getCategoryFromItem($item);
         if (!$this->getSearch($request)) {
@@ -177,25 +183,25 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
         $value = implode(self::CATEGORY_TREE_SEPARATOR, array_reverse($value));
 
         $query = [$urlKey => $value];
-        return $this->getCurrentQueryUrl($query);
+        return $this->getCurrentQueryUrl($request, $query);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCategoryFilterRemoveUrl(HttpRequest $request, Item $item): string
+    public function getCategoryFilterRemoveUrl(MagentoHttpRequest $request, Item $item): string
     {
         $filter = $item->getFilter();
         $urlKey = $filter->getUrlKey();
 
         $query = [$urlKey => $filter->getCleanValue()];
-        return $this->getCurrentQueryUrl($query);
+        return $this->getCurrentQueryUrl($request, $query);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAttributeSelectUrl(HttpRequest $request, Item $item): string
+    public function getAttributeSelectUrl(MagentoHttpRequest $request, Item $item): string
     {
         $settings = $item
             ->getFilter()
@@ -217,13 +223,24 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
             $query = [$urlKey => $value];
         }
 
-        return $this->getCurrentQueryUrl($query);
+        return $this->getCurrentQueryUrl($request, $query);
+    }
+
+    /**
+     * @param MagentoHttpRequest $request
+     * @param Item[] $filters
+     * @return string
+     */
+    public function buildFilterUrl(MagentoHttpRequest $request, array $filters = []): string
+    {
+        $attributeFilters = $this->getAttributeFilters($request);
+        return $this->getCurrentQueryUrl($request, $attributeFilters);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAttributeRemoveUrl(HttpRequest $request, Item $item): string
+    public function getAttributeRemoveUrl(MagentoHttpRequest $request, Item $item): string
     {
         $filter = $item->getFilter();
         $settings = $filter->getFacet()->getFacetSettings();
@@ -246,13 +263,13 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
             $query = [$urlKey => $filter->getCleanValue()];
         }
 
-        return $this->getCurrentQueryUrl($query);
+        return $this->getCurrentQueryUrl($request, $query);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getCategoryFilters(HttpRequest $request)
+    protected function getCategoryFilters(MagentoHttpRequest $request)
     {
         $categories = $request->getQuery(self::PARAM_CATEGORY);
         $categories = explode(self::CATEGORY_TREE_SEPARATOR, $categories);
@@ -266,7 +283,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     /**
      * {@inheritdoc}
      */
-    protected function getAttributeFilters(HttpRequest $request)
+    protected function getAttributeFilters(MagentoHttpRequest $request)
     {
         $result = [];
         foreach ($request->getQuery() as $attribute => $value) {
@@ -282,17 +299,17 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     /**
      * {@inheritdoc}
      */
-    public function getSliderUrl(HttpRequest $request, Item $item): string
+    public function getSliderUrl(MagentoHttpRequest $request, Item $item): string
     {
         $query = [$item->getFilter()->getUrlKey() => '{{from}}-{{to}}'];
 
-        return $this->getCurrentQueryUrl($query);
+        return $this->getCurrentQueryUrl($request, $query);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function apply(HttpRequest $request, ProductNavigationRequest $navigationRequest): FilterApplierInterface
+    public function apply(MagentoHttpRequest $request, ProductNavigationRequest $navigationRequest): FilterApplierInterface
     {
         $attributeFilters = $this->getAttributeFilters($request);
         foreach ($attributeFilters as $attribute => $values) {
@@ -336,37 +353,37 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     }
 
     /**
-     * @param HttpRequest $request
+     * @param MagentoHttpRequest $request
      * @return string|null
      */
-    protected function getSortOrder(HttpRequest $request)
+    protected function getSortOrder(MagentoHttpRequest $request)
     {
         return $request->getQuery(self::PARAM_ORDER);
     }
 
     /**
-     * @param HttpRequest $request
+     * @param MagentoHttpRequest $request
      * @return int|null
      */
-    protected function getPage(HttpRequest $request)
+    protected function getPage(MagentoHttpRequest $request)
     {
         return $request->getQuery(self::PARAM_PAGE);
     }
 
     /**
-     * @param HttpRequest $request
+     * @param MagentoHttpRequest $request
      * @return int|null
      */
-    protected function getLimit(HttpRequest $request)
+    protected function getLimit(MagentoHttpRequest $request)
     {
         return $request->getQuery(self::PARAM_LIMIT);
     }
 
     /**
-     * @param HttpRequest $request
+     * @param MagentoHttpRequest $request
      * @return string|null
      */
-    protected function getSearch(HttpRequest $request)
+    protected function getSearch(MagentoHttpRequest $request)
     {
         return $request->getQuery(self::PARAM_SEARCH);
     }
@@ -374,7 +391,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     /**
      * @param Item $item
      * @return CategoryInterface
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     protected function getCategoryFromItem(Item $item): CategoryInterface
     {

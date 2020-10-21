@@ -1,0 +1,38 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php
+/**
+ * Category layered navigation state
+ *
+ * @var $block \Emico\Tweakwise\Block\LayeredNavigation\Navigation\State
+ */
+?>
+<?php /** @var Emico\Tweakwise\Model\Catalog\Layer\Filter\Item[] $_filters */ ?>
+<?php $_filters = $block->getActiveFilters() ?>
+<?php if (!empty($_filters)) : ?>
+<div class="filter-current" data-mage-init='{"collapsible":{"openedState": "active", "collapsible": true, "active": false }}'>
+    <strong class="block-subtitle filter-current-subtitle"
+            role="heading"
+            aria-level="2"
+            data-role="title"
+            data-count="<?= /* @noEscape */ count($_filters) ?>"><?= $block->escapeHtml(__('Now Shopping by')) ?></strong>
+    <ol class="items">
+        <?php foreach ($_filters as $_filter) : ?>
+            <li class="item">
+                <span class="filter-label"><?= $block->escapeHtml(__($_filter->getName())) ?></span>
+                <span class="filter-value"><?= $block->escapeHtml($block->stripTags($_filter->getLabel())) ?></span>
+                <?php $currentFilterName = $block->escapeHtmlAttr(__($_filter->getName()) . " " . $block->stripTags($_filter->getLabel())); ?>
+                <a class="action remove" href="<?= $block->escapeUrl($_filter->getRemoveUrl()) ?>"
+                   data-js-filter-id="<?=$block->getActiveFilterCssId($_filter)?>"
+                   title="<?= /* @noEscape */ $block->escapeHtmlAttr(__('Remove')) . " " . $currentFilterName ?>">
+                    <span><?= $block->escapeHtml(__('Remove This Item')) ?></span>
+                </a>
+            </li>
+        <?php endforeach; ?>
+    </ol>
+</div>
+<?php endif; ?>

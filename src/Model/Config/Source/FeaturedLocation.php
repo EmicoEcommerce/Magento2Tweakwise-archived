@@ -15,8 +15,8 @@ class FeaturedLocation implements OptionSourceInterface
     /**
      * Possible product locations
      */
-    const LOCATION_BEFORE = 'before';
-    const LOCATION_AFTER = 'after';
+    public const LOCATION_BEFORE = 'before';
+    public const LOCATION_AFTER = 'after';
 
     /**
      * @var array[]
