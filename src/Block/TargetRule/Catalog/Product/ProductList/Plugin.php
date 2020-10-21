@@ -46,7 +46,7 @@ abstract class Plugin
      * @var Context
      */
     protected $context;
-    
+
     /**
      * @var TemplateFinder
      */
@@ -108,7 +108,7 @@ abstract class Plugin
     /**
      * @param ProductRequest $request
      */
-    private function configureRequest(ProductRequest $request)
+    protected function configureRequest(ProductRequest $request)
     {
         $product = $this->registry->registry('product');
         if (!$product instanceof Product) {
@@ -122,7 +122,7 @@ abstract class Plugin
     /**
      * @return Collection
      */
-    private function getCollection()
+    protected function getCollection()
     {
         if (!$this->collection) {
             $request = $this->context->getRequest();

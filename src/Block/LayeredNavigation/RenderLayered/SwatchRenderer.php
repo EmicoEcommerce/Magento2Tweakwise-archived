@@ -18,6 +18,7 @@ use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory as EavAttributeFact
 use Magento\Catalog\Model\ResourceModel\Layer\Filter\AttributeFactory;
 use Magento\Eav\Api\Data\AttributeInterface;
 use Magento\Eav\Model\Entity\Attribute;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Swatches\Block\LayeredNavigation\RenderLayered;
 use Magento\Swatches\Helper\Data;
@@ -95,7 +96,7 @@ class SwatchRenderer extends RenderLayered
 
     /**
      * @param Filter $filter
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function setFilter(Filter $filter)
     {
@@ -198,13 +199,5 @@ class SwatchRenderer extends RenderLayered
     public function getItemForSwatch($id)
     {
         return $this->filter->getItemByOptionId($id);
-    }
-
-    /**
-     * @return string
-     */
-    public function getJsNavigationConfig()
-    {
-        return $this->config->getJsNavigationConfig();
     }
 }

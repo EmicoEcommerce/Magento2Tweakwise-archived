@@ -29,32 +29,32 @@ class FilterSlugManager
     /**
      * @var TranslitUrl
      */
-    private $translitUrl;
+    protected $translitUrl;
 
     /**
      * @var AttributeSlugRepositoryInterface
      */
-    private $attributeSlugRepository;
+    protected $attributeSlugRepository;
 
     /**
      * @var AttributeSlugInterfaceFactory
      */
-    private $attributeSlugFactory;
+    protected $attributeSlugFactory;
 
     /**
      * @var CacheInterface
      */
-    private $cache;
+    protected $cache;
 
     /**
      * @var array
      */
-    private $lookupTable;
+    protected $lookupTable;
 
     /**
      * @var SerializerInterface
      */
-    private $serializer;
+    protected $serializer;
 
     /**
      * @param TranslitUrl $translitUrl
@@ -106,7 +106,7 @@ class FilterSlugManager
     /**
      * @param string $slug
      * @return string
-     * @throws \Emico\Tweakwise\Exception\UnexpectedValueException
+     * @throws UnexpectedValueException
      */
     public function getAttributeBySlug(string $slug): string
     {

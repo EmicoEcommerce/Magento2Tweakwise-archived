@@ -8,7 +8,6 @@
 
 namespace Emico\Tweakwise\Model\Catalog\Layer\FilterList;
 
-
 use Magento\Catalog\Model\Layer\FilterableAttributeListInterface;
 
 class EmptyAttributeList implements FilterableAttributeListInterface

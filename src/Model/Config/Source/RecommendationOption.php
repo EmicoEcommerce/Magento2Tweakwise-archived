@@ -19,8 +19,8 @@ class RecommendationOption extends AbstractSource
     /**
      * Option to use when expecting a code instead of template id
      */
-    const OPTION_CODE = -1;
-    const OPTION_EMPTY = null;
+    public const OPTION_CODE = -1;
+    public const OPTION_EMPTY = null;
 
     /**
      * @var Client

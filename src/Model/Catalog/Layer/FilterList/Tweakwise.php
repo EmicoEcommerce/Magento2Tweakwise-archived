@@ -23,27 +23,27 @@ class Tweakwise
     /**
      * @var FilterInterface[]
      */
-    private $filters;
+    protected $filters;
 
     /**
      * @var FilterFactory
      */
-    private $filterFactory;
+    protected $filterFactory;
 
     /**
      * @var CurrentContext
      */
-    private $context;
+    protected $context;
 
     /**
      * @var Config
      */
-    private $config;
+    protected $config;
 
     /**
      * @var AttributeFactory
      */
-    private $attributeFactory;
+    protected $attributeFactory;
 
     /**
      * Tweakwise constructor.
@@ -84,12 +84,14 @@ class Tweakwise
     protected function initFilters(Layer $layer)
     {
         $request = $this->context->getRequest();
-        $request->addCategoryFilter($layer->getCurrentCategory());
+        if (!$request->hasParameter('tn_cid')) {
+            $request->addCategoryFilter($layer->getCurrentCategory());
+        }
 
         $facets = $this->context->getResponse()->getFacets();
 
         $facetAttributeNames = array_map(
-            function (FacetType $facet) {
+            static function (FacetType $facet) {
                 return $facet->getFacetSettings()->getAttributename();
             },
             $facets

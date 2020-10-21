@@ -18,7 +18,7 @@ class ResponseFactory
      *
      * @var ObjectManagerInterface
      */
-    protected $objectManager = null;
+    protected $objectManager;
 
     /**
      * Factory constructor

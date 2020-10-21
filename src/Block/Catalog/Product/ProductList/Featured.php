@@ -35,22 +35,22 @@ class Featured extends ListProduct
     /**
      * @var RecommendationsContext
      */
-    private $recommendationsContext;
+    protected $recommendationsContext;
 
     /**
      * @var Config
      */
-    private $config;
+    protected $config;
 
     /**
      * @var TemplateFinder
      */
-    private $templateFinder;
+    protected $templateFinder;
 
     /**
      * @var PreparePostDataFactory
      */
-    private $preparePostDataFactory;
+    protected $preparePostDataFactory;
 
     /**
      * Featured constructor.
