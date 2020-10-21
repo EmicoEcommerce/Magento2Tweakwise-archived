@@ -11,6 +11,7 @@ use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Magento\Catalog\Api\Data\ProductAttributeInterface;
 use Magento\Eav\Api\AttributeRepositoryInterface;
 use Magento\Eav\Model\Entity\Attribute\Source\SourceInterface;
+use Magento\Eav\Model\Entity\Attribute\Source\Table;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Swatches\Model\SwatchAttributeCodes;
 use Magento\Swatches\Model\SwatchAttributeType;
@@ -141,8 +142,8 @@ class SwatchAttributeResolver
                 // We cannot resolve an attribute without source.
                 continue;
             }
-            /** @var SourceInterface $source */
-            $options = $source->getAllOptions();
+            /** @var Table $source */
+            $options = $source->getAllOptions(true, true);
 
             $optionLabels = array_column($options, 'label');
             $optionValues = array_column($options, 'value');

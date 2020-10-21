@@ -1,3 +1,9 @@
+## 3.0.2
+Added swatch resolver for derived color filters in tweakwise, this fixes [#126](https://github.com/EmicoEcommerce/Magento2Tweakwise/issues/126)
+Possible issues with this: It is unclear from the navigator response which magento attribute (if any) was used to created the derived property,
+as such we cannot know which swatches to load. We do a guess based on the swatch labels but this could lead to missing swatches. In order to find a match
+for derived swatch with label "Red" in tweakwise magento needs to have a swatch attribute with an option labeled "Red", case sensitive.
+
 ## 3.0.1
 BugFix: Release 3.0.0 introduced an error where the magento autocomplete template was loaded instead of the tweakwise autocomplete template.
 
