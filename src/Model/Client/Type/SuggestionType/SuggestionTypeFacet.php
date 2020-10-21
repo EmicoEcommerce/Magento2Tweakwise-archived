@@ -59,14 +59,14 @@ class SuggestionTypeFacet extends SuggestionTypeCategory
     {
         $isSearch = false;
         try {
-            $categoryUrl = $this->getCategoryUrl();
-            if (!$categoryUrl) {
+            $url = $this->getCategoryUrl();
+            if (!$url) {
                 $isSearch = true;
-                $categoryUrl = $this->getSearchUrl();
+                $url = $this->getSearchUrl();
             }
         } catch (NoSuchEntityException $e) {
             $isSearch = true;
-            $categoryUrl = $this->getSearchUrl();
+            $url = $this->getSearchUrl();
         }
 
         $facets = $this->getFacets();
@@ -79,8 +79,8 @@ class SuggestionTypeFacet extends SuggestionTypeCategory
         $strategy = $this->urlStrategyFactory->create();
         if ($isSearch || $strategy instanceof QueryParameterStrategy) {
             $query = http_build_query($facets);
-            $queryJoin = strpos($categoryUrl, '?') === false ? '?' : '&';
-            return $categoryUrl . $queryJoin . $query;
+            $queryJoin = strpos($url, '?') === false ? '?' : '&';
+            return $url . $queryJoin . $query;
         }
 
         if ($strategy instanceof PathSlugStrategy) {
@@ -98,11 +98,11 @@ class SuggestionTypeFacet extends SuggestionTypeCategory
                 $path .= implode('/', $facetValues);
             }
 
-            return $categoryUrl . $path;
+            return rtrim($url, '/') . '/' . $path;
         }
 
         // Add facets here
-        return $categoryUrl;
+        return $url;
     }
 
     /**
