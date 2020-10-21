@@ -176,23 +176,6 @@ class SwatchRenderer extends RenderLayered
     }
 
     /**
-     * @return bool
-     */
-    public function getUseFormFilters()
-    {
-        return $this->config->getUseFormFilters();
-    }
-
-    /**
-     * @param Item $item
-     * @return string
-     */
-    public function getCssItemId(Item $item)
-    {
-        return spl_object_hash($item);
-    }
-
-    /**
      * @param int $id
      * @return Item
      */
