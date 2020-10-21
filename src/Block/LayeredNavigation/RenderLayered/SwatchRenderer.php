@@ -10,7 +10,6 @@ namespace Emico\Tweakwise\Block\LayeredNavigation\RenderLayered;
 
 use Emico\Tweakwise\Model\Catalog\Layer\Filter;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
-use Emico\Tweakwise\Model\Config;
 use Emico\Tweakwise\Model\Seo\FilterHelper;
 use Emico\Tweakwise\Model\Swatches\SwatchAttributeResolver;
 use Magento\Catalog\Model\Product;
