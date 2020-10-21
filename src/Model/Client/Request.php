@@ -13,7 +13,6 @@ use Magento\Catalog\Model\Category;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\StoreManager;
-use Magento\Store\Model\StoreManagerInterface;
 
 class Request
 {
@@ -119,7 +118,7 @@ class Request
      * @param string|null $value
      * @return $this
      */
-    public function setParameter($parameter, $value)
+    public function setParameter(string $parameter, string $value = null)
     {
         if ($value === null) {
             unset($this->parameters[$parameter]);
@@ -218,7 +217,7 @@ class Request
     }
 
     /**
-     * @return StoreManagerInterface
+     * @return StoreInterface|null
      */
     protected function getStore()
     {
