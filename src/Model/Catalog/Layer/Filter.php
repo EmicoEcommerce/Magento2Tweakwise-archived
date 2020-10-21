@@ -237,6 +237,8 @@ class Filter extends AbstractFilter implements FilterInterface
     public function setAttributeModel($attribute)
     {
         $this->attributeModel = $attribute;
+        $this->optionLabelValueMap = null;
+        $this->optionLabelItemMap = null;
         return $this;
     }
 
