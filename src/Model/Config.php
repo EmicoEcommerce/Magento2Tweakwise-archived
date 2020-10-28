@@ -34,6 +34,13 @@ class Config
     public const ATTRIBUTE_CROSSSELL_GROUP_CODE = 'tweakwise_crosssell_group_code';
 
     /**
+     * Defaults
+     */
+    public const REQUEST_TIMEOUT = 5;
+    public const SERVER_URL = 'https://gateway.tweakwisenavigator.net';
+    public const FALLBACK_SERVER_URL = 'https://gateway.tweakwisenavigator.com';
+
+    /**
      * @var ScopeConfigInterface
      */
     protected $config;
@@ -75,12 +82,14 @@ class Config
     }
 
     /**
-     * @param Store|null $store
+     * @param bool $useFallBack
      * @return string
      */
-    public function getGeneralServerUrl(Store $store = null)
+    public function getGeneralServerUrl(bool $useFallBack = false)
     {
-        return (string)$this->getStoreConfig('tweakwise/general/server_url', $store);
+        return $useFallBack
+            ? self::FALLBACK_SERVER_URL
+            : self::SERVER_URL;
     }
 
     /**
@@ -93,12 +102,11 @@ class Config
     }
 
     /**
-     * @param Store|null $store
-     * @return float
+     * @return int
      */
-    public function getTimeout(Store $store = null)
+    public function getTimeout()
     {
-        return (int)$this->getStoreConfig('tweakwise/general/timeout', $store);
+        return self::REQUEST_TIMEOUT;
     }
 
     /**
