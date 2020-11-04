@@ -462,6 +462,10 @@ class PathSlugStrategy implements
     {
         $requestPath = $request->getPathInfo();
         foreach ($this->skipMatchExtensions as $fileExtension) {
+            // Check for string length of the request path.
+            if (strlen($requestPath) <= strlen($fileExtension)) {
+                continue;
+            }
             if (strpos($requestPath, $fileExtension, -\strlen($fileExtension)) !== false) {
                 return true;
             }
