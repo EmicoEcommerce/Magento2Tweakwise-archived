@@ -92,18 +92,7 @@ class SuggestionDataProvider implements DataProviderInterface
     {
         $query = $this->dataProviderHelper->getQuery();
         $category = $this->dataProviderHelper->getCategory();
-
         $promises = [];
-        if ($this->config->isAutocompleteProductsEnabled()) {
-            /** @var ProductSuggestionsRequest $productSuggestionRequest */
-            $productSuggestionsRequest = $this->productSuggestionRequestFactory->create();
-            $productSuggestionsRequest->setSearch($query);
-            $productSuggestionsRequest->addCategoryFilter($category);
-            $promises['product_suggestions'] = $this->client->request(
-                $productSuggestionsRequest,
-                true
-            );
-        }
 
         if ($this->config->isAutocompleteSuggestionsEnabled()) {
             $suggestionsRequest = $this->suggestionRequestFactory->create();
@@ -111,6 +100,17 @@ class SuggestionDataProvider implements DataProviderInterface
             $suggestionsRequest->addCategoryFilter($category);
             $promises['suggestions'] = $this->client->request(
                 $suggestionsRequest,
+                true
+            );
+        }
+
+        if ($this->config->isAutocompleteProductsEnabled()) {
+            /** @var ProductSuggestionsRequest $productSuggestionRequest */
+            $productSuggestionsRequest = $this->productSuggestionRequestFactory->create();
+            $productSuggestionsRequest->setSearch($query);
+            $productSuggestionsRequest->addCategoryFilter($category);
+            $promises['product_suggestions'] = $this->client->request(
+                $productSuggestionsRequest,
                 true
             );
         }
