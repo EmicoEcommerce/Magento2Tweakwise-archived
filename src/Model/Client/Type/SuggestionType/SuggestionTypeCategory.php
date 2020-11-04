@@ -62,6 +62,18 @@ class SuggestionTypeCategory extends SuggestionTypeAbstract
     /**
      * @return string
      */
+    public function getName()
+    {
+        $match = $this->getMatch();
+        /** @var string $category */
+        $categoryName = $this->getCategoryName();
+
+        return $categoryName ?: $match;
+    }
+
+    /**
+     * @return string
+     */
     public function getUrl()
     {
         try {
