@@ -52,8 +52,9 @@ abstract class SuggestionTypeAbstract extends Type implements SuggestionTypeInte
         $match = $this->getMatch();
         /** @var string $category */
         $categoryName = $this->getCategoryName();
+        $insertion = (string) __('in');
 
-        return ($categoryName) ? "$match $categoryName" : $match;
+        return ($categoryName) ? "$match $insertion $categoryName" : $match;
     }
 
     /**
