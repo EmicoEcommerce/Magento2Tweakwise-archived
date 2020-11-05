@@ -9,8 +9,12 @@
 namespace Emico\Tweakwise\Model\Catalog\Layer\FilterList;
 
 use Emico\Tweakwise\Model\Catalog\Layer\Filter;
+use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Catalog\Layer\FilterFactory;
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
+use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
+use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
+use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
 use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Model\Layer;
 use Magento\Catalog\Model\Layer\Filter\FilterInterface;
@@ -121,9 +125,34 @@ class Tweakwise
             $this->filters[] = $filter;
 
             foreach ($filter->getActiveItems() as $activeFilterItem) {
+                if ($this->shouldHideActiveFilterItem($activeFilterItem, $request)) {
+                    continue;
+                }
                 $layer->getState()->addFilter($activeFilterItem);
             }
         }
+    }
+
+    /**
+     * @param Item $activeFilterItem
+     * @param ProductNavigationRequest $request
+     * @return bool
+     */
+    protected function shouldHideActiveFilterItem(Item $activeFilterItem, ProductNavigationRequest $request): bool
+    {
+        $source = $activeFilterItem
+            ->getFilter()
+            ->getFacet()
+            ->getFacetSettings()
+            ->getSource();
+        // Add active category filter only on search pages
+        $isCategory = $source === SettingsType::SOURCE_CATEGORY;
+        if (!$isCategory) {
+            return true;
+        }
+
+        // Add active category filter only on search pages
+        return !($request instanceof ProductSearchRequest);
     }
 
     /**

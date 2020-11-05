@@ -167,17 +167,23 @@ class Request
      */
     public function addCategoryFilter($category)
     {
-        if ($category instanceof Category) {
-            $categoryId = $category->getId();
-            $storeId = $category->getStoreId();
-        } else {
-            $categoryId = (int) $category;
-            $storeId = (int) $this->getStoreId();
+        $ids = [];
+        if (is_numeric($category)) {
+            $ids[] = $category;
+            return $this->addCategoryPathFilter($ids);
+        }
+        $ids[] = (int) $category->getId();
+        /** @var Category $category */
+        $parent = $category;
+        while (((int) $parent->getParentId()) !== 0) {
+            $parent = $parent->getParentCategory();
+            $ids[] = (int) $parent->getId();
         }
 
-        $tweakwiseId = $this->helper->getTweakwiseId($storeId, $categoryId);
-        $this->setParameter('tn_cid', $tweakwiseId);
-        return $this;
+        $ids = array_diff($ids, [1, (int)$category->getStore()->getRootCategoryId()]);
+        $ids = array_reverse($ids);
+
+        return $this->addCategoryPathFilter($ids);
     }
 
     /**
