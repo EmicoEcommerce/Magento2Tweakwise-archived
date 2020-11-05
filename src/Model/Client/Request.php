@@ -172,16 +172,21 @@ class Request
             $ids[] = $category;
             return $this->addCategoryPathFilter($ids);
         }
-        $ids[] = (int) $category->getId();
         /** @var Category $category */
-        $parent = $category;
-        while (((int) $parent->getParentId()) !== 0) {
-            $parent = $parent->getParentCategory();
-            $ids[] = (int) $parent->getId();
+        $parentIsRoot = in_array(
+            (int) $category->getParentId(),
+            [
+                0,
+                1,
+                (int) $category->getStore()->getRootCategoryId()
+            ],
+            true
+        );
+        if (!$parentIsRoot) {
+            // Parent category is added so that category menu is retained on the deepest category level
+            $ids[] = (int) $category->getParentId();
         }
-
-        $ids = array_diff($ids, [1, (int)$category->getStore()->getRootCategoryId()]);
-        $ids = array_reverse($ids);
+        $ids[] = (int) $category->getId();
 
         return $this->addCategoryPathFilter($ids);
     }
