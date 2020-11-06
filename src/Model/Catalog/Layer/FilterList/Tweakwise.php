@@ -148,7 +148,7 @@ class Tweakwise
         // Add active category filter only on search pages
         $isCategory = $source === SettingsType::SOURCE_CATEGORY;
         if (!$isCategory) {
-            return true;
+            return false;
         }
 
         // Add active category filter only on search pages
