@@ -167,17 +167,28 @@ class Request
      */
     public function addCategoryFilter($category)
     {
-        if ($category instanceof Category) {
-            $categoryId = $category->getId();
-            $storeId = $category->getStoreId();
-        } else {
-            $categoryId = (int) $category;
-            $storeId = (int) $this->getStoreId();
+        $ids = [];
+        if (is_numeric($category)) {
+            $ids[] = $category;
+            return $this->addCategoryPathFilter($ids);
         }
+        /** @var Category $category */
+        $parentIsRoot = in_array(
+            (int) $category->getParentId(),
+            [
+                0,
+                1,
+                (int) $category->getStore()->getRootCategoryId()
+            ],
+            true
+        );
+        if (!$parentIsRoot) {
+            // Parent category is added so that category menu is retained on the deepest category level
+            $ids[] = (int) $category->getParentId();
+        }
+        $ids[] = (int) $category->getId();
 
-        $tweakwiseId = $this->helper->getTweakwiseId($storeId, $categoryId);
-        $this->setParameter('tn_cid', $tweakwiseId);
-        return $this;
+        return $this->addCategoryPathFilter($ids);
     }
 
     /**
