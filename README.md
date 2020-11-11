@@ -55,10 +55,11 @@ Below is a rundown of all configuration options
     
 #### Autocomplete (All settings depend on Enabled having value yes)
 1) Enabled: Use tweakwise autocomplete results or not.
-2) Show products: Show product suggestions in autocomplete results.
-3) Show suggestions: Show search suggestions in autocomplete results.
-4) Stay in category: Use the current category when getting autocomplete results.
-5) Maximum number of results: At most this many autocomplete results will be show.
+2) Use Suggestions Autocomplete: Use new suggestion api (Yes) or use the standard autocomplete api (No) 
+3) Show products: Show product suggestions in autocomplete results.
+4) Show suggestions: Show search suggestions in autocomplete results.
+5) Stay in category: Use the current category when getting autocomplete results.
+6) Maximum number of results: At most this many autocomplete results will be show.
 
 #### Search (All settings depend on Enabled having value yes)
 1) Enabled: Use tweakwise search of default magento search results

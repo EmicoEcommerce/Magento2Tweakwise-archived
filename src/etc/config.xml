@@ -30,6 +30,7 @@ cid
             </layered>
             <autocomplete>
                 <enabled>0</enabled>
+                <use_suggestions>0</use_suggestions>
                 <show_products>1</show_products>
                 <show_categories>1</show_categories>
                 <in_current_category>0</in_current_category>

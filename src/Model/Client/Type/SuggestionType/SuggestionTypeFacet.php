@@ -101,7 +101,6 @@ class SuggestionTypeFacet extends SuggestionTypeCategory
             return rtrim($url, '/') . '/' . $path;
         }
 
-        // Add facets here
         return $url;
     }
 
