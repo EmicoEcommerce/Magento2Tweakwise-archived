@@ -436,13 +436,20 @@ class PathSlugStrategy implements
 
         $rewrite = current($rewrites);
         $path = trim($request->getPathInfo(), '/');
+
+        $filterPath = str_replace($rewrite->getRequestPath(), '', $path);
+        $filterPathParts = explode('/', trim($filterPath, '/'));
+        if ((count($filterPathParts) %2) !== 0) {
+            /* In this case we dont have an even amount of path segments,
+            This cannot correspond to a filter in this model since the filters
+            are constructed as filterName/filterValue for each filter, note the two components
+            for each filter. Meaning that a correct filter path should have an even number of path parts
+            */
+            return false;
+        }
         // Set the filter params part of the URL as a separate request param.
         // The request param filter_path is used to query tweakwise.
-        $request->setParam(
-            self::REQUEST_FILTER_PATH,
-            str_replace($rewrite->getRequestPath(), '', $path)
-        );
-
+        $request->setParam(self::REQUEST_FILTER_PATH, $filterPath);
         $request->setAlias(
             MagentoUrlInterface::REWRITE_REQUEST_PATH_ALIAS,
             $path
