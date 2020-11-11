@@ -1,13 +1,11 @@
 ## 3.1.0
 Added new [suggestion api implementation](https://developers.tweakwise.com/#/Suggestions).
-This is disabled by default you can enable it under Stores > Configuration > Catalog > Tweakwise > Autocomplete > Use suggestions autocomplete.
-
-Added guzzle client for asynchronous requests since we need multiple requests to get the new autocomplete results. 
-The result will be combination of search suggestions (these will send the customer to the search page), category suggestions (these will send the customer to the category page) and Category + Facet combinations which will send the customer to the category page with a filter preselected.
+This is disabled by default you can enable it under Stores > Configuration > Catalog > Tweakwise > Autocomplete > Use suggestions autocomplete. Added guzzle client for asynchronous requests since we need multiple requests to get the new autocomplete results. 
+The result will be a combination of search suggestions (these will send the customer to the search page), category suggestions (these will send the customer to the category page) and Category + Facet combinations which will send the customer to the category page with a filter preselected. 
 For more information on this we refer to tweakwise customer support.
 
 ## 3.0.4
-Fixed issue [#129](https://github.com/EmicoEcommerce/Magento2Tweakwise/issues/129) Thanks to ArjenMiedema for pointing this out and providing a possible solution.
+Fixed issue [#129](https://github.com/EmicoEcommerce/Magento2Tweakwise/issues/129).
 
 When url path strategy is enabled the url matching is more strict. The case is as follows: With path strategy enabled filter urls are constructed as
 https://site.com/category/filterName/filterValue, this will render the category with filter "filterName" selected at the correct value. The url matching is done by looking at the current request path and checking if there is any part of the request path that corresponds to a category url (or landingpage if that module is enabled), if so we render the longest category match and treat the remaining part of the request path as filters. The resulting behaviour is that https://site.com/category/any-nonsense yields a 200 O.K because the path strategy matches this url. This is because we cannot know in advance what the valid filters are (this is in part due to derived filters). This release features a partial fix to this issue, since each filter consists of a filterName and a filterValue there should at least be an even number of path segments in the remaining request path. If this is not the case we dont match the url anymore.
