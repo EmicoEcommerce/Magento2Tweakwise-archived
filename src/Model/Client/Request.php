@@ -142,7 +142,7 @@ class Request
      * @param string $parameter
      * @return mixed|null
      */
-    public function getParameter($parameter)
+    public function getParameter(string $parameter)
     {
         if (isset($this->parameters[$parameter])) {
             return $this->parameters[$parameter];
