@@ -21,6 +21,10 @@ define([
         _create: function () {
             var options = this.options;
             var element = this.element;
+            // Dont assume that the form is available at all times
+            var hasForm = $(this.options.filterFormSelector).length > 0
+            this.options.ajaxFilters = this.options.ajaxFilters && hasForm;
+
             this._bind(element.find(options.modeControl), options.mode, options.modeDefault);
             this._bind(element.find(options.directionControl), options.direction, options.directionDefault);
             this._bind(element.find(options.orderControl), options.order, options.orderDefault);
