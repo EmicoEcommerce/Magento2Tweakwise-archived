@@ -11,9 +11,11 @@ use Emico\Tweakwise\Model\AjaxResultInitializer\InitializerInterface;
 use Emico\Tweakwise\Model\Config;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\Response\HttpInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\NotFoundException;
+use Magento\Framework\Stdlib\CookieManagerInterface;
 
 /**
  * Class Navigation
@@ -38,21 +40,29 @@ class Navigation extends Action
     protected $initializerMap;
 
     /**
+     * @var CookieManagerInterface
+     */
+    protected $cookieManager;
+
+    /**
      * Navigation constructor.
      * @param Context $context Request context
      * @param Config $config Tweakwise configuration provider
      * @param AjaxNavigationResult $ajaxNavigationResult
+     * @param CookieManagerInterface $cookieManager
      * @param array $initializerMap
      */
     public function __construct(
         Context $context,
         Config $config,
         AjaxNavigationResult $ajaxNavigationResult,
+        CookieManagerInterface $cookieManager,
         array $initializerMap
     ) {
         parent::__construct($context);
         $this->config = $config;
         $this->ajaxNavigationResult = $ajaxNavigationResult;
+        $this->cookieManager = $cookieManager;
         $this->initializerMap = $initializerMap;
     }
 
@@ -80,6 +90,12 @@ class Navigation extends Action
             $this->ajaxNavigationResult,
             $request
         );
+
+        if ($this->cookieManager->getCookie('profileKey')) {
+            /** @var HttpInterface $response */
+            $response = $this->getResponse();
+            $response->setHeader('Cache-Control', 'no-cache');
+        }
 
         return $this->ajaxNavigationResult;
     }

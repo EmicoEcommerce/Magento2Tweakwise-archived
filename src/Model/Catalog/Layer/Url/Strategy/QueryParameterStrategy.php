@@ -21,27 +21,30 @@ use Magento\Catalog\Model\Category;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Emico\TweakwiseExport\Model\Helper as ExportHelper;
+use Magento\Framework\Stdlib\CookieManagerInterface;
 
 class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, CategoryUrlInterface
 {
     /**
      * Separator used in category tree urls
      */
-    const CATEGORY_TREE_SEPARATOR = '-';
+    public const CATEGORY_TREE_SEPARATOR = '-';
 
     /**
      * Extra ignored page parameters
      */
-    const PARAM_MODE = 'product_list_mode';
-    const PARAM_CATEGORY = 'categorie';
+    public const PARAM_MODE = 'product_list_mode';
+    public const PARAM_CATEGORY = 'categorie';
 
     /**
      * Commonly used query parameters from headers
      */
-    const PARAM_LIMIT = 'product_list_limit';
-    const PARAM_ORDER = 'product_list_order';
-    const PARAM_PAGE = 'p';
-    const PARAM_SEARCH = 'q';
+    public const PARAM_LIMIT = 'product_list_limit';
+    public const PARAM_ORDER = 'product_list_order';
+    public const PARAM_PAGE = 'p';
+    public const PARAM_SEARCH = 'q';
+
+    public const PROFILE_KEY_COOKIE = 'profileKey';
 
     /**
      * Parameters to be ignored as attribute filters
@@ -72,20 +75,28 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     protected $url;
 
     /**
+     * @var CookieManagerInterface
+     */
+    protected $cookieManager;
+
+    /**
      * Magento constructor.
      *
      * @param UrlModel $url
      * @param CategoryRepositoryInterface $categoryRepository
      * @param ExportHelper $exportHelper
+     * @param CookieManagerInterface $cookieManager
      */
     public function __construct(
         UrlModel $url,
         CategoryRepositoryInterface $categoryRepository,
-        ExportHelper $exportHelper
+        ExportHelper $exportHelper,
+        CookieManagerInterface $cookieManager
     ) {
         $this->url = $url;
         $this->categoryRepository = $categoryRepository;
         $this->exportHelper = $exportHelper;
+        $this->cookieManager = $cookieManager;
     }
 
     /**
@@ -335,6 +346,11 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
         $limit = $this->getLimit($request);
         if ($limit) {
             $navigationRequest->setLimit($limit);
+        }
+
+        $profileKey = $this->cookieManager->getCookie(self::PROFILE_KEY_COOKIE, null);
+        if ($profileKey && $request->isAjax()) {
+            $navigationRequest->setProfileKey($profileKey);
         }
 
         $categories = $this->getCategoryFilters($request);
