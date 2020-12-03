@@ -16,6 +16,7 @@ use Emico\Tweakwise\Model\Catalog\Layer\Url\CategoryUrlInterface;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\FilterApplierInterface;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\RewriteResolver\RewriteResolverInterface;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\RouteMatchingInterface;
+use Emico\Tweakwise\Model\Catalog\Layer\Url\StrategyHelper;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlModel;
 use Emico\Tweakwise\Model\Catalog\Layer\UrlFactory;
@@ -91,6 +92,11 @@ class PathSlugStrategy implements
     protected $scopeConfig;
 
     /**
+     * @var StrategyHelper
+     */
+    protected $strategyHelper;
+
+    /**
      * @var RewriteResolverInterface[]
      */
     protected $rewriteResolvers;
@@ -111,6 +117,7 @@ class PathSlugStrategy implements
      * @param Config $config
      * @param CurrentContext $currentContext
      * @param ScopeConfigInterface $scopeConfig
+     * @param StrategyHelper $strategyHelper
      * @param RewriteResolverInterface[] $rewriteResolvers
      * @param array $skipMatchExtensions
      */
@@ -123,6 +130,7 @@ class PathSlugStrategy implements
         Config $config,
         CurrentContext $currentContext,
         ScopeConfigInterface $scopeConfig,
+        StrategyHelper $strategyHelper,
         array $rewriteResolvers,
         array $skipMatchExtensions
     ) {
@@ -136,6 +144,7 @@ class PathSlugStrategy implements
         $this->scopeConfig = $scopeConfig;
         $this->rewriteResolvers = $rewriteResolvers;
         $this->skipMatchExtensions = $skipMatchExtensions;
+        $this->strategyHelper = $strategyHelper;
     }
 
     /**
@@ -484,13 +493,27 @@ class PathSlugStrategy implements
     /**
      * @param MagentoHttpRequest $request
      * @param Item $item
-     * @return mixed
+     * @return string
      */
     public function getCategoryFilterSelectUrl(
         MagentoHttpRequest $request,
         Item $item
     ): string {
-        return $this->queryParameterStrategy->getCategoryFilterSelectUrl($request, $item);
+        if ($this->currentContext->getRequest() instanceof ProductSearchRequest) {
+            return $this->queryParameterStrategy->getCategoryFilterSelectUrl($request, $item);
+        }
+
+        $category = $this->strategyHelper->getCategoryFromItem($item);
+        /*
+        Make sure we dont have any double slashes, add the current filter path to the category url to maintain
+        the currently selected filters.
+        TODO: add currently selected sort order.
+        */
+        return sprintf(
+            '%s/%s',
+            rtrim($category->getUrl(), '/'),
+            ltrim($request->getParam(self::REQUEST_FILTER_PATH), '/')
+        );
     }
 
     /**
