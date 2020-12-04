@@ -25,21 +25,21 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     /**
      * Separator used in category tree urls
      */
-    const CATEGORY_TREE_SEPARATOR = '-';
+    public const CATEGORY_TREE_SEPARATOR = '-';
 
     /**
      * Extra ignored page parameters
      */
-    const PARAM_MODE = 'product_list_mode';
-    const PARAM_CATEGORY = 'categorie';
+    public const PARAM_MODE = 'product_list_mode';
+    public const PARAM_CATEGORY = 'categorie';
 
     /**
      * Commonly used query parameters from headers
      */
-    const PARAM_LIMIT = 'product_list_limit';
-    const PARAM_ORDER = 'product_list_order';
-    const PARAM_PAGE = 'p';
-    const PARAM_SEARCH = 'q';
+    public const PARAM_LIMIT = 'product_list_limit';
+    public const PARAM_ORDER = 'product_list_order';
+    public const PARAM_PAGE = 'p';
+    public const PARAM_SEARCH = 'q';
 
     /**
      * Parameters to be ignored as attribute filters

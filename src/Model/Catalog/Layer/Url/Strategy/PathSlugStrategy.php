@@ -30,6 +30,7 @@ use Magento\CatalogUrlRewrite\Model\CategoryUrlPathGenerator;
 use Magento\Framework\App\ActionInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Request\Http as MagentoHttpRequest;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\UrlInterface as MagentoUrlInterface;
 use Magento\UrlRewrite\Service\V1\Data\UrlRewrite;
 
@@ -494,6 +495,7 @@ class PathSlugStrategy implements
      * @param MagentoHttpRequest $request
      * @param Item $item
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getCategoryFilterSelectUrl(
         MagentoHttpRequest $request,
@@ -504,15 +506,18 @@ class PathSlugStrategy implements
         }
 
         $category = $this->strategyHelper->getCategoryFromItem($item);
+        $categoryUrlPath = \parse_url($category->getUrl(), PHP_URL_PATH);
         /*
         Make sure we dont have any double slashes, add the current filter path to the category url to maintain
         the currently selected filters.
-        TODO: add currently selected sort order.
         */
-        return sprintf(
-            '%s/%s',
-            rtrim($category->getUrl(), '/'),
-            ltrim($request->getParam(self::REQUEST_FILTER_PATH), '/')
+        $filterSlugPath = $this->buildFilterSlugPath($this->getActiveFilters());
+        return $this->magentoUrl->getDirectUrl(
+            sprintf(
+                '%s/%s',
+                trim($categoryUrlPath, '/'),
+                ltrim($filterSlugPath, '/')
+            )
         );
     }
 
