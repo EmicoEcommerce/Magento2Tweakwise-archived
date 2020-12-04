@@ -34,14 +34,12 @@ define([
             event.preventDefault();
             var anchor = $(event.target).closest('a');
             var page = anchor.attr('href') || '';
-            var pageValueRegex = '[?&]p=(\\\d?)';
-            var pageValue = new RegExp(pageValueRegex).exec(page);
-            if (pageValue) {
-                pageValue = pageValue[1];
-                this.changeUrl('p', pageValue, pageValue)
+            var pageMatch = new RegExp('[?&]p=(\\\d?)').exec(page);
+            var pageValue = 1;
+            if (pageMatch) {
+                pageValue = pageMatch[1];
             }
-
-            return false;
+            return this.changeUrl('p', pageValue, pageValue);
         },
 
         /**
