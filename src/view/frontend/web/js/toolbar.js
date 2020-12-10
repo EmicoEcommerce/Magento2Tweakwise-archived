@@ -22,7 +22,7 @@ define([
             var options = this.options;
             var element = this.element;
             // Dont assume that the form is available at all times
-            var hasForm = $(this.options.filterFormSelector).length > 0
+            var hasForm = $(this.options.filterFormSelector).length > 0;
             this.options.ajaxFilters = this.options.ajaxFilters && hasForm;
 
             this._bind(element.find(options.modeControl), options.mode, options.modeDefault);
