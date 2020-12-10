@@ -4,6 +4,8 @@
     "description": "Magento 2 module for Tweakwise integration",
     "require": {
         "php": "^7.1",
+        "ext-json": "*",
+        "ext-pcre": "*",
         "emico/tweakwise-export": ">=1.4",
         "guzzlehttp/guzzle": ">=6.0"
     },
@@ -13,7 +15,7 @@
     },
     "type": "magento2-module",
     "scripts": {
-        "docheader": "docheader check ./src"
+        "docheader": "docheader check ."
     },
     "autoload": {
         "files": [
