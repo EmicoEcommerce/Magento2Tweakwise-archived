@@ -20,7 +20,7 @@
             "registration.php"
         ],
         "psr-4": {
-            "Emico\\Tweakwise\\": "src"
+            "Emico\\Tweakwise\\": ""
         }
     },
     "repositories": [
