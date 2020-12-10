@@ -17,7 +17,7 @@
     },
     "autoload": {
         "files": [
-            "src/registration.php"
+            "registration.php"
         ],
         "psr-4": {
             "Emico\\Tweakwise\\": "src"
