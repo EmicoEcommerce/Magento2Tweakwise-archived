@@ -11,37 +11,35 @@ namespace Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\CategoryUrlInterface;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\FilterApplierInterface;
+use Emico\Tweakwise\Model\Catalog\Layer\Url\StrategyHelper;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface;
-use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlModel;
+use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
 use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
 use Magento\Catalog\Api\Data\CategoryInterface;
-use Magento\Framework\App\Request\Http as MagentoHttpRequest;
 use Magento\Catalog\Model\Category;
-use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Catalog\Api\CategoryRepositoryInterface;
-use Emico\TweakwiseExport\Model\Helper as ExportHelper;
+use Magento\Framework\App\Request\Http as MagentoHttpRequest;
 
 class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, CategoryUrlInterface
 {
     /**
      * Separator used in category tree urls
      */
-    const CATEGORY_TREE_SEPARATOR = '-';
+    public const CATEGORY_TREE_SEPARATOR = '-';
 
     /**
      * Extra ignored page parameters
      */
-    const PARAM_MODE = 'product_list_mode';
-    const PARAM_CATEGORY = 'categorie';
+    public const PARAM_MODE = 'product_list_mode';
+    public const PARAM_CATEGORY = 'categorie';
 
     /**
      * Commonly used query parameters from headers
      */
-    const PARAM_LIMIT = 'product_list_limit';
-    const PARAM_ORDER = 'product_list_order';
-    const PARAM_PAGE = 'p';
-    const PARAM_SEARCH = 'q';
+    public const PARAM_LIMIT = 'product_list_limit';
+    public const PARAM_ORDER = 'product_list_order';
+    public const PARAM_PAGE = 'p';
+    public const PARAM_SEARCH = 'q';
 
     /**
      * Parameters to be ignored as attribute filters
@@ -57,35 +55,27 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     ];
 
     /**
-     * @var CategoryRepositoryInterface
-     */
-    protected $categoryRepository;
-
-    /**
-     * @var ExportHelper
-     */
-    protected $exportHelper;
-
-    /**
      * @var UrlModel
      */
     protected $url;
 
     /**
+     * @var StrategyHelper
+     */
+    protected $strategyHelper;
+
+    /**
      * Magento constructor.
      *
      * @param UrlModel $url
-     * @param CategoryRepositoryInterface $categoryRepository
-     * @param ExportHelper $exportHelper
+     * @param StrategyHelper $strategyHelper
      */
     public function __construct(
         UrlModel $url,
-        CategoryRepositoryInterface $categoryRepository,
-        ExportHelper $exportHelper
+        StrategyHelper $strategyHelper
     ) {
         $this->url = $url;
-        $this->categoryRepository = $categoryRepository;
-        $this->exportHelper = $exportHelper;
+        $this->strategyHelper = $strategyHelper;
     }
 
     /**
@@ -163,15 +153,19 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
      */
     public function getCategoryFilterSelectUrl(MagentoHttpRequest $request, Item $item): string
     {
-        $category = $this->getCategoryFromItem($item);
+        $category = $this->strategyHelper->getCategoryFromItem($item);
         if (!$this->getSearch($request)) {
-            return $category->getUrl();
+            $categoryUrl = $category->getUrl();
+            $categoryUrlPath = \parse_url($categoryUrl, PHP_URL_PATH);
+            return $this->url->getDirectUrl(
+                trim($categoryUrlPath, '/'),
+                [
+                    '_query' => $this->getAttributeFilters($request)
+                ]
+            );
         }
 
-        $urlKey = $item
-            ->getFilter()
-            ->getUrlKey();
-
+        $urlKey = $item->getFilter()->getUrlKey();
 
         $value[] = $category->getId();
         /** @var Category|CategoryInterface $category */
@@ -386,19 +380,6 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     protected function getSearch(MagentoHttpRequest $request)
     {
         return $request->getQuery(self::PARAM_SEARCH);
-    }
-
-    /**
-     * @param Item $item
-     * @return CategoryInterface
-     * @throws NoSuchEntityException
-     */
-    protected function getCategoryFromItem(Item $item): CategoryInterface
-    {
-        $tweakwiseCategoryId = $item->getAttribute()->getAttributeId();
-        $categoryId = $this->exportHelper->getStoreId($tweakwiseCategoryId);
-
-        return $this->categoryRepository->get($categoryId);
     }
 
     /**
