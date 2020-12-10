@@ -1,3 +1,21 @@
+## 3.2.0
+Moved src folder to root and removed composer json symlink. [#133](https://github.com/EmicoEcommerce/Magento2Tweakwise/issues/133) If you have any patches (or something like that) you need to evaluate those.
+This means that the directory structure of the module changed!
+
+Added ext-json and ext-pcre to composer json.
+
+Feature: 
+
+Category filter urls now remember selected filters meaning that any selected filters should be remembered when navigating to a subcategory.
+
+BugFixes:
+1) Pager link "1" would not work when ajax filtering is enabled.
+2) When category is not an anchor category this could result in a js error.
+3) Removed jquery/ui reference in swatches template, this was done to reflect a change introduced in magento 2.3.3.
+
+## 3.1.1
+Fixed argument type definition error
+
 ## 3.1.0
 Added new [suggestion api implementation](https://developers.tweakwise.com/#/Suggestions).
 This is disabled by default you can enable it under Stores > Configuration > Catalog > Tweakwise > Autocomplete > Use suggestions autocomplete. Added guzzle client for asynchronous requests since we need multiple requests to get the new autocomplete results. 
