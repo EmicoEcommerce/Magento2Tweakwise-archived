@@ -266,9 +266,16 @@ define([
                     .replaceWith(newToolbarFirst.outerHTML);
             }
             if (newToolbarLast) {
+                var scripts = '';
+                $(newToolbarLast).siblings('script[type="text/x-magento-init"]').map(
+                    function (index, element) {
+                        scripts += element.outerHTML;
+                    }
+                );
+
                 toolbar
                     .last()
-                    .replaceWith(newToolbarLast.outerHTML);
+                    .replaceWith(newToolbarLast.outerHTML + scripts);
             }
 
             $('body').trigger('contentUpdated');
