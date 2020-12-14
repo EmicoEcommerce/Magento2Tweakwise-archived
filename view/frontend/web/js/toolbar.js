@@ -38,7 +38,7 @@ define([
             event.preventDefault();
             var anchor = $(event.target).closest('a');
             var page = anchor.attr('href') || '';
-            var pageMatch = new RegExp('[?&]p=(\\\d?)').exec(page);
+            var pageMatch = new RegExp('[?&]p=(\\\d+)').exec(page);
             var pageValue = 1;
             if (pageMatch) {
                 pageValue = pageMatch[1];
