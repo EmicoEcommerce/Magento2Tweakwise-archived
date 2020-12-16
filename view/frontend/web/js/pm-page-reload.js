@@ -7,6 +7,7 @@
 
 define([
     'jquery',
+    'mage/cookies',
     'tweakwiseNavigationForm'
 ], function ($) {
     $.widget('tweakwise.pmPageReload', {
@@ -22,7 +23,10 @@ define([
         },
 
         _hookEvents: function () {
-            if (this.options.reloadList && this.options.cookieName) {
+            var reload = this.options.reloadList
+                && this.options.cookieName
+                && ($.mage.cookies.get(this.options.cookieName) !== null);
+            if (reload) {
                 this.element.trigger('change');
             }
         }
