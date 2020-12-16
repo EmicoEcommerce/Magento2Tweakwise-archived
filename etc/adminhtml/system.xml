@@ -190,6 +190,20 @@
                     </depends>
                 </field>
             </group>
+            <group id="personal_merchandiser" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Personal Merchandiser</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="cookie_name" translate="label,comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Name of cookie which holds tw profile information</label>
+                    <comment>This is usually set in tweakwise measure script</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+            </group>
             <group id="recommendations" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Recommendations</label>
                 <field id="crosssell_enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">

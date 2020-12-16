@@ -292,6 +292,24 @@ class Config
     }
 
     /**
+     * @param Store|null $store
+     * @return bool
+     */
+    public function isPersonalMerchandiserActive(Store $store = null)
+    {
+        return (bool)$this->getStoreConfig('tweakwise/personal_merchandiser/enabled', $store);
+    }
+
+    /**
+     * @param Store|null $store
+     * @return string
+     */
+    public function getPersonalMerchandiserCookieName(Store $store = null)
+    {
+        return (string) $this->getStoreConfig('tweakwise/personal_merchandiser/cookie_name', $store);
+    }
+
+    /**
      * @param string $type
      * @param Store|null $store
      * @return bool
