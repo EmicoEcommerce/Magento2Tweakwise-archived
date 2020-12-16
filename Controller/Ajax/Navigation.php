@@ -91,7 +91,7 @@ class Navigation extends Action
             $request
         );
 
-        if ($this->cookieManager->getCookie('profileKey')) {
+        if ($this->config->isPersonalMerchandiserActive() && $this->config->getPersonalMerchandiserCookieName()) {
             /** @var HttpInterface $response */
             $response = $this->getResponse();
             $response->setHeader('Cache-Control', 'no-cache');
