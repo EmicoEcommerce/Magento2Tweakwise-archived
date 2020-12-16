@@ -21,6 +21,10 @@ define([
         _create: function () {
             var options = this.options;
             var element = this.element;
+            // Dont assume that the form is available at all times
+            var hasForm = $(this.options.filterFormSelector).length > 0;
+            this.options.ajaxFilters = this.options.ajaxFilters && hasForm;
+
             this._bind(element.find(options.modeControl), options.mode, options.modeDefault);
             this._bind(element.find(options.directionControl), options.direction, options.directionDefault);
             this._bind(element.find(options.orderControl), options.order, options.orderDefault);
@@ -34,14 +38,12 @@ define([
             event.preventDefault();
             var anchor = $(event.target).closest('a');
             var page = anchor.attr('href') || '';
-            var pageValueRegex = '[?&]p=(\\\d?)';
-            var pageValue = new RegExp(pageValueRegex).exec(page);
-            if (pageValue) {
-                pageValue = pageValue[1];
-                this.changeUrl('p', pageValue, pageValue)
+            var pageMatch = new RegExp('[?&]p=(\\\d+)').exec(page);
+            var pageValue = 1;
+            if (pageMatch) {
+                pageValue = pageMatch[1];
             }
-
-            return false;
+            return this.changeUrl('p', pageValue, pageValue);
         },
 
         /**
