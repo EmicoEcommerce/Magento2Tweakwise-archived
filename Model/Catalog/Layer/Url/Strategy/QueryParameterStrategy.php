@@ -16,6 +16,7 @@ use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlInterface;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\UrlModel;
 use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
 use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
+use Emico\Tweakwise\Model\Config as TweakwiseConfig;
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Model\Category;
 use Magento\Framework\App\Request\Http as MagentoHttpRequest;
@@ -73,20 +74,28 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     protected $cookieManager;
 
     /**
+     * @var TweakwiseConfig
+     */
+    protected $tweakwiseConfig;
+
+    /**
      * Magento constructor.
      *
      * @param UrlModel $url
      * @param StrategyHelper $strategyHelper
      * @param CookieManagerInterface $cookieManager
+     * @param TweakwiseConfig $config
      */
     public function __construct(
         UrlModel $url,
         StrategyHelper $strategyHelper,
-        CookieManagerInterface $cookieManager
+        CookieManagerInterface $cookieManager,
+        TweakwiseConfig $config
     ) {
         $this->url = $url;
         $this->strategyHelper = $strategyHelper;
         $this->cookieManager = $cookieManager;
+        $this->tweakwiseConfig = $config;
     }
 
     /**
@@ -342,9 +351,15 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
             $navigationRequest->setLimit($limit);
         }
 
-        $profileKey = $this->cookieManager->getCookie(self::PROFILE_KEY_COOKIE, null);
-        if ($profileKey && $request->isAjax()) {
-            $navigationRequest->setProfileKey($profileKey);
+        // Add this only for ajax requests
+        if ($this->tweakwiseConfig->isPersonalMerchandiserActive() && $request->isAjax()) {
+            $profileKey = $this->cookieManager->getCookie(
+                $this->tweakwiseConfig->getPersonalMerchandiserCookieName(),
+                null
+            );
+            if ($profileKey) {
+                $navigationRequest->setProfileKey($profileKey);
+            }
         }
 
         $categories = $this->getCategoryFilters($request);

@@ -220,7 +220,6 @@ define([
                 }.bind(this),
                 complete: function () {
                     this._stopLoader();
-                    this.options.reloadList = false;
                 }.bind(this)
             });
         },

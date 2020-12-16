@@ -10,6 +10,7 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
 use Emico\Tweakwise\Model\FilterFormInputProvider\FilterFormInputProviderInterface;
 use Magento\Framework\App\ProductMetadataInterface;
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
@@ -56,6 +57,11 @@ class NavigationConfig implements ArgumentInterface, FilterFormInputProviderInte
     protected $filterFormInputProvider;
 
     /**
+     * @var Http
+     */
+    protected $request;
+
+    /**
      * NavigationConfig constructor.
      * @param Config $config
      * @param UrlInterface $url
@@ -63,6 +69,7 @@ class NavigationConfig implements ArgumentInterface, FilterFormInputProviderInte
      * @param ProductMetadataInterface $productMetadata
      * @param FilterFormInputProviderInterface $filterFormInputProvider
      * @param Json $jsonSerializer
+     * @param Http $request
      */
     public function __construct(
         Config $config,
@@ -70,7 +77,8 @@ class NavigationConfig implements ArgumentInterface, FilterFormInputProviderInte
         CurrentContext $currentNavigationContext,
         ProductMetadataInterface $productMetadata,
         FilterFormInputProviderInterface $filterFormInputProvider,
-        Json $jsonSerializer
+        Json $jsonSerializer,
+        Http $request
     ) {
         $this->config = $config;
         $this->jsonSerializer = $jsonSerializer;
@@ -78,6 +86,7 @@ class NavigationConfig implements ArgumentInterface, FilterFormInputProviderInte
         $this->currentNavigationContext = $currentNavigationContext;
         $this->productMetadata = $productMetadata;
         $this->filterFormInputProvider = $filterFormInputProvider;
+        $this->request = $request;
     }
 
     /**
@@ -93,19 +102,27 @@ class NavigationConfig implements ArgumentInterface, FilterFormInputProviderInte
      */
     public function getJsFormConfig()
     {
-        return $this->jsonSerializer->serialize(
-            [
-                'tweakwiseNavigationForm' => [
-                    'formFilters' => $this->isFormFilters(),
-                    'ajaxFilters' => $this->isAjaxFilters(),
-                    'seoEnabled' => $this->config->isSeoEnabled(),
-                    'ajaxEndpoint' => $this->getAjaxEndPoint(),
-                    'filterSelector' => '#layered-filter-block',
-                    'productListSelector' => '.products.wrapper',
-                    'toolbarSelector' => '.toolbar.toolbar-products'
-                ],
-            ]
-        );
+        $navigationFormConfig = [
+            'tweakwiseNavigationForm' => [
+                'formFilters' => $this->isFormFilters(),
+                'ajaxFilters' => $this->isAjaxFilters(),
+                'seoEnabled' => $this->config->isSeoEnabled(),
+                'ajaxEndpoint' => $this->getAjaxEndPoint(),
+                'filterSelector' => '#layered-filter-block',
+                'productListSelector' => '.products.wrapper',
+                'toolbarSelector' => '.toolbar.toolbar-products'
+            ],
+        ];
+        if ($this->config->isPersonalMerchandiserActive() && $this->config->isAjaxFilters()) {
+            $pmCookieName = $this->config->getPersonalMerchandiserCookieName();
+            if ($pmCookieName) {
+                $navigationFormConfig['tweakwisePMPageReload'] = [
+                    'cookieName' => $pmCookieName,
+                    'reloadList' => !$this->request->isAjax()
+                ];
+            }
+        }
+        return $this->jsonSerializer->serialize($navigationFormConfig);
     }
 
     /**
