@@ -295,18 +295,18 @@ class Config
      * @param Store|null $store
      * @return bool
      */
-    public function isPersonalMerchandiserActive(Store $store = null)
+    public function isPersonalMerchandisingActive(Store $store = null)
     {
-        return (bool)$this->getStoreConfig('tweakwise/personal_merchandiser/enabled', $store);
+        return (bool)$this->getStoreConfig('tweakwise/personal_merchandising/enabled', $store);
     }
 
     /**
      * @param Store|null $store
      * @return string
      */
-    public function getPersonalMerchandiserCookieName(Store $store = null)
+    public function getPersonalMerchandisingCookieName(Store $store = null)
     {
-        return (string) $this->getStoreConfig('tweakwise/personal_merchandiser/cookie_name', $store);
+        return (string) $this->getStoreConfig('tweakwise/personal_merchandising/cookie_name', $store);
     }
 
     /**

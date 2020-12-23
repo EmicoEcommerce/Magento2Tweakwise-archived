@@ -113,8 +113,8 @@ class NavigationConfig implements ArgumentInterface, FilterFormInputProviderInte
                 'toolbarSelector' => '.toolbar.toolbar-products'
             ],
         ];
-        if ($this->config->isPersonalMerchandiserActive() && $this->config->isAjaxFilters()) {
-            $pmCookieName = $this->config->getPersonalMerchandiserCookieName();
+        if ($this->config->isPersonalMerchandisingActive() && $this->config->isAjaxFilters()) {
+            $pmCookieName = $this->config->getPersonalMerchandisingCookieName();
             if ($pmCookieName) {
                 $navigationFormConfig['tweakwisePMPageReload'] = [
                     'cookieName' => $pmCookieName,

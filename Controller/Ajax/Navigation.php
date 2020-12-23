@@ -91,10 +91,10 @@ class Navigation extends Action
             $request
         );
 
-        if ($this->config->isPersonalMerchandiserActive() && $this->config->getPersonalMerchandiserCookieName()) {
+        if ($this->config->isPersonalMerchandisingActive() && $this->config->getPersonalMerchandisingCookieName()) {
             /** @var HttpInterface $response */
             $response = $this->getResponse();
-            $response->setHeader('Cache-Control', 'no-cache');
+            $response->setHeader('Cache-Control', 'max-age=0, must-revalidate, no-cache, no-store');
         }
 
         return $this->ajaxNavigationResult;
