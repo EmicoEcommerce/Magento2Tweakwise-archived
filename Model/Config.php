@@ -82,14 +82,16 @@ class Config
     }
 
     /**
+     * @deprecated
+     * @see \Emico\Tweakwise\Model\Client\EndpointManager::getServerUrl()
      * @param bool $useFallBack
      * @return string
      */
     public function getGeneralServerUrl(bool $useFallBack = false)
     {
         return $useFallBack
-            ? self::FALLBACK_SERVER_URL
-            : self::SERVER_URL;
+            ? Client\EndpointManager::FALLBACK_SERVER_URL
+            : Client\EndpointManager::SERVER_URL;
     }
 
     /**
@@ -102,11 +104,13 @@ class Config
     }
 
     /**
+     * @deprecated
+     * @see \Emico\Tweakwise\Model\Client::getTimeout()
      * @return int
      */
     public function getTimeout()
     {
-        return self::REQUEST_TIMEOUT;
+        return Client::REQUEST_TIMEOUT;
     }
 
     /**

@@ -9,6 +9,7 @@
 namespace Emico\Tweakwise\Model;
 
 use Emico\Tweakwise\Exception\ApiException;
+use Emico\Tweakwise\Model\Client\EndpointManager;
 use Emico\Tweakwise\Model\Client\Request;
 use Emico\Tweakwise\Model\Client\Response;
 use Emico\Tweakwise\Model\Client\ResponseFactory;
@@ -26,6 +27,13 @@ use GuzzleHttp\Client as HttpClient;
 
 class Client
 {
+    /**
+     * Defaults
+     */
+    public const REQUEST_TIMEOUT = 5;
+    public const SERVER_URL = 'https://gateway.tweakwisenavigator.net';
+    public const FALLBACK_SERVER_URL = 'https://gateway.tweakwisenavigator.com';
+
     /**
      * @var Config
      */
@@ -47,20 +55,28 @@ class Client
     protected $responseFactory;
 
     /**
+     * @var EndpointManager
+     */
+    protected $endpointManager;
+
+    /**
      * Client constructor.
      *
      * @param Config $config
      * @param Logger $log
      * @param ResponseFactory $responseFactory
+     * @param EndpointManager $endpointManager
      */
     public function __construct(
         Config $config,
         Logger $log,
-        ResponseFactory $responseFactory
+        ResponseFactory $responseFactory,
+        EndpointManager $endpointManager
     ) {
         $this->config = $config;
         $this->log = $log;
         $this->responseFactory = $responseFactory;
+        $this->endpointManager = $endpointManager;
     }
 
     /**
@@ -70,7 +86,7 @@ class Client
     {
         if (!$this->client) {
             $options = [
-                RequestOptions::TIMEOUT => $this->config->getTimeout(),
+                RequestOptions::TIMEOUT => $this->getTimeout(),
                 RequestOptions::HEADERS => [
                     'user-agent' => $this->config->getUserAgentString()
                 ]
@@ -93,7 +109,7 @@ class Client
 
         $url = sprintf(
             '%s/%s/%s%s',
-            rtrim($this->config->getGeneralServerUrl($isFallBack), '/'),
+            rtrim($this->endpointManager->getServerUrl($isFallBack), '/'),
             trim($path, '/'),
             $this->config->getGeneralAuthenticationKey(),
             $pathSuffix
@@ -107,6 +123,14 @@ class Client
         $uri = new Uri($url);
 
         return new HttpRequest('GET', $uri);
+    }
+
+    /**
+     * @return int
+     */
+    protected function getTimeout()
+    {
+        return self::REQUEST_TIMEOUT;
     }
 
     /**
