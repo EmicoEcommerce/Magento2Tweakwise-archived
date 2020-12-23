@@ -15,7 +15,7 @@ use Magento\Variable\Model\VariableFactory;
 class EndpointManager
 {
     public const DOWN_PERIOD = 300; // 5 minutes
-    public const VARIABLE_NAME = '__tw_primary_last_down';
+    public const VARIABLE_NAME = '__tw_primary_down_timer';
 
     public const SERVER_URL = 'https://gateway.tweakwisenavigator.net';
     public const FALLBACK_SERVER_URL = 'https://gateway.tweakwisenavigator.com';
