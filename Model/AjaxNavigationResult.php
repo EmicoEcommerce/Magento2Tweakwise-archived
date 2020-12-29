@@ -12,6 +12,7 @@ use Magento\Catalog\Model\Layer\Resolver;
 use Magento\Framework;
 use Magento\Framework\App\Response\HttpInterface as HttpResponseInterface;
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Framework\Stdlib\CookieManagerInterface;
 use Magento\Framework\View;
 use Magento\Framework\View\Result\Layout;
 
@@ -37,6 +38,16 @@ class AjaxNavigationResult extends Layout
     protected $serializer;
 
     /**
+     * @var Config
+     */
+    protected $config;
+
+    /**
+     * @var CookieManagerInterface
+     */
+    protected $cookieManager;
+
+    /**
      * AjaxNavigationResult constructor.
      * @param View\Element\Template\Context $context
      * @param View\LayoutFactory $layoutFactory
@@ -47,6 +58,8 @@ class AjaxNavigationResult extends Layout
      * @param Url $urlModel
      * @param Resolver $layerResolver
      * @param Json $serializer
+     * @param Config $config
+     * @param CookieManagerInterface $cookieManager
      * @param bool $isIsolated
      */
     public function __construct(
@@ -59,6 +72,8 @@ class AjaxNavigationResult extends Layout
         Url $urlModel,
         Resolver $layerResolver,
         Json $serializer,
+        Config $config,
+        CookieManagerInterface $cookieManager,
         $isIsolated = false
     ) {
         parent::__construct(
@@ -74,6 +89,8 @@ class AjaxNavigationResult extends Layout
         $this->urlModel = $urlModel;
         $this->layerResolver = $layerResolver;
         $this->serializer = $serializer;
+        $this->config = $config;
+        $this->cookieManager = $cookieManager;
     }
 
     /**
@@ -87,6 +104,10 @@ class AjaxNavigationResult extends Layout
 
         $responseData = $this->serializer->serialize(['url' => $url, 'html' => $html]);
         $this->translateInline->processResponseBody($responseData, true);
+
+        if (!$this->isResponseCacheable()) {
+            $response->setHeader('Cache-Control', 'private', true);
+        }
 
         $response->setHeader('Content-Type', 'application/json', true);
         $response->appendBody($responseData);
@@ -102,5 +123,18 @@ class AjaxNavigationResult extends Layout
         $layer = $this->layerResolver->get();
         $activeFilters = $layer->getState()->getFilters();
         return $this->urlModel->getFilterUrl($activeFilters);
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isResponseCacheable(): bool
+    {
+        $merchandiserCookieName = $this->config->getPersonalMerchandisingCookieName();
+        return !(
+            $this->config->isPersonalMerchandisingActive()
+            && $merchandiserCookieName
+            && $this->cookieManager->getCookie($merchandiserCookieName, null)
+        );
     }
 }

@@ -11,7 +11,6 @@ use Emico\Tweakwise\Model\AjaxResultInitializer\InitializerInterface;
 use Emico\Tweakwise\Model\Config;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
-use Magento\Framework\App\Response\HttpInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\NotFoundException;
@@ -24,10 +23,6 @@ use Magento\Framework\Stdlib\CookieManagerInterface;
  */
 class Navigation extends Action
 {
-    /**
-     * @var Config
-     */
-    protected $config;
 
     /**
      * @var AjaxNavigationResult
@@ -43,6 +38,11 @@ class Navigation extends Action
      * @var CookieManagerInterface
      */
     protected $cookieManager;
+
+    /**
+     * @var Config
+     */
+    protected $config;
 
     /**
      * Navigation constructor.
@@ -90,12 +90,6 @@ class Navigation extends Action
             $this->ajaxNavigationResult,
             $request
         );
-
-        if ($this->config->isPersonalMerchandisingActive() && $this->config->getPersonalMerchandisingCookieName()) {
-            /** @var HttpInterface $response */
-            $response = $this->getResponse();
-            $response->setHeader('Cache-Control', 'max-age=0, must-revalidate, no-cache, no-store');
-        }
 
         return $this->ajaxNavigationResult;
     }
