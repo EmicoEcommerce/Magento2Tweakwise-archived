@@ -105,7 +105,7 @@ class Config
 
     /**
      * @deprecated
-     * @see \Emico\Tweakwise\Model\Client::getTimeout()
+     * @see \Emico\Tweakwise\Model\Client::REQUEST_TIMEOUT
      * @return int
      */
     public function getTimeout()

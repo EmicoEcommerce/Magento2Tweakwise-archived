@@ -93,7 +93,7 @@ class EndpointManager
     }
 
     /**
-     *
+     * Update the downtime flag if appropriate
      */
     public function handleConnectException(): void
     {

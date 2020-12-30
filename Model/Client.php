@@ -86,7 +86,7 @@ class Client
     {
         if (!$this->client) {
             $options = [
-                RequestOptions::TIMEOUT => $this->getTimeout(),
+                RequestOptions::TIMEOUT => self::REQUEST_TIMEOUT,
                 RequestOptions::HEADERS => [
                     'user-agent' => $this->config->getUserAgentString()
                 ]
@@ -122,14 +122,6 @@ class Client
         $uri = new Uri($url);
 
         return new HttpRequest('GET', $uri);
-    }
-
-    /**
-     * @return int
-     */
-    protected function getTimeout()
-    {
-        return self::REQUEST_TIMEOUT;
     }
 
     /**
