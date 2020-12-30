@@ -34,10 +34,21 @@ class Config
     public const ATTRIBUTE_CROSSSELL_GROUP_CODE = 'tweakwise_crosssell_group_code';
 
     /**
-     * Defaults
+     * @deprecated
+     * @see Client::REQUEST_TIMEOUT
      */
     public const REQUEST_TIMEOUT = 5;
+
+    /**
+     * @deprecated
+     * @see Client\EndpointManager::SERVER_URL
+     */
     public const SERVER_URL = 'https://gateway.tweakwisenavigator.net';
+
+    /**
+     * @deprecated
+     * @see Client\EndpointManager::FALLBACK_SERVER_URL
+     */
     public const FALLBACK_SERVER_URL = 'https://gateway.tweakwisenavigator.com';
 
     /**
