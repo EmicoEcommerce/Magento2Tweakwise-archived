@@ -31,8 +31,6 @@ class Client
      * Defaults
      */
     public const REQUEST_TIMEOUT = 5;
-    public const SERVER_URL = 'https://gateway.tweakwisenavigator.net';
-    public const FALLBACK_SERVER_URL = 'https://gateway.tweakwisenavigator.com';
 
     /**
      * @var Config
