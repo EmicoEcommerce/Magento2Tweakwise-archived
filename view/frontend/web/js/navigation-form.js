@@ -40,7 +40,6 @@ define([
 
             if (this.options.ajaxFilters) {
                 this._bindPopChangeHandler();
-                this._bindReloadList();
             }
         },
 
@@ -79,19 +78,6 @@ define([
                     this._updateBlocks(event.state.html);
                 }
             }.bind(this);
-        },
-
-        /**
-         *
-         * @private
-         */
-        _bindReloadList: function () {
-            $('document').ready(function () {
-                var profileKey = this._getProfileCookie();
-                if (profileKey && false) {
-                    this.element.trigger('change');
-                }
-            }.bind(this));
         },
 
         /**
