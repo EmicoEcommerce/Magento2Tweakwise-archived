@@ -41,6 +41,11 @@ class EndpointManager
     protected $variable;
 
     /**
+     * @var bool
+     */
+    protected $isFallback = false;
+
+    /**
      * EndpointManager constructor.
      * @param VariableFactory $variableFactory
      * @param VariableResource $variableResource
@@ -57,22 +62,30 @@ class EndpointManager
     }
 
     /**
-     * @param bool $useFallback
+     * @return bool
+     */
+    public function isFallback(): bool
+    {
+        return $this->isFallback;
+    }
+
+    /**
      * @return string
      */
-    public function getServerUrl(bool $useFallback = false): string
+    public function getServerUrl(): string
     {
-        if ($useFallback) {
+        if ($this->isFallback) {
             return self::FALLBACK_SERVER_URL;
         }
 
-        $downUntil = (int) $this->variable->getValue(Variable::TYPE_TEXT);
+        $downUntil = (int) $this->getVariable()->getValue(Variable::TYPE_TEXT);
         if (!$downUntil) {
             return self::SERVER_URL;
         }
 
         if ($this->dateTime->gmtTimestamp() < $downUntil) {
             // Primary endpoint is considered "down", use fallback
+            $this->isFallback = true;
             return self::FALLBACK_SERVER_URL;
         }
 
@@ -86,12 +99,12 @@ class EndpointManager
     {
         $twPrimaryLastDown = $this->getVariable();
         $downUntil = (int) $twPrimaryLastDown->getValue(Variable::TYPE_TEXT);
-        $fiveMinutesFromNow = $this->dateTime->gmtTimestamp() + self::DOWN_PERIOD;
-        if ($downUntil && ($downUntil < $fiveMinutesFromNow)) {
+        $now = $this->dateTime->gmtTimestamp();
+        if ($downUntil && abs($now - $downUntil) < self::DOWN_PERIOD) {
             return;
         }
 
-        $twPrimaryLastDown->setData('plain_value', $fiveMinutesFromNow);
+        $twPrimaryLastDown->setData('plain_value', $now + self::DOWN_PERIOD);
         try {
             $this->variableResource->save($twPrimaryLastDown);
         } catch (AlreadyExistsException $e) {
