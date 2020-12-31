@@ -59,10 +59,12 @@ class ProductNavigationRequest extends Request
      */
     public function addHiddenParameter(string $attribute, $value)
     {
-        $this->hiddenParameters = empty($this->hiddenParameters)
-            ? sprintf('%s=%s', $attribute, $value)
-            : $this->hiddenParameters .= sprintf('&%s=%s', $attribute, $value);
-
+        $hiddenParameter = sprintf('%s=%s', $attribute, $value);
+        if (!empty($this->hiddenParameters)) {
+            $hiddenParameter = '&' . $hiddenParameter;
+        }
+        $this->hiddenParameters .= $hiddenParameter;
+        
         $this->setParameter('tn_parameters', $this->hiddenParameters);
     }
 
