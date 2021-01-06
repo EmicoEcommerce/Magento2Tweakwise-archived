@@ -32,7 +32,7 @@ class ProductNavigationRequest extends Request
     /**
      * @var array
      */
-    protected $hiddenParameters = '';
+    protected $hiddenParameters = [];
 
     /**
      * {@inheritdoc}
@@ -59,13 +59,8 @@ class ProductNavigationRequest extends Request
      */
     public function addHiddenParameter(string $attribute, $value)
     {
-        $hiddenParameter = sprintf('%s=%s', $attribute, $value);
-        if (!empty($this->hiddenParameters)) {
-            $hiddenParameter = '&' . $hiddenParameter;
-        }
-        $this->hiddenParameters .= $hiddenParameter;
-        
-        $this->setParameter('tn_parameters', $this->hiddenParameters);
+        $this->hiddenParameters[] = sprintf('%s=%s', $attribute, $value);
+        $this->setParameter('tn_parameters', implode('&', $this->hiddenParameters));
     }
 
     /**
