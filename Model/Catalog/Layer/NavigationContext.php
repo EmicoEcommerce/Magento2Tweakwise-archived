@@ -241,7 +241,7 @@ class NavigationContext
         }
 
         foreach ($visibilityValues as $visibilityValue) {
-            $request->addAttributeFilter(self::VISIBILITY_ATTRIBUTE, $visibilityValue);
+            $request->addHiddenParameter(self::VISIBILITY_ATTRIBUTE, $visibilityValue);
         }
     }
 }
