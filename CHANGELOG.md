@@ -1,5 +1,5 @@
 ## 3.2.2
-1) Added scroll to top of page  to pager links.
+1) Added scroll to top of page to pager links (when ajax filtering is enabled).
 2) Added method to facilitate hidden parameters. The visibility filter is now passed as a hidden parameter.
 3) Fixed js initialization issues after ajax filtering. It can very well be that this is not relevant for most magento installations.
 This issue manifested in a missing "back url" when adding products to the cart on the category page.
