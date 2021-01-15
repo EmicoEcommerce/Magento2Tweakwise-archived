@@ -68,6 +68,7 @@ define([
 
             input.attr('value', paramValue);
             form.trigger('change');
+            $('html, body').animate({scrollTop: 0}, 0);
         }
 
     });

@@ -1,3 +1,14 @@
+## 3.2.2
+1) Added scroll to top of page to pager links (when ajax filtering is enabled).
+2) Added method to facilitate hidden parameters. The visibility filter is now passed as a hidden parameter.
+3) Fixed js initialization issues after ajax filtering. It can very well be that this is not relevant for most magento installations.
+This issue manifested in a missing "back url" when adding products to the cart on the category page.
+The "back url" determines where the user is sent after the add to cart completes. This was missing due to some javascript not being initialized.
+In some situations this would result in the user seeing json data in their browser when the add to cart completes, obviously not desireable.
+
+## 3.2.1
+Fixed regex issue in pager link (only relevant when ajax filtering is enabled).
+
 ## 3.2.0
 Moved src folder to root and removed composer json symlink. [#133](https://github.com/EmicoEcommerce/Magento2Tweakwise/issues/133) If you have any patches (or something like that) you need to evaluate those.
 This means that the directory structure of the module changed!

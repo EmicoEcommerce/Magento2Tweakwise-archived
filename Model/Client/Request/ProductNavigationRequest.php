@@ -30,6 +30,11 @@ class ProductNavigationRequest extends Request
     protected $path = 'navigation';
 
     /**
+     * @var array
+     */
+    protected $hiddenParameters = [];
+
+    /**
      * {@inheritdoc}
      */
     public function getResponseType()
@@ -42,10 +47,20 @@ class ProductNavigationRequest extends Request
      * @param string $value
      * @return $this
      */
-    public function addAttributeFilter($attribute, $value)
+    public function addAttributeFilter(string $attribute, $value)
     {
         $this->addParameter('tn_fk_' . $attribute, $value);
         return $this;
+    }
+
+    /**
+     * @param string $attribute
+     * @param $value
+     */
+    public function addHiddenParameter(string $attribute, $value)
+    {
+        $this->hiddenParameters[] = sprintf('%s=%s', $attribute, $value);
+        $this->setParameter('tn_parameters', implode('&', $this->hiddenParameters));
     }
 
     /**
