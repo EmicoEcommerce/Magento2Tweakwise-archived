@@ -25,6 +25,11 @@ class Navigation extends Action
 {
 
     /**
+     * @var Config
+     */
+    protected $config;
+
+    /**
      * @var AjaxNavigationResult
      */
     protected $ajaxNavigationResult;
@@ -35,34 +40,21 @@ class Navigation extends Action
     protected $initializerMap;
 
     /**
-     * @var CookieManagerInterface
-     */
-    protected $cookieManager;
-
-    /**
-     * @var Config
-     */
-    protected $config;
-
-    /**
      * Navigation constructor.
      * @param Context $context Request context
      * @param Config $config Tweakwise configuration provider
      * @param AjaxNavigationResult $ajaxNavigationResult
-     * @param CookieManagerInterface $cookieManager
      * @param array $initializerMap
      */
     public function __construct(
         Context $context,
         Config $config,
         AjaxNavigationResult $ajaxNavigationResult,
-        CookieManagerInterface $cookieManager,
         array $initializerMap
     ) {
         parent::__construct($context);
         $this->config = $config;
         $this->ajaxNavigationResult = $ajaxNavigationResult;
-        $this->cookieManager = $cookieManager;
         $this->initializerMap = $initializerMap;
     }
 

@@ -43,8 +43,6 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     public const PARAM_PAGE = 'p';
     public const PARAM_SEARCH = 'q';
 
-    public const PROFILE_KEY_COOKIE = 'profileKey';
-
     /**
      * Parameters to be ignored as attribute filters
      *

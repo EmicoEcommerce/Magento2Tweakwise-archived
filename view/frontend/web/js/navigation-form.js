@@ -81,15 +81,6 @@ define([
         },
 
         /**
-         *
-         * @returns {String}
-         * @private
-         */
-        _getProfileCookie: function () {
-            return $.mage.cookies.get('profileKey');
-        },
-
-        /**
          * Should return the handler for the filter event, depends on config options.
          * Supported options are ajax filtering and form filters and any combination of those options.
          * Note that the ajaxHandler also handles the case ajax enabled AND form filters enabled
@@ -186,8 +177,6 @@ define([
                 this._defaultHandler(event);
                 return;
             }
-
-            this.options.reloadList = false;
 
             this._startLoader();
             this.currentXhr = $.ajax({
