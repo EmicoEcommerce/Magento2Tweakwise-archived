@@ -297,7 +297,8 @@ class Config
      */
     public function isPersonalMerchandisingActive(Store $store = null)
     {
-        return (bool)$this->getStoreConfig('tweakwise/personal_merchandising/enabled', $store);
+        return (bool) $this->getStoreConfig('tweakwise/personal_merchandising/enabled', $store)
+            && $this->isAjaxFilters($store);
     }
 
     /**
