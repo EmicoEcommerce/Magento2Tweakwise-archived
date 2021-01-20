@@ -4,7 +4,7 @@
 3) Fixed js initialization issues after ajax filtering. It can very well be that this is not relevant for most magento installations.
 This issue manifested in a missing "back url" when adding products to the cart on the category page.
 The "back url" determines where the user is sent after the add to cart completes. This was missing due to some javascript not being initialized.
-In some situations this would result in the user seeing json data in their browser when the add to cart completes, obviously not desireable.
+In some situations this would result in the user seeing json data in their browser when the add to cart completes, obviously not desirable.
 
 ## 3.2.1
 Fixed regex issue in pager link (only relevant when ajax filtering is enabled).
