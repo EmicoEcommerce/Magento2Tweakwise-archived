@@ -198,7 +198,7 @@
                     <comment>Note that enabling this can have severe impact on performance, caching of ajax filter requests will be disabled.</comment>
                 </field>
                 <field id="cookie_name" translate="label,comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Cookie</label>
+                    <label>Cookie name</label>
                     <comment>Name of cookie which holds tweakwise profile information, this is usually set in the tweakwise measure script</comment>
                     <depends>
                         <field id="enabled">1</field>
