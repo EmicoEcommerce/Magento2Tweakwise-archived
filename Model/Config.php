@@ -292,6 +292,25 @@ class Config
     }
 
     /**
+     * @param Store|null $store
+     * @return bool
+     */
+    public function isPersonalMerchandisingActive(Store $store = null)
+    {
+        return (bool) $this->getStoreConfig('tweakwise/personal_merchandising/enabled', $store)
+            && $this->isAjaxFilters($store);
+    }
+
+    /**
+     * @param Store|null $store
+     * @return string
+     */
+    public function getPersonalMerchandisingCookieName(Store $store = null)
+    {
+        return (string) $this->getStoreConfig('tweakwise/personal_merchandising/cookie_name', $store);
+    }
+
+    /**
      * @param string $type
      * @param Store|null $store
      * @return bool

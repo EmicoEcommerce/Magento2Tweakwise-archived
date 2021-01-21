@@ -29,9 +29,9 @@ use Magento\Catalog\Model\ResourceModel\Attribute;
 class NavigationContext
 {
     /**
-     * Visbility attribute code
+     * Visibility attribute code
      */
-    const VISIBILITY_ATTRIBUTE = 'visibility';
+    public const VISIBILITY_ATTRIBUTE = 'visibility';
 
     /**
      * @var ProductNavigationRequest

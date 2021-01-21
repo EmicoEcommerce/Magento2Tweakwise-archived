@@ -7,6 +7,7 @@
 
 define([
     'jquery',
+    'mage/cookies'
 ], function ($) {
     $.widget('tweakwise.navigationForm', {
 
@@ -34,11 +35,12 @@ define([
          * @private
          */
         _hookEvents: function () {
-            if (this.options.ajaxFilters) {
-                this._bindPopChangeHandler()
-            }
             this._bindFilterClickEvents();
             this._bindFilterRemoveEvents();
+
+            if (this.options.ajaxFilters) {
+                this._bindPopChangeHandler();
+            }
         },
 
         /**

@@ -119,4 +119,14 @@ class ProductNavigationRequest extends Request
         $this->setParameter('tn_st', $templateId);
         return $this;
     }
+
+    /**
+     * @param string $profileKey
+     * @return $this
+     */
+    public function setProfileKey(string $profileKey)
+    {
+        $this->setParameter('tn_profilekey', $profileKey);
+        return $this;
+    }
 }

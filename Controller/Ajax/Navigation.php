@@ -14,6 +14,7 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\NotFoundException;
+use Magento\Framework\Stdlib\CookieManagerInterface;
 
 /**
  * Class Navigation
@@ -22,6 +23,7 @@ use Magento\Framework\Exception\NotFoundException;
  */
 class Navigation extends Action
 {
+
     /**
      * @var Config
      */
