@@ -1,7 +1,8 @@
 ## 3.3.0
 Feature Personal Merchandiser support added!
 Added support for personalized sort orders. See "Stores > Configuration > Catalog > Tweakwise > Personal Merchandiser".
-You need to add a tweakwise measure script to make use of this functionality. These settings can have impact on caching and performance, see https://github.com/EmicoEcommerce/Magento2Tweakwise#personal-merchandising (README.md) for details
+You need to add a tweakwise measure script to make use of this functionality. These settings can have impact on caching and performance, see https://github.com/EmicoEcommerce/Magento2Tweakwise#personal-merchandising (README.md) for details.
+Contact tweakwise support for in depth explanation of this feature.
 
 Technical: improvements in fallback handling (this is only relevant when tweakwise main endpoint is considered down)
 
