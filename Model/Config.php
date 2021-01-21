@@ -34,10 +34,21 @@ class Config
     public const ATTRIBUTE_CROSSSELL_GROUP_CODE = 'tweakwise_crosssell_group_code';
 
     /**
-     * Defaults
+     * @deprecated
+     * @see Client::REQUEST_TIMEOUT
      */
     public const REQUEST_TIMEOUT = 5;
+
+    /**
+     * @deprecated
+     * @see Client\EndpointManager::SERVER_URL
+     */
     public const SERVER_URL = 'https://gateway.tweakwisenavigator.net';
+
+    /**
+     * @deprecated
+     * @see Client\EndpointManager::FALLBACK_SERVER_URL
+     */
     public const FALLBACK_SERVER_URL = 'https://gateway.tweakwisenavigator.com';
 
     /**
@@ -82,14 +93,16 @@ class Config
     }
 
     /**
+     * @deprecated
+     * @see \Emico\Tweakwise\Model\Client\EndpointManager::getServerUrl()
      * @param bool $useFallBack
      * @return string
      */
     public function getGeneralServerUrl(bool $useFallBack = false)
     {
         return $useFallBack
-            ? self::FALLBACK_SERVER_URL
-            : self::SERVER_URL;
+            ? Client\EndpointManager::FALLBACK_SERVER_URL
+            : Client\EndpointManager::SERVER_URL;
     }
 
     /**
@@ -102,11 +115,13 @@ class Config
     }
 
     /**
+     * @deprecated
+     * @see \Emico\Tweakwise\Model\Client::REQUEST_TIMEOUT
      * @return int
      */
     public function getTimeout()
     {
-        return self::REQUEST_TIMEOUT;
+        return Client::REQUEST_TIMEOUT;
     }
 
     /**

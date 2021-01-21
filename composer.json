@@ -6,6 +6,8 @@
         "php": "^7.1",
         "ext-json": "*",
         "ext-pcre": "*",
+        "ext-simplexml": "*",
+        "ext-libxml": "*",
         "emico/tweakwise-export": ">=1.4",
         "guzzlehttp/guzzle": ">=6.0"
     },

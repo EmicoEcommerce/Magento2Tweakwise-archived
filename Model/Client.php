@@ -9,6 +9,7 @@
 namespace Emico\Tweakwise\Model;
 
 use Emico\Tweakwise\Exception\ApiException;
+use Emico\Tweakwise\Model\Client\EndpointManager;
 use Emico\Tweakwise\Model\Client\Request;
 use Emico\Tweakwise\Model\Client\Response;
 use Emico\Tweakwise\Model\Client\ResponseFactory;
@@ -26,6 +27,11 @@ use GuzzleHttp\Client as HttpClient;
 
 class Client
 {
+    /**
+     * Defaults
+     */
+    public const REQUEST_TIMEOUT = 5;
+
     /**
      * @var Config
      */
@@ -47,20 +53,28 @@ class Client
     protected $responseFactory;
 
     /**
+     * @var EndpointManager
+     */
+    protected $endpointManager;
+
+    /**
      * Client constructor.
      *
      * @param Config $config
      * @param Logger $log
      * @param ResponseFactory $responseFactory
+     * @param EndpointManager $endpointManager
      */
     public function __construct(
         Config $config,
         Logger $log,
-        ResponseFactory $responseFactory
+        ResponseFactory $responseFactory,
+        EndpointManager $endpointManager
     ) {
         $this->config = $config;
         $this->log = $log;
         $this->responseFactory = $responseFactory;
+        $this->endpointManager = $endpointManager;
     }
 
     /**
@@ -70,7 +84,7 @@ class Client
     {
         if (!$this->client) {
             $options = [
-                RequestOptions::TIMEOUT => $this->config->getTimeout(),
+                RequestOptions::TIMEOUT => self::REQUEST_TIMEOUT,
                 RequestOptions::HEADERS => [
                     'user-agent' => $this->config->getUserAgentString()
                 ]
@@ -83,17 +97,16 @@ class Client
 
     /**
      * @param Request $tweakwiseRequest
-     * @param bool $isFallBack
      * @return HttpRequest
      */
-    protected function createHttpRequest(Request $tweakwiseRequest, bool $isFallBack = false): HttpRequest
+    protected function createHttpRequest(Request $tweakwiseRequest): HttpRequest
     {
         $path = $tweakwiseRequest->getPath();
         $pathSuffix = $tweakwiseRequest->getPathSuffix();
 
         $url = sprintf(
             '%s/%s/%s%s',
-            rtrim($this->config->getGeneralServerUrl($isFallBack), '/'),
+            rtrim($this->endpointManager->getServerUrl(), '/'),
             trim($path, '/'),
             $this->config->getGeneralAuthenticationKey(),
             $pathSuffix
@@ -114,13 +127,12 @@ class Client
      *
      * @param Request $tweakwiseRequest
      * @param bool $async
-     * @param bool $isFallBack
      * @return Response|PromiseInterface
      */
-    protected function doRequest(Request $tweakwiseRequest, bool $async = false, bool $isFallBack = false)
+    protected function doRequest(Request $tweakwiseRequest, bool $async = false)
     {
         $client = $this->getClient();
-        $httpRequest = $this->createHttpRequest($tweakwiseRequest, $isFallBack);
+        $httpRequest = $this->createHttpRequest($tweakwiseRequest);
         $start = microtime(true);
 
         $responsePromise = $client
@@ -134,11 +146,12 @@ class Client
                         $start
                     );
                 },
-                function (GuzzleException $e) use ($tweakwiseRequest, $async, $isFallBack) {
+                function (GuzzleException $e) use ($tweakwiseRequest, $async) {
                     // Timeout uses Guzzle ConnectException, ConnectException is more general but it also makes sense
                     // to use this if the default server is unreachable for some reason
-                    if (!$isFallBack && $e instanceof ConnectException) {
-                        return $this->doRequest($tweakwiseRequest, $async, true);
+                    if ($e instanceof ConnectException && !$this->endpointManager->isFallback()) {
+                        $this->endpointManager->handleConnectException();
+                        return $this->doRequest($tweakwiseRequest, $async);
                     }
                     throw new ApiException($e->getMessage(), $e->getCode(), $e);
                 }
