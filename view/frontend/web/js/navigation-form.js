@@ -7,8 +7,9 @@
 
 define([
     'jquery',
-    'mage/cookies'
-], function ($) {
+    'mage/cookies',
+    'matchMedia'
+], function ($, mediacheck) {
     $.widget('tweakwise.navigationForm', {
 
         options: {
@@ -20,6 +21,8 @@ define([
             productListSelector: '.products.wrapper',
             toolbarSelector: '.toolbar.toolbar-products',
             isLoading: false,
+            filterTitleToggle: '.block-title.filter-title strong',
+            mediaBreakpoint: '(max-width: 767px)'
         },
 
         currentXhr: null,
@@ -167,6 +170,8 @@ define([
          * @private
          */
         _ajaxHandler: function (event) {
+            var filterTitleOld = $(this.options.filterTitleToggle).clone(true, true);
+
             event.preventDefault();
 
             if (this.currentXhr) {
@@ -186,6 +191,7 @@ define([
                 success: function (response) {
                     this._updateBlocks(response.html);
                     this._updateState(response);
+                    this._recoverCloseModal(filterTitleOld);
                 }.bind(this),
                 error: function (jqXHR, errorStatus) {
                     if (errorStatus !== 'abort') {
@@ -220,6 +226,21 @@ define([
                     filter.trigger('change');
                 }
             }
+        },
+
+        /**
+         * Update new modal title to old one after ajax filtering that changed title
+         * @param filterTitleOld
+         * @private
+         */
+        _recoverCloseModal: function (filterTitleOld) {
+            mediaCheck({
+                media: this.options.mediaBreakpoint,
+                entry: $.proxy(function () {
+                    $(this.options.filterTitleToggle).remove();
+                    $('.block-title.filter-title').prepend(filterTitleOld);
+                }, this)
+            });
         },
 
         /**
