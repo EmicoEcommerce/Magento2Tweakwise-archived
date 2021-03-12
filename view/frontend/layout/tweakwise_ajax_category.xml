@@ -18,10 +18,4 @@
     <update handle="catalog_category_view"/>
     <!-- Remove featured products from content as it would be rendered again in ajax call which is not needed -->
     <referenceBlock name="tweakwise.catalog.product.featured.before" remove="true"/>
-    <referenceBlock name="category.products.list">
-        <block class="Emico\Tweakwise\Block\ListProduct"
-               name="tweakwise_list_products_add_to_cart"
-               template="Emico_Tweakwise::product/list.phtml"
-        />
-    </referenceBlock>
 </layout>

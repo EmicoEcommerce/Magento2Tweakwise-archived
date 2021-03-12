@@ -280,6 +280,13 @@ define([
                     .replaceWith(newToolbarLast.outerHTML + scripts);
             }
 
+	    const primaryActionsDiv = $(".actions-primary")
+            primaryActionsDiv.find('form').
+            each(function (i, form) {
+                $(form).append('<input name="form_key" type="hidden" ' +
+                    ' value="' + $.mage.cookies.get('form_key') + '" />');
+            });
+
             $('body').trigger('contentUpdated');
         },
 
