@@ -507,18 +507,26 @@ class PathSlugStrategy implements
 
         $category = $this->strategyHelper->getCategoryFromItem($item);
         $categoryUrlPath = \parse_url($category->getUrl(), PHP_URL_PATH);
+
         /*
         Make sure we dont have any double slashes, add the current filter path to the category url to maintain
         the currently selected filters.
         */
         $filterSlugPath = $this->buildFilterSlugPath($this->getActiveFilters());
-        return $this->magentoUrl->getDirectUrl(
+
+        $url = $this->magentoUrl->getDirectUrl(
             sprintf(
                 '%s/%s',
                 trim($categoryUrlPath, '/'),
                 ltrim($filterSlugPath, '/')
             )
         );
+
+        /*
+         We explode the url by using a backslash as separator and then filter the values
+         by an array_unique. In the end we implode again using a backslash to build the correct URL.
+         */
+        return implode('/', array_unique(explode('/', $url)));
     }
 
     /**
