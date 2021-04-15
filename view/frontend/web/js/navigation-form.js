@@ -236,8 +236,8 @@ define([
             wrapper.innerHTML = htmlResponse;
             var parsedHtml = $(wrapper);
 
-            var newFiltersHtml = parsedHtml.find(filterSelector).html();
-            var newProductListHtml = parsedHtml.find(productListSelector).html();
+            var newFilters = parsedHtml.find(filterSelector);
+            var newProductList = parsedHtml.find(productListSelector);
             var newToolbar = parsedHtml.find(toolbarSelector);
             // Toolbar is included twice in the response
             // We use this first().get(0) construction to access outerHTML
@@ -247,8 +247,8 @@ define([
             var newToolbarFirst = newToolbar.first().get(0);
             var newToolbarLast = newToolbar.last().get(0);
 
-            if (newFiltersHtml) {
-                $(filterSelector).html(newFiltersHtml);
+            if (newFilters.length) {
+                $(filterSelector).replaceWith(newFilters);
             }
 
             var toolbar = $(toolbarSelector);
@@ -257,10 +257,10 @@ define([
             We use this construction as there could be more product lists on the page
             and we dont want to replace them all
             */
-            if (newProductListHtml) {
+            if (newProductList.length) {
                 toolbar
                     .siblings(productListSelector)
-                    .html(newProductListHtml);
+                    .replaceWith(newProductList);
             }
             if (newToolbarFirst) {
                 toolbar
