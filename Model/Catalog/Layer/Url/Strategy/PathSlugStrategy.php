@@ -288,9 +288,14 @@ class PathSlugStrategy implements
             $sort = $request->getParam('product_list_order');
             $limit = $request->getParam('product_list_limit');
             $mode = $request->getParam('product_list_mode');
-            if ($page && (int) $page > 1) {
+
+            if ($page &&
+                (int) $page > 1 &&
+                count($this->activeFilters) < 1
+            ) {
                 $query['p'] = $page;
             }
+
             if ($sort) {
                 $query['product_list_order'] = $sort;
             }
