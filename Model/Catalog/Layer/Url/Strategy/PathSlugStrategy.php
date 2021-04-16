@@ -512,18 +512,27 @@ class PathSlugStrategy implements
 
         $category = $this->strategyHelper->getCategoryFromItem($item);
         $categoryUrlPath = \parse_url($category->getUrl(), PHP_URL_PATH);
+
         /*
         Make sure we dont have any double slashes, add the current filter path to the category url to maintain
         the currently selected filters.
         */
         $filterSlugPath = $this->buildFilterSlugPath($this->getActiveFilters());
-        return $this->magentoUrl->getDirectUrl(
+
+        $url = $this->magentoUrl->getDirectUrl(
             sprintf(
                 '%s/%s',
                 trim($categoryUrlPath, '/'),
                 ltrim($filterSlugPath, '/')
             )
         );
+
+        /*
+         We explode the url so that we can capture its parts and find the double values in order to remove them.
+         This is needed because the categoryUrlPath contains the store code in some cases and the directUrl as well.
+         These two are the only unique parts in this situation and so need to be removed.
+         */
+        return implode('/', array_unique(explode('/', $url)));
     }
 
     /**

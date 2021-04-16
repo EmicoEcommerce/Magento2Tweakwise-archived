@@ -11,6 +11,7 @@ use Emico\TweakwiseExport\Model\Helper as ExportHelper;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Store\Model\StoreManagerInterface;
 
 class StrategyHelper
 {
@@ -25,16 +26,24 @@ class StrategyHelper
     private $categoryRepository;
 
     /**
+     * @var StoreManagerInterface
+     */
+    private $storeManager;
+
+    /**
      * StrategyHelper constructor.
      * @param ExportHelper $exportHelper
      * @param CategoryRepositoryInterface $categoryRepository
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         ExportHelper $exportHelper,
-        CategoryRepositoryInterface $categoryRepository
+        CategoryRepositoryInterface $categoryRepository,
+        StoreManagerInterface $storeManager
     ) {
         $this->exportHelper = $exportHelper;
         $this->categoryRepository = $categoryRepository;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -47,6 +56,12 @@ class StrategyHelper
         $tweakwiseCategoryId = $item->getAttribute()->getAttributeId();
         $categoryId = $this->exportHelper->getStoreId($tweakwiseCategoryId);
 
-        return $this->categoryRepository->get($categoryId);
+        try {
+            $storeId = $this->storeManager->getStore()->getId();
+        } catch (NoSuchEntityException $exception) {
+            $storeId = null;
+        }
+
+        return $this->categoryRepository->get($categoryId, $storeId);
     }
 }
