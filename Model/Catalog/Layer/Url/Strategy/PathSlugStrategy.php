@@ -523,8 +523,9 @@ class PathSlugStrategy implements
         );
 
         /*
-         We explode the url by using a backslash as separator and then filter the values
-         by an array_unique. In the end we implode again using a backslash to build the correct URL.
+         We explode the url so that we can capture its parts and find the double values in order to remove them.
+         This is needed because the categoryUrlPath contains the store code in some cases and the directUrl as well.
+         These two are the only unique parts in this situation and so need to be removed.
          */
         return implode('/', array_unique(explode('/', $url)));
     }
