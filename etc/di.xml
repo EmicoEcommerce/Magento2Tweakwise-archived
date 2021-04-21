@@ -66,6 +66,10 @@
     <type name="Magento\Framework\View\Page\Config">
         <plugin name="emico-tweakwise" type="Emico\Tweakwise\Model\Seo\Robots\Plugin" />
     </type>
+    <!-- Add meta of custom fields to data provider -->
+    <type name="Magento\Catalog\Model\Category\DataProvider">
+        <plugin name="emico-tweakwise" type="Emico\Tweakwise\Model\Category\DataProvider\Plugin" />
+    </type>
 
     <!-- If you need other layouts or possible even layer objects register them here -->
     <type name="Emico\Tweakwise\Controller\Ajax\Navigation">
