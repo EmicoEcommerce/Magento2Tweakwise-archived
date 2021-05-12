@@ -175,12 +175,17 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
         if (!$this->getSearch($request)) {
             $categoryUrl = $category->getUrl();
             $categoryUrlPath = \parse_url($categoryUrl, PHP_URL_PATH);
-            return $this->url->getDirectUrl(
+
+            $url = $this->url->getDirectUrl(
                 trim($categoryUrlPath, '/'),
                 [
                     '_query' => $this->getAttributeFilters($request)
                 ]
             );
+
+            $url = str_replace($this->url->getBaseUrl(), '', $url);
+
+            return $url;
         }
 
         $urlKey = $item->getFilter()->getUrlKey();
@@ -340,7 +345,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
         }
 
         $page = $this->getPage($request);
-        if ($page) {
+        if ($page && !$request->has('filter_path')) {
             $navigationRequest->setPage($page);
         }
 
