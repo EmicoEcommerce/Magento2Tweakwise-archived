@@ -94,26 +94,22 @@ class SuggestionDataProvider implements DataProviderInterface
         $category = $this->dataProviderHelper->getCategory();
         $promises = [];
 
-        if ($this->config->isAutocompleteSuggestionsEnabled()) {
-            $suggestionsRequest = $this->suggestionRequestFactory->create();
-            $suggestionsRequest->setSearch($query);
-            $suggestionsRequest->addCategoryFilter($category);
-            $promises['suggestions'] = $this->client->request(
-                $suggestionsRequest,
-                true
-            );
-        }
+        $suggestionsRequest = $this->suggestionRequestFactory->create();
+        $suggestionsRequest->setSearch($query);
+        $suggestionsRequest->addCategoryFilter($category);
+        $promises['suggestions'] = $this->client->request(
+            $suggestionsRequest,
+            true
+        );
 
-        if ($this->config->isAutocompleteProductsEnabled()) {
-            /** @var ProductSuggestionsRequest $productSuggestionRequest */
-            $productSuggestionsRequest = $this->productSuggestionRequestFactory->create();
-            $productSuggestionsRequest->setSearch($query);
-            $productSuggestionsRequest->addCategoryFilter($category);
-            $promises['product_suggestions'] = $this->client->request(
-                $productSuggestionsRequest,
-                true
-            );
-        }
+        /** @var ProductSuggestionsRequest $productSuggestionRequest */
+        $productSuggestionsRequest = $this->productSuggestionRequestFactory->create();
+        $productSuggestionsRequest->setSearch($query);
+        $productSuggestionsRequest->addCategoryFilter($category);
+        $promises['product_suggestions'] = $this->client->request(
+            $productSuggestionsRequest,
+            true
+        );
 
         if (empty($promises)) {
             return [];
