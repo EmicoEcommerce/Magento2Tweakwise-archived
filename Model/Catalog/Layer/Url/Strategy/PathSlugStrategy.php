@@ -291,7 +291,7 @@ class PathSlugStrategy implements
 
             if ($page &&
                 (int) $page > 1 &&
-                count($this->activeFilters) < 1
+                count($this->getActiveFilters()) < 1
             ) {
                 $query['p'] = $page;
             }
