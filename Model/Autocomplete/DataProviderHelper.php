@@ -12,6 +12,7 @@ use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Layer\Category\CollectionFilter;
+use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as ProductCollectionFactory;
 use Magento\Framework\App\Request\Http as HttpRequest;
 use Magento\Framework\Exception\LocalizedException;
@@ -134,6 +135,10 @@ class DataProviderHelper
         $productCollection = $this->productCollectionFactory->create();
         $productCollection->setStore($this->storeManager->getStore());
         $productCollection->addAttributeToFilter('entity_id', ['in' => $response->getProductIds()]);
+        $productCollection->addFieldToFilter('visibility', ['in' => [
+            Visibility::VISIBILITY_BOTH,
+            Visibility::VISIBILITY_IN_SEARCH
+        ]]);
         $this->collectionFilter->filter($productCollection, $this->getCategory());
 
         $result = [];
