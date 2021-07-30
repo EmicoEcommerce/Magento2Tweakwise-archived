@@ -6,21 +6,21 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\TreeRenderer;
+namespace Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\LinkRenderer;
 
-use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\TreeRenderer;
+use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\LinkRenderer;
 use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 
 /**
  * Class ItemRenderer
- * @package Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\TreeRenderer
+ * @package Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\LinkRenderer
  */
-class ItemRenderer extends TreeRenderer
+class ItemRenderer extends LinkRenderer
 {
     /**
      * {@inheritDoc}
      */
-    protected $_template = 'Emico_Tweakwise::product/layered/tree/item.phtml';
+    protected $_template = 'Emico_Tweakwise::product/layered/link/item.phtml';
 
     /**
      * @var Item
