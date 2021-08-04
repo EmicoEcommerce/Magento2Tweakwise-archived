@@ -58,6 +58,11 @@ class ItemRenderer extends LinkRenderer
      */
     public function getChildren()
     {
+        // When rendering link items we need to remove everything after the first nesting
+        // because "link view (linkweergave)" has a max of 1 nesting
+        foreach ($this->item->getChildren() as $child) {
+            $child->setChildren([]);
+        }
         return $this->item->getChildren();
     }
 }

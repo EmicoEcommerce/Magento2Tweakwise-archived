@@ -99,6 +99,7 @@ class Plugin
         $facet = $filter->getFacet();
         $settings = $facet->getFacetSettings();
         $renderType = $settings->getSelectionType();
+
         if ($this->config->getUseDefaultLinkRenderer() && in_array($renderType, $this->defaultAllowedRenderTypes)) {
             return $proceed($filter);
         }
@@ -121,10 +122,6 @@ class Plugin
      */
     protected function getBlockType(SettingsType $settings)
     {
-        if ($settings->getSource() === SettingsType::SOURCE_CATEGORY) {
-            return TreeRenderer::class;
-        }
-
         $renderType = $settings->getSelectionType();
         return $this->blockTypes[$renderType] ?? DefaultRenderer::class;
     }

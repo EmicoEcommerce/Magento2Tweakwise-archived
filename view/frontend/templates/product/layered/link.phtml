@@ -9,7 +9,7 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\TreeRenderer;
 
 /** @var $block \Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\LinkRenderer */
 ?>
-<ol class="items">
+<ol class="items link-attribute">
     <?php foreach ($block->getItems() as $item): ?>
         <?=$block->renderLinkItem($item)?>
     <?php endforeach; ?>

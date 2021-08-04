@@ -10,6 +10,7 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\LinkRenderer\ItemRende
 /** @var $block ItemRenderer */
 $item = $block->getItem();
 ?>
+
 <li class="item">
     <a href="<?=$block->escapeUrl($item->getUrl())?>">
         <?=$block->getItemPrefix()?>
@@ -32,8 +33,8 @@ $item = $block->getItem();
 
     <?php if ($block->hasChildren()): ?>
         <ol class="items child-items">
-            <?php foreach ($item->getChildren() as $child): ?>
-                <?=$block->renderTreeItem($child)?>
+            <?php foreach ($block->getChildren() as $child): ?>
+                <?=$block->renderLinkItem($child)?>
             <?php endforeach; ?>
         </ol>
     <?php endif; ?>
