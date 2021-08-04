@@ -29,15 +29,14 @@ Below is a rundown of all configuration options
 
 #### Layered Navigation (All settings depend on Enabled having value yes):
 1) Enabled: Use tweakwise results in navigation, if disabled the standard magento navigation is used.
-2) Category filters as link
-3) Hide facets with only one option: Given a result set from tweakwise in which a filter has only one option show that filter or not?
-4) Use default magento filter renderer: Use Magento standard filter templates or use templates bundled by the module.
+2) Hide facets with only one option: Given a result set from tweakwise in which a filter has only one option show that filter or not?
+3) Use default magento filter renderer: Use Magento standard filter templates or use templates bundled by the module.
    If you want to make full use of the features provided by this module then this should be set to No (i.e. make use of tweakwise template files).
-5) Filter form: This depends on 'Use default magento filter renderer' having value No. Render all filters in a form with filter buttons so that the user can select a set of filters and then navigate to the result instead of immediately navigating to the results when a filter is clicked.
-6) Filter url query parameters: Tweakwise filter urls will have all query parameters of the page in it so also the "cid" and utm_source parameters if present.
+4) Filter form: This depends on 'Use default magento filter renderer' having value No. Render all filters in a form with filter buttons so that the user can select a set of filters and then navigate to the result instead of immediately navigating to the results when a filter is clicked.
+5) Filter url query parameters: Tweakwise filter urls will have all query parameters of the page in it so also the "cid" and utm_source parameters if present.
    You can determine in which way you want to filter these out (if any).
-7) Filter url query arguments: This depends on 'Filter url query parameters' having any value not equal to 'Dont Filter'. This field specifies which parameters should be removed from the tweakwise filter urls.
-8) Url strategy: Has two options Query parameters and Seo path slug. If query parameters is selected then the tweakwise filter urls (and thus your navigation urls) will be constructed as
+6) Filter url query arguments: This depends on 'Filter url query parameters' having any value not equal to 'Dont Filter'. This field specifies which parameters should be removed from the tweakwise filter urls.
+7) Url strategy: Has two options Query parameters and Seo path slug. If query parameters is selected then the tweakwise filter urls (and thus your navigation urls) will be constructed as
     `www.example.com/example-category?color=red`.
     
     If Seo path slugs is selected the url is constructed as `www.example.com/example-category/color/red`.

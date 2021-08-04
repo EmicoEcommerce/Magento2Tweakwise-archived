@@ -10,6 +10,7 @@ namespace Emico\Tweakwise\Block\Navigation\FilterRenderer;
 
 use Closure;
 use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\DefaultRenderer;
+use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\LinkRenderer;
 use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SwatchRenderer;
 use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\SliderRenderer;
 use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\TreeRenderer;
@@ -46,6 +47,7 @@ class Plugin
      */
     protected $blockTypes = [
         SettingsType::SELECTION_TYPE_TREE => TreeRenderer::class,
+        SettingsType::SELECTION_TYPE_LINK => LinkRenderer::class,
         SettingsType::SELECTION_TYPE_SLIDER => SliderRenderer::class,
         SettingsType::SELECTION_TYPE_COLOR => SwatchRenderer::class,
     ];
@@ -97,6 +99,7 @@ class Plugin
         $facet = $filter->getFacet();
         $settings = $facet->getFacetSettings();
         $renderType = $settings->getSelectionType();
+
         if ($this->config->getUseDefaultLinkRenderer() && in_array($renderType, $this->defaultAllowedRenderTypes)) {
             return $proceed($filter);
         }
@@ -119,10 +122,6 @@ class Plugin
      */
     protected function getBlockType(SettingsType $settings)
     {
-        if ($settings->getSource() === SettingsType::SOURCE_CATEGORY) {
-            return TreeRenderer::class;
-        }
-
         $renderType = $settings->getSelectionType();
         return $this->blockTypes[$renderType] ?? DefaultRenderer::class;
     }
