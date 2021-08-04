@@ -170,7 +170,7 @@ class Config
      */
     public function getUseDefaultLinkRenderer(Store $store = null)
     {
-        return (bool)$this->getStoreConfig('tweakwise/layered/default_link_renderer', $store);
+        return (bool) $this->getStoreConfig('tweakwise/layered/default_link_renderer', $store);
     }
 
     /**
