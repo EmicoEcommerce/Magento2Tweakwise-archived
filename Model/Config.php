@@ -388,6 +388,16 @@ class Config
 
     /**
      * @param Store|null $store
+     * @return array
+     */
+    public function getFilterValuesWhitelist(Store $store = null)
+    {
+        $filterList = $this->getStoreConfig('tweakwise/seo/filter_values_whitelist', $store);
+        return explode(',', $filterList) ?: [];
+    }
+
+    /**
+     * @param Store|null $store
      * @return int
      */
     public function getMaxAllowedFacets(Store $store = null)

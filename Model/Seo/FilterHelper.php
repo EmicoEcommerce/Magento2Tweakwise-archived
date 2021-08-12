@@ -105,6 +105,15 @@ class FilterHelper
     }
 
     /**
+     * @param Item $item
+     * @return string|null
+     */
+    protected function getAttributeValueFromFilterItem(Item $item)
+    {
+        return null;
+    }
+
+    /**
      * @return bool
      */
     protected function exceedsMaxAllowedFacets(): bool
@@ -130,6 +139,14 @@ class FilterHelper
         $attributeCode = $this->getAttributeCodeFromFilterItem($item);
 
         return \in_array($attributeCode, $filterWhiteList, true);
+    }
+
+    protected function isFilterValueItemInWhiteList(Item $item): bool
+    {
+        $filterValuesWhiteList = $this->config->getFilterValuesWhitelist();
+        $attributeValue = $this->getAttributeValueFromFilterItem($item);
+
+        return \in_array($attributeValue, $filterValuesWhiteList, true);
     }
 
     /**
