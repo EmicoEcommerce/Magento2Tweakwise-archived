@@ -329,6 +329,8 @@ define([
             var filterUrl = this._getFilterParameters();
             if (filterUrl) {
                 window.location = '?' + filterUrl;
+            } else {
+                window.location = window.location.href.replace(window.location.search, '');
             }
         }
         // ------- End of handling for form filters
