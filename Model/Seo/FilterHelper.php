@@ -12,6 +12,9 @@ use Emico\Tweakwise\Model\Catalog\Layer\FilterList\Tweakwise;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
 use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Model\Layer\Resolver;
+use Magento\Catalog\Model\Product;
+use Magento\Eav\Api\AttributeRepositoryInterface;
+use Magento\Framework\Exception\LocalizedException;
 
 class FilterHelper
 {
@@ -36,16 +39,27 @@ class FilterHelper
     protected $tweakwiseFilterList;
 
     /**
+     * @var AttributeRepositoryInterface
+     */
+    protected $attributeRepository;
+
+    /**
      * FilterHelper constructor.
      * @param Resolver $layerResolver
      * @param Tweakwise $filterList
      * @param Config $config
      */
-    public function __construct(Resolver $layerResolver, Tweakwise $filterList, Config $config)
+    public function __construct(
+        Resolver $layerResolver,
+        Tweakwise $filterList,
+        Config $config,
+        AttributeRepositoryInterface $attributeRepository
+    )
     {
         $this->layerResolver = $layerResolver;
         $this->tweakwiseFilterList = $filterList;
         $this->config = $config;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -63,6 +77,28 @@ class FilterHelper
         }
 
         if (!$this->exceedsMaxAllowedFacets() && $this->isFilterItemInWhiteList($item)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param Filter $item
+     * @return bool
+     */
+    public function shouldFilterValueBeIndexable(Item $item): bool
+    {
+        if (!$this->config->isSeoEnabled()) {
+            return true;
+        }
+
+        //TODO - Process per category in updated implementation
+        if ($this->isCategoryFilterItem($item)) {
+            return true;
+        }
+
+        if (!$this->exceedsMaxAllowedFacets() && $this->isFilterValueItemInWhiteList($item)) {
             return true;
         }
 
@@ -110,7 +146,14 @@ class FilterHelper
      */
     protected function getAttributeValueFromFilterItem(Item $item)
     {
-        return null;
+        try {
+            return $this->attributeRepository
+                ->get(Product::ENTITY, 'size')
+                ->getSource()
+                ->getOptionText((int)$item->getValue())
+        } catch (LocalizedException $exception) {
+            return null;
+        }
     }
 
     /**
@@ -141,6 +184,10 @@ class FilterHelper
         return \in_array($attributeCode, $filterWhiteList, true);
     }
 
+    /**
+     * @param Item $item
+     * @return bool
+     */
     protected function isFilterValueItemInWhiteList(Item $item): bool
     {
         $filterValuesWhiteList = $this->config->getFilterValuesWhitelist();

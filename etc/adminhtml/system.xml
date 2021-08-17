@@ -105,14 +105,14 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
-                <field id="filter_values_whitelist" translate="label" type="textarea" sortOrder="25" showInStore="1" showInWebsite="1" showInDefault="1">
+                <field id="filter_values_whitelist" translate="label" type="textarea" sortOrder="30" showInStore="1" showInWebsite="1" showInDefault="1">
                     <label>Filter Values Whitelist</label>
                     <comment>Attributes whose filter values should be indexable, add the filter values codes (as seen in navigator) comma separated</comment>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
                 </field>
-                <field id="max_allowed_facets" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="max_allowed_facets" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Max allowed selected filter</label>
                     <comment>Max allowed filters before rendering filters as not indexable</comment>
                     <validate>validate-number</validate>
