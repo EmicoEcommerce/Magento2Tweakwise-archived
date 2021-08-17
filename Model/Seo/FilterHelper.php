@@ -114,6 +114,9 @@ class FilterHelper
             if (!$this->shouldFilterBeIndexable($item)) {
                 return false;
             }
+            if (!$this->shouldFilterValueBeIndexable($item)) {
+                return false;
+            }
         }
 
         return true;
@@ -151,6 +154,7 @@ class FilterHelper
                 ->get(Product::ENTITY, 'size')
                 ->getSource()
                 ->getOptionText((int)$item->getValue())
+            ;
         } catch (LocalizedException $exception) {
             return null;
         }
