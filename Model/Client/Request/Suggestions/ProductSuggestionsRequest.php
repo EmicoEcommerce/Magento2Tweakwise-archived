@@ -12,6 +12,7 @@ use Emico\Tweakwise\Model\Client\Request\SearchRequestInterface;
 use Emico\Tweakwise\Model\Client\Request\SearchRequestTrait;
 use Emico\Tweakwise\Model\Config;
 use Emico\TweakwiseExport\Model\Helper;
+use JetBrains\PhpStorm\Pure;
 use Magento\Store\Model\StoreManager;
 use Emico\Tweakwise\Model\Client\Response\Suggestions\ProductSuggestionsResponse;
 
@@ -22,7 +23,7 @@ class ProductSuggestionsRequest extends Request implements SearchRequestInterfac
     /**
      * {@inheritDoc}
      */
-    protected $path = 'suggestions/products';
+    protected string $path = 'suggestions/products';
 
     /**
      * ProductSuggestionRequest constructor.
@@ -30,7 +31,7 @@ class ProductSuggestionsRequest extends Request implements SearchRequestInterfac
      * @param StoreManager $storeManager
      * @param Config $config
      */
-    public function __construct(
+    #[Pure] public function __construct(
         Helper $helper,
         StoreManager $storeManager,
         Config $config
@@ -42,7 +43,7 @@ class ProductSuggestionsRequest extends Request implements SearchRequestInterfac
     /**
      * @return string
      */
-    public function getResponseType()
+    public function getResponseType(): string
     {
         return ProductSuggestionsResponse::class;
     }

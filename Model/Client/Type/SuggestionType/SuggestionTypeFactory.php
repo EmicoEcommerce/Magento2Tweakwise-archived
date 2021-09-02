@@ -13,7 +13,7 @@ class SuggestionTypeFactory
     /**
      * @var ObjectManagerInterface
      */
-    protected $objectManager;
+    protected ObjectManagerInterface $objectManager;
 
     /**
      * SuggestionTypeFactory constructor.

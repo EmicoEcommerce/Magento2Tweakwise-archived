@@ -35,7 +35,7 @@ class SettingsType extends Type
     /**
      * @return string
      */
-    public function getUrlKey()
+    public function getUrlKey(): string
     {
         return (string) $this->getDataValue('urlkey');
     }
@@ -44,7 +44,7 @@ class SettingsType extends Type
      * This returns the original (magento) attribute this facet is associated with
      * @return string
      */
-    public function getAttributename()
+    public function getAttributename(): string
     {
         return (string) $this->getDataValue('attributename');
     }
@@ -52,7 +52,7 @@ class SettingsType extends Type
     /**
      * @return bool
      */
-    public function getIsMultipleSelect()
+    public function getIsMultipleSelect(): bool
     {
         return $this->getDataValue('ismultiselect') == 'true';
     }
@@ -60,7 +60,7 @@ class SettingsType extends Type
     /**
      * @return string
      */
-    public function getSelectionType()
+    public function getSelectionType(): string
     {
         return (string) $this->getDataValue('selectiontype');
     }
@@ -68,7 +68,7 @@ class SettingsType extends Type
     /**
      * @return string
      */
-    public function getIsNumberOfResultVisible()
+    public function getIsNumberOfResultVisible(): bool|string
     {
         return $this->getDataValue('isnrofresultsvisible') == 'true';
     }
@@ -76,7 +76,7 @@ class SettingsType extends Type
     /**
      * @return bool
      */
-    public function isPrice()
+    public function isPrice(): bool
     {
         return $this->getUrlKey() === 'price';
     }
@@ -84,7 +84,7 @@ class SettingsType extends Type
     /**
      * @return bool
      */
-    public function getIsCollapsible()
+    public function getIsCollapsible(): bool
     {
         return $this->getDataValue('iscollapsible') == 'true';
     }
@@ -92,7 +92,7 @@ class SettingsType extends Type
     /**
      * @return bool
      */
-    public function getIsCollapsed()
+    public function getIsCollapsed(): bool
     {
         return $this->getDataValue('iscollapsed') == 'true';
     }
@@ -100,7 +100,7 @@ class SettingsType extends Type
     /**
      * @return bool
      */
-    public function getIsInfoVisible()
+    public function getIsInfoVisible(): bool
     {
         return $this->getDataValue('isinfovisible') == 'true';
     }
@@ -108,7 +108,7 @@ class SettingsType extends Type
     /**
      * @return int
      */
-    public function getNumberOfColumns()
+    public function getNumberOfColumns(): int
     {
         return (int) $this->getDataValue('nrofcolumns');
     }
@@ -116,7 +116,7 @@ class SettingsType extends Type
     /**
      * @return int
      */
-    public function getNumberOfShownAttributes()
+    public function getNumberOfShownAttributes(): int
     {
         return (int) $this->getDataValue('nrofshownattributes');
     }
@@ -124,7 +124,7 @@ class SettingsType extends Type
     /**
      * @return string|null
      */
-    public function getInfoText()
+    public function getInfoText(): ?string
     {
         $infoText = $this->getDataValue('infotext');
         if (!empty($infoText)) {
@@ -137,7 +137,7 @@ class SettingsType extends Type
     /**
      * @return string
      */
-    public function getExpandText()
+    public function getExpandText(): string
     {
         return (string) $this->getDataValue('expandtext');
     }
@@ -145,7 +145,7 @@ class SettingsType extends Type
     /**
      * @return string
      */
-    public function getCollapseText()
+    public function getCollapseText(): string
     {
         return (string) $this->getDataValue('collapsetext');
     }
@@ -153,7 +153,7 @@ class SettingsType extends Type
     /**
      * @return bool
      */
-    public function getIsVisible()
+    public function getIsVisible(): bool
     {
         return $this->getDataValue('isvisible') == 'true';
     }
@@ -161,7 +161,7 @@ class SettingsType extends Type
     /**
      * @return int
      */
-    public function getMultiSelectLogic()
+    public function getMultiSelectLogic(): int
     {
         return (int) $this->getDataValue('multiselectlogic');
     }
@@ -169,7 +169,7 @@ class SettingsType extends Type
     /**
      * @return null|string
      */
-    public function getPrefix()
+    public function getPrefix(): ?string
     {
         $prefix = $this->getDataValue('prefix');
         if (!empty($prefix)) {
@@ -181,7 +181,7 @@ class SettingsType extends Type
     /**
      * @return null|string
      */
-    public function getPostfix()
+    public function getPostfix(): ?string
     {
         $postfix = $this->getDataValue('postfix');
         if (!empty($postfix)) {
@@ -193,7 +193,7 @@ class SettingsType extends Type
     /**
      * @return string|null
      */
-    public function getCssClass()
+    public function getCssClass(): ?string
     {
         $cssClass = $this->getDataValue('cssclass');
         if (!empty($cssClass)) {

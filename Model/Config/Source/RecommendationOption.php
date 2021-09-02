@@ -12,6 +12,7 @@ use Emico\Tweakwise\Exception\ApiException;
 use Emico\Tweakwise\Model\Client;
 use Emico\Tweakwise\Model\Client\RequestFactory;
 use Emico\Tweakwise\Model\Client\Response\Catalog\Recommendation\OptionsResponse;
+use Exception;
 use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 
 class RecommendationOption extends AbstractSource
@@ -25,27 +26,27 @@ class RecommendationOption extends AbstractSource
     /**
      * @var Client
      */
-    protected $client;
+    protected Client $client;
 
     /**
      * @var RequestFactory
      */
-    protected $requestFactory;
+    protected RequestFactory $requestFactory;
 
     /**
      * @var array
      */
-    protected $options;
+    protected array $options;
 
     /**
      * @var bool
      */
-    protected $addCodeOption;
+    protected bool $addCodeOption;
 
     /**
      * @var bool
      */
-    protected $addEmpty;
+    protected bool $addEmpty;
 
     /**
      * Template constructor.
@@ -56,10 +57,10 @@ class RecommendationOption extends AbstractSource
      * @param bool $addEmpty
      */
     public function __construct(
-        Client $client,
+        Client         $client,
         RequestFactory $requestFactory,
-        $addCodeOption = false,
-        $addEmpty = false
+        bool           $addCodeOption,
+        bool $addEmpty
     ) {
         $this->client = $client;
         $this->requestFactory = $requestFactory;
@@ -69,8 +70,9 @@ class RecommendationOption extends AbstractSource
 
     /**
      * @return array
+     * @throws Exception
      */
-    protected function buildOptions()
+    protected function buildOptions(): array
     {
         $request = $this->requestFactory->create();
         /** @var OptionsResponse $response */
@@ -105,7 +107,7 @@ class RecommendationOption extends AbstractSource
     /**
      * {@inheritdoc}
      */
-    public function getAllOptions()
+    public function getAllOptions(): array
     {
         if (!$this->options) {
             try {

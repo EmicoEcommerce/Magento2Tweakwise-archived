@@ -27,17 +27,17 @@ class ProductNavigationRequest extends Request
     /**
      * {@inheritDoc}
      */
-    protected $path = 'navigation';
+    protected string $path = 'navigation';
 
     /**
      * @var array
      */
-    protected $hiddenParameters = [];
+    protected array $hiddenParameters = [];
 
     /**
      * {@inheritdoc}
      */
-    public function getResponseType()
+    public function getResponseType(): string
     {
         return ProductNavigationResponse::class;
     }
@@ -47,7 +47,7 @@ class ProductNavigationRequest extends Request
      * @param string $value
      * @return $this
      */
-    public function addAttributeFilter(string $attribute, $value)
+    public function addAttributeFilter(string $attribute, string $value): static
     {
         $this->addParameter('tn_fk_' . $attribute, $value);
         return $this;
@@ -67,7 +67,7 @@ class ProductNavigationRequest extends Request
      * @param string $sort
      * @return $this
      */
-    public function setOrder($sort)
+    public function setOrder(string $sort): static
     {
         $this->setParameter('tn_sort', $sort);
         return $this;
@@ -77,7 +77,7 @@ class ProductNavigationRequest extends Request
      * @param int $page
      * @return $this
      */
-    public function setPage($page)
+    public function setPage(int $page): static
     {
         $page = (int) $page;
         $page = max(1, $page);
@@ -90,11 +90,8 @@ class ProductNavigationRequest extends Request
      * @param int $limit
      * @return $this
      */
-    public function setLimit($limit)
+    public function setLimit(int $limit): static
     {
-        if ($limit === 'all') {
-            $limit = self::MAX_PRODUCTS;
-        }
         $limit = min($limit, self::MAX_PRODUCTS);
         $this->setParameter('tn_ps', $limit);
         return $this;
@@ -104,7 +101,7 @@ class ProductNavigationRequest extends Request
      * @param int|null $templateId
      * @return $this
      */
-    public function setTemplateId($templateId)
+    public function setTemplateId(?int $templateId): static
     {
         $this->setParameter('tn_ft', $templateId);
         return $this;
@@ -114,7 +111,7 @@ class ProductNavigationRequest extends Request
      * @param int|null $templateId
      * @return $this
      */
-    public function setSortTemplateId($templateId)
+    public function setSortTemplateId(?int $templateId): static
     {
         $this->setParameter('tn_st', $templateId);
         return $this;
@@ -124,7 +121,7 @@ class ProductNavigationRequest extends Request
      * @param string $profileKey
      * @return $this
      */
-    public function setProfileKey(string $profileKey)
+    public function setProfileKey(string $profileKey): static
     {
         $this->setParameter('tn_profilekey', $profileKey);
         return $this;

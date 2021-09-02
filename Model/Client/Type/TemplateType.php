@@ -16,7 +16,7 @@ class TemplateType extends Type
     /**
      * @var string
      */
-    protected $idField;
+    protected string $idField;
 
     /**
      * TemplateType constructor.
@@ -32,7 +32,7 @@ class TemplateType extends Type
     /**
      * @return int
      */
-    public function getTemplateId()
+    public function getTemplateId(): int
     {
         return (int) $this->getDataValue($this->idField);
     }

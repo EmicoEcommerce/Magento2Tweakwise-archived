@@ -22,12 +22,12 @@ class QueryFilterType implements OptionSourceInterface
     /**
      * @var array[]
      */
-    protected $options;
+    protected array $options;
 
     /**
      * @return array
      */
-    protected function buildOptions()
+    protected function buildOptions(): array
     {
         return [
             ['value' => self::TYPE_NONE, 'label' => __('Dont\'t filter')],
@@ -39,7 +39,7 @@ class QueryFilterType implements OptionSourceInterface
     /**
      * {@inheritdoc}
      */
-    public function toOptionArray()
+    public function toOptionArray(): array
     {
         if (!$this->options) {
             $this->options = $this->buildOptions();

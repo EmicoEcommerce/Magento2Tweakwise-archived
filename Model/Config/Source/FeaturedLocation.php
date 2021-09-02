@@ -21,12 +21,12 @@ class FeaturedLocation implements OptionSourceInterface
     /**
      * @var array[]
      */
-    protected $options;
+    protected array $options;
 
     /**
      * @return array
      */
-    protected function buildOptions()
+    protected function buildOptions(): array
     {
         return [
             ['value' => self::LOCATION_BEFORE, 'label' => __('Before category products')],
@@ -37,7 +37,7 @@ class FeaturedLocation implements OptionSourceInterface
     /**
      * {@inheritdoc}
      */
-    public function toOptionArray()
+    public function toOptionArray(): array
     {
         if (!$this->options) {
             $this->options = $this->buildOptions();

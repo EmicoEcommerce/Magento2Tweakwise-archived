@@ -23,17 +23,17 @@ class SuggestionTypeCategory extends SuggestionTypeAbstract
     /**
      * @var CategoryRepository
      */
-    protected $categoryRepository;
+    protected CategoryRepository $categoryRepository;
 
     /**
      * @var StoreManagerInterface
      */
-    protected $storeManager;
+    protected StoreManagerInterface $storeManager;
 
     /**
      * @var UrlInterface
      */
-    protected $urlInstance;
+    protected UrlInterface $urlInstance;
 
     /**
      * SuggestionTypeCategory constructor.
@@ -62,7 +62,7 @@ class SuggestionTypeCategory extends SuggestionTypeAbstract
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         $match = $this->getMatch();
         /** @var string $category */
@@ -74,7 +74,7 @@ class SuggestionTypeCategory extends SuggestionTypeAbstract
     /**
      * @return string
      */
-    public function getUrl()
+    public function getUrl(): string
     {
         try {
             return $this->getCategoryUrl() ?: '';
@@ -87,7 +87,7 @@ class SuggestionTypeCategory extends SuggestionTypeAbstract
      * @return string
      * @throws NoSuchEntityException
      */
-    protected function getCategoryUrl()
+    protected function getCategoryUrl(): string
     {
         $categoryIds = $this->getCategoryIds();
         if (empty($categoryIds)) {
@@ -109,7 +109,7 @@ class SuggestionTypeCategory extends SuggestionTypeAbstract
      * @return int
      * @throws NoSuchEntityException
      */
-    protected function getStoreRootCategory()
+    protected function getStoreRootCategory(): int
     {
         /** @var Store|StoreInterface $store */
         $store = $this->storeManager->getStore();

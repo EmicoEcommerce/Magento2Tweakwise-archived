@@ -21,12 +21,12 @@ abstract class SuggestionTypeAbstract extends Type implements SuggestionTypeInte
     /**
      * @var UrlInterface
      */
-    protected $url;
+    protected UrlInterface $url;
 
     /**
      * @var Helper
      */
-    protected $exportHelper;
+    protected Helper $exportHelper;
 
     /**
      * SuggestionTypeAbstract constructor.
@@ -47,7 +47,7 @@ abstract class SuggestionTypeAbstract extends Type implements SuggestionTypeInte
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         $match = $this->getMatch();
         /** @var string $category */
@@ -60,7 +60,7 @@ abstract class SuggestionTypeAbstract extends Type implements SuggestionTypeInte
     /**
      * @return string
      */
-    protected function getSearchUrl()
+    protected function getSearchUrl(): string
     {
         $query = [
             'q' => $this->getSearchTerm()
@@ -91,7 +91,7 @@ abstract class SuggestionTypeAbstract extends Type implements SuggestionTypeInte
     /**
      * @return string
      */
-    protected function getCategoryName()
+    protected function getCategoryName(): string
     {
         return $this->data['navigationLink']['context']['category']['name'] ?? '';
     }
@@ -99,7 +99,7 @@ abstract class SuggestionTypeAbstract extends Type implements SuggestionTypeInte
     /**
      * @return string
      */
-    protected function getMatch()
+    protected function getMatch(): string
     {
         return $this->data['match'] ?? '';
     }

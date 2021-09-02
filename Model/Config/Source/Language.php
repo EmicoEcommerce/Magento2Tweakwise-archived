@@ -10,6 +10,7 @@ use Emico\Tweakwise\Exception\ApiException;
 use Emico\Tweakwise\Model\Client;
 use Emico\Tweakwise\Model\Client\RequestFactory;
 use Emico\Tweakwise\Model\Client\Response\Catalog\LanguageResponse;
+use Exception;
 use Magento\Framework\Data\OptionSourceInterface;
 
 class Language implements OptionSourceInterface
@@ -17,12 +18,12 @@ class Language implements OptionSourceInterface
     /**
      * @var RequestFactory
      */
-    protected $requestFactory;
+    protected RequestFactory $requestFactory;
 
     /**
      * @var Client
      */
-    protected $client;
+    protected Client $client;
 
     /**
      * Language constructor.
@@ -41,8 +42,9 @@ class Language implements OptionSourceInterface
      * Return array of options as value-label pairs
      *
      * @return array
+     * @throws Exception
      */
-    public function toOptionArray()
+    public function toOptionArray(): array
     {
         $options = [
             [

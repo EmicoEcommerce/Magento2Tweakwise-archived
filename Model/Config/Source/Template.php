@@ -12,6 +12,7 @@ use Emico\Tweakwise\Exception\ApiException;
 use Emico\Tweakwise\Model\Client;
 use Emico\Tweakwise\Model\Client\RequestFactory;
 use Emico\Tweakwise\Model\Client\Response\Catalog\TemplateResponse;
+use Exception;
 use Magento\Framework\Data\OptionSourceInterface;
 
 class Template implements OptionSourceInterface
@@ -19,17 +20,17 @@ class Template implements OptionSourceInterface
     /**
      * @var Client
      */
-    protected $client;
+    protected Client $client;
 
     /**
      * @var RequestFactory
      */
-    protected $requestFactory;
+    protected RequestFactory $requestFactory;
 
     /**
      * @var array
      */
-    protected $options;
+    protected array $options;
 
     /**
      * Template constructor.
@@ -45,8 +46,9 @@ class Template implements OptionSourceInterface
 
     /**
      * @return array
+     * @throws Exception
      */
-    protected function buildOptions()
+    protected function buildOptions(): array
     {
         $request = $this->requestFactory->create();
         /** @var TemplateResponse $response */
@@ -63,7 +65,7 @@ class Template implements OptionSourceInterface
     /**
      * {@inheritdoc}
      */
-    public function toOptionArray()
+    public function toOptionArray(): array
     {
         if (!$this->options) {
             try {

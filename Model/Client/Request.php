@@ -19,22 +19,22 @@ class Request
     /**
      * @var string
      */
-    protected $path;
+    protected string $path;
 
     /**
      * @var array
      */
-    protected $parameters = [];
+    protected array $parameters = [];
 
     /**
      * @var StoreManager
      */
-    protected $storeManager;
+    protected StoreManager $storeManager;
 
     /**
      * @var Helper
      */
-    protected $helper;
+    protected Helper $helper;
 
     /**
      * Request constructor.
@@ -51,7 +51,7 @@ class Request
     /**
      * @return string
      */
-    public function getResponseType()
+    public function getResponseType(): string
     {
         return Response::class;
     }
@@ -59,7 +59,7 @@ class Request
     /**
      * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -68,7 +68,7 @@ class Request
      * @param string $path
      * @return $this
      */
-    public function setPath($path)
+    public function setPath(string $path): static
     {
         $this->path = (string) $path;
         return $this;
@@ -77,7 +77,7 @@ class Request
     /**
      * @return string|null
      */
-    public function getPathSuffix()
+    public function getPathSuffix(): ?string
     {
         return null;
     }
@@ -88,7 +88,7 @@ class Request
      * @param string $separator
      * @return $this
      */
-    public function addParameter($parameter, $value, $separator = '|')
+    public function addParameter(string $parameter, string $value, string $separator = '|'): static
     {
         if (isset($this->parameters[$parameter])) {
             if ($value == null) {
@@ -96,9 +96,7 @@ class Request
             } else {
                 $this->parameters[$parameter] = $this->parameters[$parameter] . $separator . $value;
             }
-        } else if ($value !== null) {
-            $this->parameters[$parameter] = (string) $value;
-        }
+        } else $this->parameters[$parameter] = (string) $value;
 
         return $this;
     }
@@ -107,7 +105,7 @@ class Request
      * @param array $parameters
      * @return $this
      */
-    public function setParameters(array $parameters)
+    public function setParameters(array $parameters): static
     {
         $this->parameters = $parameters;
         return $this;
@@ -118,7 +116,7 @@ class Request
      * @param string|null $value
      * @return $this
      */
-    public function setParameter(string $parameter, string $value = null)
+    public function setParameter(string $parameter, string $value = null): static
     {
         if ($value === null) {
             unset($this->parameters[$parameter]);
@@ -133,16 +131,16 @@ class Request
     /**
      * @return array
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
 
     /**
      * @param string $parameter
-     * @return mixed|null
+     * @return mixed
      */
-    public function getParameter(string $parameter)
+    public function getParameter(string $parameter): mixed
     {
         if (isset($this->parameters[$parameter])) {
             return $this->parameters[$parameter];
@@ -155,16 +153,16 @@ class Request
      * @param string $parameter
      * @return bool
      */
-    public function hasParameter($parameter)
+    public function hasParameter(string $parameter): bool
     {
         return isset($this->parameters[$parameter]);
     }
 
     /**
-     * @param Category|int $category
+     * @param int|Category $category
      * @return $this
      */
-    public function addCategoryFilter($category)
+    public function addCategoryFilter(Category|int $category): static
     {
         $ids = [];
         if (is_numeric($category)) {
@@ -194,7 +192,7 @@ class Request
      * @param array $categoryIds
      * @return $this
      */
-    public function addCategoryPathFilter(array $categoryIds)
+    public function addCategoryPathFilter(array $categoryIds): static
     {
         $categoryIds = array_map('intval', $categoryIds);
         $storeId = (int) $this->getStoreId();
@@ -209,7 +207,7 @@ class Request
     /**
      * @return string|null
      */
-    public function getCategoryPathFilter()
+    public function getCategoryPathFilter(): ?string
     {
         if (!$categoryPath = $this->getParameter('tn_cid')) {
             return null;
@@ -230,7 +228,7 @@ class Request
     /**
      * @return StoreInterface|null
      */
-    protected function getStore()
+    protected function getStore(): ?StoreInterface
     {
         try {
             return $this->storeManager->getStore();
@@ -241,9 +239,9 @@ class Request
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    protected function getStoreId()
+    protected function getStoreId(): ?int
     {
         $store = $this->getStore();
         if ($store instanceof StoreInterface) {

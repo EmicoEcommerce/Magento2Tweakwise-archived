@@ -16,10 +16,10 @@ interface SuggestionTypeInterface
     /**
      * @return string
      */
-    public function getUrl();
+    public function getUrl(): string;
 
     /**
      * @return string
      */
-    public function getName();
+    public function getName(): string;
 }

@@ -17,19 +17,19 @@ class Type
      *
      * @var array
      */
-    protected static $_underscoreCache = [];
+    protected static array $_underscoreCache = [];
 
     /**
      * Setter/Getter underscore transformation cache
      *
      * @var array
      */
-    protected static $_capitalizeCache = [];
+    protected static array $_capitalizeCache = [];
 
     /**
      * @var array
      */
-    protected $data = [];
+    protected array $data = [];
 
     /**
      * Type constructor.
@@ -50,7 +50,7 @@ class Type
      * @param string $name
      * @return string
      */
-    protected function underscore($name)
+    protected function underscore(string $name): string
     {
         if (isset(self::$_underscoreCache[$name])) {
             return self::$_underscoreCache[$name];
@@ -64,7 +64,7 @@ class Type
      * @param string $key
      * @return string
      */
-    protected function getMethodName($key)
+    protected function getMethodName(string $key): string
     {
         if (isset(self::$_capitalizeCache[$key])) {
             return self::$_capitalizeCache[$key];
@@ -78,7 +78,7 @@ class Type
      * @param array $data
      * @return $this
      */
-    public function setData(array $data)
+    public function setData(array $data): static
     {
         //$this->data = [];
         foreach ($data as $key => $value) {
@@ -90,9 +90,9 @@ class Type
 
     /**
      * @param string $key
-     * @return mixed|null
+     * @return mixed
      */
-    public function getValue($key)
+    public function getValue(string $key): mixed
     {
         $method = 'get' . $this->getMethodName($key);
         if (method_exists($this, $method)) {
@@ -106,7 +106,7 @@ class Type
      * @param string $key
      * @return mixed|null
      */
-    protected function getDataValue($key)
+    protected function getDataValue(string $key): mixed
     {
         return $this->data[$key] ?? null;
     }
@@ -115,7 +115,7 @@ class Type
      * @param string $key
      * @return bool
      */
-    public function getBoolValue($key)
+    public function getBoolValue(string $key): bool
     {
         return $this->getDataValue($key) == 'true';
     }
@@ -125,7 +125,7 @@ class Type
      * @param mixed $value
      * @return $this
      */
-    public function setValue($key, $value)
+    public function setValue(string $key, mixed $value): static
     {
         $method = 'set' . $this->getMethodName($key);
         if (method_exists($this, $method)) {
@@ -141,7 +141,7 @@ class Type
      * @param string $key
      * @return bool
      */
-    public function hasValue($key)
+    public function hasValue(string $key): bool
     {
         return isset($this->data[$key]);
     }
@@ -151,7 +151,7 @@ class Type
      * @param array $args
      * @return mixed
      */
-    public function __call($method, $args)
+    public function __call(string $method, array $args)
     {
         if (strlen($method) > 3) {
             $key = $this->underscore(substr($method, 3));
@@ -159,7 +159,7 @@ class Type
                 case 'get':
                     return $this->getValue($key);
                 case 'set':
-                    $value = isset($args[0]) ? $args[0] : null;
+                    $value = $args[0] ?? null;
                     return $this->setValue($key, $value);
                 case 'has':
                     return $this->hasValue($key);
@@ -174,7 +174,7 @@ class Type
      * @param string $key
      * @return array
      */
-    protected function normalizeArray(array $data, $key)
+    protected function normalizeArray(array $data, string $key): array
     {
         if (isset($data[$key])) {
             $data = $data[$key];

@@ -16,12 +16,12 @@ class TemplateRequest extends Request
     /**
      * {@inheritDoc}
      */
-    protected $path = 'catalog/templates';
+    protected string $path = 'catalog/templates';
 
     /**
      * @return string
      */
-    public function getResponseType()
+    public function getResponseType(): string
     {
         return TemplateResponse::class;
     }

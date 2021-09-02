@@ -406,9 +406,9 @@ class Config
     }
 
     /**
-     * @param Store|null $store
      * @param string $path
-     * @return mixed|null|string
+     * @param Store|null $store
+     * @return mixed
      */
     protected function getStoreConfig(string $path, Store $store = null): mixed
     {

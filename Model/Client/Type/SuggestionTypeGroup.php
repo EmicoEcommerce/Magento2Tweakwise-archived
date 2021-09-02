@@ -22,12 +22,12 @@ class SuggestionTypeGroup extends Type
     /**
      * @var SuggestionTypeFactory
      */
-    protected $suggestionTypeFactory;
+    protected SuggestionTypeFactory $suggestionTypeFactory;
 
     /**
      * @var string
      */
-    protected $type;
+    protected string $type;
 
     /**
      * SuggestionTypeGroup constructor.
@@ -54,7 +54,7 @@ class SuggestionTypeGroup extends Type
      * @param SuggestionTypeAbstract[]|array[] $suggestions
      * @return $this
      */
-    public function setSuggestions(array $suggestions)
+    public function setSuggestions(array $suggestions): static
     {
         $suggestions = $this->normalizeArray($suggestions, 'suggestion');
 

@@ -15,16 +15,17 @@ class Plugin
     /**
      * @var FilterHelper
      */
-    protected $filterHelper;
+    protected FilterHelper $filterHelper;
 
     /**
      * @var TweakwiseConfig
      */
-    protected $tweakwiseConfig;
+    protected TweakwiseConfig $tweakwiseConfig;
 
     /**
      * Plugin constructor.
      * @param FilterHelper $filterHelper
+     * @param TweakwiseConfig $tweakwiseConfig
      */
     public function __construct(FilterHelper $filterHelper, TweakwiseConfig $tweakwiseConfig)
     {
@@ -37,7 +38,7 @@ class Plugin
      * @param $result
      * @return string
      */
-    public function afterGetRobots(PageConfig $config, $result)
+    public function afterGetRobots(PageConfig $config, $result): string
     {
         if (!$this->tweakwiseConfig->isSeoEnabled()) {
             return $result;
@@ -56,6 +57,7 @@ class Plugin
 
     /**
      * @param string $result
+     * @return bool
      */
     protected function isAlreadyNoIndex(string $result): bool
     {
@@ -64,6 +66,7 @@ class Plugin
 
     /**
      * @param string $oldRobots
+     * @return string
      */
     protected function getNewRobots(string $oldRobots): string
     {

@@ -20,17 +20,17 @@ class CatalogLastPageRedirect implements ObserverInterface
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var NavigationContext
      */
-    protected $context;
+    protected NavigationContext $context;
 
     /**
      * @var Context
      */
-    protected $actionContext;
+    protected Context $actionContext;
 
     /**
      * CatalogSearchRedirect constructor.
@@ -78,7 +78,7 @@ class CatalogLastPageRedirect implements ObserverInterface
     /**
      * @return Response|null
      */
-    protected function getHttpResponse()
+    protected function getHttpResponse(): ?Response
     {
         $response = $this->actionContext->getResponse();
         if (!$response instanceof Response) {

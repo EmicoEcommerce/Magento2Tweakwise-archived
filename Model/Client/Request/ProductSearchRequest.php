@@ -10,6 +10,7 @@ namespace Emico\Tweakwise\Model\Client\Request;
 
 use Emico\Tweakwise\Model\Config;
 use Emico\TweakwiseExport\Model\Helper;
+use JetBrains\PhpStorm\Pure;
 use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManager;
 
@@ -24,7 +25,7 @@ class ProductSearchRequest extends ProductNavigationRequest implements SearchReq
     /**
      * {@inheritDoc}
      */
-    protected $path = 'navigation-search';
+    protected string $path = 'navigation-search';
 
     /**
      * ProductSearchRequest constructor.
@@ -32,7 +33,7 @@ class ProductSearchRequest extends ProductNavigationRequest implements SearchReq
      * @param StoreManager $storeManager
      * @param Config $config
      */
-    public function __construct(
+    #[Pure] public function __construct(
         Helper $helper,
         StoreManager $storeManager,
         Config $config

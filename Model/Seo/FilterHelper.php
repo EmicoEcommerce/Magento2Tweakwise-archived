@@ -23,17 +23,17 @@ class FilterHelper
     /**
      * @var Resolver
      */
-    protected $layerResolver;
+    protected Resolver $layerResolver;
 
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var Tweakwise
      */
-    protected $tweakwiseFilterList;
+    protected Tweakwise $tweakwiseFilterList;
 
     /**
      * FilterHelper constructor.
@@ -49,7 +49,7 @@ class FilterHelper
     }
 
     /**
-     * @param Filter $item
+     * @param Item $item
      * @return bool
      */
     public function shouldFilterBeIndexable(Item $item): bool

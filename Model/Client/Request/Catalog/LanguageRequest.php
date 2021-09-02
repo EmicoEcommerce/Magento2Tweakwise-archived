@@ -18,12 +18,12 @@ class LanguageRequest extends Request
     /**
      * @var string
      */
-    protected $path = 'catalog/languages';
+    protected string $path = 'catalog/languages';
 
     /**
      * @return string
      */
-    public function getResponseType()
+    public function getResponseType(): string
     {
         return LanguageResponse::class;
     }

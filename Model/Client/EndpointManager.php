@@ -23,27 +23,27 @@ class EndpointManager
     /**
      * @var VariableFactory
      */
-    protected $variableFactory;
+    protected VariableFactory $variableFactory;
 
     /**
      * @var VariableResource
      */
-    protected $variableResource;
+    protected VariableResource $variableResource;
 
     /**
      * @var DateTime
      */
-    protected $dateTime;
+    protected DateTime $dateTime;
 
     /**
      * @var Variable
      */
-    protected $variable;
+    protected Variable $variable;
 
     /**
      * @var bool
      */
-    protected $isFallback = false;
+    protected bool $isFallback = false;
 
     /**
      * EndpointManager constructor.

@@ -14,12 +14,12 @@ class SortTemplateRequest extends Request
     /**
      * {@inheritDoc}
      */
-    protected $path = 'catalog/sorttemplates';
+    protected string $path = 'catalog/sorttemplates';
 
     /**
      * @return string
      */
-    public function getResponseType()
+    public function getResponseType(): string
     {
         return SortTemplateResponse::class;
     }

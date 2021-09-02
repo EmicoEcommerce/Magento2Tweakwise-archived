@@ -27,7 +27,7 @@ class ToolbarInputProvider implements FilterFormInputProviderInterface
     /**
      * @var MagentoHttpRequest
      */
-    protected $request;
+    protected MagentoHttpRequest $request;
 
     /**
      * ToolbarInputProvider constructor.
@@ -41,7 +41,7 @@ class ToolbarInputProvider implements FilterFormInputProviderInterface
     /**
      * @inheritDoc
      */
-    public function getFilterFormInput()
+    public function getFilterFormInput(): array
     {
         $input = [];
         foreach (self::TOOLBAR_INPUTS as $toolbarInput) {
