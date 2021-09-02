@@ -3,17 +3,17 @@
     "license": "OSL-3.0",
     "description": "Magento 2 module for Tweakwise integration",
     "require": {
-        "php": "^7.1",
+        "php": "^7.1|^7.4|^8.0",
         "ext-json": "*",
         "ext-pcre": "*",
         "ext-simplexml": "*",
         "ext-libxml": "*",
-        "emico/tweakwise-export": ">=1.4",
+        "emico/tweakwise-export": ">=4.0",
         "guzzlehttp/guzzle": ">=6.0"
     },
     "require-dev": {
         "malukenho/docheader": "~0.1",
-        "phpro/grumphp": "^0.11.1"
+        "phpro/grumphp": "1.2.0"
     },
     "type": "magento2-module",
     "scripts": {
