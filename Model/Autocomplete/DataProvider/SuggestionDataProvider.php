@@ -23,32 +23,32 @@ class SuggestionDataProvider implements DataProviderInterface
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var DataProviderHelper
      */
-    protected $dataProviderHelper;
+    protected DataProviderHelper $dataProviderHelper;
 
     /**
      * @var SuggestionGroupItemFactory
      */
-    protected $suggestionGroupItemFactory;
+    protected SuggestionGroupItemFactory $suggestionGroupItemFactory;
 
     /**
      * @var RequestFactory
      */
-    protected $productSuggestionRequestFactory;
+    protected RequestFactory $productSuggestionRequestFactory;
 
     /**
      * @var RequestFactory
      */
-    protected $suggestionRequestFactory;
+    protected RequestFactory $suggestionRequestFactory;
 
     /**
      * @var Client
      */
-    protected $client;
+    protected Client $client;
 
     /**
      * AutocompleteDataProvider constructor.

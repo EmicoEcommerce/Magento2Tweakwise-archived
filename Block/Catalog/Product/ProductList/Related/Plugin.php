@@ -19,7 +19,7 @@ class Plugin extends AbstractRecommendationPlugin
     /**
      * @return string
      */
-    protected function getType()
+    protected function getType(): string
     {
         return Config::RECOMMENDATION_TYPE_CROSSSELL;
     }
@@ -29,7 +29,7 @@ class Plugin extends AbstractRecommendationPlugin
      * @param Closure $proceed
      * @return array
      */
-    public function aroundGetItems(Related $subject, Closure $proceed)
+    public function aroundGetItems(Related $subject, Closure $proceed): array
     {
         if (!$this->config->isRecommendationsEnabled(Config::RECOMMENDATION_TYPE_CROSSSELL)) {
             return $proceed();

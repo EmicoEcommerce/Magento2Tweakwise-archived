@@ -22,12 +22,12 @@ class State extends MagentoStateBlock
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var Url
      */
-    protected $url;
+    protected Url $url;
 
     /**
      * State constructor.

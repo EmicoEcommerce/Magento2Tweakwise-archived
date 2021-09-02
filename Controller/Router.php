@@ -20,17 +20,17 @@ class Router implements RouterInterface
     /**
      * @var ActionFactory
      */
-    protected $actionFactory;
+    protected ActionFactory $actionFactory;
 
     /**
      * @var RouteMatchingInterface
      */
-    protected $routeMatchingStrategy;
+    protected RouteMatchingInterface $routeMatchingStrategy;
 
     /**
      * @var UrlStrategyFactory
      */
-    protected $urlStrategyFactory;
+    protected UrlStrategyFactory $urlStrategyFactory;
 
     /**
      * Router constructor.

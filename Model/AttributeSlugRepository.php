@@ -10,6 +10,7 @@ namespace Emico\Tweakwise\Model;
 
 use Emico\Tweakwise\Api\AttributeSlugRepositoryInterface;
 use Emico\Tweakwise\Api\Data\AttributeSlugInterface;
+use Emico\Tweakwise\Api\Data\AttributeSlugSearchResultsInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Emico\Tweakwise\Api\Data\AttributeSlugSearchResultsInterfaceFactory;
 use Emico\Tweakwise\Model\ResourceModel\AttributeSlug as AttributeSlugResource;
@@ -25,27 +26,27 @@ class AttributeSlugRepository implements AttributeSlugRepositoryInterface
     /**
      * @var AttributeSlugResource
      */
-    protected $resource;
+    protected AttributeSlugResource $resource;
 
     /**
      * @var AttributeSlugSearchResultsInterfaceFactory
      */
-    protected $searchResultsFactory;
+    protected AttributeSlugSearchResultsInterfaceFactory $searchResultsFactory;
 
     /**
      * @var CollectionProcessorInterface
      */
-    protected $collectionProcessor;
+    protected CollectionProcessorInterface $collectionProcessor;
 
     /**
      * @var CollectionFactory
      */
-    protected $collectionFactory;
+    protected CollectionFactory $collectionFactory;
 
     /**
      * @var AttributeSlugInterfaceFactory
      */
-    protected $entityFactory;
+    protected AttributeSlugInterfaceFactory $entityFactory;
 
     /**
      * @param AttributeSlugResource $resource
@@ -90,7 +91,7 @@ class AttributeSlugRepository implements AttributeSlugRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getList(SearchCriteriaInterface $criteria)
+    public function getList(SearchCriteriaInterface $criteria): AttributeSlugSearchResultsInterface
     {
         $collection = $this->collectionFactory->create();
 

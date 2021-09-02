@@ -16,7 +16,7 @@ class SuggestionItem implements ItemInterface
     /**
      * @var SuggestionTypeAutocomplete
      */
-    protected $suggestion;
+    protected SuggestionTypeAutocomplete $suggestion;
 
     /**
      * SuggestionItem constructor.

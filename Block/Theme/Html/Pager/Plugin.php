@@ -18,12 +18,12 @@ class Plugin
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var UrlModel
      */
-    protected $url;
+    protected UrlModel $url;
 
     /**
      * Plugin constructor.

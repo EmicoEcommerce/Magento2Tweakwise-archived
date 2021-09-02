@@ -20,17 +20,17 @@ class FormMini extends Template
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var LocaleFormat
      */
-    protected $localeFormat;
+    protected LocaleFormat $localeFormat;
 
     /**
      * @var Registry
      */
-    protected $registry;
+    protected Registry $registry;
 
     /**
      * FormMini constructor.

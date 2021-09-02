@@ -19,17 +19,17 @@ class CategoryInitializer implements InitializerInterface
     /**
      * @var Resolver
      */
-    protected $layerResolver;
+    protected Resolver $layerResolver;
 
     /**
      * @var Registry
      */
-    protected $registry;
+    protected Registry $registry;
 
     /**
      * @var CategoryRepositoryInterface
      */
-    protected $categoryRepository;
+    protected CategoryRepositoryInterface $categoryRepository;
 
     /**
      * AjaxResultCategoryInitializer constructor.

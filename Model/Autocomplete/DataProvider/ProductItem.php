@@ -24,22 +24,22 @@ class ProductItem implements ItemInterface
     /**
      * @var Product
      */
-    protected $product;
+    protected Product $product;
 
     /**
      * @var ImageFactory
      */
-    protected $imageFactory;
+    protected ImageFactory $imageFactory;
 
     /**
      * @var ImageBuilder
      */
-    protected $imageBuilder;
+    protected ImageBuilder $imageBuilder;
 
     /**
      * @var ProductMetadataInterface
      */
-    protected $productMetadata;
+    protected ProductMetadataInterface $productMetadata;
 
     /**
      * ProductItem constructor.
@@ -64,7 +64,7 @@ class ProductItem implements ItemInterface
     /**
      * @return string
      */
-    public function getTitle(): string
+    public function getTitle()
     {
         return $this->product->getName();
     }
@@ -72,7 +72,7 @@ class ProductItem implements ItemInterface
     /**
      * @return array
      */
-    public function toArray(): array
+    public function toArray()
     {
         $product = $this->product;
         $price = $product->getPriceInfo();

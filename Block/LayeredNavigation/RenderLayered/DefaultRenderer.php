@@ -29,22 +29,22 @@ class DefaultRenderer extends Template
     /**
      * @var Filter
      */
-    protected $filter;
+    protected Filter $filter;
 
     /**
      * @var Json
      */
-    protected $jsonSerializer;
+    protected Json $jsonSerializer;
 
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var NavigationConfig
      */
-    protected $navigationConfig;
+    protected NavigationConfig $navigationConfig;
 
     /**
      * Constructor

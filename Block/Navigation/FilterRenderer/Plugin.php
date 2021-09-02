@@ -19,6 +19,7 @@ use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
 use Emico\Tweakwise\Model\Config;
 use Emico\TweakwiseExport\Model\Logger;
 use Magento\Catalog\Model\Layer\Filter\FilterInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\View\LayoutInterface;
 use Magento\LayeredNavigation\Block\Navigation\FilterRenderer;
 use Magento\Swatches\Block\LayeredNavigation\RenderLayered;
@@ -28,24 +29,24 @@ class Plugin
     /**
      * @var LayoutInterface
      */
-    protected $layout;
+    protected LayoutInterface $layout;
 
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var Logger
      */
-    protected $log;
+    protected Logger $log;
 
     /**
      * Filter renderer block types
      *
      * @var string[]
      */
-    protected $blockTypes = [
+    protected array $blockTypes = [
         SettingsType::SELECTION_TYPE_TREE => TreeRenderer::class,
         SettingsType::SELECTION_TYPE_LINK => LinkRenderer::class,
         SettingsType::SELECTION_TYPE_SLIDER => SliderRenderer::class,
@@ -55,7 +56,7 @@ class Plugin
     /**
      * @var string[]
      */
-    protected $defaultAllowedRenderTypes = [
+    protected array $defaultAllowedRenderTypes = [
         SettingsType::SELECTION_TYPE_LINK,
         SettingsType::SELECTION_TYPE_CHECKBOX,
         SettingsType::SELECTION_TYPE_COLOR,
@@ -64,7 +65,7 @@ class Plugin
     /**
      * @var SwatchHelper
      */
-    protected $swatchHelper;
+    protected SwatchHelper $swatchHelper;
 
     /**
      * @param Logger $log
@@ -84,9 +85,9 @@ class Plugin
      * @param Closure $proceed
      * @param FilterInterface $filter
      * @return mixed
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
-    public function aroundRender(FilterRenderer $subject, Closure $proceed, FilterInterface $filter)
+    public function aroundRender(FilterRenderer $subject, Closure $proceed, FilterInterface $filter): mixed
     {
         if (!$filter instanceof Filter) {
             return $proceed($filter);
@@ -120,7 +121,7 @@ class Plugin
      * @param SettingsType $settings
      * @return string
      */
-    protected function getBlockType(SettingsType $settings)
+    protected function getBlockType(SettingsType $settings): string
     {
         $renderType = $settings->getSelectionType();
         return $this->blockTypes[$renderType] ?? DefaultRenderer::class;

@@ -20,12 +20,12 @@ class Plugin
     /**
      * @var CurrentContext
      */
-    protected $context;
+    protected CurrentContext $context;
 
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * Plugin constructor.
@@ -44,13 +44,12 @@ class Plugin
      * @param Closure $proceed
      * @return array
      */
-    public function aroundGetAvailableOrders(Toolbar $subject, Closure $proceed)
+    public function aroundGetAvailableOrders(Toolbar $subject, Closure $proceed): array
     {
         if (!$this->config->isLayeredEnabled()) {
             return $proceed();
         }
 
-        /** @var SortFieldType[] $sortFields */
         $sortFields = $this->context->getResponse()->getProperties()->getSortFields();
 
         $result = [];
@@ -65,7 +64,7 @@ class Plugin
      * @param string $result
      * @return false|string
      */
-    public function afterGetWidgetOptionsJson(Toolbar $subject, string $result)
+    public function afterGetWidgetOptionsJson(Toolbar $subject, string $result): bool|string
     {
         if (!$this->config->isAjaxFilters()) {
             return $result;

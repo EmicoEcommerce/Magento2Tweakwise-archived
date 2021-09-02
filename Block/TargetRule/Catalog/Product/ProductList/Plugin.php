@@ -25,37 +25,36 @@ abstract class Plugin
     /**
      * @var string
      */
-    protected $type;
+    protected string $type;
 
     /**
      * @var Collection
      */
-    protected $collection;
+    protected Collection $collection;
 
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var Registry
      */
-    protected $registry;
+    protected Registry $registry;
 
     /**
      * @var Context
      */
-    protected $context;
+    protected Context $context;
 
     /**
      * @var TemplateFinder
      */
-    protected $templateFinder;
+    protected TemplateFinder $templateFinder;
 
     /**
      * Plugin constructor.
      *
-     * @param string $type
      * @param Config $config
      * @param Registry $registry
      * @param Context $context
@@ -74,7 +73,7 @@ abstract class Plugin
      * @param Closure $proceed
      * @return array
      */
-    public function aroundGetItemCollection(AbstractProductList $subject, Closure $proceed)
+    public function aroundGetItemCollection(AbstractProductList $subject, Closure $proceed): array
     {
         if (!$this->config->isRecommendationsEnabled($this->type)) {
             return $proceed();
@@ -92,7 +91,7 @@ abstract class Plugin
      * @param Closure $proceed
      * @return int
      */
-    public function aroundGetPositionLimit(AbstractProductList $subject, Closure $proceed)
+    public function aroundGetPositionLimit(AbstractProductList $subject, Closure $proceed): int
     {
         if (!$this->config->isRecommendationsEnabled($this->type)) {
             return $proceed();
@@ -122,7 +121,7 @@ abstract class Plugin
     /**
      * @return Collection
      */
-    protected function getCollection()
+    protected function getCollection(): Collection
     {
         if (!$this->collection) {
             $request = $this->context->getRequest();

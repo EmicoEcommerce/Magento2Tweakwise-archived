@@ -21,12 +21,12 @@ class Plugin
     /**
      * @var Config Tweakwise Config object used to query search settings
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var QueryFactory
      */
-    protected $queryFactory;
+    protected QueryFactory $queryFactory;
 
     /**
      * Plugin constructor.
@@ -48,7 +48,7 @@ class Plugin
      *
      * @return mixed
      */
-    public function beforeExecute(Index $subject)
+    public function beforeExecute(Index $subject): mixed
     {
         if ($this->config->isSearchEnabled()) {
             /* @var Query $query */

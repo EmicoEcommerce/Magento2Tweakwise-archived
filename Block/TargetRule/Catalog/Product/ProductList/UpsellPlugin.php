@@ -16,5 +16,5 @@ namespace Emico\Tweakwise\Block\TargetRule\Catalog\Product\ProductList;
  */
 class UpsellPlugin extends Plugin
 {
-    protected $type = 'upsell';
+    protected string $type = 'upsell';
 }

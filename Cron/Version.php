@@ -17,12 +17,12 @@ class Version
     /**
      * @var ComposerInformation
      */
-    protected $composerInformation;
+    protected ComposerInformation $composerInformation;
 
     /**
      * @var WriterInterface
      */
-    protected $configWriter;
+    protected WriterInterface $configWriter;
 
     /**
      * Version constructor.

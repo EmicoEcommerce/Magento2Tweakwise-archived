@@ -25,27 +25,27 @@ class AjaxNavigationResult extends Layout
     /**
      * @var Catalog\Layer\Url
      */
-    protected $urlModel;
+    protected Url $urlModel;
 
     /**
      * @var Resolver
      */
-    protected $layerResolver;
+    protected Resolver $layerResolver;
 
     /**
      * @var Json
      */
-    protected $serializer;
+    protected Json $serializer;
 
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var CookieManagerInterface
      */
-    protected $cookieManager;
+    protected CookieManagerInterface $cookieManager;
 
     /**
      * AjaxNavigationResult constructor.

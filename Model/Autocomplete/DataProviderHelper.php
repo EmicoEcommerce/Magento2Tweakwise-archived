@@ -27,42 +27,42 @@ class DataProviderHelper
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var QueryFactory
      */
-    protected $queryFactory;
+    protected QueryFactory $queryFactory;
 
     /**
      * @var StoreManagerInterface
      */
-    protected $storeManager;
+    protected StoreManagerInterface $storeManager;
 
     /**
      * @var CategoryRepositoryInterface
      */
-    protected $categoryRepository;
+    protected CategoryRepositoryInterface $categoryRepository;
 
     /**
      * @var HttpRequest
      */
-    protected $request;
+    protected HttpRequest $request;
 
     /**
      * @var ProductCollectionFactory
      */
-    protected $productCollectionFactory;
+    protected ProductCollectionFactory $productCollectionFactory;
 
     /**
      * @var CollectionFilter
      */
-    protected $collectionFilter;
+    protected CollectionFilter $collectionFilter;
 
     /**
      * @var ProductItemFactory
      */
-    protected $productItemFactory;
+    protected ProductItemFactory $productItemFactory;
 
     /**
      * AutocompleteDataProvider constructor
@@ -98,7 +98,7 @@ class DataProviderHelper
     /**
      * @return Query|mixed|string|null
      */
-    public function getQuery()
+    public function getQuery(): mixed
     {
         /** @var Query $query */
         $query = $this->queryFactory->get();
@@ -110,7 +110,7 @@ class DataProviderHelper
      * @return Category
      * @noinspection PhpIncompatibleReturnTypeInspection
      */
-    public function getCategory()
+    public function getCategory(): Category
     {
         $categoryId = (int)$this->request->getParam('cid');
         if ($categoryId && $this->config->isAutocompleteStayInCategory()) {
@@ -130,7 +130,7 @@ class DataProviderHelper
      * @return ItemInterface[]
      * @throws LocalizedException
      */
-    public function getProductItems(AutocompleteProductResponseInterface $response)
+    public function getProductItems(AutocompleteProductResponseInterface $response): array
     {
         $productCollection = $this->productCollectionFactory->create();
         $productCollection->setStore($this->storeManager->getStore());

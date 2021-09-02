@@ -20,7 +20,7 @@ class Plugin extends AbstractRecommendationPlugin
     /**
      * @return string
      */
-    protected function getType()
+    protected function getType(): string
     {
         return Config::RECOMMENDATION_TYPE_UPSELL;
     }
@@ -30,7 +30,7 @@ class Plugin extends AbstractRecommendationPlugin
      * @param Closure $proceed
      * @return Collection
      */
-    public function aroundGetItemCollection(Upsell $subject, Closure $proceed)
+    public function aroundGetItemCollection(Upsell $subject, Closure $proceed): Collection
     {
         if (!$this->config->isRecommendationsEnabled(Config::RECOMMENDATION_TYPE_UPSELL)) {
             return $proceed();
@@ -46,9 +46,10 @@ class Plugin extends AbstractRecommendationPlugin
     /**
      * @param Upsell $subject
      * @param Closure $proceed
+     * @param string $type
      * @return int
      */
-    public function aroundGetItemLimit(Upsell $subject, Closure $proceed, $type = '')
+    public function aroundGetItemLimit(Upsell $subject, Closure $proceed, string $type = ''): int
     {
         if (!$this->config->isRecommendationsEnabled(Config::RECOMMENDATION_TYPE_UPSELL)) {
             return $proceed($type);

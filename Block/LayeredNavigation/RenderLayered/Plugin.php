@@ -21,17 +21,17 @@ class Plugin
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var Logger
      */
-    protected $log;
+    protected Logger $log;
 
     /**
      * @var AbstractFilter
      */
-    protected $filter;
+    protected AbstractFilter $filter;
 
     /**
      * Proxy constructor.
@@ -51,7 +51,7 @@ class Plugin
      * @param AbstractFilter $filter
      * @return $this
      */
-    public function aroundSetSwatchFilter(RenderLayered $subject, Closure $proceed, AbstractFilter $filter)
+    public function aroundSetSwatchFilter(RenderLayered $subject, Closure $proceed, AbstractFilter $filter): static
     {
         $this->filter = $filter;
         return $proceed($filter);
@@ -64,7 +64,7 @@ class Plugin
      * @param int $optionId
      * @return string
      */
-    public function aroundBuildUrl(RenderLayered $subject, Closure $proceed, $attributeCode, $optionId)
+    public function aroundBuildUrl(RenderLayered $subject, Closure $proceed, string $attributeCode, int $optionId): string
     {
         if (!$this->config->isLayeredEnabled()) {
             return $proceed($attributeCode, $optionId);

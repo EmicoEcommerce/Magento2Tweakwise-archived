@@ -27,17 +27,17 @@ class Navigation extends Action
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var AjaxNavigationResult
      */
-    protected $ajaxNavigationResult;
+    protected AjaxNavigationResult $ajaxNavigationResult;
 
     /**
      * @var InitializerInterface[]
      */
-    protected $initializerMap;
+    protected array $initializerMap;
 
     /**
      * Navigation constructor.

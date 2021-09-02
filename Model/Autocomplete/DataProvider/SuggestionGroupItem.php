@@ -14,7 +14,7 @@ class SuggestionGroupItem implements ItemInterface
     /**
      * @var SuggestionTypeGroup
      */
-    protected $group;
+    protected SuggestionTypeGroup $group;
 
     /**
      * SuggestionGroupItem constructor.

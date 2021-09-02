@@ -20,27 +20,27 @@ abstract class AbstractRecommendationPlugin
     /**
      * @var Collection
      */
-    protected $collection;
+    protected Collection $collection;
 
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var Registry
      */
-    protected $registry;
+    protected Registry $registry;
 
     /**
      * @var Context
      */
-    protected $context;
+    protected Context $context;
 
     /**
      * @var TemplateFinder
      */
-    protected $templateFinder;
+    protected TemplateFinder $templateFinder;
 
     /**
      * Plugin constructor.
@@ -61,7 +61,7 @@ abstract class AbstractRecommendationPlugin
     /**
      * @return string
      */
-    protected abstract function getType();
+    protected abstract function getType(): string;
 
     /**
      * @param ProductRequest $request
@@ -80,7 +80,7 @@ abstract class AbstractRecommendationPlugin
     /**
      * @return Collection
      */
-    protected function getCollection()
+    protected function getCollection(): Collection
     {
         if (!$this->collection) {
             $request = $this->context->getRequest();
