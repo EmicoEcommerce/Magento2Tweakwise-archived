@@ -14,13 +14,13 @@ trait AnchorRendererTrait
     /**
      * @var FilterHelper
      */
-    protected $filterHelper;
+    protected FilterHelper $filterHelper;
 
     /**
      * @param Item $item
      * @return string
      */
-    public function renderAnchorHtmlTagAttributes(Item $item)
+    public function renderAnchorHtmlTagAttributes(Item $item): string
     {
         $anchorAttributes = $this->getAnchorTagAttributes($item);
         $attributeHtml = [];
@@ -48,7 +48,7 @@ trait AnchorRendererTrait
      * @param Item $item
      * @return string
      */
-    protected function getItemUrl(Item $item)
+    protected function getItemUrl(Item $item): string
     {
         return $this->escapeHtml($item->getUrl());
     }

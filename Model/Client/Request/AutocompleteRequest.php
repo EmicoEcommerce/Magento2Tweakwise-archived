@@ -16,12 +16,12 @@ class AutocompleteRequest extends Request
     /**
      * {@inheritDoc}
      */
-    protected $path = 'autocomplete';
+    protected string $path = 'autocomplete';
 
     /**
      * {@inheritDoc}
      */
-    public function getResponseType()
+    public function getResponseType(): string
     {
         return AutocompleteResponse::class;
     }
@@ -30,7 +30,7 @@ class AutocompleteRequest extends Request
      * @param string $query
      * @return $this
      */
-    public function setSearch($query)
+    public function setSearch(string $query): static
     {
         $this->setParameter('tn_q', $query);
         return $this;
@@ -40,7 +40,7 @@ class AutocompleteRequest extends Request
      * @param bool $getProducts
      * @return $this
      */
-    public function setGetProducts($getProducts)
+    public function setGetProducts(bool $getProducts): static
     {
         $this->setParameter('tn_items', $getProducts ? 'true' : 'false');
 
@@ -51,7 +51,7 @@ class AutocompleteRequest extends Request
      * @param bool $getSuggestions
      * @return $this
      */
-    public function setGetSuggestions($getSuggestions)
+    public function setGetSuggestions(bool $getSuggestions): static
     {
         $this->setParameter('tn_suggestions', $getSuggestions ? 'true' : 'false');
 
@@ -62,7 +62,7 @@ class AutocompleteRequest extends Request
      * @param bool $isInstant
      * @return $this
      */
-    public function setIsInstant($isInstant)
+    public function setIsInstant(bool $isInstant): static
     {
         $this->setParameter('tn_instant', $isInstant ? 'true' : 'false');
 
@@ -72,10 +72,9 @@ class AutocompleteRequest extends Request
     /**
      * @param int $maxResult
      */
-    public function setMaxResult($maxResult)
+    public function setMaxResult(int $maxResult)
     {
-        $maxResult = (int) $maxResult;
-        if ($maxResult == 0) {
+        if ($maxResult === 0) {
             $maxResult = null;
         }
         $this->setParameter('tn_maxresults', $maxResult);

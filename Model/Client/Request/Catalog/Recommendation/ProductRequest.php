@@ -16,12 +16,12 @@ class ProductRequest extends Request
     /**
      * {@inheritDoc}
      */
-    protected $path = 'catalog/recommendation/product';
+    protected string $path = 'catalog/recommendation/product';
 
     /**
      * @return string
      */
-    public function getResponseType()
+    public function getResponseType(): string
     {
         return OptionsResponse::class;
     }

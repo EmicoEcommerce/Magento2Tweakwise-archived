@@ -20,7 +20,6 @@ interface InitializerInterface
      *
      * @param AjaxNavigationResult $ajaxNavigationResult
      * @param RequestInterface $request
-     * @return mixed
      */
     public function initializeAjaxResult(
         AjaxNavigationResult $ajaxNavigationResult,

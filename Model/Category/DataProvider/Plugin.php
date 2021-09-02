@@ -2,6 +2,7 @@
 
 namespace Emico\Tweakwise\Model\Category\DataProvider;
 
+use JetBrains\PhpStorm\ArrayShape;
 use Magento\Catalog\Model\Category\DataProvider as CategoryDataProvider;
 use Magento\Eav\Model\Config;
 use Magento\Framework\App\ObjectManager;
@@ -13,12 +14,12 @@ class Plugin
     /**
      * @var Config
      */
-    protected $eavConfig;
+    protected Config $eavConfig;
 
     /**
      * @var AuthorizationInterface
      */
-    private $auth;
+    private AuthorizationInterface $auth;
 
     /**
      * DataProvider constructor.
@@ -42,17 +43,15 @@ class Plugin
      *
      * @throws LocalizedException
      */
-    public function afterPrepareMeta(CategoryDataProvider $subject, $meta)
+    public function afterPrepareMeta(CategoryDataProvider $subject, $meta): array
     {
-        $meta = array_replace_recursive(
+        return array_replace_recursive(
             $meta,
             $this->prepareFieldsMeta(
                 $this->getFieldsMap(),
                 $subject->getAttributesMeta($this->eavConfig->getEntityType('catalog_category'))
             )
         );
-
-        return $meta;
     }
 
     /**
@@ -61,7 +60,7 @@ class Plugin
      *
      * @return array
      */
-    private function prepareFieldsMeta($fieldsMap, $fieldsMeta)
+    private function prepareFieldsMeta(array $fieldsMap, array $fieldsMeta): array
     {
         $canEditDesign = $this->auth->isAllowed('Magento_Catalog::edit_category_design');
 
@@ -87,7 +86,7 @@ class Plugin
     /**
      * @return array
      */
-    protected function getFieldsMap()
+    #[ArrayShape(['tweakwise' => "string[]"])] protected function getFieldsMap(): array
     {
         return [
             'tweakwise' => [

@@ -22,17 +22,17 @@ class SearchInputProvider implements FilterFormInputProviderInterface
     /**
      * @var CurrentContext
      */
-    protected $currentNavigationContext;
+    protected CurrentContext $currentNavigationContext;
 
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var ToolbarInputProvider
      */
-    protected $toolbarInputProvider;
+    protected ToolbarInputProvider $toolbarInputProvider;
 
     /**
      * SearchParameterProvider constructor.
@@ -80,7 +80,7 @@ class SearchInputProvider implements FilterFormInputProviderInterface
     /**
      * @return string|null
      */
-    protected function getSearchTerm()
+    protected function getSearchTerm(): ?string
     {
         return $this->currentNavigationContext
             ->getRequest()
@@ -90,7 +90,7 @@ class SearchInputProvider implements FilterFormInputProviderInterface
     /**
      * @return string|null
      */
-    protected function getCategoryFilter()
+    protected function getCategoryFilter(): ?string
     {
         return $this->currentNavigationContext
             ->getRequest()

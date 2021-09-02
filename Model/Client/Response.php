@@ -16,19 +16,19 @@ class Response extends Type
     /**
      * @var Request
      */
-    protected $request;
+    protected Request $request;
 
     /**
      * @var Helper
      */
-    protected $helper;
+    protected Helper $helper;
 
     /**
      * Response constructor.
      *
      * @param Helper $helper
      * @param Request $request
-     * @param array $data
+     * @param array|null $data
      */
     public function __construct(Helper $helper, Request $request, array $data = null)
     {

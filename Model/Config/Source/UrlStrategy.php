@@ -23,12 +23,12 @@ class UrlStrategy implements OptionSourceInterface
     /**
      * @var array[]
      */
-    protected $options;
+    protected array $options;
 
     /**
      * @return array
      */
-    protected function buildOptions()
+    protected function buildOptions(): array
     {
         return [
             ['value' => self::STRATEGY_QUERY_PARAM, 'label' => __('Query params (?color=Red&size=M)')],
@@ -39,7 +39,7 @@ class UrlStrategy implements OptionSourceInterface
     /**
      * {@inheritdoc}
      */
-    public function toOptionArray()
+    public function toOptionArray(): array
     {
         if (!$this->options) {
             $this->options = $this->buildOptions();

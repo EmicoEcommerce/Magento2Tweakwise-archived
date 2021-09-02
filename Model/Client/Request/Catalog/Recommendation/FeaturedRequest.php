@@ -16,12 +16,12 @@ class FeaturedRequest extends Request
     /**
      * {@inheritDoc}
      */
-    protected $path = 'catalog/recommendation/featured';
+    protected string $path = 'catalog/recommendation/featured';
 
     /**
      * @return string
      */
-    public function getResponseType()
+    public function getResponseType(): string
     {
         return OptionsResponse::class;
     }

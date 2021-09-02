@@ -45,67 +45,67 @@ class PathSlugStrategy implements
     /**
      * @var Resolver
      */
-    protected $layerResolver;
+    protected Resolver $layerResolver;
 
     /**
      * @var FilterSlugManager
      */
-    protected $filterSlugManager;
+    protected FilterSlugManager $filterSlugManager;
 
     /**
      * @var UrlModel
      */
-    protected $magentoUrl;
+    protected UrlModel $magentoUrl;
 
     /**
      * @var UrlFinderInterface
      */
-    protected $urlFinder;
+    protected UrlFinderInterface $urlFinder;
 
     /**
      * @var Item[]
      */
-    protected $activeFilters;
+    protected array $activeFilters;
 
     /**
      * @var QueryParameterStrategy
      */
-    protected $queryParameterStrategy;
+    protected QueryParameterStrategy $queryParameterStrategy;
 
     /**
      * @var UrlFactory
      */
-    protected $urlFactory;
+    protected UrlFactory $urlFactory;
 
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var CurrentContext
      */
-    protected $currentContext;
+    protected CurrentContext $currentContext;
 
     /**
      * @var ScopeConfigInterface
      */
-    protected $scopeConfig;
+    protected ScopeConfigInterface $scopeConfig;
 
     /**
      * @var StrategyHelper
      */
-    protected $strategyHelper;
+    protected StrategyHelper $strategyHelper;
 
     /**
      * @var RewriteResolverInterface[]
      */
-    protected $rewriteResolvers;
+    protected array $rewriteResolvers;
 
     /**
      * @var array
      */
-    protected $skipMatchExtensions;
+    protected array $skipMatchExtensions;
 
     /**
      * Magento constructor.
@@ -258,7 +258,7 @@ class PathSlugStrategy implements
     }
 
     /**
-     * @return array|Item[]
+     * @return Item[]
      */
     protected function getActiveFilters(): array
     {
@@ -423,7 +423,7 @@ class PathSlugStrategy implements
      * @param MagentoHttpRequest $request
      * @return bool|ActionInterface
      */
-    public function match(MagentoHttpRequest $request)
+    public function match(MagentoHttpRequest $request): ActionInterface|bool
     {
         if ($this->skip($request)) {
             return false;

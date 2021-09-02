@@ -17,7 +17,7 @@ class PropertiesType extends Type
      * @param SortFieldType[]|array[] $sortFields
      * @return $this
      */
-    public function setSortFields(array $sortFields)
+    public function setSortFields(array $sortFields): static
     {
         $sortFields = $this->normalizeArray($sortFields, 'sortfield');
 
@@ -37,7 +37,7 @@ class PropertiesType extends Type
     /**
      * @return int
      */
-    public function getPageSize()
+    public function getPageSize(): int
     {
         return (int) $this->getDataValue('pagesize');
     }
@@ -45,7 +45,7 @@ class PropertiesType extends Type
     /**
      * @return int
      */
-    public function getNumberOfItems()
+    public function getNumberOfItems(): int
     {
         return (int) $this->getDataValue('nrofitems');
     }
@@ -53,7 +53,7 @@ class PropertiesType extends Type
     /**
      * @return int
      */
-    public function getNumberOfPages()
+    public function getNumberOfPages(): int
     {
         return (int) $this->getDataValue('nrofpages');
     }
@@ -61,7 +61,7 @@ class PropertiesType extends Type
     /**
      * @return int
      */
-    public function getCurrentPage()
+    public function getCurrentPage(): int
     {
         return (int) $this->getDataValue('currentpage');
     }
@@ -69,23 +69,23 @@ class PropertiesType extends Type
     /**
      * @return int
      */
-    public function getSelectedCategoryId()
+    public function getSelectedCategoryId(): int
     {
         return (int) $this->getDataValue('selectedcategory');
     }
 
     /**
-     * @return int
+     * @return int|string
      */
-    public function getSearchTerm()
+    public function getSearchTerm(): int|string
     {
         return (string) $this->getDataValue('searchterm');
     }
 
     /**
-     * @return int
+     * @return int|string
      */
-    public function getSuggestedSearchTerm()
+    public function getSuggestedSearchTerm(): int|string
     {
         return (string) $this->getDataValue('suggestedsearchterm');
     }
@@ -93,7 +93,7 @@ class PropertiesType extends Type
     /**
      * @return bool
      */
-    public function isDirectorySearch()
+    public function isDirectorySearch(): bool
     {
         return $this->getBoolValue('isdirectsearch');
     }
@@ -101,7 +101,7 @@ class PropertiesType extends Type
     /**
      * @return bool
      */
-    public function isRootCategory()
+    public function isRootCategory(): bool
     {
         return $this->getBoolValue('isrootcategory');
     }
@@ -109,7 +109,7 @@ class PropertiesType extends Type
     /**
      * @return string
      */
-    public function getPageUrl()
+    public function getPageUrl(): string
     {
         return (string) $this->getDataValue('pageurl');
     }
@@ -117,7 +117,7 @@ class PropertiesType extends Type
     /**
      * @return string
      */
-    public function getResetUrl()
+    public function getResetUrl(): string
     {
         return (string) $this->getDataValue('reseturl');
     }

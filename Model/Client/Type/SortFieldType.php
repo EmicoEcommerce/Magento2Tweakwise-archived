@@ -13,7 +13,7 @@ class SortFieldType extends Type
     /**
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return (string) $this->getDataValue('title');
     }
@@ -21,7 +21,7 @@ class SortFieldType extends Type
     /**
      * @return string
      */
-    public function getDisplayTitle()
+    public function getDisplayTitle(): string
     {
         return (string) $this->getDataValue('displaytitle');
     }
@@ -29,7 +29,7 @@ class SortFieldType extends Type
     /**
      * @return string
      */
-    public function getOrder()
+    public function getOrder(): string
     {
         return (string) $this->getDataValue('order');
     }
@@ -37,7 +37,7 @@ class SortFieldType extends Type
     /**
      * @return bool
      */
-    public function getIsSelected()
+    public function getIsSelected(): bool
     {
         return $this->getBoolValue('isselected');
     }
@@ -45,7 +45,7 @@ class SortFieldType extends Type
     /**
      * @return string
      */
-    public function getUrl()
+    public function getUrl(): string
     {
         return (string) $this->getDataValue('url');
     }
@@ -53,7 +53,7 @@ class SortFieldType extends Type
     /**
      * @return string
      */
-    public function getUrlValue()
+    public function getUrlValue(): string
     {
         return $this->getTitle();
     }

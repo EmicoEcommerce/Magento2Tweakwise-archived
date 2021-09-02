@@ -22,7 +22,7 @@ class SuggestionTypeSearch extends SuggestionTypeAbstract
     /**
      * @return string
      */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->getSearchUrl();
     }

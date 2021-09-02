@@ -24,40 +24,40 @@ class AutocompleteDataProvider implements DataProviderInterface
     /**
      * @var DataProviderHelper
      */
-    protected $dataProviderHelper;
+    protected DataProviderHelper $dataProviderHelper;
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
     /**
      * @var Client
      */
-    protected $client;
+    protected Client $client;
     /**
      * @var StoreManagerInterface
      */
-    protected $storeManager;
+    protected StoreManagerInterface $storeManager;
     /**
      * @var RequestFactory
      */
-    protected $autocompleteRequestFactory;
+    protected RequestFactory $autocompleteRequestFactory;
     /**
      * @var ProductCollectionFactory
      */
-    protected $productCollectionFactory;
+    protected ProductCollectionFactory $productCollectionFactory;
 
     /**
      * @var CollectionFilter
      */
-    protected $collectionFilter;
+    protected CollectionFilter $collectionFilter;
     /**
      * @var ProductItemFactory
      */
-    protected $productItemFactory;
+    protected ProductItemFactory $productItemFactory;
     /**
      * @var SuggestionItemFactory
      */
-    protected $suggestionItemFactory;
+    protected SuggestionItemFactory $suggestionItemFactory;
 
     /**
      * AutocompleteDataProvider constructor

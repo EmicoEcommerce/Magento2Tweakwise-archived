@@ -8,6 +8,7 @@ namespace Emico\Tweakwise\Model\Client\Request;
 
 use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Api\Data\CategoryInterface;
+use Magento\Catalog\Model\Category;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\Store;
 
@@ -16,30 +17,30 @@ trait SearchRequestTrait
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @param string $parameter
      * @param string|null $value
      * @return mixed
      */
-    abstract public function setParameter(string $parameter, string $value = null);
+    abstract public function setParameter(string $parameter, string $value = null): mixed;
 
     /**
      * @param string $parameter
      * @return mixed|null
      */
-    abstract public function getParameter(string $parameter);
+    abstract public function getParameter(string $parameter): mixed;
 
     /**
      * @return StoreInterface|null
      */
-    abstract protected function getStore();
+    abstract protected function getStore(): ?StoreInterface;
 
     /**
-     * @param $category CategoryInterface|int
+     * @param $category int|Category
      */
-    abstract protected function addCategoryFilter($category);
+    abstract protected function addCategoryFilter(Category|int $category);
 
     /**
      * @param string $query

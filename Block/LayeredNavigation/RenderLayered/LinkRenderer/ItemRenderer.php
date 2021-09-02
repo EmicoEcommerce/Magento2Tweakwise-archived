@@ -25,7 +25,7 @@ class ItemRenderer extends LinkRenderer
     /**
      * @var Item
      */
-    protected $item;
+    protected Item $item;
 
     /**
      * @return Item

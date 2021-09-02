@@ -13,7 +13,7 @@ class RedirectType extends Type
     /**
      * @return string
      */
-    public function getUrl()
+    public function getUrl(): string
     {
         return (string) $this->getDataValue('url');
     }

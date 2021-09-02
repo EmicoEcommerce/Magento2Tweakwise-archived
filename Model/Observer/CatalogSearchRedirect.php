@@ -10,6 +10,7 @@ namespace Emico\Tweakwise\Model\Observer;
 
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext;
 use Emico\Tweakwise\Model\Config;
+use Exception;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Event\Observer;
@@ -22,17 +23,17 @@ class CatalogSearchRedirect implements ObserverInterface
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var NavigationContext
      */
-    protected $context;
+    protected NavigationContext $context;
 
     /**
      * @var Context
      */
-    protected $actionContext;
+    protected Context $actionContext;
 
     /**
      * CatalogSearchRedirect constructor.
@@ -49,6 +50,7 @@ class CatalogSearchRedirect implements ObserverInterface
 
     /**
      * {@inheritdoc}
+     * @throws Exception
      */
     public function execute(Observer $observer)
     {
@@ -68,9 +70,9 @@ class CatalogSearchRedirect implements ObserverInterface
         $redirect = current($redirects);
         $url = $redirect->getUrl();
 
-        $isDirectUrl = strpos($url, 'http') === 0;
-        $isProtocolRelative = strpos($url, '//') === 0;
-        $isDomainRelative = !$isProtocolRelative && strpos($url, '/') === 0;
+        $isDirectUrl = str_starts_with($url, 'http');
+        $isProtocolRelative = str_starts_with($url, '//');
+        $isDomainRelative = !$isProtocolRelative && str_starts_with($url, '/');
 
         if (!$isDirectUrl && !$isProtocolRelative && !$isDomainRelative) {
             // In this case we just assume it should be a relative url
@@ -91,7 +93,7 @@ class CatalogSearchRedirect implements ObserverInterface
     /**
      * @return Response|null
      */
-    protected function getHttpResponse()
+    protected function getHttpResponse(): ?Response
     {
         $response = $this->actionContext->getResponse();
         if (!$response instanceof Response) {

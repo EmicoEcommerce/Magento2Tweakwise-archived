@@ -23,14 +23,14 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
 class PreparePostDataFactory
 {
     /**
-     * @var ObjectManager
+     * @var ObjectManager|ObjectManagerInterface
      */
-    protected $objectManager;
+    protected ObjectManager|ObjectManagerInterface $objectManager;
 
     /**
      * @var ProductMetadataInterface
      */
-    protected $productMetadata;
+    protected ProductMetadataInterface $productMetadata;
 
     /**
      * PreparePostDataResolver constructor.
@@ -46,7 +46,7 @@ class PreparePostDataFactory
     }
 
     /**
-     * @return mixed|null
+     * @return ArgumentInterface|null
      */
     public function getPreparePostData(): ?ArgumentInterface
     {

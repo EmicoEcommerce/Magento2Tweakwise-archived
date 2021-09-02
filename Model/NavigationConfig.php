@@ -29,37 +29,37 @@ class NavigationConfig implements ArgumentInterface, FilterFormInputProviderInte
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var Json
      */
-    protected $jsonSerializer;
+    protected Json $jsonSerializer;
 
     /**
      * @var UrlInterface
      */
-    protected $url;
+    protected UrlInterface $url;
 
     /**
      * @var CurrentContext
      */
-    protected $currentNavigationContext;
+    protected CurrentContext $currentNavigationContext;
 
     /**
      * @var ProductMetadataInterface
      */
-    protected $productMetadata;
+    protected ProductMetadataInterface $productMetadata;
 
     /**
      * @var FilterFormInputProviderInterface
      */
-    protected $filterFormInputProvider;
+    protected FilterFormInputProviderInterface $filterFormInputProvider;
 
     /**
      * @var Http
      */
-    protected $request;
+    protected Http $request;
 
     /**
      * NavigationConfig constructor.

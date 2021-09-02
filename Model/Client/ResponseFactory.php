@@ -18,7 +18,7 @@ class ResponseFactory
      *
      * @var ObjectManagerInterface
      */
-    protected $objectManager;
+    protected ObjectManagerInterface $objectManager;
 
     /**
      * Factory constructor
@@ -37,7 +37,7 @@ class ResponseFactory
      * @param array $data
      * @return Response
      */
-    public function create(Request $request, array $data)
+    public function create(Request $request, array $data): Response
     {
         $responseType = $request->getResponseType();
         $response = $this->objectManager->create($responseType, ['request' => $request, 'data' => $data]);

@@ -20,9 +20,9 @@ class NullStrategy implements RouteMatchingInterface, UrlInterface, FilterApplie
 {
     /**
      * @param MagentoHttpRequest $request
-     * @return bool|ActionInterface
+     * @return bool
      */
-    public function match(MagentoHttpRequest $request)
+    public function match(MagentoHttpRequest $request): ActionInterface|bool
     {
         return false;
     }

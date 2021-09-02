@@ -21,17 +21,17 @@ class CategoryResolver implements RewriteResolverInterface
     /**
      * @var UrlFinderInterface
      */
-    protected $urlFinder;
+    protected UrlFinderInterface $urlFinder;
 
     /**
      * @var StoreManagerInterface
      */
-    protected $storeManager;
+    protected StoreManagerInterface $storeManager;
 
     /**
      * @var ScopeConfigInterface
      */
-    protected $scopeConfig;
+    protected ScopeConfigInterface $scopeConfig;
 
     /**
      * CategoryResolver constructor.
@@ -112,7 +112,7 @@ class CategoryResolver implements RewriteResolverInterface
         return array_map(
             static function (string $path) use ($categoryUrlSuffix): string {
                 // Check if path ends with category url suffix, if not add it.
-                if (substr($path, -strlen($categoryUrlSuffix)) !== $categoryUrlSuffix) {
+                if (!str_ends_with($path, $categoryUrlSuffix)) {
                     return $path . $categoryUrlSuffix;
                 }
 

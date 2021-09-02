@@ -17,7 +17,7 @@ class DataProvider implements DataProviderInterface
     /**
      * @var TweakwiseDataProviderInterface[]
      */
-    protected $dataProviders;
+    protected array $dataProviders;
 
     /**
      * DataProvider constructor.

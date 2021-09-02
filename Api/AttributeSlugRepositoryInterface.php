@@ -29,7 +29,7 @@ interface AttributeSlugRepositoryInterface
      * @param SearchCriteriaInterface $criteria
      * @return AttributeSlugSearchResultsInterface
      */
-    public function getList(SearchCriteriaInterface $criteria);
+    public function getList(SearchCriteriaInterface $criteria): AttributeSlugSearchResultsInterface;
 
     /**
      * @param AttributeSlugInterface $attributeSlug

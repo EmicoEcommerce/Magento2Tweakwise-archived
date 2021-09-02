@@ -14,6 +14,7 @@ use Emico\Tweakwise\Model\Client\Request;
 use Emico\Tweakwise\Model\Client\Response;
 use Emico\Tweakwise\Model\Client\ResponseFactory;
 use Emico\TweakwiseExport\Model\Logger;
+use Exception;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Promise\PromiseInterface;
@@ -35,27 +36,27 @@ class Client
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var Logger
      */
-    protected $log;
+    protected Logger $log;
 
     /**
      * @var HttpClient
      */
-    protected $client;
+    protected HttpClient $client;
 
     /**
      * @var ResponseFactory
      */
-    protected $responseFactory;
+    protected ResponseFactory $responseFactory;
 
     /**
      * @var EndpointManager
      */
-    protected $endpointManager;
+    protected EndpointManager $endpointManager;
 
     /**
      * Client constructor.
@@ -129,7 +130,7 @@ class Client
      * @param bool $async
      * @return Response|PromiseInterface
      */
-    protected function doRequest(Request $tweakwiseRequest, bool $async = false)
+    protected function doRequest(Request $tweakwiseRequest, bool $async = false): PromiseInterface|Response
     {
         $client = $this->getClient();
         $httpRequest = $this->createHttpRequest($tweakwiseRequest);
@@ -247,7 +248,7 @@ class Client
      * @param mixed $value
      * @return array|string
      */
-    protected function xmlToArrayValue($value)
+    protected function xmlToArrayValue(mixed $value): array|string
     {
         if ($value instanceof SimpleXMLElement) {
             return $this->xmlToArray($value);
@@ -261,7 +262,7 @@ class Client
             return $values;
         }
 
-        return (string)$value;
+        return (string) $value;
     }
 
     /**
@@ -270,9 +271,9 @@ class Client
      * @param Request $request
      * @param bool $async
      * @return Response|PromiseInterface
-     * @throws \Exception
+     * @throws Exception
      */
-    public function request(Request $request, bool $async = false)
+    public function request(Request $request, bool $async = false): PromiseInterface|Response
     {
         Profiler::start('tweakwise::request::' . $request->getPath());
         try {

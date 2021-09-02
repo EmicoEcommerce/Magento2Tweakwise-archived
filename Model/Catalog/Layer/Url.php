@@ -31,37 +31,37 @@ class Url
     /**
      * @var UrlInterface
      */
-    protected $urlStrategy;
+    protected UrlInterface $urlStrategy;
 
     /**
      * @var FilterApplierInterface
      */
-    protected $filterApplier;
+    protected FilterApplierInterface $filterApplier;
 
     /**
      * @var CategoryUrlInterface
      */
-    protected $categoryUrlStrategy;
+    protected CategoryUrlInterface $categoryUrlStrategy;
 
     /**
      * @var CategoryRepositoryInterface
      */
-    protected $categoryRepository;
+    protected CategoryRepositoryInterface $categoryRepository;
 
     /**
      * @var ExportHelper
      */
-    protected $exportHelper;
+    protected ExportHelper $exportHelper;
 
     /**
      * @var MagentoHttpRequest
      */
-    protected $request;
+    protected MagentoHttpRequest $request;
 
     /**
      * @var UrlStrategyFactory
      */
-    protected $urlStrategyFactory;
+    protected UrlStrategyFactory $urlStrategyFactory;
 
     /**
      * Builder constructor.
@@ -86,7 +86,7 @@ class Url
     /**
      * @return UrlInterface
      */
-    protected function getUrlStrategy()
+    protected function getUrlStrategy(): UrlInterface
     {
         if (!$this->urlStrategy) {
             $this->urlStrategy = $this->urlStrategyFactory->create();
@@ -98,7 +98,7 @@ class Url
     /**
      * @return FilterApplierInterface
      */
-    protected function getFilterApplier()
+    protected function getFilterApplier(): FilterApplierInterface
     {
         if (!$this->filterApplier) {
             $this->filterApplier = $this->urlStrategyFactory
@@ -111,7 +111,7 @@ class Url
     /**
      * @return CategoryUrlInterface
      */
-    protected function getCategoryUrlStrategy()
+    protected function getCategoryUrlStrategy(): CategoryUrlInterface
     {
         if (!$this->categoryUrlStrategy) {
             $this->categoryUrlStrategy = $this->urlStrategyFactory
@@ -161,7 +161,7 @@ class Url
      * @param Item[] $activeFilterItems
      * @return string
      */
-    public function getClearUrl(array $activeFilterItems)
+    public function getClearUrl(array $activeFilterItems): string
     {
         return $this->getUrlStrategy()
             ->getClearUrl($this->request, $activeFilterItems);
@@ -171,7 +171,7 @@ class Url
      * @param array $activeFilterItems
      * @return string
      */
-    public function getFilterUrl(array $activeFilterItems)
+    public function getFilterUrl(array $activeFilterItems): string
     {
         return $this->getUrlStrategy()
             ->buildFilterUrl($this->request, $activeFilterItems);
@@ -189,7 +189,7 @@ class Url
      * @param Item $item
      * @return string
      */
-    public function getSliderUrl(Item $item)
+    public function getSliderUrl(Item $item): string
     {
         return $this->getUrlStrategy()->getSliderUrl($this->request, $item);
     }

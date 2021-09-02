@@ -16,7 +16,7 @@ class SearchInitializer implements InitializerInterface
     /**
      * @var Resolver
      */
-    protected $layerResolver;
+    protected Resolver $layerResolver;
 
     /**
      * AjaxResultSearchInitializer constructor.

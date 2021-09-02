@@ -21,27 +21,27 @@ class SwatchAttributeResolver
     /**
      * @var SwatchAttributeCodes
      */
-    protected $swatchAttributeCodes;
+    protected SwatchAttributeCodes $swatchAttributeCodes;
 
     /**
      * @var AttributeRepositoryInterface
      */
-    protected $attributeRepository;
+    protected AttributeRepositoryInterface $attributeRepository;
 
     /**
      * @var SearchCriteriaBuilder
      */
-    protected $searchCriteriaBuilder;
+    protected SearchCriteriaBuilder $searchCriteriaBuilder;
 
     /**
      * @var array
      */
-    protected $swatchMap;
+    protected array $swatchMap;
 
     /**
      * @var SwatchAttributeType
      */
-    protected $swatchAttributeTypeHelper;
+    protected SwatchAttributeType $swatchAttributeTypeHelper;
 
     /**
      * SwatchAttributeResolver constructor.

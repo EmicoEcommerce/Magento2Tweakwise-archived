@@ -10,12 +10,15 @@ namespace Emico\Tweakwise\Model\Catalog\Layer;
 
 use Emico\Tweakwise\Model\Catalog\Layer\NavigationContext\CurrentContext;
 use Emico\Tweakwise\Model\Client;
+use Emico\Tweakwise\Model\Client\Request;
 use Emico\Tweakwise\Model\Client\Request\ProductNavigationRequest;
 use Emico\Tweakwise\Model\Client\Request\ProductSearchRequest;
 use Emico\Tweakwise\Model\Client\RequestFactory;
+use Emico\Tweakwise\Model\Client\Response;
 use Emico\Tweakwise\Model\Client\Response\ProductNavigationResponse;
 use Emico\Tweakwise\Model\Config;
 use Emico\TweakwiseExport\Model\ProductAttributes;
+use Exception;
 use Magento\Catalog\Helper\Product\ProductList;
 use Magento\Catalog\Model\Layer\FilterableAttributeListInterface;
 use Magento\Catalog\Model\Product\ProductList\Toolbar as ToolbarModel;
@@ -34,64 +37,64 @@ class NavigationContext
     public const VISIBILITY_ATTRIBUTE = 'visibility';
 
     /**
-     * @var ProductNavigationRequest
+     * @var ProductNavigationRequest|Request
      */
-    protected $request;
+    protected ProductNavigationRequest|Request $request;
 
     /**
      * @var RequestFactory
      */
-    protected $requestFactory;
+    protected RequestFactory $requestFactory;
 
     /**
      * @var Client
      */
-    protected $client;
+    protected Client $client;
 
     /**
-     * @var ProductNavigationResponse
+     * @var ProductNavigationResponse|Response
      */
-    protected $response;
+    protected ProductNavigationResponse|Response $response;
 
     /**
      * @var Url
      */
-    protected $url;
+    protected Url $url;
 
     /**
      * @var FilterableAttributeListInterface
      */
-    protected $filterableAttributes;
+    protected FilterableAttributeListInterface $filterableAttributes;
 
     /**
      * @var Attribute[]
      */
-    protected $filterAttributeMap;
+    protected array $filterAttributeMap;
 
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var ProductList
      */
-    protected $productListHelper;
+    protected ProductList $productListHelper;
 
     /**
      * @var ToolbarModel
      */
-    protected $toolbarModel;
+    protected ToolbarModel $toolbarModel;
 
     /**
      * @var Visibility
      */
-    protected $visibility;
+    protected Visibility $visibility;
 
     /**
      * @var ProductAttributes
      */
-    protected $productAttributes;
+    protected ProductAttributes $productAttributes;
 
     /**
      * NavigationContext constructor.
@@ -145,6 +148,7 @@ class NavigationContext
 
     /**
      * @return ProductNavigationResponse
+     * @throws Exception
      */
     public function getResponse(): ProductNavigationResponse
     {
@@ -169,7 +173,7 @@ class NavigationContext
     }
 
     /**
-     * @param $attributeCodes
+     * @param array|null $attributeCodes
      * @return Attribute[]
      */
     public function getFilterAttributeMap(array $attributeCodes = null): array
@@ -208,7 +212,7 @@ class NavigationContext
      * @param ProductNavigationRequest $request
      * @return $this
      */
-    protected function initializeRequest(ProductNavigationRequest $request)
+    protected function initializeRequest(ProductNavigationRequest $request): static
     {
         // Apply magento config values
         $request->setLimit($this->productListHelper->getDefaultLimitPerPageValue($this->getCurrentViewMode()));

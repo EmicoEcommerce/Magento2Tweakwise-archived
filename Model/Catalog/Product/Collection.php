@@ -37,7 +37,7 @@ class Collection extends AbstractCollection
     /**
      * @var NavigationContext
      */
-    protected $navigationContext;
+    protected NavigationContext $navigationContext;
 
     /**
      * {@inheritdoc}

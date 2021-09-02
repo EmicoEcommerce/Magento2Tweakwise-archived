@@ -16,7 +16,7 @@ class TemplateFinder
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * TemplateFinder constructor.
@@ -32,7 +32,7 @@ class TemplateFinder
      * @param string $type
      * @return int|string
      */
-    public function forProduct(Product $product, $type)
+    public function forProduct(Product $product, string $type): int|string
     {
         $attribute = $this->getAttribute($type);
         $templateId = (int) $product->getData($attribute);
@@ -65,7 +65,7 @@ class TemplateFinder
      * @param string $type
      * @return int|string
      */
-    public function forCategory(Category $category, $type)
+    public function forCategory(Category $category, string $type): int|string
     {
         $attribute = $this->getAttribute($type);
         $templateId = (int) $category->getData($attribute);
@@ -97,7 +97,7 @@ class TemplateFinder
      * @param string $type
      * @return string
      */
-    protected function getAttribute($type)
+    protected function getAttribute(string $type): string
     {
         return sprintf('tweakwise_%s_template', $type);
     }
@@ -106,7 +106,7 @@ class TemplateFinder
      * @param string $type
      * @return string
      */
-    protected function getGroupCodeAttribute($type)
+    protected function getGroupCodeAttribute(string $type): string
     {
         return sprintf('tweakwise_%s_group_code', $type);
     }

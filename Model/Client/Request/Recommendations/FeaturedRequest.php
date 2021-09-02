@@ -17,17 +17,17 @@ class FeaturedRequest extends Request
     /**
      * {@inheritDoc}
      */
-    protected $path = 'recommendations/featured';
+    protected string $path = 'recommendations/featured';
 
     /**
      * @var int
      */
-    protected $templateId;
+    protected int $templateId;
 
     /**
      * {@inheritDoc}
      */
-    public function getResponseType()
+    public function getResponseType(): string
     {
         return RecommendationsResponse::class;
     }
@@ -35,7 +35,7 @@ class FeaturedRequest extends Request
     /**
      * @return int|string
      */
-    public function getTemplate()
+    public function getTemplate(): int|string
     {
         return $this->templateId;
     }
@@ -44,7 +44,7 @@ class FeaturedRequest extends Request
      * @param int|string $templateId
      * @return $this
      */
-    public function setTemplate($templateId)
+    public function setTemplate(int|string $templateId): static
     {
         if (!is_string($templateId)) {
             $templateId = (int) $templateId;
@@ -57,7 +57,7 @@ class FeaturedRequest extends Request
     /**
      * {@inheritdoc}
      */
-    public function getPathSuffix()
+    public function getPathSuffix(): ?string
     {
         if (!$this->templateId) {
             throw new ApiException('Featured products without template ID was requested.');

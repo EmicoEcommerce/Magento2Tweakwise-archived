@@ -20,27 +20,27 @@ class ItemCollectionProvider implements ItemCollectionProviderInterface
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $conf«ig;
 
     /**
      * @var Logger
      */
-    protected $log;
+    protected Logger $log;
 
     /**
      * @var CollectionFactory
      */
-    protected $collectionFactory;
+    protected CollectionFactory $collectionFactory;
 
     /**
      * @var ItemCollectionProviderInterface
      */
-    protected $originalProvider;
+    protected ItemCollectionProviderInterface $originalProvider;
 
     /**
      * @var NavigationContext
      */
-    protected $navigationContext;
+    protected NavigationContext $navigationContext;
 
     /**
      * Proxy constructor.

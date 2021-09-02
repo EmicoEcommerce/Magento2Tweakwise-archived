@@ -22,7 +22,7 @@ class SuggestionTypeFacet extends SuggestionTypeCategory
     /**
      * @var UrlStrategyFactory
      */
-    private $urlStrategyFactory;
+    private UrlStrategyFactory $urlStrategyFactory;
 
     /**
      * SuggestionTypeFacet constructor.
@@ -79,7 +79,7 @@ class SuggestionTypeFacet extends SuggestionTypeCategory
         $strategy = $this->urlStrategyFactory->create();
         if ($isSearch || $strategy instanceof QueryParameterStrategy) {
             $query = http_build_query($facets);
-            $queryJoin = strpos($url, '?') === false ? '?' : '&';
+            $queryJoin = !str_contains($url, '?') ? '?' : '&';
             return $url . $queryJoin . $query;
         }
 

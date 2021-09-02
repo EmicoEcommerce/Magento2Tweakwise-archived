@@ -16,12 +16,12 @@ class ProductRequest extends FeaturedRequest
     /**
      * @var Product
      */
-    protected $product;
+    protected Product $product;
 
     /**
      * @return Product
      */
-    public function getProduct()
+    public function getProduct(): Product
     {
         return $this->product;
     }
@@ -30,13 +30,13 @@ class ProductRequest extends FeaturedRequest
      * @param Product $product
      * @return $this
      */
-    public function setProduct(Product $product)
+    public function setProduct(Product $product): static
     {
         $this->product = $product;
         return $this;
     }
 
-    public function getPath()
+    public function getPath(): string
     {
         if (is_int($this->templateId)) {
             return 'recommendations/product';
@@ -48,7 +48,7 @@ class ProductRequest extends FeaturedRequest
     /**
      * {@inheritdoc}
      */
-    public function getPathSuffix()
+    public function getPathSuffix(): ?string
     {
         if (!$this->product) {
             throw new ApiException('Featured products without product was requested.');

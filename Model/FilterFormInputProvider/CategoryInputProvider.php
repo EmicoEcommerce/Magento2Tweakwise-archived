@@ -24,37 +24,37 @@ class CategoryInputProvider implements FilterFormInputProviderInterface
     /**
      * @var Registry
      */
-    protected $registry;
+    protected Registry $registry;
 
     /**
      * @var StoreManagerInterface
      */
-    protected $storeManager;
+    protected StoreManagerInterface $storeManager;
 
     /**
      * @var CategoryRepositoryInterface
      */
-    protected $categoryRepository;
+    protected CategoryRepositoryInterface $categoryRepository;
 
     /**
      * @var CategoryInterfaceFactory
      */
-    protected $categoryFactory;
+    protected CategoryInterfaceFactory $categoryFactory;
 
     /**
      * @var UrlInterface
      */
-    protected $url;
+    protected UrlInterface $url;
 
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var ToolbarInputProvider
      */
-    protected $toolbarInputProvider;
+    protected ToolbarInputProvider $toolbarInputProvider;
 
     /**
      * CategoryParameterProvider constructor.
@@ -107,7 +107,7 @@ class CategoryInputProvider implements FilterFormInputProviderInterface
      *
      * @return string
      */
-    public function getOriginalUrl()
+    public function getOriginalUrl(): string
     {
         return str_replace($this->url->getBaseUrl(), '', $this->getCategory()->getUrl());
     }
@@ -115,7 +115,7 @@ class CategoryInputProvider implements FilterFormInputProviderInterface
     /**
      * @return int|null
      */
-    public function getCategoryId()
+    public function getCategoryId(): ?int
     {
         return (int)$this->getCategory()->getId() ?: null;
     }
@@ -123,7 +123,7 @@ class CategoryInputProvider implements FilterFormInputProviderInterface
     /**
      * @return CategoryInterface|Category
      */
-    protected function getCategory()
+    protected function getCategory(): Category|CategoryInterface
     {
         if ($currentCategory = $this->registry->registry('current_category')) {
             return $currentCategory;

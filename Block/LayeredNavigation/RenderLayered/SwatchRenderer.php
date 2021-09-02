@@ -37,17 +37,17 @@ class SwatchRenderer extends RenderLayered
     /**
      * @var Filter
      */
-    protected $filter;
+    protected Filter $filter;
 
     /**
      * @var EavAttributeFactory
      */
-    protected $eavAttributeFactory;
+    protected EavAttributeFactory $eavAttributeFactory;
 
     /**
      * @var SwatchAttributeResolver
      */
-    protected $swatchAttributeResolver;
+    protected SwatchAttributeResolver $swatchAttributeResolver;
 
     /**
      * SwatchRenderer constructor.

@@ -24,12 +24,12 @@ class UpgradeData implements UpgradeDataInterface
     /**
      * @var EavSetupFactory
      */
-    protected $eavSetupFactory;
+    protected EavSetupFactory $eavSetupFactory;
 
     /**
      * @var WriterInterface
      */
-    protected $writer;
+    protected WriterInterface $writer;
 
     /**
      * UpgradeData constructor.

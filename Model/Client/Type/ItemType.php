@@ -17,7 +17,7 @@ class ItemType extends Type
      * @param LabelType[]|array[] $labels
      * @return $this
      */
-    public function setLabels(array $labels)
+    public function setLabels(array $labels): static
     {
         $labels = $this->normalizeArray($labels, 'label');
 
@@ -35,9 +35,9 @@ class ItemType extends Type
     }
 
     /**
-     * @return string
+     * @return int|string
      */
-    public function getId()
+    public function getId(): int|string
     {
         return (int) $this->getDataValue('itemno');
     }
@@ -45,7 +45,7 @@ class ItemType extends Type
     /**
      * @return string
      */
-    public function getOrder()
+    public function getOrder(): string
     {
         return (string) $this->getDataValue('order');
     }
@@ -53,7 +53,7 @@ class ItemType extends Type
     /**
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return (string) $this->getDataValue('title');
     }
@@ -61,7 +61,7 @@ class ItemType extends Type
     /**
      * @return int
      */
-    public function getPrice()
+    public function getPrice(): int
     {
         return (int) $this->getDataValue('price');
     }
@@ -69,7 +69,7 @@ class ItemType extends Type
     /**
      * @return string
      */
-    public function getBrand()
+    public function getBrand(): string
     {
         return (string) $this->getDataValue('brand');
     }
@@ -77,7 +77,7 @@ class ItemType extends Type
     /**
      * @return string
      */
-    public function getImage()
+    public function getImage(): string
     {
         return (string) $this->getDataValue('image');
     }
@@ -85,7 +85,7 @@ class ItemType extends Type
     /**
      * @return string
      */
-    public function getUrl()
+    public function getUrl(): string
     {
         return (string) $this->getDataValue('url');
     }

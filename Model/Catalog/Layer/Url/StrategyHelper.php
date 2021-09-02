@@ -18,17 +18,17 @@ class StrategyHelper
     /**
      * @var ExportHelper
      */
-    private $exportHelper;
+    private ExportHelper $exportHelper;
 
     /**
      * @var CategoryRepositoryInterface
      */
-    private $categoryRepository;
+    private CategoryRepositoryInterface $categoryRepository;
 
     /**
      * @var StoreManagerInterface
      */
-    private $storeManager;
+    private StoreManagerInterface $storeManager;
 
     /**
      * StrategyHelper constructor.

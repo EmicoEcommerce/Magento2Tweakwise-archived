@@ -18,12 +18,12 @@ class RequestFactory
      *
      * @var ObjectManagerInterface
      */
-    protected $objectManager;
+    protected ObjectManagerInterface $objectManager;
 
     /**
      * @var string
      */
-    protected $type;
+    protected string $type;
 
     /**
      * Factory constructor
@@ -31,7 +31,7 @@ class RequestFactory
      * @param ObjectManagerInterface $objectManager
      * @param string $type
      */
-    public function __construct(ObjectManagerInterface $objectManager, $type = Request::class)
+    public function __construct(ObjectManagerInterface $objectManager, string $type = Request::class)
     {
         $this->objectManager = $objectManager;
         $this->type = $type;
@@ -43,7 +43,7 @@ class RequestFactory
      * @param array $parameters
      * @return Request
      */
-    public function create(array $parameters = [])
+    public function create(array $parameters = []): Request
     {
         $request =  $this->objectManager->create($this->type, ['parameters' => $parameters]);
         if (!$request instanceof Request) {
