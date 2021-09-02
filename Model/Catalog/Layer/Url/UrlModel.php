@@ -29,12 +29,12 @@ class UrlModel extends MagentoUrl
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var array
      */
-    protected $tweakwiseSystemParams;
+    protected array $tweakwiseSystemParams;
 
     /**
      * @param ConfigInterface $routeConfig

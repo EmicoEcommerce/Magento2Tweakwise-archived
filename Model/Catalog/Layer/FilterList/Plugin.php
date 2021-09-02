@@ -21,17 +21,17 @@ class Plugin
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var Logger
      */
-    protected $log;
+    protected Logger $log;
 
     /**
      * @var Tweakwise
      */
-    protected $tweakwiseFilterList;
+    protected Tweakwise $tweakwiseFilterList;
 
     /**
      * Proxy constructor.
@@ -53,7 +53,7 @@ class Plugin
      * @param Layer $layer
      * @return AbstractFilter[]
      */
-    public function aroundGetFilters(FilterList $subject, Closure $proceed, Layer $layer)
+    public function aroundGetFilters(FilterList $subject, Closure $proceed, Layer $layer): array
     {
         if (!$this->config->isLayeredEnabled()) {
             return $proceed($layer);

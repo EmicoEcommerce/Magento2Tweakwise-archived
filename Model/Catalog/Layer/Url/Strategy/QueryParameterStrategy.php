@@ -48,7 +48,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
      *
      * @var string[]
      */
-    protected $ignoredQueryParameters = [
+    protected array $ignoredQueryParameters = [
         self::PARAM_CATEGORY,
         self::PARAM_ORDER,
         self::PARAM_LIMIT,
@@ -59,22 +59,22 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     /**
      * @var UrlModel
      */
-    protected $url;
+    protected UrlModel $url;
 
     /**
      * @var StrategyHelper
      */
-    protected $strategyHelper;
+    protected StrategyHelper $strategyHelper;
 
     /**
      * @var CookieManagerInterface
      */
-    protected $cookieManager;
+    protected CookieManagerInterface $cookieManager;
 
     /**
      * @var TweakwiseConfig
      */
-    protected $tweakwiseConfig;
+    protected TweakwiseConfig $tweakwiseConfig;
 
     /**
      * Magento constructor.
@@ -118,7 +118,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
      * @param array $query
      * @return string
      */
-    protected function getCurrentQueryUrl(MagentoHttpRequest $request, array $query)
+    protected function getCurrentQueryUrl(MagentoHttpRequest $request, array $query): string
     {
         $params['_current'] = true;
         $params['_use_rewrite'] = true;
@@ -138,7 +138,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
      * @param Item $item
      * @return string[]|string|null
      */
-    protected function getRequestValues(MagentoHttpRequest $request, Item $item)
+    protected function getRequestValues(MagentoHttpRequest $request, Item $item): array|string|null
     {
         $filter = $item->getFilter();
         $settings = $filter
@@ -286,7 +286,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     /**
      * {@inheritdoc}
      */
-    protected function getCategoryFilters(MagentoHttpRequest $request)
+    protected function getCategoryFilters(MagentoHttpRequest $request): array
     {
         $categories = $request->getQuery(self::PARAM_CATEGORY);
         $categories = explode(self::CATEGORY_TREE_SEPARATOR, $categories);
@@ -300,7 +300,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     /**
      * {@inheritdoc}
      */
-    protected function getAttributeFilters(MagentoHttpRequest $request)
+    protected function getAttributeFilters(MagentoHttpRequest $request): array
     {
         $result = [];
         foreach ($request->getQuery() as $attribute => $value) {
@@ -384,7 +384,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
      * @param MagentoHttpRequest $request
      * @return string|null
      */
-    protected function getSortOrder(MagentoHttpRequest $request)
+    protected function getSortOrder(MagentoHttpRequest $request): ?string
     {
         return $request->getQuery(self::PARAM_ORDER);
     }
@@ -393,7 +393,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
      * @param MagentoHttpRequest $request
      * @return int|null
      */
-    protected function getPage(MagentoHttpRequest $request)
+    protected function getPage(MagentoHttpRequest $request): ?int
     {
         return $request->getQuery(self::PARAM_PAGE);
     }
@@ -402,7 +402,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
      * @param MagentoHttpRequest $request
      * @return int|null
      */
-    protected function getLimit(MagentoHttpRequest $request)
+    protected function getLimit(MagentoHttpRequest $request): ?int
     {
         return $request->getQuery(self::PARAM_LIMIT);
     }
@@ -411,7 +411,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
      * @param MagentoHttpRequest $request
      * @return string|null
      */
-    protected function getSearch(MagentoHttpRequest $request)
+    protected function getSearch(MagentoHttpRequest $request): ?string
     {
         return $request->getQuery(self::PARAM_SEARCH);
     }

@@ -24,22 +24,22 @@ class Item extends MagentoItem
     /**
      * @var Filter
      */
-    protected $filter;
+    protected Filter $filter;
 
     /**
      * @var AttributeType
      */
-    protected $attributeType;
+    protected AttributeType $attributeType;
 
     /**
      * @var Url
      */
-    protected $url;
+    protected Url $url;
 
     /**
      * @var Item[]
      */
-    protected $children = [];
+    protected array $children = [];
 
     /**
      * Item constructor.

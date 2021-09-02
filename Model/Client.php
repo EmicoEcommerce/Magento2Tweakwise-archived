@@ -14,6 +14,7 @@ use Emico\Tweakwise\Model\Client\Request;
 use Emico\Tweakwise\Model\Client\Response;
 use Emico\Tweakwise\Model\Client\ResponseFactory;
 use Emico\TweakwiseExport\Model\Logger;
+use Exception;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Promise\PromiseInterface;
@@ -270,7 +271,7 @@ class Client
      * @param Request $request
      * @param bool $async
      * @return Response|PromiseInterface
-     * @throws \Exception
+     * @throws Exception
      */
     public function request(Request $request, bool $async = false): PromiseInterface|Response
     {

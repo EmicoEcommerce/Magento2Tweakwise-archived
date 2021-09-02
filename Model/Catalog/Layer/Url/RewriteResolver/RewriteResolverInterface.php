@@ -26,5 +26,5 @@ interface RewriteResolverInterface
      * @return UrlRewrite[]
      * @see \Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\PathSlugStrategy::match()
      */
-    public function getRewrites(MagentoHttpRequest $request);
+    public function getRewrites(MagentoHttpRequest $request): array;
 }

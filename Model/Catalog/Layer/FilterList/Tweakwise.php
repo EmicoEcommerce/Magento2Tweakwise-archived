@@ -27,27 +27,27 @@ class Tweakwise
     /**
      * @var FilterInterface[]
      */
-    protected $filters;
+    protected array $filters;
 
     /**
      * @var FilterFactory
      */
-    protected $filterFactory;
+    protected FilterFactory $filterFactory;
 
     /**
      * @var CurrentContext
      */
-    protected $context;
+    protected CurrentContext $context;
 
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var AttributeFactory
      */
-    protected $attributeFactory;
+    protected AttributeFactory $attributeFactory;
 
     /**
      * Tweakwise constructor.

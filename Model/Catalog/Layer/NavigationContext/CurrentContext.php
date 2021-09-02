@@ -18,7 +18,7 @@ class CurrentContext
     /**
      * @var NavigationContext
      */
-    protected $context;
+    protected NavigationContext $context;
 
     /**
      * @param NavigationContext $context
@@ -31,7 +31,7 @@ class CurrentContext
     /**
      * @return NavigationContext
      */
-    public function getContext()
+    public function getContext(): NavigationContext
     {
         if (!$this->context) {
             throw new RuntimeException(sprintf('Navigation context not set, initialize a version of %s first.', NavigationContext::class));
@@ -42,7 +42,7 @@ class CurrentContext
     /**
      * @return ProductNavigationRequest
      */
-    public function getRequest()
+    public function getRequest(): ProductNavigationRequest
     {
         return $this->getContext()->getRequest();
     }
@@ -50,7 +50,7 @@ class CurrentContext
     /**
      * @return ProductNavigationResponse
      */
-    public function getResponse()
+    public function getResponse(): ProductNavigationResponse
     {
         return $this->getContext()->getResponse();
     }

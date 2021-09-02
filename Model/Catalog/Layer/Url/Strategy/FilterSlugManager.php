@@ -29,32 +29,32 @@ class FilterSlugManager
     /**
      * @var TranslitUrl
      */
-    protected $translitUrl;
+    protected TranslitUrl $translitUrl;
 
     /**
      * @var AttributeSlugRepositoryInterface
      */
-    protected $attributeSlugRepository;
+    protected AttributeSlugRepositoryInterface $attributeSlugRepository;
 
     /**
      * @var AttributeSlugInterfaceFactory
      */
-    protected $attributeSlugFactory;
+    protected AttributeSlugInterfaceFactory $attributeSlugFactory;
 
     /**
      * @var CacheInterface
      */
-    protected $cache;
+    protected CacheInterface $cache;
 
     /**
      * @var array
      */
-    protected $lookupTable;
+    protected array $lookupTable;
 
     /**
      * @var SerializerInterface
      */
-    protected $serializer;
+    protected SerializerInterface $serializer;
 
     /**
      * @param TranslitUrl $translitUrl
