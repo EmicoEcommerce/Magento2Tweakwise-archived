@@ -128,9 +128,9 @@ class Client
      *
      * @param Request $tweakwiseRequest
      * @param bool $async
-     * @return Response|PromiseInterface
+     * @return PromiseInterface|Response
      */
-    protected function doRequest(Request $tweakwiseRequest, bool $async = false): PromiseInterface|Response
+    protected function doRequest(Request $tweakwiseRequest, bool $async = false)
     {
         $client = $this->getClient();
         $httpRequest = $this->createHttpRequest($tweakwiseRequest);
@@ -248,7 +248,7 @@ class Client
      * @param mixed $value
      * @return array|string
      */
-    protected function xmlToArrayValue(mixed $value): array|string
+    protected function xmlToArrayValue(mixed $value)
     {
         if ($value instanceof SimpleXMLElement) {
             return $this->xmlToArray($value);
@@ -273,7 +273,7 @@ class Client
      * @return Response|PromiseInterface
      * @throws Exception
      */
-    public function request(Request $request, bool $async = false): PromiseInterface|Response
+    public function request(Request $request, bool $async = false)
     {
         Profiler::start('tweakwise::request::' . $request->getPath());
         try {

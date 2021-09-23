@@ -87,7 +87,7 @@ class Config
      * @param bool $thrown
      * @return $this
      */
-    public function setTweakwiseExceptionThrown(bool $thrown = true): static
+    public function setTweakwiseExceptionThrown(bool $thrown = true): self
     {
         $this->tweakwiseExceptionThrown = (bool) $thrown;
         return $this;
@@ -353,7 +353,7 @@ class Config
      * @param Store|null $store
      * @return int
      */
-    public function getRecommendationsGroupCode(string $type, Store $store = null): int|string|null
+    public function getRecommendationsGroupCode(string $type, Store $store = null)
     {
         $this->validateRecommendationType($type);
         return $this->getStoreConfig(sprintf('tweakwise/recommendations/%s_group_code', $type), $store);
@@ -391,7 +391,7 @@ class Config
      * @param Store|null $store
      * @return int
      */
-    public function getMaxAllowedFacets(Store $store = null): int|string|null
+    public function getMaxAllowedFacets(Store $store = null)
     {
         return $this->getStoreConfig('tweakwise/seo/max_allowed_facets', $store);
     }
@@ -400,7 +400,7 @@ class Config
      * @param Store|null $store
      * @return mixed
      */
-    public function getSearchLanguage(Store $store = null): mixed
+    public function getSearchLanguage(Store $store = null)
     {
         return $this->getStoreConfig('tweakwise/search/language', $store);
     }
@@ -410,7 +410,7 @@ class Config
      * @param Store|null $store
      * @return mixed
      */
-    protected function getStoreConfig(string $path, Store $store = null): mixed
+    protected function getStoreConfig(string $path, Store $store = null)
     {
         if ($store) {
             return $store->getConfig($path);

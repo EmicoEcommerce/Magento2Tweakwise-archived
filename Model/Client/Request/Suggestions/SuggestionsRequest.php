@@ -30,7 +30,7 @@ class SuggestionsRequest extends Request implements SearchRequestInterface
      * @param StoreManager $storeManager
      * @param Config $config
      */
-    #[Pure] public function __construct(
+    public function __construct(
         Helper $helper,
         StoreManager $storeManager,
         Config $config

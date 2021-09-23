@@ -23,9 +23,9 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
 class PreparePostDataFactory
 {
     /**
-     * @var ObjectManager|ObjectManagerInterface
+     * @var ObjectManager
      */
-    protected ObjectManager|ObjectManagerInterface $objectManager;
+    protected ObjectManager $objectManager;
 
     /**
      * @var ProductMetadataInterface

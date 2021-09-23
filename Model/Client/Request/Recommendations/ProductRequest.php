@@ -30,7 +30,7 @@ class ProductRequest extends FeaturedRequest
      * @param Product $product
      * @return $this
      */
-    public function setProduct(Product $product): static
+    public function setProduct(Product $product): self
     {
         $this->product = $product;
         return $this;

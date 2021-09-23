@@ -24,7 +24,7 @@ class UrlStrategyFactory
     /**
      * @var ObjectManager
      */
-    protected ObjectManager|ObjectManagerInterface $objectManager;
+    protected ObjectManager $objectManager;
 
     /**
      * @var Config
@@ -51,7 +51,7 @@ class UrlStrategyFactory
      */
     public function create(
         string $interface = UrlInterface::class
-    ): RouteMatchingInterface|FilterApplierInterface|UrlInterface
+    )
     {
         $urlStrategy = $this->config->getUrlStrategy();  //path of query
         $implementation = $this->objectManager->get($urlStrategy);

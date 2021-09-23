@@ -33,7 +33,7 @@ class ProductSearchRequest extends ProductNavigationRequest implements SearchReq
      * @param StoreManager $storeManager
      * @param Config $config
      */
-    #[Pure] public function __construct(
+    public function __construct(
         Helper $helper,
         StoreManager $storeManager,
         Config $config

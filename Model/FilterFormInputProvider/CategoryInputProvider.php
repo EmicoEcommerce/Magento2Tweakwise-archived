@@ -123,7 +123,7 @@ class CategoryInputProvider implements FilterFormInputProviderInterface
     /**
      * @return CategoryInterface|Category
      */
-    protected function getCategory(): Category|CategoryInterface
+    protected function getCategory(): CategoryInterface
     {
         if ($currentCategory = $this->registry->registry('current_category')) {
             return $currentCategory;

@@ -48,7 +48,7 @@ class Plugin
      *
      * @return mixed
      */
-    public function beforeExecute(Index $subject): mixed
+    public function beforeExecute(Index $subject)
     {
         if ($this->config->isSearchEnabled()) {
             /* @var Query $query */

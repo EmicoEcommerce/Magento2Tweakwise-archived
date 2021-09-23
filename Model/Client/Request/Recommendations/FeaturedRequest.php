@@ -35,7 +35,7 @@ class FeaturedRequest extends Request
     /**
      * @return int|string
      */
-    public function getTemplate(): int|string
+    public function getTemplate()
     {
         return $this->templateId;
     }
@@ -44,7 +44,7 @@ class FeaturedRequest extends Request
      * @param int|string $templateId
      * @return $this
      */
-    public function setTemplate(int|string $templateId): static
+    public function setTemplate($templateId): self
     {
         if (!is_string($templateId)) {
             $templateId = (int) $templateId;

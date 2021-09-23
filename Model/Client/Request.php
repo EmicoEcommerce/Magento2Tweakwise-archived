@@ -68,7 +68,7 @@ class Request
      * @param string $path
      * @return $this
      */
-    public function setPath(string $path): static
+    public function setPath(string $path): self
     {
         $this->path = (string) $path;
         return $this;
@@ -88,7 +88,7 @@ class Request
      * @param string $separator
      * @return $this
      */
-    public function addParameter(string $parameter, string $value, string $separator = '|'): static
+    public function addParameter(string $parameter, string $value, string $separator = '|'): self
     {
         if (isset($this->parameters[$parameter])) {
             if ($value == null) {
@@ -105,7 +105,7 @@ class Request
      * @param array $parameters
      * @return $this
      */
-    public function setParameters(array $parameters): static
+    public function setParameters(array $parameters): self
     {
         $this->parameters = $parameters;
         return $this;
@@ -116,7 +116,7 @@ class Request
      * @param string|null $value
      * @return $this
      */
-    public function setParameter(string $parameter, string $value = null): static
+    public function setParameter(string $parameter, string $value = null): self
     {
         if ($value === null) {
             unset($this->parameters[$parameter]);
@@ -140,7 +140,7 @@ class Request
      * @param string $parameter
      * @return mixed
      */
-    public function getParameter(string $parameter): mixed
+    public function getParameter(string $parameter)
     {
         if (isset($this->parameters[$parameter])) {
             return $this->parameters[$parameter];
@@ -162,7 +162,7 @@ class Request
      * @param int|Category $category
      * @return $this
      */
-    public function addCategoryFilter(Category|int $category): static
+    public function addCategoryFilter($category): self
     {
         $ids = [];
         if (is_numeric($category)) {
@@ -192,7 +192,7 @@ class Request
      * @param array $categoryIds
      * @return $this
      */
-    public function addCategoryPathFilter(array $categoryIds): static
+    public function addCategoryPathFilter(array $categoryIds): self
     {
         $categoryIds = array_map('intval', $categoryIds);
         $storeId = (int) $this->getStoreId();

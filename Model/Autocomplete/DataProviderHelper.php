@@ -98,7 +98,7 @@ class DataProviderHelper
     /**
      * @return Query|mixed|string|null
      */
-    public function getQuery(): mixed
+    public function getQuery()
     {
         /** @var Query $query */
         $query = $this->queryFactory->get();

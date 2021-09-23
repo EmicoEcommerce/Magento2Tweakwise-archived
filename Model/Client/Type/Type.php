@@ -78,7 +78,7 @@ class Type
      * @param array $data
      * @return $this
      */
-    public function setData(array $data): static
+    public function setData(array $data): self
     {
         //$this->data = [];
         foreach ($data as $key => $value) {
@@ -92,7 +92,7 @@ class Type
      * @param string $key
      * @return mixed
      */
-    public function getValue(string $key): mixed
+    public function getValue(string $key)
     {
         $method = 'get' . $this->getMethodName($key);
         if (method_exists($this, $method)) {
@@ -106,7 +106,7 @@ class Type
      * @param string $key
      * @return mixed|null
      */
-    protected function getDataValue(string $key): mixed
+    protected function getDataValue(string $key)
     {
         return $this->data[$key] ?? null;
     }
@@ -125,7 +125,7 @@ class Type
      * @param mixed $value
      * @return $this
      */
-    public function setValue(string $key, mixed $value): static
+    public function setValue(string $key, mixed $value): self
     {
         $method = 'set' . $this->getMethodName($key);
         if (method_exists($this, $method)) {

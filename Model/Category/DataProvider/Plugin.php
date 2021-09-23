@@ -86,7 +86,7 @@ class Plugin
     /**
      * @return array
      */
-    #[ArrayShape(['tweakwise' => "string[]"])] protected function getFieldsMap(): array
+    protected function getFieldsMap(): array
     {
         return [
             'tweakwise' => [

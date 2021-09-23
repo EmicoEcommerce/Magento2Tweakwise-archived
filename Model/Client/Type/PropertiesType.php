@@ -17,7 +17,7 @@ class PropertiesType extends Type
      * @param SortFieldType[]|array[] $sortFields
      * @return $this
      */
-    public function setSortFields(array $sortFields): static
+    public function setSortFields(array $sortFields): self
     {
         $sortFields = $this->normalizeArray($sortFields, 'sortfield');
 
@@ -75,17 +75,17 @@ class PropertiesType extends Type
     }
 
     /**
-     * @return int|string
+     * @return string
      */
-    public function getSearchTerm(): int|string
+    public function getSearchTerm(): string
     {
         return (string) $this->getDataValue('searchterm');
     }
 
     /**
-     * @return int|string
+     * @return string
      */
-    public function getSuggestedSearchTerm(): int|string
+    public function getSuggestedSearchTerm(): string
     {
         return (string) $this->getDataValue('suggestedsearchterm');
     }

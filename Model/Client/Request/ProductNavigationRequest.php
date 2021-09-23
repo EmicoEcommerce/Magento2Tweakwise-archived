@@ -47,7 +47,7 @@ class ProductNavigationRequest extends Request
      * @param string $value
      * @return $this
      */
-    public function addAttributeFilter(string $attribute, string $value): static
+    public function addAttributeFilter(string $attribute, string $value): self
     {
         $this->addParameter('tn_fk_' . $attribute, $value);
         return $this;
@@ -67,7 +67,7 @@ class ProductNavigationRequest extends Request
      * @param string $sort
      * @return $this
      */
-    public function setOrder(string $sort): static
+    public function setOrder(string $sort): self
     {
         $this->setParameter('tn_sort', $sort);
         return $this;
@@ -77,7 +77,7 @@ class ProductNavigationRequest extends Request
      * @param int $page
      * @return $this
      */
-    public function setPage(int $page): static
+    public function setPage(int $page): self
     {
         $page = (int) $page;
         $page = max(1, $page);
@@ -90,7 +90,7 @@ class ProductNavigationRequest extends Request
      * @param int $limit
      * @return $this
      */
-    public function setLimit(int $limit): static
+    public function setLimit(int $limit): self
     {
         $limit = min($limit, self::MAX_PRODUCTS);
         $this->setParameter('tn_ps', $limit);
@@ -101,7 +101,7 @@ class ProductNavigationRequest extends Request
      * @param int|null $templateId
      * @return $this
      */
-    public function setTemplateId(?int $templateId): static
+    public function setTemplateId(?int $templateId): self
     {
         $this->setParameter('tn_ft', $templateId);
         return $this;
@@ -111,7 +111,7 @@ class ProductNavigationRequest extends Request
      * @param int|null $templateId
      * @return $this
      */
-    public function setSortTemplateId(?int $templateId): static
+    public function setSortTemplateId(?int $templateId): self
     {
         $this->setParameter('tn_st', $templateId);
         return $this;
@@ -121,7 +121,7 @@ class ProductNavigationRequest extends Request
      * @param string $profileKey
      * @return $this
      */
-    public function setProfileKey(string $profileKey): static
+    public function setProfileKey(string $profileKey): self
     {
         $this->setParameter('tn_profilekey', $profileKey);
         return $this;

@@ -17,5 +17,5 @@ interface RouteMatchingInterface
      * @param MagentoHttpRequest $request
      * @return bool|ActionInterface
      */
-    public function match(MagentoHttpRequest $request): ActionInterface|bool;
+    public function match(MagentoHttpRequest $request);
 }

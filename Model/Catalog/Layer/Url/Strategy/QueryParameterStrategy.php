@@ -138,7 +138,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
      * @param Item $item
      * @return string[]|string|null
      */
-    protected function getRequestValues(MagentoHttpRequest $request, Item $item): array|string|null
+    protected function getRequestValues(MagentoHttpRequest $request, Item $item)
     {
         $filter = $item->getFilter();
         $settings = $filter

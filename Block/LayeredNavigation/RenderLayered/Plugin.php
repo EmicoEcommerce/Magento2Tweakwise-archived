@@ -51,7 +51,7 @@ class Plugin
      * @param AbstractFilter $filter
      * @return $this
      */
-    public function aroundSetSwatchFilter(RenderLayered $subject, Closure $proceed, AbstractFilter $filter): static
+    public function aroundSetSwatchFilter(RenderLayered $subject, Closure $proceed, AbstractFilter $filter): self
     {
         $this->filter = $filter;
         return $proceed($filter);

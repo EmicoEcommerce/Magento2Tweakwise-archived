@@ -66,9 +66,9 @@ class SettingsType extends Type
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getIsNumberOfResultVisible(): bool|string
+    public function getIsNumberOfResultVisible(): bool
     {
         return $this->getDataValue('isnrofresultsvisible') == 'true';
     }

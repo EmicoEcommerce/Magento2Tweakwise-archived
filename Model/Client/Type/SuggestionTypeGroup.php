@@ -54,7 +54,7 @@ class SuggestionTypeGroup extends Type
      * @param SuggestionTypeAbstract[]|array[] $suggestions
      * @return $this
      */
-    public function setSuggestions(array $suggestions): static
+    public function setSuggestions(array $suggestions): self
     {
         $suggestions = $this->normalizeArray($suggestions, 'suggestion');
 

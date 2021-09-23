@@ -24,13 +24,13 @@ trait SearchRequestTrait
      * @param string|null $value
      * @return mixed
      */
-    abstract public function setParameter(string $parameter, string $value = null): mixed;
+    abstract public function setParameter(string $parameter, string $value = null);
 
     /**
      * @param string $parameter
      * @return mixed|null
      */
-    abstract public function getParameter(string $parameter): mixed;
+    abstract public function getParameter(string $parameter);
 
     /**
      * @return StoreInterface|null
@@ -40,7 +40,7 @@ trait SearchRequestTrait
     /**
      * @param $category int|Category
      */
-    abstract protected function addCategoryFilter(Category|int $category);
+    abstract protected function addCategoryFilter($category);
 
     /**
      * @param string $query

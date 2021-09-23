@@ -31,7 +31,7 @@ class ProductSuggestionsRequest extends Request implements SearchRequestInterfac
      * @param StoreManager $storeManager
      * @param Config $config
      */
-    #[Pure] public function __construct(
+    public function __construct(
         Helper $helper,
         StoreManager $storeManager,
         Config $config

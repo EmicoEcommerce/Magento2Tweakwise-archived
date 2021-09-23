@@ -37,9 +37,9 @@ class NavigationContext
     public const VISIBILITY_ATTRIBUTE = 'visibility';
 
     /**
-     * @var ProductNavigationRequest|Request
+     * @var Request
      */
-    protected ProductNavigationRequest|Request $request;
+    protected Request $request;
 
     /**
      * @var RequestFactory
@@ -52,9 +52,9 @@ class NavigationContext
     protected Client $client;
 
     /**
-     * @var ProductNavigationResponse|Response
+     * @var Response
      */
-    protected ProductNavigationResponse|Response $response;
+    protected Response $response;
 
     /**
      * @var Url
@@ -212,7 +212,7 @@ class NavigationContext
      * @param ProductNavigationRequest $request
      * @return $this
      */
-    protected function initializeRequest(ProductNavigationRequest $request): static
+    protected function initializeRequest(ProductNavigationRequest $request): self
     {
         // Apply magento config values
         $request->setLimit($this->productListHelper->getDefaultLimitPerPageValue($this->getCurrentViewMode()));

@@ -35,9 +35,9 @@ class SwatchRenderer extends RenderLayered
     protected $_template = 'Emico_Tweakwise::product/layered/swatch.phtml';
 
     /**
-     * @var Filter
+     * @var \Magento\Catalog\Model\Layer\Filter\AbstractFilter
      */
-    protected Filter $filter;
+    protected $filter;
 
     /**
      * @var EavAttributeFactory

@@ -30,7 +30,7 @@ class AutocompleteRequest extends Request
      * @param string $query
      * @return $this
      */
-    public function setSearch(string $query): static
+    public function setSearch(string $query): self
     {
         $this->setParameter('tn_q', $query);
         return $this;
@@ -40,7 +40,7 @@ class AutocompleteRequest extends Request
      * @param bool $getProducts
      * @return $this
      */
-    public function setGetProducts(bool $getProducts): static
+    public function setGetProducts(bool $getProducts): self
     {
         $this->setParameter('tn_items', $getProducts ? 'true' : 'false');
 
@@ -51,7 +51,7 @@ class AutocompleteRequest extends Request
      * @param bool $getSuggestions
      * @return $this
      */
-    public function setGetSuggestions(bool $getSuggestions): static
+    public function setGetSuggestions(bool $getSuggestions): self
     {
         $this->setParameter('tn_suggestions', $getSuggestions ? 'true' : 'false');
 
@@ -62,7 +62,7 @@ class AutocompleteRequest extends Request
      * @param bool $isInstant
      * @return $this
      */
-    public function setIsInstant(bool $isInstant): static
+    public function setIsInstant(bool $isInstant): self
     {
         $this->setParameter('tn_instant', $isInstant ? 'true' : 'false');
 

@@ -32,7 +32,7 @@ class TemplateFinder
      * @param string $type
      * @return int|string
      */
-    public function forProduct(Product $product, string $type): int|string
+    public function forProduct(Product $product, string $type)
     {
         $attribute = $this->getAttribute($type);
         $templateId = (int) $product->getData($attribute);
@@ -65,7 +65,7 @@ class TemplateFinder
      * @param string $type
      * @return int|string
      */
-    public function forCategory(Category $category, string $type): int|string
+    public function forCategory(Category $category, string $type)
     {
         $attribute = $this->getAttribute($type);
         $templateId = (int) $category->getData($attribute);

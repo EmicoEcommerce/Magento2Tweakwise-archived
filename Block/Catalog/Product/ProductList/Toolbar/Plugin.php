@@ -62,9 +62,9 @@ class Plugin
     /**
      * @param Toolbar $subject
      * @param string $result
-     * @return false|string
+     * @return string
      */
-    public function afterGetWidgetOptionsJson(Toolbar $subject, string $result): bool|string
+    public function afterGetWidgetOptionsJson(Toolbar $subject, string $result): string
     {
         if (!$this->config->isAjaxFilters()) {
             return $result;

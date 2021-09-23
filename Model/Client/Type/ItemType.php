@@ -17,7 +17,7 @@ class ItemType extends Type
      * @param LabelType[]|array[] $labels
      * @return $this
      */
-    public function setLabels(array $labels): static
+    public function setLabels(array $labels): self
     {
         $labels = $this->normalizeArray($labels, 'label');
 
@@ -37,7 +37,7 @@ class ItemType extends Type
     /**
      * @return int|string
      */
-    public function getId(): int|string
+    public function getId(): int
     {
         return (int) $this->getDataValue('itemno');
     }
