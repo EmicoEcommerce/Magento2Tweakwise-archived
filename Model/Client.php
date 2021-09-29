@@ -44,9 +44,9 @@ class Client
     protected Logger $log;
 
     /**
-     * @var HttpClient
+     * @var HttpClient|null
      */
-    protected HttpClient $client;
+    protected ?HttpClient $client = null;
 
     /**
      * @var ResponseFactory
@@ -248,7 +248,7 @@ class Client
      * @param mixed $value
      * @return array|string
      */
-    protected function xmlToArrayValue(mixed $value)
+    protected function xmlToArrayValue($value)
     {
         if ($value instanceof SimpleXMLElement) {
             return $this->xmlToArray($value);

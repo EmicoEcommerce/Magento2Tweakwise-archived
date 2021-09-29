@@ -36,9 +36,9 @@ class EndpointManager
     protected DateTime $dateTime;
 
     /**
-     * @var Variable
+     * @var Variable|null
      */
-    protected Variable $variable;
+    protected ?Variable $variable = null;
 
     /**
      * @var bool

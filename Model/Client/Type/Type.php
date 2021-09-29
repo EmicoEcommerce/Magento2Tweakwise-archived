@@ -125,7 +125,7 @@ class Type
      * @param mixed $value
      * @return $this
      */
-    public function setValue(string $key, mixed $value): self
+    public function setValue(string $key, $value): self
     {
         $method = 'set' . $this->getMethodName($key);
         if (method_exists($this, $method)) {
