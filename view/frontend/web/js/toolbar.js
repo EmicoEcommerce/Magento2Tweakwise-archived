@@ -25,10 +25,10 @@ define([
             var hasForm = $(this.options.filterFormSelector).length > 0;
             this.options.ajaxFilters = this.options.ajaxFilters && hasForm;
 
-            this._bind(element.find(options.modeControl), options.mode, options.modeDefault);
-            this._bind(element.find(options.directionControl), options.direction, options.directionDefault);
-            this._bind(element.find(options.orderControl), options.order, options.orderDefault);
-            this._bind(element.find(options.limitControl), options.limit, options.limitDefault);
+            this._bind($(options.modeControl), options.mode, options.modeDefault);
+            this._bind($(options.directionControl), options.direction, options.directionDefault);
+            this._bind($(options.orderControl), options.order, options.orderDefault);
+            this._bind($(options.limitControl), options.limit, options.limitDefault);
             if (options.ajaxFilters) {
                 $(element).on('click', options.pagerItemSelector, this.handlePagerClick.bind(this));
             }
