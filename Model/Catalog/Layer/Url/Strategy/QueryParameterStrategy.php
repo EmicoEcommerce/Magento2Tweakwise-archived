@@ -345,7 +345,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
         }
 
         $page = $this->getPage($request);
-        if ($page && !$request->has('filter_path')) {
+        if ($page) {
             $navigationRequest->setPage($page);
         }
 
