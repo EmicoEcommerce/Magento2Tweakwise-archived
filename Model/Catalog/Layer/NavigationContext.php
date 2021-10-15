@@ -36,7 +36,7 @@ class NavigationContext
     /**
      * @var ProductNavigationRequest
      */
-    protected $request;
+    protected $request = null;
 
     /**
      * @var RequestFactory
@@ -49,9 +49,9 @@ class NavigationContext
     protected $client;
 
     /**
-     * @var ProductNavigationResponse
+     * @var ProductNavigationResponse|null
      */
-    protected $response;
+    protected $response = null;
 
     /**
      * @var Url
@@ -150,6 +150,7 @@ class NavigationContext
     {
         if (!$this->response) {
             $request = $this->getRequest();
+
             $this->initializeRequest($request);
 
             $this->response = $this->client->request($request);
@@ -166,6 +167,25 @@ class NavigationContext
     public function hasResponse(): bool
     {
         return $this->response !== null;
+    }
+
+    /**
+     * @return $this
+     */
+    public function resetPagination(): self
+    {
+        $params = $this->request->getParameters();
+        $params['resetPagination'] = true;
+        $params['tn_fk_p'] = 1;
+        $params['tn_p'] = 1;
+
+        $this->request = null;
+
+        $request = $this->getRequest()->setParameters($params);
+
+        $this->response = null;
+
+        return $this->initializeRequest($request);
     }
 
     /**
