@@ -82,6 +82,8 @@ class ItemCollectionProvider implements ItemCollectionProviderInterface
                     ->create(['navigationContext' => $this->navigationContext->resetPagination()])
                 ;
             }
+            
+            $collection->clear();
 
             return $collection;
         } catch (TweakwiseException $e) {
