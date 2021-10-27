@@ -175,16 +175,12 @@ class NavigationContext
     public function resetPagination(): self
     {
         $params = $this->request->getParameters();
-        unset($params['tn_p']);
-        unset($params['tn_fk_p']);
         $params['resetPagination'] = true;
         $params['tn_fk_p'] = 1;
         $params['tn_p'] = 1;
 
         $this->request = null;
-
         $request = $this->getRequest()->setParameters($params);
-
         $this->response = null;
 
         return $this->initializeRequest($request);

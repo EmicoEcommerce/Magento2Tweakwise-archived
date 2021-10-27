@@ -75,7 +75,6 @@ class ItemCollectionProvider implements ItemCollectionProviderInterface
         }
 
         try {
-            /** @var Collection $collection */
             $collection = $this->collectionFactory->create(['navigationContext' => $this->navigationContext]);
 
             if (count($collection->getItems()) < 1) {
@@ -83,6 +82,8 @@ class ItemCollectionProvider implements ItemCollectionProviderInterface
                     ->create(['navigationContext' => $this->navigationContext->resetPagination()])
                 ;
             }
+            
+            $collection->clear();
 
             return $collection;
         } catch (TweakwiseException $e) {
