@@ -17,6 +17,12 @@ use Magento\Store\Model\StoreManager;
 class Request
 {
     /**
+     * A list of parameters that should be ignored
+     * when adding a separator to the value
+     */
+    private const IGNORE_SEPARATOR_PARAMETERS = ['tn_fk_final_price', 'tn_fk_p'];
+
+    /**
      * @var string
      */
     protected $path;
@@ -94,7 +100,9 @@ class Request
             if ($value == null) {
                 unset($this->parameters[$parameter]);
             } else {
-                $this->parameters[$parameter] = $this->parameters[$parameter] . $separator . $value;
+                if (!in_array($parameter, self::IGNORE_SEPARATOR_PARAMETERS)) {
+                    $this->parameters[$parameter] = $this->parameters[$parameter] . $separator . $value;
+                }
             }
         } else if ($value !== null) {
             $this->parameters[$parameter] = (string) $value;
