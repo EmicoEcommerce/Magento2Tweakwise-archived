@@ -100,10 +100,9 @@ class Request
             if ($value == null) {
                 unset($this->parameters[$parameter]);
             } else {
-                if (in_array($parameter, self::IGNORE_SEPARATOR_PARAMETERS)) {
-                    return $this;
+                if (!in_array($parameter, self::IGNORE_SEPARATOR_PARAMETERS)) {
+                    $this->parameters[$parameter] = $this->parameters[$parameter] . $separator . $value;
                 }
-                $this->parameters[$parameter] = $this->parameters[$parameter] . $separator . $value;
             }
         } else if ($value !== null) {
             $this->parameters[$parameter] = (string) $value;
