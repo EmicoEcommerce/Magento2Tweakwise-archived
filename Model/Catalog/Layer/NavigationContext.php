@@ -180,9 +180,7 @@ class NavigationContext
         $params['tn_p'] = 1;
 
         $this->request = null;
-
         $request = $this->getRequest()->setParameters($params);
-
         $this->response = null;
 
         return $this->initializeRequest($request);
