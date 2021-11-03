@@ -9,7 +9,8 @@
         "ext-simplexml": "*",
         "ext-libxml": "*",
         "emico/tweakwise-export": ">=4.0",
-        "guzzlehttp/guzzle": ">=6.0"
+        "guzzlehttp/guzzle": ">=6.0",
+        "magento/framework": "*"
     },
     "require-dev": {
         "malukenho/docheader": "~0.1",
