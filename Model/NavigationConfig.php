@@ -94,7 +94,10 @@ class NavigationConfig implements ArgumentInterface, FilterFormInputProviderInte
      */
     public function getFilterFormInput(): array
     {
-        return $this->filterFormInputProvider->getFilterFormInput();
+        $filterFormInput = $this->filterFormInputProvider->getFilterFormInput();
+        unset($filterFormInput['p']);
+
+        return $filterFormInput;
     }
 
     /**
