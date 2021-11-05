@@ -1,4 +1,4 @@
-parameters:
+grumphp:
     tasks:
         composer_script:
             script: docheader
