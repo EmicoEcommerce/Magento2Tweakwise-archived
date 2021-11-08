@@ -36,7 +36,7 @@ trait AnchorRendererTrait
      */
     protected function getAnchorTagAttributes(Item $item): array
     {
-        $itemUrl = $this->getItemUrl($item);
+        $itemUrl = preg_replace('/&amp;p=\d+/', '', $this->getItemUrl($item));
         if ($this->filterHelper->shouldFilterBeIndexable($item)) {
             return ['href' => $itemUrl];
         }
