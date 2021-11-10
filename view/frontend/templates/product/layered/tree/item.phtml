@@ -16,7 +16,6 @@ if (strpos($catUrl, $block->getBaseUrl()) === false) {
 }
 ?>
 <li class="item">
-    <a href="<?=$block->escapeUrl($item->getUrl())?>">
     <a href="<?=$catUrl?>">
         <?=$block->getItemPrefix()?>
         <?=$block->escapeHtml($item->getLabel())?>
