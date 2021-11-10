@@ -9,10 +9,14 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\LinkRenderer\ItemRende
 
 /** @var $block ItemRenderer */
 $item = $block->getItem();
-?>
+$catUrl = $block->escapeUrl($item->getUrl());
 
+if (strpos($catUrl, $block->getBaseUrl()) === false) {
+    $catUrl = $block->getBaseUrl() . $item->getUrl();
+}
+?>
 <li class="item">
-    <a href="<?=$block->escapeUrl($item->getUrl())?>">
+    <a href="<?=$catUrl?>">
         <?=$block->getItemPrefix()?>
         <?=$block->escapeHtml($item->getLabel())?>
         <?=$block->getItemPostfix()?>
