@@ -10,9 +10,8 @@ use Emico\Tweakwise\Block\LayeredNavigation\RenderLayered\LinkRenderer\ItemRende
 /** @var $block ItemRenderer */
 $item = $block->getItem();
 ?>
-
 <li class="item">
-    <a href="<?=$block->escapeUrl($item->getUrl())?>">
+    <a href="<?=$block->getCategoryUrl($item)?>">
         <?=$block->getItemPrefix()?>
         <?=$block->escapeHtml($item->getLabel())?>
         <?=$block->getItemPostfix()?>
