@@ -9,7 +9,7 @@
 namespace Emico\Tweakwise\Block\LayeredNavigation\RenderLayered;
 
 use Emico\Tweakwise\Model\Catalog\Layer\Filter;
-use Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
+use \Emico\Tweakwise\Model\Catalog\Layer\Filter\Item as CategoryItem;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
 use Emico\Tweakwise\Model\Config;
 use Emico\Tweakwise\Model\NavigationConfig;
@@ -85,6 +85,21 @@ class DefaultRenderer extends Template
     protected function getFacetSettings()
     {
         return $this->filter->getFacet()->getFacetSettings();
+    }
+
+    /**
+     * @param CategoryItem $item
+     * @return string
+     */
+    public function getCategoryUrl(CategoryItem $item): string
+    {
+        $catUrl = $this->escapeUrl($item->getUrl());
+
+        if (strpos($catUrl, $this->getBaseUrl()) === false) {
+            $catUrl = $this->getBaseUrl() . $item->getUrl();
+        }
+
+        return $catUrl;
     }
 
     /**
