@@ -261,6 +261,9 @@ define([
             const noProducts = $(this.options.noProductsSelector);
             const noResult = $(this.options.noResultsSelector);
 
+            noProducts.remove();
+            noResult.remove();
+
             /*
             The product list comes after the toolbar.
             We use this construction as there could be more product lists on the page
@@ -270,8 +273,6 @@ define([
                 toolbar
                     .siblings(productListSelector)
                     .replaceWith(newProductList);
-                noProducts.remove();
-                noResult.remove();
             } else {
                 /*
                 It happens that a filter yields no result.
