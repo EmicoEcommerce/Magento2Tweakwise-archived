@@ -19,6 +19,11 @@ define([
             filterSelector: '#layered-filter-block',
             productListSelector: '.products.wrapper',
             toolbarSelector: '.toolbar.toolbar-products',
+            productsGridSelector: '.products-grid',
+            mainColumnSelector: '.column.main',
+            emptyInfoMessageSelector: '.message.info.empty',
+            noteMessageSelector: '.message.note',
+            noticeMessageSelector: '.message.notice',
             isLoading: false,
         },
 
@@ -252,6 +257,16 @@ define([
             }
 
             var toolbar = $(toolbarSelector);
+            const productsGrid = $(this.options.productsGridSelector);
+            const mainColumn = $(this.options.mainColumnSelector);
+            const emptyInfo = $(this.options.emptyInfoMessageSelector);
+            const note = $(this.options.noteMessageSelector);
+            const notice = $(this.options.noticeMessageSelector);
+
+            emptyInfo.remove();
+            note.remove();
+            notice.remove();
+
             /*
             The product list comes after the toolbar.
             We use this construction as there could be more product lists on the page
@@ -261,6 +276,17 @@ define([
                 toolbar
                     .siblings(productListSelector)
                     .replaceWith(newProductList);
+            } else {
+                /*
+                It happens that a filter yields no result.
+                In that case magento returns a message in a div
+                that needs to rendered correctly and also removed if not required
+                */
+                toolbar.hide();
+                productsGrid.hide();
+                $('script[data-role=\'msrp-popup-template\']').remove();
+                $('script[data-role=\'msrp-info-template\']').remove();
+                mainColumn.append(htmlResponse);
             }
             if (newToolbarFirst) {
                 toolbar
@@ -280,7 +306,7 @@ define([
                     .replaceWith(newToolbarLast.outerHTML + scripts);
             }
 
-	    const primaryActionsDiv = $(".actions-primary")
+            const primaryActionsDiv = $(".actions-primary")
             primaryActionsDiv.find('form').
             each(function (i, form) {
                 $(form).append('<input name="form_key" type="hidden" ' +
@@ -336,3 +362,4 @@ define([
 
     return $.tweakwise.navigationForm;
 });
+
