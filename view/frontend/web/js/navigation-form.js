@@ -21,8 +21,9 @@ define([
             toolbarSelector: '.toolbar.toolbar-products',
             productsGridSelector: '.products-grid',
             mainColumnSelector: '.column.main',
-            noProductsSelector: '.message.info.empty',
-            noResultsSelector: '.message.notice',
+            emptyInfoMessageSelector: '.message.info.empty',
+            noteMessageSelector: '.message.note',
+            noticeMessageSelector: '.message.notice',
             isLoading: false,
         },
 
@@ -258,8 +259,13 @@ define([
             var toolbar = $(toolbarSelector);
             const productsGrid = $(this.options.productsGridSelector);
             const mainColumn = $(this.options.mainColumnSelector);
-            const noProducts = $(this.options.noProductsSelector);
-            const noResult = $(this.options.noResultsSelector);
+            const emptyInfo = $(this.options.emptyInfoMessageSelector);
+            const note = $(this.options.noteMessageSelector);
+            const notice = $(this.options.noticeMessageSelector);
+
+            emptyInfo.remove();
+            note.remove();
+            notice.remove();
 
             /*
             The product list comes after the toolbar.
@@ -270,8 +276,6 @@ define([
                 toolbar
                     .siblings(productListSelector)
                     .replaceWith(newProductList);
-                noProducts.remove();
-                noResult.remove();
             } else {
                 /*
                 It happens that a filter yields no result.
@@ -358,5 +362,4 @@ define([
 
     return $.tweakwise.navigationForm;
 });
-
 
