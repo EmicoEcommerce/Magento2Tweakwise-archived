@@ -21,8 +21,9 @@ define([
             toolbarSelector: '.toolbar.toolbar-products',
             productsGridSelector: '.products-grid',
             mainColumnSelector: '.column.main',
-            noProductsSelector: '.message.info.empty',
-            noResultsSelector: '.message.notice',
+            emptyInfoMessageSelector: '.message.info.empty',
+            noteMessageSelector: '.message.note',
+            noticeMessageSelector: '.message.notice',
             isLoading: false,
         },
 
@@ -258,11 +259,13 @@ define([
             var toolbar = $(toolbarSelector);
             const productsGrid = $(this.options.productsGridSelector);
             const mainColumn = $(this.options.mainColumnSelector);
-            const noProducts = $(this.options.noProductsSelector);
-            const noResult = $(this.options.noResultsSelector);
+            const emptyInfo = $(this.options.emptyInfoMessageSelector);
+            const note = $(this.options.noteMessageSelector);
+            const notice = $(this.options.noticeMessageSelector);
 
-            noProducts.remove();
-            noResult.remove();
+            emptyInfo.remove();
+            note.remove();
+            notice.remove();
 
             /*
             The product list comes after the toolbar.
@@ -359,5 +362,4 @@ define([
 
     return $.tweakwise.navigationForm;
 });
-
 
