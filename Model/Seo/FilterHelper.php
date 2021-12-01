@@ -76,29 +76,10 @@ class FilterHelper
             return true;
         }
 
-        if (!$this->exceedsMaxAllowedFacets() && $this->isFilterItemInWhiteList($item)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param Filter $item
-     * @return bool
-     */
-    public function shouldFilterValueBeIndexable(Item $item): bool
-    {
-        if (!$this->config->isSeoEnabled()) {
-            return true;
-        }
-
-        //TODO - Process per category in updated implementation
-        if ($this->isCategoryFilterItem($item)) {
-            return true;
-        }
-
-        if (!$this->exceedsMaxAllowedFacets() && $this->isFilterValueItemInWhiteList($item)) {
+        if (!$this->exceedsMaxAllowedFacets() &&
+            $this->isFilterItemInWhiteList($item) &&
+            $this->isFilterValueItemInWhiteList($item)
+        ) {
             return true;
         }
 
@@ -112,9 +93,6 @@ class FilterHelper
     {
         foreach ($this->getActiveFilterItems() as $item) {
             if (!$this->shouldFilterBeIndexable($item)) {
-                return false;
-            }
-            if (!$this->shouldFilterValueBeIndexable($item)) {
                 return false;
             }
         }
@@ -149,15 +127,7 @@ class FilterHelper
      */
     protected function getAttributeValueFromFilterItem(Item $item)
     {
-        try {
-            return $this->attributeRepository
-                ->get(Product::ENTITY, 'size')
-                ->getSource()
-                ->getOptionText((int)$item->getValue())
-            ;
-        } catch (LocalizedException $exception) {
-            return null;
-        }
+        return $item->getAttribute()->getTitle();
     }
 
     /**
@@ -197,7 +167,27 @@ class FilterHelper
         $filterValuesWhiteList = $this->config->getFilterValuesWhitelist();
         $attributeValue = $this->getAttributeValueFromFilterItem($item);
 
-        return \in_array($attributeValue, $filterValuesWhiteList, true);
+        if (empty($filterValuesWhiteList)) {
+            return true;
+        }
+
+        $attributeCode = $this->getAttributeCodeFromFilterItem($item);
+
+        if (!array_key_exists($attributeCode, $filterValuesWhiteList)) {
+            return true;
+        }
+
+        if ($attributeValue === null) {
+            return false;
+        }
+
+        $isIn = \in_array(
+            strtolower($attributeValue),
+            array_map('strtolower', $filterValuesWhiteList[$attributeCode]),
+            true
+        );
+
+        return $isIn;
     }
 
     /**

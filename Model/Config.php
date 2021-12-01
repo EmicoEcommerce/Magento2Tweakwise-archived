@@ -393,7 +393,21 @@ class Config
     public function getFilterValuesWhitelist(Store $store = null)
     {
         $filterList = $this->getStoreConfig('tweakwise/seo/filter_values_whitelist', $store);
-        return explode(',', $filterList) ?: [];
+        $filterListExploded = explode(',', $filterList) ?: [];
+        if (empty($filterListExploded)) {
+            return [];
+        }
+
+        $return = [];
+        foreach ($filterListExploded as $listItem) {
+            $item = explode('=', $listItem) ?: null;
+            if ($item === null) {
+                continue;
+            }
+            $return[$item[0]][] = $item[1];
+        }
+
+        return $return;
     }
 
     /**
