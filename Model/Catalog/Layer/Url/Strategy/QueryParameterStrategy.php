@@ -126,7 +126,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
         $params['_escape'] = false;
 
         if ($originalUrl = $request->getQuery('__tw_original_url')) {
-            return $this->url->getDirectUrl(urlencode($originalUrl), $params);
+            return $this->url->getDirectUrl(filter_var($originalUrl, FILTER_SANITIZE_ENCODED), $params);
         }
         return $this->url->getUrl('*/*/*', $params);
     }
