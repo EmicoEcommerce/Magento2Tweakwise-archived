@@ -12,6 +12,9 @@ use Emico\Tweakwise\Model\Catalog\Layer\FilterList\Tweakwise;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
 use Emico\Tweakwise\Model\Config;
 use Magento\Catalog\Model\Layer\Resolver;
+use Magento\Catalog\Model\Product;
+use Magento\Eav\Api\AttributeRepositoryInterface;
+use Magento\Framework\Exception\LocalizedException;
 
 class FilterHelper
 {
@@ -41,7 +44,11 @@ class FilterHelper
      * @param Tweakwise $filterList
      * @param Config $config
      */
-    public function __construct(Resolver $layerResolver, Tweakwise $filterList, Config $config)
+    public function __construct(
+        Resolver $layerResolver,
+        Tweakwise $filterList,
+        Config $config
+    )
     {
         $this->layerResolver = $layerResolver;
         $this->tweakwiseFilterList = $filterList;
@@ -62,7 +69,10 @@ class FilterHelper
             return true;
         }
 
-        if (!$this->exceedsMaxAllowedFacets() && $this->isFilterItemInWhiteList($item)) {
+        if (!$this->exceedsMaxAllowedFacets() &&
+            $this->isFilterItemInWhiteList($item) &&
+            $this->isFilterValueItemInWhiteList($item)
+        ) {
             return true;
         }
 
@@ -105,6 +115,15 @@ class FilterHelper
     }
 
     /**
+     * @param Item $item
+     * @return string|null
+     */
+    protected function getAttributeValueFromFilterItem(Item $item)
+    {
+        return $item->getAttribute()->getTitle();
+    }
+
+    /**
      * @return bool
      */
     protected function exceedsMaxAllowedFacets(): bool
@@ -130,6 +149,38 @@ class FilterHelper
         $attributeCode = $this->getAttributeCodeFromFilterItem($item);
 
         return \in_array($attributeCode, $filterWhiteList, true);
+    }
+
+    /**
+     * @param Item $item
+     * @return bool
+     */
+    protected function isFilterValueItemInWhiteList(Item $item): bool
+    {
+        $filterValuesWhiteList = $this->config->getFilterValuesWhitelist();
+        $attributeValue = $this->getAttributeValueFromFilterItem($item);
+
+        if (empty($filterValuesWhiteList)) {
+            return true;
+        }
+
+        $attributeCode = $this->getAttributeCodeFromFilterItem($item);
+
+        if (!array_key_exists($attributeCode, $filterValuesWhiteList)) {
+            return true;
+        }
+
+        if ($attributeValue === null) {
+            return false;
+        }
+
+        $isIn = \in_array(
+            strtolower($attributeValue),
+            array_map('strtolower', $filterValuesWhiteList[$attributeCode]),
+            true
+        );
+
+        return $isIn;
     }
 
     /**
