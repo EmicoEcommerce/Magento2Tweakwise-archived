@@ -39,11 +39,6 @@ class FilterHelper
     protected $tweakwiseFilterList;
 
     /**
-     * @var AttributeRepositoryInterface
-     */
-    protected $attributeRepository;
-
-    /**
      * FilterHelper constructor.
      * @param Resolver $layerResolver
      * @param Tweakwise $filterList
@@ -52,14 +47,12 @@ class FilterHelper
     public function __construct(
         Resolver $layerResolver,
         Tweakwise $filterList,
-        Config $config,
-        AttributeRepositoryInterface $attributeRepository
+        Config $config
     )
     {
         $this->layerResolver = $layerResolver;
         $this->tweakwiseFilterList = $filterList;
         $this->config = $config;
-        $this->attributeRepository = $attributeRepository;
     }
 
     /**
