@@ -99,7 +99,7 @@ class DefaultRenderer extends Template
             $catUrl = $this->getBaseUrl() . $item->getUrl();
         }
 
-        return $catUrl;
+        return preg_replace('/&?p=\d+&?/', '', $catUrl);
     }
 
     /**
