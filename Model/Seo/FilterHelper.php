@@ -118,7 +118,7 @@ class FilterHelper
      * @param Item $item
      * @return string|null
      */
-    protected function getAttributeValueFromFilterItem(Item $item)
+    protected function getAttributeValueFromFilterItem(Item $item): ?string
     {
         return $item->getAttribute()->getTitle();
     }
@@ -174,13 +174,11 @@ class FilterHelper
             return false;
         }
 
-        $isIn = \in_array(
+        return \in_array(
             strtolower($attributeValue),
             array_map('strtolower', $filterValuesWhiteList[$attributeCode]),
             true
         );
-
-        return $isIn;
     }
 
     /**
