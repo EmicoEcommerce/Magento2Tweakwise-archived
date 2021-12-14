@@ -79,6 +79,18 @@
                             ><?= /* @escapeNotVerified */ $swatchData['swatches'][$option]['value'] ?></div>
                             <?php    break;
                     } ?>
+                    <?php if ($block->shouldDisplayProductCountOnLayer()): ?>
+                        <span class="count">
+                            <?=htmlentities($item->getCount())?>
+                            <span class="filter-count-label">
+                                <?php if ($item->getCount() == 1):?>
+                                    <?=__('item')?>
+                                <?php else:?>
+                                    <?=__('items')?>
+                                <?php endif;?>
+                            </span>
+                        </span>
+                    <?php endif; ?>
                 <?php } ?>
                 </label>
             </a>

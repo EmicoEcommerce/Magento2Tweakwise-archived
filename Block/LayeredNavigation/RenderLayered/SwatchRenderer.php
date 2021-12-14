@@ -174,4 +174,20 @@ class SwatchRenderer extends RenderLayered
     {
         return $this->filter->getItemByOptionId($id);
     }
+
+    /**
+     * @return SettingsType
+     */
+    protected function getFacetSettings()
+    {
+        return $this->filter->getFacet()->getFacetSettings();
+    }
+
+    /**
+     * @return bool
+     */
+    public function shouldDisplayProductCountOnLayer()
+    {
+        return $this->getFacetSettings()->getIsNumberOfResultVisible();
+    }
 }
