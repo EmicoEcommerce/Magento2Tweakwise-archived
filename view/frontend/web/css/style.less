@@ -132,6 +132,16 @@
     }
 
     .swatch-attribute-options {
+        > label {
+            display: flex;
+            gap: 1ch;
+
+            .swatch-option {
+                height: 24px;
+                width: 24px;
+            }
+        }
+        
         input[type='checkbox']:checked {
             + label .swatch-option {
                 outline: 2px solid #ee0000;
