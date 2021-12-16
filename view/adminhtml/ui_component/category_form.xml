@@ -66,20 +66,26 @@
                 </item>
             </argument>
         </field>
-        <field name="tweakwise_filter_whitelist_code">
+        <field name="tweakwise_filter_whitelist">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="formElement" xsi:type="string">textarea</item>
+                    <item name="cols" xsi:type="number">15</item>
+                    <item name="rows" xsi:type="number">5</item>
+                    <item name="dataType" translate="true" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Filter whitelist</item>
                     <item name="comment" xsi:type="string" translate="true">Overrules the store config value</item>
                     <item name="sortOrder" xsi:type="number">32</item>
                 </item>
             </argument>
         </field>
-        <field name="tweakwise_filter_values_whitelist_code">
+        <field name="tweakwise_filter_values_whitelist">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="formElement" xsi:type="string">textarea</item>
+                    <item name="cols" xsi:type="number">15</item>
+                    <item name="rows" xsi:type="number">5</item>
+                    <item name="dataType" translate="true" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Filter whitelist values</item>
                     <item name="comment" xsi:type="string" translate="true">Overrules the store config value</item>
                     <item name="sortOrder" xsi:type="number">33</item>

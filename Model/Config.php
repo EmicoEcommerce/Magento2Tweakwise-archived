@@ -32,6 +32,8 @@ class Config
     public const ATTRIBUTE_UPSELL_GROUP_CODE = 'tweakwise_upsell_group_code';
     public const ATTRIBUTE_CROSSSELL_TEMPLATE = 'tweakwise_crosssell_template';
     public const ATTRIBUTE_CROSSSELL_GROUP_CODE = 'tweakwise_crosssell_group_code';
+    public const ATTRIBUTE_FILTER_WHITELIST = 'tweakwise_filter_whitelist';
+    public const ATTRIBUTE_FILTER_VALUES_WHITELIST = 'tweakwise_filter_values_whitelist';
 
     /**
      * @deprecated

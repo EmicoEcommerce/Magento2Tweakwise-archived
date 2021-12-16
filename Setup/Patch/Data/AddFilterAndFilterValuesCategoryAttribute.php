@@ -39,39 +39,38 @@ class AddFilterAndFilterValuesCategoryAttribute implements DataPatchInterface
 
         $eavSetup->addAttribute(
             \Magento\Catalog\Model\Category::ENTITY,
-            Config::ATTRIBUTE_FILTER_WHITELIST_CODE,
+            Config::ATTRIBUTE_FILTER_WHITELIST,
             [
                 'type' => 'varchar',
                 'label' => 'Filter whitelist',
                 'input' => 'text',
                 'sort_order' => 10,
                 'source' => '',
-                'global' => 1,
+                'global' => ScopedAttributeInterface::SCOPE_STORE,
                 'visible' => true,
                 'required' => false,
                 'user_defined' => true,
                 'default' => null,
-                'group' => '',
+                'group' => 'Tweakwise',
                 'backend' => ''
             ]
         );
 
-
         $eavSetup->addAttribute(
             \Magento\Catalog\Model\Category::ENTITY,
-            Config::ATTRIBUTE_FILTER_VALUES_WHITELIST_CODE,
+            Config::ATTRIBUTE_FILTER_VALUES_WHITELIST,
             [
                 'type' => 'varchar',
                 'label' => 'Filter values whitelist',
                 'input' => 'text',
                 'sort_order' => 10,
                 'source' => '',
-                'global' => 1,
+                'global' => ScopedAttributeInterface::SCOPE_STORE,
                 'visible' => true,
                 'required' => false,
                 'user_defined' => true,
                 'default' => null,
-                'group' => '',
+                'group' => 'Tweakwise',
                 'backend' => ''
             ]
         );
