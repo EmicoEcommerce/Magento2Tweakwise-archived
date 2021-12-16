@@ -96,6 +96,8 @@ class Plugin
                 'tweakwise_crosssell_group_code',
                 'tweakwise_upsell_template',
                 'tweakwise_upsell_group_code',
+                'tweakwise_filter_whitelist_code',
+                'tweakwise_filter_values_whitelist_code',
             ],
         ];
     }
