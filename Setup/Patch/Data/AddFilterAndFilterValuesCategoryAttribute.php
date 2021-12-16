@@ -3,6 +3,7 @@
 namespace Emico\Tweakwise\Setup\Patch\Data;
 
 use Emico\Tweakwise\Model\Config;
+use Magento\Catalog\Model\Category;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Setup\EavSetup;
 use Magento\Eav\Setup\EavSetupFactory;
@@ -38,7 +39,7 @@ class AddFilterAndFilterValuesCategoryAttribute implements DataPatchInterface
         $eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);
 
         $eavSetup->addAttribute(
-            \Magento\Catalog\Model\Category::ENTITY,
+            Category::ENTITY,
             Config::ATTRIBUTE_FILTER_WHITELIST,
             [
                 'type' => 'varchar',
@@ -57,7 +58,7 @@ class AddFilterAndFilterValuesCategoryAttribute implements DataPatchInterface
         );
 
         $eavSetup->addAttribute(
-            \Magento\Catalog\Model\Category::ENTITY,
+            Category::ENTITY,
             Config::ATTRIBUTE_FILTER_VALUES_WHITELIST,
             [
                 'type' => 'varchar',
