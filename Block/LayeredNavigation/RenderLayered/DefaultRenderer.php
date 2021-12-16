@@ -9,7 +9,7 @@
 namespace Emico\Tweakwise\Block\LayeredNavigation\RenderLayered;
 
 use Emico\Tweakwise\Model\Catalog\Layer\Filter;
-use \Emico\Tweakwise\Model\Catalog\Layer\Filter\Item as CategoryItem;
+use \Emico\Tweakwise\Model\Catalog\Layer\Filter\Item;
 use Emico\Tweakwise\Model\Client\Type\FacetType\SettingsType;
 use Emico\Tweakwise\Model\Config;
 use Emico\Tweakwise\Model\NavigationConfig;
@@ -88,10 +88,10 @@ class DefaultRenderer extends Template
     }
 
     /**
-     * @param CategoryItem $item
+     * @param Item $item
      * @return string
      */
-    public function getCategoryUrl(CategoryItem $item): string
+    public function getCategoryUrl(Item $item): string
     {
         $catUrl = $this->escapeUrl($item->getUrl());
 
