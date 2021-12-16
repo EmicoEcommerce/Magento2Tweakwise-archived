@@ -384,8 +384,9 @@ class Config
      */
     public function getFilterWhitelist(Store $store = null)
     {
-        $filterList = $this->getStoreConfig('tweakwise/seo/filter_whitelist', $store);
-        return explode(',', $filterList) ?: [];
+        return ConfigAttributeProcessService::extractFilterWhitelist(
+            $this->getStoreConfig('tweakwise/seo/filter_whitelist', $store)
+        );
     }
 
     /**
@@ -394,29 +395,9 @@ class Config
      */
     public function getFilterValuesWhitelist(Store $store = null): array
     {
-        $filterList = $this->getStoreConfig('tweakwise/seo/filter_values_whitelist', $store);
-
-        if (empty($filterList)) {
-            return [];
-        }
-
-        $filterList = trim($filterList);
-
-        $filterListExploded = explode(',', $filterList) ?: [];
-        if (empty($filterListExploded)) {
-            return [];
-        }
-
-        $return = [];
-        foreach ($filterListExploded as $listItem) {
-            $item = explode('=', trim($listItem)) ?: null;
-            if ($item === null) {
-                continue;
-            }
-            $return[$item[0]][] = $item[1];
-        }
-
-        return $return;
+        return ConfigAttributeProcessService::extractFilterValuesWhitelist(
+            $this->getStoreConfig('tweakwise/seo/filter_values_whitelist', $store)
+        );
     }
 
     /**
