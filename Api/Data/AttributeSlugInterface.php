@@ -12,9 +12,9 @@ interface AttributeSlugInterface
     public const SLUG = 'slug';
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAttribute(): string;
+    public function getAttribute(): ?string;
 
     /**
      * @return string

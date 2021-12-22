@@ -110,9 +110,13 @@ class FilterSlugManager
     public function createFilterSlugByAttributeOptions(array $options)
     {
         foreach ($options as $option) {
+            if (empty($option->getLabel()) || ctype_space($option->getLabel())) {
+                continue;
+            }
+
             $attributeSlugEntity = $this->attributeSlugFactory->create();
-            $attributeSlugEntity->setAttribute($option->getValue());
-            $attributeSlugEntity->setSlug($this->translitUrl->filter($option->getValue()));
+            $attributeSlugEntity->setAttribute($option->getLabel());
+            $attributeSlugEntity->setSlug($this->translitUrl->filter($option->getLabel()));
 
             $this->attributeSlugRepository->save($attributeSlugEntity);
             $this->cache->remove(self::CACHE_KEY);
