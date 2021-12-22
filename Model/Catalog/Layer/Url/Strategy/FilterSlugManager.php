@@ -104,6 +104,22 @@ class FilterSlugManager
     }
 
     /**
+     * @param \Magento\Eav\Api\Data\AttributeOptionInterface[] $options
+     * @return void
+     */
+    public function createFilterSlugByAttributeOptions(array $options)
+    {
+        foreach ($options as $option) {
+            $attributeSlugEntity = $this->attributeSlugFactory->create();
+            $attributeSlugEntity->setAttribute($option->getValue());
+            $attributeSlugEntity->setSlug($this->translitUrl->filter($option->getValue()));
+
+            $this->attributeSlugRepository->save($attributeSlugEntity);
+            $this->cache->remove(self::CACHE_KEY);
+        }
+    }
+
+    /**
      * @param string $slug
      * @return string
      * @throws UnexpectedValueException

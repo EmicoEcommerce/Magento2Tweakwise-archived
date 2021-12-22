@@ -71,6 +71,17 @@
         <plugin name="emico-tweakwise" type="Emico\Tweakwise\Model\Category\DataProvider\Plugin" />
     </type>
 
+    <type name="Magento\Catalog\Model\ResourceModel\Eav">
+        <plugin
+            name="emico-tweakwise"
+            type="Emico\Tweakwise\Plugin\RemoveTweakwiseSlugsBeforeSaveAttribute"
+        />
+        <plugin
+            name="emico-tweakwise"
+            type="Emico\Tweakwise\Plugin\CreateTweakwiseSlugsAfterSaveAttribute"
+        />
+    </type>
+
     <!-- If you need other layouts or possible even layer objects register them here -->
     <type name="Emico\Tweakwise\Controller\Ajax\Navigation">
         <arguments>
