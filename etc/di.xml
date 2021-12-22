@@ -71,7 +71,7 @@
         <plugin name="emico-tweakwise" type="Emico\Tweakwise\Model\Category\DataProvider\Plugin" />
     </type>
 
-    <type name="Magento\Catalog\Model\ResourceModel\Eav">
+    <type name="Magento\Catalog\Model\ResourceModel\Eav\Attribute">
         <plugin
             name="emico-tweakwise"
             type="Emico\Tweakwise\Plugin\RemoveTweakwiseSlugsBeforeSaveAttribute"
