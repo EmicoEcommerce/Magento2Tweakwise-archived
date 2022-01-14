@@ -31,7 +31,7 @@ $disabledSliderUrlInputValue = sprintf('%s-%s', $minValue, $maxValue);
             <span class="postfix"><?= $itemPostfix ?></span>
         </span>
     </div>
-    <div class="slider" data-mage-init='<?=$block->getJsSliderConfig()?>'></div>
+    <div class="slider" data-mage-init="<?=$block->escapeHtmlAttr($block->getJsSliderConfig())?>"></div>
     <div class="labels">
         <span class="current-min-value">
             <span class="prefix"><?= $itemPrefix ?></span>
