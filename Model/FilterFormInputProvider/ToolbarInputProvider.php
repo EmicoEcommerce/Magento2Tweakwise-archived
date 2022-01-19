@@ -46,7 +46,7 @@ class ToolbarInputProvider implements FilterFormInputProviderInterface
         $input = [];
         foreach (self::TOOLBAR_INPUTS as $toolbarInput) {
             if ($toolbarInputValue = $this->request->getParam($toolbarInput)) {
-                $input[$toolbarInput] = $toolbarInputValue;
+                $input[$toolbarInput] = filter_var($toolbarInputValue, FILTER_SANITIZE_ENCODED);
             }
         }
 
