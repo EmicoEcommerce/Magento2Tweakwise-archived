@@ -305,7 +305,11 @@ class PathSlugStrategy implements
             if ($mode) {
                 $query['product_list_mode'] = $mode;
             }
-            return $this->magentoUrl->getDirectUrl($twOriginalUrl, ['_query' => $query]);
+            
+            return filter_var(
+                $this->magentoUrl->getDirectUrl($twOriginalUrl, ['_query' => $query]),
+                FILTER_SANITIZE_URL
+            );
         }
 
         return $this->getCurrentUrl();
