@@ -143,7 +143,7 @@ class SwatchAttributeResolver
                 continue;
             }
             /** @var Table $source */
-            $options = $source->getAllOptions(true, true);
+            $options = $source->getAllOptions(true, false);
 
             $optionLabels = array_column($options, 'label');
             $optionValues = array_column($options, 'value');
