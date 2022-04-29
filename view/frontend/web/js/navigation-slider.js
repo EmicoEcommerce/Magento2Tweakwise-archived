@@ -7,7 +7,7 @@
 
 define([
     'jquery',
-    'jquery-ui-modules/slider',
+    'jquery/ui-modules/widgets/slider',
     'jQueryTouchPunch',
     'domReady!'
 ], function ($) {
