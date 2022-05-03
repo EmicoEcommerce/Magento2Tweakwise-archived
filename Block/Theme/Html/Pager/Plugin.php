@@ -58,7 +58,10 @@ class Plugin
 
         if (mb_stripos($uri, 'tweakwise/ajax/navigation') !== false) {
             $params['_direct'] = $subject->getRequest()->getParam('__tw_original_url');
-            $uri = $this->url->getUrl($route, $params);
+
+            if (!empty($params['_direct'])) {
+                $uri = $this->url->getUrl($route, $params);
+            }
         }
 
         return $uri;
