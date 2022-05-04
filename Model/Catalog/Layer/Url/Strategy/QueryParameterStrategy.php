@@ -127,6 +127,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
 
         if ($originalUrl = $request->getQuery('__tw_original_url')) {
             $urlArray = explode('/', $originalUrl);
+            $newOriginalUrl = '';
             foreach ($urlArray as $url) {
                 $newOriginalUrl .= '/' . filter_var($url, FILTER_SANITIZE_ENCODED);
             }
