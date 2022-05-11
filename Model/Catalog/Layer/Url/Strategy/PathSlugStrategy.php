@@ -305,7 +305,7 @@ class PathSlugStrategy implements
             if ($mode) {
                 $query['product_list_mode'] = $mode;
             }
-            
+
             return filter_var(
                 $this->magentoUrl->getDirectUrl($twOriginalUrl, ['_query' => $query]),
                 FILTER_SANITIZE_URL
@@ -457,6 +457,13 @@ class PathSlugStrategy implements
         $path = trim($request->getPathInfo(), '/');
 
         $filterPath = str_replace($rewrite->getRequestPath(), '', $path);
+
+        //only replace first ocurrence of category name
+        $pos = strpos($path, $rewrite->getRequestPath());
+        if ($pos !== false) {
+            $filterPath = substr_replace($path, '', $pos, strlen($rewrite->getRequestPath()));
+        }
+
         $filterPathParts = explode('/', trim($filterPath, '/'));
         if ((count($filterPathParts) %2) !== 0) {
             /* In this case we dont have an even amount of path segments,
