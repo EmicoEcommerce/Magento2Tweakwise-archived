@@ -25,6 +25,7 @@ define([
             noteMessageSelector: '.message.note',
             noticeMessageSelector: '.message.notice',
             isLoading: false,
+            ajaxCache: true,
         },
 
         currentXhr: null,
@@ -187,7 +188,7 @@ define([
             this.currentXhr = $.ajax({
                 url: this.options.ajaxEndpoint,
                 data: this._getFilterParameters(),
-                cache: true,
+                cache: this.options.ajaxCache,
                 success: function (response) {
                     this._updateBlocks(response.html);
                     this._updateState(response);
