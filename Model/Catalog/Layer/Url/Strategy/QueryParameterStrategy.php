@@ -127,11 +127,17 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
 
         if ($originalUrl = $request->getQuery('__tw_original_url')) {
             $urlArray = explode('/', $originalUrl);
+            $newOriginalUrl = '';
             foreach ($urlArray as $url) {
-                $originalUrl .= '/' . filter_var($url, FILTER_SANITIZE_ENCODED);
+                $newOriginalUrl .= '/' . filter_var($url, FILTER_SANITIZE_ENCODED);
             }
 
-            return $this->url->getDirectUrl($originalUrl, $params);
+            //check if string should start with an / to prevent double slashes later
+            if (strpos(mb_substr($originalUrl, 0, 1), '/', ) === false) {
+                $newOriginalUrl = mb_substr($newOriginalUrl, 1);
+            }
+
+            return $this->url->getDirectUrl($newOriginalUrl, $params);
         }
         return $this->url->getUrl('*/*/*', $params);
     }
