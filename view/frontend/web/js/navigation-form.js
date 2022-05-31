@@ -42,7 +42,7 @@ define([
          *  @private
          */
         _fixAjaxHistory: function () {
-            if(this.options.ajaxFilters && this.options.ajaxCache && ((!window.history.state) || (!window.history.state.html)))
+            if(this.options.ajaxFilters && this.options.ajaxCache && (!window.history.state || !window.history.state.html))
             {
                 //if window history is empty, do an ajax request to fill it.
                 this.currentXhr = $.ajax({
