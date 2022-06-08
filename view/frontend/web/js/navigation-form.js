@@ -32,7 +32,28 @@ define([
 
         _create: function () {
             this._hookEvents();
+            this._fixAjaxHistory();
             return this._superApply(arguments);
+        },
+
+        /**
+         * Fix first page history on page load when using ajax filters
+         *
+         *  @private
+         */
+        _fixAjaxHistory: function () {
+            if(this.options.ajaxFilters && this.options.ajaxCache && (!window.history.state || !window.history.state.html))
+            {
+                //if window history is empty, do an ajax request to fill it.
+                this.currentXhr = $.ajax({
+                    url: this.options.ajaxEndpoint,
+                    data: this._getFilterParameters(),
+                    cache: this.options.ajaxCache,
+                    success: function (response) {
+                        window.history.replaceState({html: response.html}, '', response.url);
+                    }.bind(this)
+                });
+            }
         },
 
         /**
