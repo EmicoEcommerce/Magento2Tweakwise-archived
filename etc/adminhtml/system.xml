@@ -12,7 +12,7 @@
         <section id="tweakwise">
             <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General</label>
-                <comment>Tweakwise version v4.1.3</comment>
+                <comment>Tweakwise version v4.2.2</comment>
                 <field id="authentication_key" translate="label,comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Authentication key</label>
                     <comment>Provided by Tweakwise (8 alphanumeric characters)</comment>
