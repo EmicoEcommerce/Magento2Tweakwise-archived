@@ -119,7 +119,6 @@ class NavigationConfig implements ArgumentInterface, FilterFormInputProviderInte
         if ($this->config->isPersonalMerchandisingActive()) {
             $pmCookieName = $this->config->getPersonalMerchandisingCookieName();
             if ($pmCookieName) {
-                $result = (!($this->request->getModuleName() == 'tweakwise' && $this->request->getControllerName() == 'ajax'));
                 $navigationFormConfig['tweakwisePMPageReload'] = [
                     'cookieName' => $pmCookieName,
                 ];
