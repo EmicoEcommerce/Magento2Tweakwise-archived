@@ -25,7 +25,7 @@ class ConfigAttributeProcessService
         $return = [];
         foreach ($filterListExploded as $listItem) {
             $item = explode('=', trim($listItem)) ?: null;
-            if ($item === null) {
+            if ($item === null || !isset($item[1])) {
                 continue;
             }
             $return[$item[0]][] = $item[1];
