@@ -9,6 +9,7 @@ namespace Emico\Tweakwise\Model\Client\Type\SuggestionType;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\PathSlugStrategy;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\UrlStrategyFactory;
+use Emico\Tweakwise\Model\Config;
 use Emico\TweakwiseExport\Model\Helper;
 use Magento\Catalog\Model\CategoryRepository;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -31,6 +32,7 @@ class SuggestionTypeFacet extends SuggestionTypeCategory
      * @param CategoryRepository $categoryRepository
      * @param StoreManagerInterface $storeManager
      * @param Helper $exportHelper
+     * @param Config $config
      * @param array $data
      */
     public function __construct(
@@ -39,6 +41,7 @@ class SuggestionTypeFacet extends SuggestionTypeCategory
         CategoryRepository $categoryRepository,
         StoreManagerInterface $storeManager,
         Helper $exportHelper,
+        Config $config,
         array $data = []
     ) {
         parent::__construct(
@@ -46,7 +49,8 @@ class SuggestionTypeFacet extends SuggestionTypeCategory
             $storeManager,
             $url,
             $exportHelper,
-            $data
+            $config,
+            $data,
         );
 
         $this->urlStrategyFactory = $urlStrategyFactory;

@@ -32,6 +32,7 @@ cid
                 <use_suggestions>0</use_suggestions>
                 <show_products>1</show_products>
                 <show_categories>1</show_categories>
+                <show_parent_category>0</show_parent_category>
                 <in_current_category>0</in_current_category>
                 <max_results>50</max_results>
             </autocomplete>

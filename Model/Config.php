@@ -276,6 +276,15 @@ class Config
      * @param Store|null $store
      * @return int
      */
+    public function showAutocompleteParentCategories(Store $store = null)
+    {
+        return (bool)$this->getStoreConfig('tweakwise/autocomplete/show_parent_category', $store);
+    }
+
+    /**
+     * @param Store|null $store
+     * @return int
+     */
     public function getAutocompleteMaxResults(Store $store = null)
     {
         return (int)$this->getStoreConfig('tweakwise/autocomplete/max_results', $store);
