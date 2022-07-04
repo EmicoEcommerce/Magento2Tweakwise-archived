@@ -10,5 +10,10 @@ var config = {
             productListToolbarForm: 'Emico_Tweakwise/js/toolbar',
             jQueryTouchPunch: 'Emico_Tweakwise/js/lib/jquery.ui.touch-punch.min'
         }
+    },
+    shim: {
+        'jQueryTouchPunch': {
+            'deps': ['jquery-ui-modules/widget', 'jquery-ui-modules/mouse']
+        }
     }
 };
