@@ -118,7 +118,7 @@ class AjaxNavigationResult extends Layout
     /**
      * @return string
      */
-    protected function getResponseUrl()
+    public function getResponseUrl()
     {
         $layer = $this->layerResolver->get();
         $activeFilters = $layer->getState()->getFilters();

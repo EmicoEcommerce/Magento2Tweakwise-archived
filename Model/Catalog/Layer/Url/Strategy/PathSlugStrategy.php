@@ -55,7 +55,7 @@ class PathSlugStrategy implements
     /**
      * @var UrlModel
      */
-    protected $magentoUrl;
+    public $magentoUrl;
 
     /**
      * @var UrlFinderInterface
