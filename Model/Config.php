@@ -276,7 +276,7 @@ class Config
      * @param Store|null $store
      * @return int
      */
-    public function showAutocompleteParentCategories(Store $store = null)
+    public function showAutocompleteParentCategories(?Store $store = null)
     {
         return (bool)$this->getStoreConfig('tweakwise/autocomplete/show_parent_category', $store);
     }
