@@ -75,15 +75,24 @@ class ProductItem implements ItemInterface
     public function toArray(): array
     {
         $product = $this->product;
-        $price = $product->getPriceInfo();
+        $priceInfo = $product->getPriceInfo();
+        $productType = $product->getTypeId();
         $image = $this->getImage();
+
+        $price = (float) $priceInfo->getPrice('regular_price')->getValue();
+
+        if ($productType == 'grouped' || $productType == 'bundle') {
+            $price = (float) $product->getData('tweakwise_price');
+        }
+
+        $finalPrice = (float) $priceInfo->getPrice('final_price')->getValue();
 
         return [
             'title' => $this->getTitle(),
             'url' => $product->getProductUrl(),
             'image' => $image->getImageUrl(),
-            'price' => (float) $price->getPrice('regular_price')->getValue(),
-            'final_price' => (float) $price->getPrice('final_price')->getValue(),
+            'price' => $price,
+            'final_price' => $finalPrice,
             'type' => 'product',
             'row_class' => 'qs-option-product',
         ];
