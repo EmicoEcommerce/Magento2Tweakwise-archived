@@ -316,6 +316,14 @@ class PathSlugStrategy implements
     }
 
     /**
+     * @return UrlModel
+     */
+    public function getMagentoUrl()
+    {
+        return $this->magentoUrl;
+    }
+
+    /**
      * @return string
      */
     protected function getCurrentUrl(): string

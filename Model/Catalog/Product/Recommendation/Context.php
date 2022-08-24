@@ -130,4 +130,15 @@ class Context
             ->setVisibility($this->visibility->getVisibleInCatalogIds())
             ->setFlag('do_not_use_category_id', true);
     }
+
+    /**
+     * @param FeaturedRequest $request
+     * @return void
+     */
+
+    public function setRequest(FeaturedRequest $request) {
+        $this->collection = null;
+        $this->response = null;
+        $this->request = $request;
+    }
 }

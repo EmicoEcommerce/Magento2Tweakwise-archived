@@ -142,8 +142,9 @@ class DataProviderHelper
         $this->collectionFilter->filter($productCollection, $this->getCategory());
 
         $result = [];
-        foreach ($response->getProductIds() as $productId) {
-            $product = $productCollection->getItemById($productId);
+        foreach ($response->getProductData() as $item) {
+            $product = $productCollection->getItemById($item['id']);
+            $product->setData('tweakwise_price', $item['tweakwise_price']);
             if (!$product) {
                 continue;
             }

@@ -99,6 +99,14 @@ abstract class SuggestionTypeAbstract extends Type implements SuggestionTypeInte
     /**
      * @return string
      */
+    protected function getParentCategory()
+    {
+        return $this->data['navigationLink']['context']['category']['parentName'] ?? '';
+    }
+
+    /**
+     * @return string
+     */
     protected function getMatch()
     {
         return $this->data['match'] ?? '';

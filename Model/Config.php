@@ -260,7 +260,7 @@ class Config
      */
     public function isAutocompleteProductsEnabled(Store $store = null)
     {
-        return (bool)$this->getStoreConfig('tweakwise/autocomplete/show_products', $store);
+        return (bool)($this->getStoreConfig('tweakwise/autocomplete/show_products', $store) && !$this->isSuggestionsAutocomplete());
     }
 
     /**
@@ -269,7 +269,16 @@ class Config
      */
     public function isAutocompleteSuggestionsEnabled(Store $store = null)
     {
-        return (bool)$this->getStoreConfig('tweakwise/autocomplete/show_suggestions', $store);
+        return (bool)($this->getStoreConfig('tweakwise/autocomplete/show_suggestions', $store) && !$this->isSuggestionsAutocomplete());
+    }
+
+    /**
+     * @param Store|null $store
+     * @return int
+     */
+    public function showAutocompleteParentCategories(?Store $store = null)
+    {
+        return (bool)$this->getStoreConfig('tweakwise/autocomplete/show_parent_category', $store);
     }
 
     /**
