@@ -311,7 +311,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
     /**
      * {@inheritdoc}
      */
-    protected function getAttributeFilters(MagentoHttpRequest $request)
+    public function getAttributeFilters(MagentoHttpRequest $request)
     {
         $result = [];
         foreach ($request->getQuery() as $attribute => $value) {
