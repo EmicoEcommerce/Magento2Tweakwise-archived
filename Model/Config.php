@@ -10,7 +10,10 @@ namespace Emico\Tweakwise\Model;
 
 use Emico\Tweakwise\Exception\InvalidArgumentException;
 use Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy;
+use Magento\Framework\App\Area;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\State;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\Store;
 use Magento\Framework\Serialize\Serializer\Json;
@@ -74,14 +77,29 @@ class Config
     protected $parsedFilterArguments;
 
     /**
+     * @var null|string
+     */
+    protected $storeId = null;
+
+    /**
      * Export constructor.
      *
      * @param ScopeConfigInterface $config
+     * @param Json $jsonSerializer
+     * @param RequestInterface $request
+     * @param State $state
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function __construct(ScopeConfigInterface $config, Json $jsonSerializer)
+
+    public function __construct(ScopeConfigInterface $config, Json $jsonSerializer, RequestInterface $request, State $state)
     {
         $this->config = $config;
         $this->jsonSerializer = $jsonSerializer;
+
+        //only do this if its an admin request, to prevent setting the store id in the url in the frontend
+        if ($state->getAreaCode() === Area::AREA_ADMINHTML) {
+            $this->storeId = $request->getParam('store', null);
+        }
     }
 
     /**
@@ -438,7 +456,7 @@ class Config
             return $store->getConfig($path);
         }
 
-        return $this->config->getValue($path, ScopeInterface::SCOPE_STORE);
+        return $this->config->getValue($path, ScopeInterface::SCOPE_STORE, $this->storeId);
     }
 
     /**
