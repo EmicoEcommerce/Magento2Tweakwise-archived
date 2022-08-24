@@ -12,6 +12,8 @@ use Magento\Catalog\Block\Product\Image;
 use Magento\Catalog\Block\Product\ImageBuilder;
 use Magento\Catalog\Block\Product\ImageFactory;
 use Magento\Catalog\Model\Product;
+use Magento\GroupedProduct\Model\Product\Type\Grouped;
+use Magento\Catalog\Model\Product\Type;
 use Magento\Search\Model\Autocomplete\ItemInterface;
 use Magento\Framework\App\ProductMetadataInterface;
 
@@ -81,18 +83,16 @@ class ProductItem implements ItemInterface
 
         $price = (float) $priceInfo->getPrice('regular_price')->getValue();
 
-        if ($productType == 'grouped' || $productType == 'bundle') {
+        if ($productType == Grouped::TYPE_CODE || $productType == Type::TYPE_BUNDLE) {
             $price = (float) $product->getData('tweakwise_price');
         }
-
-        $finalPrice = (float) $priceInfo->getPrice('final_price')->getValue();
 
         return [
             'title' => $this->getTitle(),
             'url' => $product->getProductUrl(),
             'image' => $image->getImageUrl(),
             'price' => $price,
-            'final_price' => $finalPrice,
+            'final_price' => (float) $priceInfo->getPrice('final_price')->getValue(),
             'type' => 'product',
             'row_class' => 'qs-option-product',
         ];
