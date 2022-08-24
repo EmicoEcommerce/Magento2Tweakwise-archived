@@ -7,6 +7,7 @@
 namespace Emico\Tweakwise\Model\Client\Type\SuggestionType;
 
 use Emico\Tweakwise\Model\Catalog\Layer\Url\Strategy\QueryParameterStrategy;
+use Emico\Tweakwise\Model\Config;
 use Emico\TweakwiseExport\Model\Helper;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\CategoryRepository;
@@ -41,6 +42,7 @@ class SuggestionTypeCategory extends SuggestionTypeAbstract
      * @param StoreManagerInterface $storeManager
      * @param UrlInterface $url
      * @param Helper $exportHelper
+     * @param Config $config
      * @param array $data
      */
     public function __construct(
@@ -48,6 +50,7 @@ class SuggestionTypeCategory extends SuggestionTypeAbstract
         StoreManagerInterface $storeManager,
         UrlInterface $url,
         Helper $exportHelper,
+        Config $config,
         array $data = []
     ) {
         parent::__construct(
@@ -57,6 +60,7 @@ class SuggestionTypeCategory extends SuggestionTypeAbstract
         );
         $this->categoryRepository = $categoryRepository;
         $this->storeManager = $storeManager;
+        $this->config = $config;
     }
 
     /**
@@ -67,6 +71,12 @@ class SuggestionTypeCategory extends SuggestionTypeAbstract
         $match = $this->getMatch();
         /** @var string $category */
         $categoryName = $this->getCategoryName();
+
+        $parentCategory = $this->getParentCategory();
+
+        if ($this->config->showAutocompleteParentCategories() && !empty($parentCategory)) {
+            $categoryName = $parentCategory . '/' . $categoryName;
+        }
 
         return $categoryName ?: $match;
     }

@@ -156,6 +156,14 @@
                         <field id="use_suggestions">0</field>
                     </depends>
                 </field>
+                <field id="show_parent_category" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Show parent category</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                        <field id="show_suggestions">1</field>
+                    </depends>
+                </field>
                 <field id="in_current_category" translate="label,comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Stay in category</label>
                     <comment>Filter autocomplete search results to currently viewed category</comment>
