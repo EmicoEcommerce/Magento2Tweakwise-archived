@@ -157,6 +157,7 @@ class NavigationConfig implements ArgumentInterface, FilterFormInputProviderInte
     /**
      * Return which slider to use, the compat version has the full jquery/ui reference.
      * The normal slider definition has jquery-ui-modules/slider, which is only available from 2.3.3 and onwards
+     * The widget slider definition has jquery-ui-modules/widget/slider, which is only available from 2.4.4 and onwards
      *
      * @return string
      */
@@ -165,9 +166,11 @@ class NavigationConfig implements ArgumentInterface, FilterFormInputProviderInte
         $mVersion = $this->productMetadata->getVersion();
         if (version_compare($mVersion, '2.3.3', '<')) {
             return 'tweakwiseNavigationSliderCompat';
+        } elseif (version_compare($mVersion, '2.4.4', '<')) {
+            return 'tweakwiseNavigationSlider';
         }
 
-        return 'tweakwiseNavigationSlider';
+        return 'tweakwiseNavigationSliderWidget';
     }
 
     /**
