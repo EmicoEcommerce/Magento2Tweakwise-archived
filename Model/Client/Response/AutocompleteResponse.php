@@ -89,4 +89,19 @@ class AutocompleteResponse extends Response implements AutocompleteProductRespon
         }
         return $ids;
     }
+
+    /**
+     * @return array
+     */
+    public function getProductData()
+    {
+        $result = [];
+        foreach ($this->getItems() as $item) {
+            $result[] = [
+                'id' => $this->helper->getStoreId($item->getId()),
+                'tweakwise_price' => (float) $item->getPrice(),
+            ];
+        }
+        return $result;
+    }
 }
