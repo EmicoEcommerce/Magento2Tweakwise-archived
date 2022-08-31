@@ -144,10 +144,12 @@ class DataProviderHelper
         $result = [];
         foreach ($response->getProductData() as $item) {
             $product = $productCollection->getItemById($item['id']);
-            $product->setData('tweakwise_price', $item['tweakwise_price']);
+            
             if (!$product) {
                 continue;
             }
+            
+            $product->setData('tweakwise_price', $item['tweakwise_price']);
 
             $result[] = $this->productItemFactory->create(['product' => $product]);
         }
