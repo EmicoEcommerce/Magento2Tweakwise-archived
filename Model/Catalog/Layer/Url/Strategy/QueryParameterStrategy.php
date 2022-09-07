@@ -366,8 +366,7 @@ class QueryParameterStrategy implements UrlInterface, FilterApplierInterface, Ca
             $navigationRequest->setLimit($limit);
         }
 
-        // Add this only for ajax requests
-        if ($this->tweakwiseConfig->isPersonalMerchandisingActive() && $request->isAjax()) {
+        if ($this->tweakwiseConfig->isPersonalMerchandisingActive()) {
             $profileKey = $this->cookieManager->getCookie(
                 $this->tweakwiseConfig->getPersonalMerchandisingCookieName(),
                 null
